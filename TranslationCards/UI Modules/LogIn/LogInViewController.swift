@@ -54,8 +54,7 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         super.localizable()
         loginTextField.placeholderText = "Your Email"
         passwordTextField.placeholderText = "Password"
-        logInButton.setAttributedTitle(.defaultText(withText: "login".uppercased()),
-                                       for: .normal)
+        logInButton.setAttributedTitle(.defaultText(withText: "login".uppercased()), for: .normal)
         signUpButton.setAttributedTitle(.accent(withText: "Sign Up"), for: .normal)
     }
 }

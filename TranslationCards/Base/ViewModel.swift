@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import RxSwift
 
 class ViewModel<R: Router>: NSObject {
     
+    let disposeBag = DisposeBag()
     let router: R
     var updated = {}
     

@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     let viewModel: VM
+    let disposeBag = DisposeBag()
     
     init(viewModel: VM) {
         self.viewModel = viewModel
