@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721AE23853C8D008CAB42 /* AppDelegate.swift */; };
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
+		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		3B5721B423853C8E008CAB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +71,7 @@
 				3B5721B423853C8E008CAB42 /* Assets.xcassets */,
 				3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */,
 				3B5721BC23853C8E008CAB42 /* Info.plist */,
+				3B5721C323854980008CAB42 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -87,7 +90,6 @@
 				A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */,
 				D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -153,6 +155,7 @@
 			files = (
 				3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */,
 				3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */,
+				3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,4 +10,16 @@ target 'TranslationCards' do
   # Rx
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxFirebase/Firestore'
+  pod 'RxFirebase/RemoteConfig'
+  pod 'RxFirebase/Storage'
+  pod 'RxFirebase/Auth'
+  pod 'RxFirebase/Functions'
+  
+  # Firebase
+  pod 'Firebase/Analytics'
+  
+  # UI
+  pod 'SnapKit', '~>5.0.0'
+
 end
