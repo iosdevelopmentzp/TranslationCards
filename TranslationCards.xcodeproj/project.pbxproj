@@ -8,20 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721AE23853C8D008CAB42 /* AppDelegate.swift */; };
-		3B5721B123853C8D008CAB42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721B023853C8D008CAB42 /* SceneDelegate.swift */; };
-		3B5721B323853C8D008CAB42 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721B223853C8D008CAB42 /* ContentView.swift */; };
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
-		3B5721B823853C8E008CAB42 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B723853C8E008CAB42 /* Preview Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3B5721AB23853C8D008CAB42 /* TranslationCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B5721AE23853C8D008CAB42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B5721B023853C8D008CAB42 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3B5721B223853C8D008CAB42 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3B5721B423853C8E008CAB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3B5721B723853C8E008CAB42 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,22 +51,19 @@
 			isa = PBXGroup;
 			children = (
 				3B5721AE23853C8D008CAB42 /* AppDelegate.swift */,
-				3B5721B023853C8D008CAB42 /* SceneDelegate.swift */,
-				3B5721B223853C8D008CAB42 /* ContentView.swift */,
-				3B5721B423853C8E008CAB42 /* Assets.xcassets */,
-				3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */,
-				3B5721BC23853C8E008CAB42 /* Info.plist */,
-				3B5721B623853C8E008CAB42 /* Preview Content */,
+				3B5721C223853EC5008CAB42 /* Resources */,
 			);
 			path = TranslationCards;
 			sourceTree = "<group>";
 		};
-		3B5721B623853C8E008CAB42 /* Preview Content */ = {
+		3B5721C223853EC5008CAB42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3B5721B723853C8E008CAB42 /* Preview Assets.xcassets */,
+				3B5721B423853C8E008CAB42 /* Assets.xcassets */,
+				3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */,
+				3B5721BC23853C8E008CAB42 /* Info.plist */,
 			);
-			path = "Preview Content";
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,7 +125,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */,
-				3B5721B823853C8E008CAB42 /* Preview Assets.xcassets in Resources */,
 				3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,8 +137,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
-				3B5721B123853C8D008CAB42 /* SceneDelegate.swift in Sources */,
-				3B5721B323853C8D008CAB42 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,10 +273,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TranslationCards/Preview Content\"";
 				DEVELOPMENT_TEAM = QH3XGD28XC;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TranslationCards/Info.plist;
+				INFOPLIST_FILE = TranslationCards/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,10 +293,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TranslationCards/Preview Content\"";
 				DEVELOPMENT_TEAM = QH3XGD28XC;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TranslationCards/Info.plist;
+				INFOPLIST_FILE = TranslationCards/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
