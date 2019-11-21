@@ -12,6 +12,7 @@ import RxSwift
 class ViewModel<R: Router>: NSObject {
     
     let disposeBag = DisposeBag()
+    let services = Services.shared
     let router: R
     var updated = {}
     

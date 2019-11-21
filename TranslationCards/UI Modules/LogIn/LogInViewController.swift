@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
@@ -16,6 +18,7 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     let logInButton = RoundedButton()
     let signUpButton = UIButton()
     let stackView = UIStackView()
+    let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -35,6 +38,8 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(safeArea.snp.bottom).inset(20.0)
         }
+        
+        view.addSubview(activityIndicator)
     }
     
     override func setupView() {
@@ -47,6 +52,7 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         [passwordTextField, loginTextField].forEach {
             $0.borderWidth = 2.0
             $0.borderColor = .secondaryUiColor
+            $0.autocapitalizationType = .none
         }
     }
     
@@ -56,5 +62,22 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         passwordTextField.placeholderText = "Password"
         logInButton.setAttributedTitle(.defaultText(withText: "login".uppercased()), for: .normal)
         signUpButton.setAttributedTitle(.accent(withText: "Sign Up"), for: .normal)
+    }
+    
+    override func binding() {
+        super.binding()
+        viewModel.bind(withLogin: loginTextField.rx.text,
+                       withPassword: passwordTextField.rx.text,
+                       didPressButton: logInButton.rx.tap)
+        viewModel
+            .isValideText
+            .bind(to: logInButton.rx.isUserInteractionEnabled)
+            .disposed(by: disposeBag)
+        
+        viewModel
+            .isValideText
+            .subscribe(onNext: { [weak self] in
+            self?.logInButton.backgroundColor = $0 ? UIColor.accentColor : UIColor.gray })
+            .disposed(by: disposeBag)
     }
 }

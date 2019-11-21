@@ -42,6 +42,20 @@
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
 		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
+		3B825B8B2386885B009D62E8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B892386885B009D62E8 /* Services.swift */; };
+		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
+		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
+		3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */; };
+		3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9523868AFB009D62E8 /* ServiceError.swift */; };
+		3B825B9823868B27009D62E8 /* BaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9723868B27009D62E8 /* BaseError.swift */; };
+		3B825B9B23868E69009D62E8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9A23868E69009D62E8 /* User.swift */; };
+		3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9E238692F6009D62E8 /* CredentialsService.swift */; };
+		3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */; };
+		3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA3238695DA009D62E8 /* DatabaseService.swift */; };
+		3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA523869678009D62E8 /* FirestoreDatabaseService.swift */; };
+		3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA72386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift */; };
+		3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */; };
+		3B825BAE2386CD81009D62E8 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BAD2386CD81009D62E8 /* String.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +96,20 @@
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B825B892386885B009D62E8 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServiceV1.swift; sourceTree = "<group>"; };
+		3B825B9523868AFB009D62E8 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
+		3B825B9723868B27009D62E8 /* BaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseError.swift; sourceTree = "<group>"; };
+		3B825B9A23868E69009D62E8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3B825B9E238692F6009D62E8 /* CredentialsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsService.swift; sourceTree = "<group>"; };
+		3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsServiceV1.swift; sourceTree = "<group>"; };
+		3B825BA3238695DA009D62E8 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		3B825BA523869678009D62E8 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
+		3B825BA72386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FirestoreFieldsAndCollections.swift"; sourceTree = "<group>"; };
+		3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepresentation.swift; sourceTree = "<group>"; };
+		3B825BAD2386CD81009D62E8 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,9 +129,8 @@
 		3B319F1F238559F30038A7AC /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				3B319F2023855F4A0038A7AC /* ViewController.swift */,
-				3B319F2223855F4B0038A7AC /* ViewModel.swift */,
-				3B319F2123855F4A0038A7AC /* Router.swift */,
+				3B825BAA23869AD6009D62E8 /* MVVM */,
+				3B825BA923869AC7009D62E8 /* Protocols */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -132,6 +159,7 @@
 				3B319F31238562EE0038A7AC /* UIColor.swift */,
 				3B319F36238567E00038A7AC /* NSAttributedString.swift */,
 				3B319F5D23856E600038A7AC /* UIFont.swift */,
+				3B825BAD2386CD81009D62E8 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -204,6 +232,8 @@
 				3B319F1F238559F30038A7AC /* Base */,
 				3B319F33238563B90038A7AC /* Screens */,
 				3B319F2623855F780038A7AC /* UI Modules */,
+				3B825B8723868809009D62E8 /* Services */,
+				3B825B9923868E4E009D62E8 /* Models */,
 				3B319F5F238571660038A7AC /* Custom Views */,
 				3B5721C223853EC5008CAB42 /* Resources */,
 			);
@@ -220,6 +250,90 @@
 				3B5721C323854980008CAB42 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		3B825B8723868809009D62E8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B8C23868865009D62E8 /* Base */,
+				3B825B892386885B009D62E8 /* Services.swift */,
+				3B825B8F238688F7009D62E8 /* Auth */,
+				3B825B9C238692B3009D62E8 /* Credentials */,
+				3B825B9D238692CE009D62E8 /* Database */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3B825B8C23868865009D62E8 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B8D2386886F009D62E8 /* Service.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		3B825B8F238688F7009D62E8 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B9023868912009D62E8 /* AuthService.swift */,
+				3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		3B825B9423868AED009D62E8 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B9723868B27009D62E8 /* BaseError.swift */,
+				3B825B9523868AFB009D62E8 /* ServiceError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		3B825B9923868E4E009D62E8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B9A23868E69009D62E8 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3B825B9C238692B3009D62E8 /* Credentials */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B9E238692F6009D62E8 /* CredentialsService.swift */,
+				3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */,
+			);
+			path = Credentials;
+			sourceTree = "<group>";
+		};
+		3B825B9D238692CE009D62E8 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				3B825BA3238695DA009D62E8 /* DatabaseService.swift */,
+				3B825BA523869678009D62E8 /* FirestoreDatabaseService.swift */,
+				3B825BA72386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		3B825BA923869AC7009D62E8 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3B825B9423868AED009D62E8 /* Error */,
+				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		3B825BAA23869AD6009D62E8 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				3B319F2023855F4A0038A7AC /* ViewController.swift */,
+				3B319F2223855F4B0038A7AC /* ViewModel.swift */,
+				3B319F2123855F4A0038A7AC /* Router.swift */,
+			);
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
@@ -372,19 +486,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */,
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
+				3B825BAE2386CD81009D62E8 /* String.swift in Sources */,
+				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
+				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
+				3B825B8B2386885B009D62E8 /* Services.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
+				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
+				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
+				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
+				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
 				3B319F32238562EE0038A7AC /* UIColor.swift in Sources */,
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
+				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
+				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
+				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
+				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
+				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
