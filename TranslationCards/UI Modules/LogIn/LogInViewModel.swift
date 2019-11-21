@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class LogInViewModel: ViewModel<LogInRouter> {
+final class LogInViewModel: ViewModel<LogInRouter> {
     
     var isValideText: BehaviorRelay<Bool> = BehaviorRelay.init(value: false)
     
@@ -41,6 +41,26 @@ class LogInViewModel: ViewModel<LogInRouter> {
             .map { (login, password) -> Bool in
                 return (login.isEmail && (password.count >= 7))}
             .bind(to: isValideText)
+            .disposed(by: disposeBag)
+    }
+    
+    func bind(didPressSignUpButton: ControlEvent<Void>) {
+        didPressSignUpButton
+            .subscribe(onNext: { [weak self] in
+                self?.router.route(to: .signUp)
+            })
+        .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Override
+    override func bindWithServices() {
+        super.bindWithServices()
+        services
+            .credentials
+            .user
+            .subscribe(onNext: { [weak self] (user) in
+                guard user != nil else { return}
+                self?.router.route(to: .mainNavigation) })
             .disposed(by: disposeBag)
     }
 }

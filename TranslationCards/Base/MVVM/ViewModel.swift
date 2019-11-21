@@ -19,5 +19,8 @@ class ViewModel<R: Router>: NSObject {
     override init() {
         router = R()
         super.init()
+        bindWithServices()
     }
+    
+    func bindWithServices() {}
 }

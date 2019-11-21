@@ -56,6 +56,10 @@
 		3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA72386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift */; };
 		3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */; };
 		3B825BAE2386CD81009D62E8 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BAD2386CD81009D62E8 /* String.swift */; };
+		3B825BB32386DFEC009D62E8 /* SignUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */; };
+		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
+		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
+		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +114,10 @@
 		3B825BA72386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FirestoreFieldsAndCollections.swift"; sourceTree = "<group>"; };
 		3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepresentation.swift; sourceTree = "<group>"; };
 		3B825BAD2386CD81009D62E8 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRouter.swift; sourceTree = "<group>"; };
+		3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				3B319F2923855FAD0038A7AC /* LogIn */,
+				3B825BAF2386DF92009D62E8 /* Sign Up */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -160,6 +169,7 @@
 				3B319F36238567E00038A7AC /* NSAttributedString.swift */,
 				3B319F5D23856E600038A7AC /* UIFont.swift */,
 				3B825BAD2386CD81009D62E8 /* String.swift */,
+				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -336,6 +346,16 @@
 			path = MVVM;
 			sourceTree = "<group>";
 		};
+		3B825BAF2386DF92009D62E8 /* Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */,
+				3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */,
+				3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */,
+			);
+			path = "Sign Up";
+			sourceTree = "<group>";
+		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,15 +522,19 @@
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
 				3B319F32238562EE0038A7AC /* UIColor.swift in Sources */,
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
+				3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */,
+				3B825BB32386DFEC009D62E8 /* SignUpRouter.swift in Sources */,
 				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
+				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
+				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,
 			);

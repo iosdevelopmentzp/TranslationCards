@@ -25,7 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileprivate func setupView() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        window.rootViewController = Screens.logIn()
+        let vc = Screens.logIn()
+        let nv = UINavigationController(rootViewController: vc)
+        nv.navigationBar.prefersLargeTitles = true
+        window.rootViewController = nv
         window.makeKeyAndVisible()
     }
 }

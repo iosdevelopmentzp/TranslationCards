@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
+final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     let loginTextField = RoundedTextField()
     let passwordTextField = RoundedTextField()
@@ -44,16 +44,22 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     override func setupView() {
         super.setupView()
-        view.backgroundColor = .mainColor
+        view.backgroundColor = .mainDarkColor
         
         stackView.axis = .vertical
         stackView.spacing = 25.0
+        
+        logInButton.backgroundColor = viewModel.isValideText.value ? UIColor.accentColor : UIColor.gray
 
         [passwordTextField, loginTextField].forEach {
             $0.borderWidth = 2.0
             $0.borderColor = .secondaryUiColor
             $0.autocapitalizationType = .none
         }
+    }
+    
+    override func setupNavigationBar() {
+        //navigationController?.isNavigationBarHidden = true
     }
     
     override func localizable() {
@@ -71,13 +77,26 @@ class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
                        didPressButton: logInButton.rx.tap)
         viewModel
             .isValideText
+            .distinctUntilChanged()
             .bind(to: logInButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
         viewModel
             .isValideText
-            .subscribe(onNext: { [weak self] in
-            self?.logInButton.backgroundColor = $0 ? UIColor.accentColor : UIColor.gray })
+            .distinctUntilChanged()
+            .skip(1)
+            .subscribe(onNext: { [weak self] (isValide) in
+                UIView.animate(withDuration: 0.3) {
+                    self?.logInButton.backgroundColor = isValide ? UIColor.accentColor : UIColor.gray
+                }})
             .disposed(by: disposeBag)
+        
+        viewModel
+            .bind(didPressSignUpButton: signUpButton.rx.tap)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 }

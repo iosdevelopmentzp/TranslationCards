@@ -8,6 +8,30 @@
 
 import Foundation
 
-class LogInRouter: Router {
+final class LogInRouter: Router {
     
+    enum Route {
+        case mainNavigation
+        case signUp
+    }
+    
+    func route(to type: Route) {
+        switch type {
+        case .mainNavigation:
+            routeToMainNavigation()
+        case .signUp:
+            routeToSignUp()
+        }
+    }
+    
+    // MARK: - Private
+    private func routeToSignUp() {
+        let signUpViewController = Screens.signUp()
+        viewController?.navigationController?.pushViewController(signUpViewController,
+                                                                 animated: true)
+    }
+    
+    private func routeToMainNavigation() {
+        // TODO: - Make push main navigation
+    }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIColor {
-    static var mainColor: UIColor { UIColor(hexString: "1B1B1B")! }
+    static var mainDarkColor: UIColor { UIColor(hexString: "1B1B1B")! }
     static var secondaryUiColor: UIColor { .white }
     static var accentColor: UIColor { UIColor(hexString: "F9D342")! }
     static var placeholderColor: UIColor { .white }

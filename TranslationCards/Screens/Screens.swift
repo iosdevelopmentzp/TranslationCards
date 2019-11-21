@@ -13,4 +13,9 @@ struct Screens {
         let vm = LogInViewModel()
         return LogInViewController(viewModel: vm)
     }
+    
+    static func signUp() -> SignUpViewController {
+        let vm = SignUpViewModel()
+        return SignUpViewController(viewModel: vm)
+    }
 }

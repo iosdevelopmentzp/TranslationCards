@@ -32,4 +32,8 @@ extension NSAttributedString {
                 .foregroundColor: UIColor.accentColor
         ])
     }
+    
+    static var navigationBarTitleAttribute: [NSAttributedString.Key : Any] {
+        return [ .foregroundColor: UIColor.white ]
+    }
 }
