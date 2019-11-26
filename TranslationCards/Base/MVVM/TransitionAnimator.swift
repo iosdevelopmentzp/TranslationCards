@@ -8,12 +8,12 @@
 
 import UIKit
 
-class TransitionFromSignInToSignUp: AnimationTransitionBase {
-    override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+class TransitionAnimator:  NSObject, UIViewControllerAnimatedTransitioning {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
     }
     
-    override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimationMaker,
             let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimationMaker else {
                 return

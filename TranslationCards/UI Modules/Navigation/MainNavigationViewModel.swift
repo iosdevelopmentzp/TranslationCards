@@ -10,5 +10,8 @@ import UIKit
 
 class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     
-
+    override init(root: UIViewController) {
+        super.init(root: root)
+        transitionAnimator = TransitionAnimator()
+    }
 }

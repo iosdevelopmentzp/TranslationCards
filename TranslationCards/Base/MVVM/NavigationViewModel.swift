@@ -14,6 +14,7 @@ class NavigationViewModel<R: Router>: NSObject, UINavigationControllerDelegate {
 
     let router: R
     let root: UIViewController
+    var transitionAnimator: UIViewControllerAnimatedTransitioning?
 
     init(root: UIViewController) {
         router = R()
@@ -43,10 +44,9 @@ class NavigationViewModel<R: Router>: NSObject, UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .push, .pop:
-            return TransitionFromSignInToSignUp()
+            return transitionAnimator
         default:
             return nil
         }
     }
-       
 }
