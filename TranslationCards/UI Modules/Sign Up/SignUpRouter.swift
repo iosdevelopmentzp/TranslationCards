@@ -9,5 +9,14 @@
 import Foundation
 
 final class SignUpRouter: Router {
+    enum Router {
+        case back
+    }
     
+    func route(to type: Router) {
+        switch type {
+        case .back:
+            viewController?.navigationController?.popViewController(animated: true)
+        }
+    }
 }

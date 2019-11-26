@@ -7,20 +7,14 @@
 //
 
 import RxSwift
-import LifetimeTracker
 
-class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigationController, LifetimeTrackable {
-
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        return LifetimeConfiguration(maxCount: 2, groupName: "NavigationViewController")
-    }
+class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigationController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
     let disposeBag = DisposeBag()
-
     let viewModel: VM
 
     required init?(coder _: NSCoder) {
@@ -34,13 +28,32 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         setViewControllers([viewModel.root],
                            animated: false)
         self.viewModel.router.viewController = self
-
-        let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.tintColor = .white
-        navigationBarAppearace.barTintColor = .black
-        navigationBarAppearace.isTranslucent = false
-        navigationBarAppearace.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-
-        trackLifetime()
+        setupAppereance()
+        self.delegate = viewModel
     }
+    
+    fileprivate func setupAppereance() {
+        
+        let barItemAppearace = UIBarButtonItem.appearance()
+        barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .normal)
+        barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .highlighted)
+        hideSeparator()
+        if #available(iOS 13.0, *) {
+            let navBarAppearace = UINavigationBarAppearance()
+            navBarAppearace.backgroundColor = .mainDarkColor
+            navBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
+            navBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
+            UINavigationBar.appearance().standardAppearance = navBarAppearace
+            UINavigationBar.appearance().prefersLargeTitles = true
+        } else {
+            let navigationBarAppearace = UINavigationBar.appearance()
+            navigationBarAppearace.barTintColor = .mainDarkColor
+            navigationBarAppearace.isTranslucent = false
+            navigationBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
+            navigationBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
+            navigationBarAppearace.prefersLargeTitles = true
+        }
+    }
+    
+    func setupView() { }
 }

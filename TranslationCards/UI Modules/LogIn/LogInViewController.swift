@@ -13,12 +13,12 @@ import RxCocoa
 
 final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
-    let loginTextField = RoundedTextField()
-    let passwordTextField = RoundedTextField()
-    let logInButton = RoundedButton()
-    let signUpButton = UIButton()
-    let stackView = UIStackView()
-    let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    fileprivate let loginTextField = RoundedTextField()
+    fileprivate let passwordTextField = RoundedTextField()
+    fileprivate let logInButton = RoundedButton()
+    fileprivate let signUpButton = UIButton()
+    fileprivate let stackView = UIStackView()
+    fileprivate let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -58,16 +58,13 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         }
     }
     
-    override func setupNavigationBar() {
-        //navigationController?.isNavigationBarHidden = true
-    }
-    
     override func localizable() {
         super.localizable()
         loginTextField.placeholderText = "Your Email"
         passwordTextField.placeholderText = "Password"
         logInButton.setAttributedTitle(.defaultText(withText: "login".uppercased()), for: .normal)
         signUpButton.setAttributedTitle(.accent(withText: "Sign Up"), for: .normal)
+        navigationItem.title = "Log In"
     }
     
     override func binding() {
@@ -94,9 +91,43 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         viewModel
             .bind(didPressSignUpButton: signUpButton.rx.tap)
     }
+}
+
+extension LogInViewController: TransitionAnimationMaker {
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
+        
+        let action = { [weak self] in
+            UIView.animate(withDuration: duration) {
+                [self?.logInButton, self?.passwordTextField, self?.loginTextField].forEach {
+                    $0?.alpha = 0.0
+                }
+            }
+        }
+        guard delay > 0 else {
+            action()
+            return
+        }
+        Timer.scheduledTimer(withTimeInterval: delay,
+                             repeats: false) { (_) in
+            action()
+        }
+    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
+        let action = { [weak self] in
+            UIView.animate(withDuration: duration) {
+                [self?.logInButton, self?.passwordTextField, self?.loginTextField].forEach {
+                    $0?.alpha = 1.0
+                }
+            }
+        }
+        guard delay > 0 else {
+            action()
+            return
+        }
+        Timer.scheduledTimer(withTimeInterval: delay,
+                             repeats: false) { (_) in
+            action()
+        }
     }
 }

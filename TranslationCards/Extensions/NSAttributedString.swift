@@ -13,7 +13,7 @@ extension NSAttributedString {
         .init(string: text,
               attributes: [
                 .font : UIFont.robotoThin(size: size),
-                .foregroundColor: UIColor.placeholderColor
+                .foregroundColor: UIColor.placeholderLightColor
         ])
     }
     
@@ -35,5 +35,12 @@ extension NSAttributedString {
     
     static var navigationBarTitleAttribute: [NSAttributedString.Key : Any] {
         return [ .foregroundColor: UIColor.white ]
+    }
+    
+    static var navigationBarButtomItemAttribute: [NSAttributedString.Key : Any] {
+        return [
+            .foregroundColor: UIColor.accentColor,
+            .font: UIFont.robotoRegular(size: 23.0)
+        ]
     }
 }

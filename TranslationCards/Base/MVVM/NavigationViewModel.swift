@@ -7,14 +7,9 @@
 //
 
 import RxSwift
-import LifetimeTracker
 
-class NavigationViewModel<R: Router>: NSObject, LifetimeTrackable {
-
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        return LifetimeConfiguration(maxCount: 2, groupName: "NavigationViewModel")
-    }
-
+class NavigationViewModel<R: Router>: NSObject, UINavigationControllerDelegate {
+    
     let disposeBag = DisposeBag()
 
     let router: R
@@ -24,6 +19,34 @@ class NavigationViewModel<R: Router>: NSObject, LifetimeTrackable {
         router = R()
         self.root = root
         super.init()
-        trackLifetime()
     }
+    
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) { }
+    
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    }
+    
+    
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return .all
+    }
+    
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
+    }
+    
+    
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return nil
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push, .pop:
+            return TransitionFromSignInToSignUp()
+        default:
+            return nil
+        }
+    }
+       
 }

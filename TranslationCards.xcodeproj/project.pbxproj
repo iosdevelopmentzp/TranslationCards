@@ -42,6 +42,15 @@
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
 		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
+		3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51182387E56700DCB5FB /* NavigationViewController.swift */; };
+		3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */; };
+		3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */; };
+		3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D511F2387E70400DCB5FB /* MainNavigationViewModel.swift */; };
+		3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51212387E71400DCB5FB /* MainNavigationRouter.swift */; };
+		3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51232387F41100DCB5FB /* RegisterCardView.swift */; };
+		3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */; };
+		3B5D513023882F1700DCB5FB /* AnimationTransitionBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D512F23882F1700DCB5FB /* AnimationTransitionBase.swift */; };
+		3B5D51322388301200DCB5FB /* TransitionFromSignInToSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51312388301200DCB5FB /* TransitionFromSignInToSignUp.swift */; };
 		3B825B8B2386885B009D62E8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B892386885B009D62E8 /* Services.swift */; };
 		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
 		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
@@ -60,6 +69,7 @@
 		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
 		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
+		3BAC2824238C784B009950B4 /* TransitionAnimationMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +110,15 @@
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B5D51182387E56700DCB5FB /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
+		3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationViewController.swift; sourceTree = "<group>"; };
+		3B5D511F2387E70400DCB5FB /* MainNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationViewModel.swift; sourceTree = "<group>"; };
+		3B5D51212387E71400DCB5FB /* MainNavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationRouter.swift; sourceTree = "<group>"; };
+		3B5D51232387F41100DCB5FB /* RegisterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCardView.swift; sourceTree = "<group>"; };
+		3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithTopPlaceholder.swift; sourceTree = "<group>"; };
+		3B5D512F23882F1700DCB5FB /* AnimationTransitionBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTransitionBase.swift; sourceTree = "<group>"; };
+		3B5D51312388301200DCB5FB /* TransitionFromSignInToSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionFromSignInToSignUp.swift; sourceTree = "<group>"; };
 		3B825B892386885B009D62E8 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -118,6 +137,7 @@
 		3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
+		3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimationMaker.swift; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +166,7 @@
 		3B319F2623855F780038A7AC /* UI Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3B5D511C2387E6AE00DCB5FB /* Navigation */,
 				3B319F2923855FAD0038A7AC /* LogIn */,
 				3B825BAF2386DF92009D62E8 /* Sign Up */,
 			);
@@ -212,6 +233,8 @@
 			children = (
 				3B319F602385719E0038A7AC /* RoundedTextField.swift */,
 				3B319F6223857BFE0038A7AC /* RoundedButton.swift */,
+				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
+				3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -260,6 +283,26 @@
 				3B5721C323854980008CAB42 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		3B5D511C2387E6AE00DCB5FB /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				3B5D512E23882EFC00DCB5FB /* AnimationTransitions */,
+				3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */,
+				3B5D511F2387E70400DCB5FB /* MainNavigationViewModel.swift */,
+				3B5D51212387E71400DCB5FB /* MainNavigationRouter.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		3B5D512E23882EFC00DCB5FB /* AnimationTransitions */ = {
+			isa = PBXGroup;
+			children = (
+				3B5D512F23882F1700DCB5FB /* AnimationTransitionBase.swift */,
+				3B5D51312388301200DCB5FB /* TransitionFromSignInToSignUp.swift */,
+			);
+			path = AnimationTransitions;
 			sourceTree = "<group>";
 		};
 		3B825B8723868809009D62E8 /* Services */ = {
@@ -332,6 +375,7 @@
 			children = (
 				3B825B9423868AED009D62E8 /* Error */,
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
+				3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -342,6 +386,8 @@
 				3B319F2023855F4A0038A7AC /* ViewController.swift */,
 				3B319F2223855F4B0038A7AC /* ViewModel.swift */,
 				3B319F2123855F4A0038A7AC /* Router.swift */,
+				3B5D51182387E56700DCB5FB /* NavigationViewController.swift */,
+				3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */,
 			);
 			path = MVVM;
 			sourceTree = "<group>";
@@ -350,8 +396,8 @@
 			isa = PBXGroup;
 			children = (
 				3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */,
-				3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */,
 				3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */,
+				3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */,
 			);
 			path = "Sign Up";
 			sourceTree = "<group>";
@@ -509,13 +555,20 @@
 				3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */,
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
+				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
+				3BAC2824238C784B009950B4 /* TransitionAnimationMaker.swift in Sources */,
+				3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */,
 				3B825BAE2386CD81009D62E8 /* String.swift in Sources */,
+				3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
+				3B5D513023882F1700DCB5FB /* AnimationTransitionBase.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
 				3B825B8B2386885B009D62E8 /* Services.swift in Sources */,
+				3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
+				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
@@ -531,6 +584,9 @@
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
+				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,
+				3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */,
+				3B5D51322388301200DCB5FB /* TransitionFromSignInToSignUp.swift in Sources */,
 				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,

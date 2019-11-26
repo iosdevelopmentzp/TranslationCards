@@ -10,4 +10,7 @@ import Foundation
 
 final class SignUpViewModel: ViewModel<SignUpRouter> {
     
+    func pressedLogInButton() {
+        router.route(to: .back)
+    }
 }

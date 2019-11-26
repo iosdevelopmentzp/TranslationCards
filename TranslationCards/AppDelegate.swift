@@ -26,8 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         let vc = Screens.logIn()
-        let nv = UINavigationController(rootViewController: vc)
-        nv.navigationBar.prefersLargeTitles = true
+        let nv = Screens.navigation(root: vc)
         window.rootViewController = nv
         window.makeKeyAndVisible()
     }

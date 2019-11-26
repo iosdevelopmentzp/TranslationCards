@@ -7,15 +7,60 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class TextFieldWithTopPlaceholder: UITextField {
+class TextFieldWithTopPlaceholder: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    // MARK: - Public
+    var topPlaceholder = BehaviorSubject<String>.init(value: "")
+    
+    // MARK: - Private
+    fileprivate let disposeBag = DisposeBag()
+    fileprivate let topLabel = UILabel()
+    fileprivate let textField = UITextField()
+    fileprivate let separator = UIView()
+    fileprivate let stackView = UIStackView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupConstraints()
+        setupView()
+        setupRx()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func setupView() {
+        stackView.axis = .vertical
+        stackView.spacing = 5.0
+        separator.backgroundColor = .separatorColor
+        separator.layer.cornerRadius = 1.0
+        topLabel.textColor = .placeholderDarkColor
+        textField.textColor = .black
+    }
+    
+    fileprivate func setupConstraints() {
+        
+        addSubview(stackView)
+        stackView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.left.right.equalToSuperview()
+        }
+        
+        stackView.addArrangedSubview(topLabel)
+        stackView.addArrangedSubview(textField)
+        stackView.addArrangedSubview(separator)
+        separator.snp.makeConstraints {
+            $0.height.equalTo(2.0).priority(999)
+        }
+    }
+    
+    fileprivate func setupRx() {
+        topPlaceholder
+            .bind(to: topLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
 }

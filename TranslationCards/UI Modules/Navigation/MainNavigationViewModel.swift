@@ -8,6 +8,7 @@
 
 import UIKit
 
-class MainNavigationViewModel: NavigationViewModel {
+class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
+    
 
 }
