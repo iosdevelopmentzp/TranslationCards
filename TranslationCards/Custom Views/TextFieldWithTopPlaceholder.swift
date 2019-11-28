@@ -14,11 +14,12 @@ class TextFieldWithTopPlaceholder: UIView {
 
     // MARK: - Public
     var topPlaceholder = BehaviorSubject<String>.init(value: "")
+    var inputText = BehaviorSubject<String>.init(value: "")
+    let textField = UITextField()
     
     // MARK: - Private
     fileprivate let disposeBag = DisposeBag()
     fileprivate let topLabel = UILabel()
-    fileprivate let textField = UITextField()
     fileprivate let separator = UIView()
     fileprivate let stackView = UIStackView()
     
@@ -40,6 +41,8 @@ class TextFieldWithTopPlaceholder: UIView {
         separator.layer.cornerRadius = 1.0
         topLabel.textColor = .placeholderDarkColor
         textField.textColor = .black
+        textField.autocapitalizationType = .none
+        textField.autocorrectionType = .no
     }
     
     fileprivate func setupConstraints() {
@@ -61,6 +64,13 @@ class TextFieldWithTopPlaceholder: UIView {
     fileprivate func setupRx() {
         topPlaceholder
             .bind(to: topLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        textField
+            .rx
+            .text
+            .compactMap { $0 }
+            .bind(to: inputText)
             .disposed(by: disposeBag)
     }
 }

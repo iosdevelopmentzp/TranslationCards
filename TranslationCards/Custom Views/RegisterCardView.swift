@@ -7,10 +7,12 @@
 //
 
 import UIKit
-
-
+import RxSwift
+import RxCocoa
 
 class RegisterCardView: UIView {
+    
+    private(set) var textFields: [(FieldType, TextFieldWithTopPlaceholder)] = []
     
     enum FieldType: Int, CaseIterable {
         case email
@@ -30,7 +32,6 @@ class RegisterCardView: UIView {
     }
     
     fileprivate let stackView = UIStackView()
-    fileprivate var textFields: [TextFieldWithTopPlaceholder] = []
     fileprivate static let kPadding: CGFloat = 16.0
     
     override init(frame: CGRect) {
@@ -65,16 +66,16 @@ class RegisterCardView: UIView {
             $0.top.equalToSuperview().offset(RegisterCardView.kPadding)
         }
         
-        FieldType.allCases.forEach { [weak self] (_) in
+        FieldType.allCases.forEach { [weak self] (fieldType) in
             let textField = TextFieldWithTopPlaceholder()
             self?.stackView.addArrangedSubview(textField)
-            self?.textFields.append(textField)
+            self?.textFields.append((fieldType, textField))
         }
         
-        if let firstTextField = textFields.first {
-            textFields.forEach {
-                if $0 !== firstTextField {
-                    $0.snp.makeConstraints {
+        if let firstTextField = textFields.first?.1 {
+            textFields.forEach { (_, textField) in
+                if textField !== firstTextField {
+                    textField.snp.makeConstraints {
                         $0.height.equalTo(firstTextField.snp.height).priority(999) }
                 }
             }
@@ -82,9 +83,9 @@ class RegisterCardView: UIView {
     }
     
     fileprivate func localizable() {
-        FieldType.allCases.forEach { [weak self] in
-            guard let field = self?.textFields[$0.rawValue] else { return }
-            field.topPlaceholder.onNext($0.placeholderText())
+        FieldType.allCases.forEach { [weak self] (fieldType) in
+            guard let field = self?.textFields[fieldType.rawValue].1 else { return }
+            field.topPlaceholder.onNext(fieldType.placeholderText())
         }
     }
 }

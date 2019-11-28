@@ -9,7 +9,7 @@
 import UIKit
 
 
-protocol TransitionAnimationMaker where Self: UIViewController {
+protocol TransitionAnimatorMaker where Self: UIViewController {
     func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView)
     func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView)
 }

@@ -14,8 +14,9 @@ class TransitionAnimator:  NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimationMaker,
-            let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimationMaker else {
+        guard let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimatorMaker,
+            let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimatorMaker else {
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 return
         }
         let duration = transitionDuration(using: transitionContext)

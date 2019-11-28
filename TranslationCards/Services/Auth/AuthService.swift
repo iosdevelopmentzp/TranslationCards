@@ -9,8 +9,7 @@
 import RxSwift
 
 protocol AuthService: Service {
-    var isUserStartedSigIn: BehaviorSubject<Bool> { get }
-    func signIn(withEmail email: String, password: String)
-    func signUp(withEmail email: String, password: String)
+    func signIn(withEmail email: String, password: String) -> Observable<Void>
+    func signUp(withEmail email: String, password: String, displayName: String) -> Observable<Void>
     func signOut() -> Observable<Void>
 }

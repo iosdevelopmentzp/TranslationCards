@@ -84,7 +84,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
             .skip(1)
             .subscribe(onNext: { [weak self] (isValide) in
                 UIView.animate(withDuration: 0.3) {
-                    self?.logInButton.backgroundColor = isValide ? UIColor.accentColor : UIColor.gray
+                    self?.logInButton.backgroundColor = isValide ? UIColor.accentColor : UIColor.notValidateButton
                 }})
             .disposed(by: disposeBag)
         
@@ -93,7 +93,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     }
 }
 
-extension LogInViewController: TransitionAnimationMaker {
+extension LogInViewController: TransitionAnimatorMaker {
     func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
         
         let action = { [weak self] in

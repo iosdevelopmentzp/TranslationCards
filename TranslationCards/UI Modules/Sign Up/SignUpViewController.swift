@@ -12,7 +12,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     
     fileprivate let bottomBackgroundView = UIView()
     fileprivate let registerCardView = RegisterCardView()
-    fileprivate let registerButton = RoundedButton()
+    fileprivate let signUpButton = RoundedButton()
+    fileprivate let activityIndicator = UIActivityIndicatorView(style: .gray)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -26,8 +27,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             $0.height.equalTo(self.view.snp.height).multipliedBy(0.7)
         }
         
-        view.addSubview(registerButton)
-        registerButton.snp.makeConstraints {
+        view.addSubview(signUpButton)
+        signUpButton.snp.makeConstraints {
             $0.bottom.equalTo(safeArea).inset(30.0)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(safeArea).multipliedBy(0.8)
@@ -37,20 +38,23 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         registerCardView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(30.0)
-            $0.width.equalTo(self.registerButton.snp.width)
+            $0.width.equalTo(self.signUpButton.snp.width)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(self.bottomBackgroundView).multipliedBy(0.7)
+        }
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     
     override func setupView() {
         super.setupView()
-        
         view.backgroundColor = .mainDarkColor
-        
         bottomBackgroundView.backgroundColor = .accentColor
-        
-        registerButton.backgroundColor = .mainDarkColor
+        signUpButton.backgroundColor = .notValidateButton
+        activityIndicator.hidesWhenStopped = true
     }
     
     override func setupNavigationBar() {
@@ -60,12 +64,31 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         navigationItem.rightBarButtonItem = rightItem
         rightItem.tintColor = .white
     }
-
+    
+    override func binding() {
+        super.binding()
+        viewModel.bind(withTextFields: registerCardView.textFields, signUpPressedEvent: signUpButton.rx.tap)
+        
+        viewModel
+            .isValided
+            .skip(1)
+            .subscribe(onNext: { (isValide) in
+                UIView.animate(withDuration: 0.3) { [weak self] in
+                    self?.signUpButton.backgroundColor = isValide ? .mainDarkColor : .notValidateButton
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel
+            .isActivityAnimate
+            .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+    }
     
     override func localizable() {
         super.localizable()
         navigationItem.title = "Register"
-        registerButton.setAttributedTitle(.defaultText(withText: "Register"), for: .normal)
+        signUpButton.setAttributedTitle(.defaultText(withText: "Register"), for: .normal)
     }
     
     // MARK: - User Interaction
@@ -74,7 +97,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     }
 }
 
-extension SignUpViewController: TransitionAnimationMaker {
+extension SignUpViewController: TransitionAnimatorMaker {
     func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
         
         containerView.insertSubview(secondViewController.view, belowSubview: view)
@@ -89,7 +112,7 @@ extension SignUpViewController: TransitionAnimationMaker {
             
             UIView.animate(withDuration: duration * 0.5) { [weak self] in
                 self?.registerCardView.alpha = 0.0
-                self?.registerButton.alpha = 0.0
+                self?.signUpButton.alpha = 0.0
             }
         }
         guard delay > 0 else {
@@ -108,13 +131,13 @@ extension SignUpViewController: TransitionAnimationMaker {
         let action = { [weak self] in
             guard let self = self else { return }
             self.bottomBackgroundView.transform = CGAffineTransform.init(translationX: 0, y: self.bottomBackgroundView.bounds.height)
-            self.registerButton.alpha = 0.0
+            self.signUpButton.alpha = 0.0
             self.registerCardView.alpha = 0.0
             self.view.alpha = 1.0
             
             UIView.animate(withDuration: duration * 0.5) { [weak self] in
                 self?.registerCardView.alpha = 1.0
-                self?.registerButton.alpha = 1.0
+                self?.signUpButton.alpha = 1.0
             }
 
             UIView.animate(withDuration: duration,
@@ -132,8 +155,6 @@ extension SignUpViewController: TransitionAnimationMaker {
             action()
         }
     }
-    
-    
 }
 
 

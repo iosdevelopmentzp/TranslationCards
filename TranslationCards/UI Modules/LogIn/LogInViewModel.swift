@@ -32,7 +32,14 @@ final class LogInViewModel: ViewModel<LogInRouter> {
         didPressButton
             .withLatestFrom(userInputs)
             .subscribe(onNext: { [weak self] (login, password) in
+                // TODO: Start activity indicator
                 self?.services.auth.signIn(withEmail: login, password: password)
+                    .subscribe(onNext: { (_) in
+                        // TODO: - Finish activity indicator animating
+                    }, onError: { (error) in
+                        // TODO: - Make error alert and finish activity indicator
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
             })
             .disposed(by: disposeBag)
         

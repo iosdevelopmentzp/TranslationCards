@@ -16,6 +16,7 @@ extension UIColor {
     static var placeholderDarkColor: UIColor { .init(red: 200.0/255.0, green: 199.0/255.0, blue: 204.0/255.0, alpha: 1.0) }
     static var defaultTextColor: UIColor { .white }
     static var separatorColor: UIColor { .init(red: 200.0/255.0, green: 199.0/255.0, blue: 204.0/255.0, alpha: 1.0)}
+    static var notValidateButton: UIColor { UIColor.gray }
 }
 
 extension UIColor {
