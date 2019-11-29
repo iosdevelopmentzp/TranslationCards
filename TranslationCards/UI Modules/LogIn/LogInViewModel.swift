@@ -12,12 +12,18 @@ import RxCocoa
 
 final class LogInViewModel: ViewModel<LogInRouter> {
     
-    var isValideText: BehaviorRelay<Bool> = BehaviorRelay.init(value: false)
+    var isValideText = BehaviorRelay.init(value: false)
+    var isActivityIndicatorAnimate = BehaviorSubject.init(value: false)
     
     // MARK: - Public methods
     func bind(withLogin login: ControlProperty<String?>,
               withPassword password: ControlProperty<String?>,
               didPressButton: ControlEvent<Void>) {
+        
+        #if DEBUG
+        login.onNext("test@gmail.com")
+        password.onNext("testtest")
+        #endif
         
         // prevent spaces
         [login, password].forEach {
@@ -32,12 +38,12 @@ final class LogInViewModel: ViewModel<LogInRouter> {
         didPressButton
             .withLatestFrom(userInputs)
             .subscribe(onNext: { [weak self] (login, password) in
-                // TODO: Start activity indicator
+                self?.isActivityIndicatorAnimate.onNext(true)
                 self?.services.auth.signIn(withEmail: login, password: password)
                     .subscribe(onNext: { (_) in
-                        // TODO: - Finish activity indicator animating
+                        self?.isActivityIndicatorAnimate.onNext(false)
                     }, onError: { (error) in
-                        // TODO: - Make error alert and finish activity indicator
+                        self?.isActivityIndicatorAnimate.onNext(false)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })

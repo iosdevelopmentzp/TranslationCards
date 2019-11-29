@@ -32,6 +32,7 @@ final class LogInRouter: Router {
     }
     
     private func routeToMainNavigation() {
-        // TODO: - Make push main navigation
+        let mainViewController = Screens.main()
+        viewController?.navigationController?.viewControllers.last?.navigationController?.pushViewController(mainViewController, animated: true)
     }
 }

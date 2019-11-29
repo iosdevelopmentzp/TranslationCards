@@ -70,6 +70,21 @@
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField.swift */; };
+		3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C30238FD816006FB7F8 /* MainRouter.swift */; };
+		3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C31238FD816006FB7F8 /* MainViewController.swift */; };
+		3BC52C35238FD816006FB7F8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C32238FD816006FB7F8 /* MainViewModel.swift */; };
+		3BC52C37238FDA2C006FB7F8 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C36238FDA2C006FB7F8 /* PlusButton.swift */; };
+		3BC52C39238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C38238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift */; };
+		3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C3B238FF952006FB7F8 /* CreateCardPopUpRouter.swift */; };
+		3BC52C3F238FF952006FB7F8 /* CreateCardPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C3C238FF952006FB7F8 /* CreateCardPopUpViewController.swift */; };
+		3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C3D238FF952006FB7F8 /* CreateCardPopUpViewModel.swift */; };
+		3BC52C42238FFF85006FB7F8 /* CreateTranslateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C41238FFF85006FB7F8 /* CreateTranslateCardView.swift */; };
+		3BC52C46239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C45239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift */; };
+		3BC99CC923902A9500D0D869 /* NavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CC823902A9500D0D869 /* NavigationControllerDelegate.swift */; };
+		3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */; };
+		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
+		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
+		3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3C2391A30D00C9AA48 /* UIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +153,21 @@
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
 		3BC52C2C238FC466006FB7F8 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		3BC52C30238FD816006FB7F8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
+		3BC52C31238FD816006FB7F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3BC52C32238FD816006FB7F8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		3BC52C36238FDA2C006FB7F8 /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
+		3BC52C38238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
+		3BC52C3B238FF952006FB7F8 /* CreateCardPopUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardPopUpRouter.swift; sourceTree = "<group>"; };
+		3BC52C3C238FF952006FB7F8 /* CreateCardPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardPopUpViewController.swift; sourceTree = "<group>"; };
+		3BC52C3D238FF952006FB7F8 /* CreateCardPopUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardPopUpViewModel.swift; sourceTree = "<group>"; };
+		3BC52C41238FFF85006FB7F8 /* CreateTranslateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTranslateCardView.swift; sourceTree = "<group>"; };
+		3BC52C45239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimationDelegate.swift; sourceTree = "<group>"; };
+		3BC99CC823902A9500D0D869 /* NavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerDelegate.swift; sourceTree = "<group>"; };
+		3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimator.swift; sourceTree = "<group>"; };
+		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
+		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
+		3BFCBD3C2391A30D00C9AA48 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,6 +199,8 @@
 				3B5D511C2387E6AE00DCB5FB /* Navigation */,
 				3B319F2923855FAD0038A7AC /* LogIn */,
 				3B825BAF2386DF92009D62E8 /* Sign Up */,
+				3BC52C2F238FD70F006FB7F8 /* Main */,
+				3BC52C3A238FF8EE006FB7F8 /* CreateCardPopUp */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -192,6 +224,7 @@
 				3B825BAD2386CD81009D62E8 /* String.swift */,
 				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3BC52C2C238FC466006FB7F8 /* UITextField.swift */,
+				3BFCBD3C2391A30D00C9AA48 /* UIView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -232,10 +265,11 @@
 		3B319F5F238571660038A7AC /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				3BC52C2E238FD6E1006FB7F8 /* Register Card VIew */,
 				3B319F602385719E0038A7AC /* RoundedTextField.swift */,
 				3B319F6223857BFE0038A7AC /* RoundedButton.swift */,
-				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
-				3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */,
+				3BC52C36238FDA2C006FB7F8 /* PlusButton.swift */,
+				3BC52C41238FFF85006FB7F8 /* CreateTranslateCardView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -267,6 +301,7 @@
 				3B319F33238563B90038A7AC /* Screens */,
 				3B319F2623855F780038A7AC /* UI Modules */,
 				3B825B8723868809009D62E8 /* Services */,
+				3BC99CC62390272D00D0D869 /* Tools */,
 				3B825B9923868E4E009D62E8 /* Models */,
 				3B319F5F238571660038A7AC /* Custom Views */,
 				3B5721C223853EC5008CAB42 /* Resources */,
@@ -366,7 +401,6 @@
 			children = (
 				3B825B9423868AED009D62E8 /* Error */,
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
-				3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -379,7 +413,6 @@
 				3B319F2123855F4A0038A7AC /* Router.swift */,
 				3B5D51182387E56700DCB5FB /* NavigationViewController.swift */,
 				3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */,
-				3B5D51312388301200DCB5FB /* TransitionAnimator.swift */,
 			);
 			path = MVVM;
 			sourceTree = "<group>";
@@ -392,6 +425,58 @@
 				3B825BB02386DFEC009D62E8 /* SignUpRouter.swift */,
 			);
 			path = "Sign Up";
+			sourceTree = "<group>";
+		};
+		3B88E93223913F2C0052DB7F /* Transition Animation */ = {
+			isa = PBXGroup;
+			children = (
+				3BC52C45239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift */,
+				3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */,
+				3B5D51312388301200DCB5FB /* TransitionAnimator.swift */,
+				3BC99CC823902A9500D0D869 /* NavigationControllerDelegate.swift */,
+				3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */,
+				3BC52C38238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift */,
+				3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */,
+				3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */,
+			);
+			path = "Transition Animation";
+			sourceTree = "<group>";
+		};
+		3BC52C2E238FD6E1006FB7F8 /* Register Card VIew */ = {
+			isa = PBXGroup;
+			children = (
+				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
+				3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */,
+			);
+			path = "Register Card VIew";
+			sourceTree = "<group>";
+		};
+		3BC52C2F238FD70F006FB7F8 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3BC52C31238FD816006FB7F8 /* MainViewController.swift */,
+				3BC52C32238FD816006FB7F8 /* MainViewModel.swift */,
+				3BC52C30238FD816006FB7F8 /* MainRouter.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		3BC52C3A238FF8EE006FB7F8 /* CreateCardPopUp */ = {
+			isa = PBXGroup;
+			children = (
+				3BC52C3C238FF952006FB7F8 /* CreateCardPopUpViewController.swift */,
+				3BC52C3D238FF952006FB7F8 /* CreateCardPopUpViewModel.swift */,
+				3BC52C3B238FF952006FB7F8 /* CreateCardPopUpRouter.swift */,
+			);
+			path = CreateCardPopUp;
+			sourceTree = "<group>";
+		};
+		3BC99CC62390272D00D0D869 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3B88E93223913F2C0052DB7F /* Transition Animation */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
@@ -545,16 +630,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */,
+				3BC52C39238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift in Sources */,
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
 				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
 				3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */,
+				3BC52C3F238FF952006FB7F8 /* CreateCardPopUpViewController.swift in Sources */,
 				3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */,
 				3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */,
 				3B825BAE2386CD81009D62E8 /* String.swift in Sources */,
+				3BC52C37238FDA2C006FB7F8 /* PlusButton.swift in Sources */,
+				3BC52C42238FFF85006FB7F8 /* CreateTranslateCardView.swift in Sources */,
 				3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */,
+				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
+				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
 				3B825B8B2386885B009D62E8 /* Services.swift in Sources */,
 				3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */,
@@ -562,6 +653,7 @@
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
+				3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
@@ -570,14 +662,19 @@
 				3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */,
 				3B825BB32386DFEC009D62E8 /* SignUpRouter.swift in Sources */,
 				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
+				3BC99CC923902A9500D0D869 /* NavigationControllerDelegate.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
+				3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */,
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
+				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
+				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,
 				3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */,
+				3BC52C46239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift in Sources */,
 				3B5D51322388301200DCB5FB /* TransitionAnimator.swift in Sources */,
 				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
@@ -585,6 +682,9 @@
 				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,
+				3BC52C35238FD816006FB7F8 /* MainViewModel.swift in Sources */,
+				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
+				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,8 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileprivate func setupView() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        let vc = Screens.logIn()
-        let nv = Screens.navigation(root: vc)
+        var vc: UIViewController?
+        
+        #if DEBUG
+        vc = Screens.main()
+        #else
+        vc = Screens.logIn()
+        #endif
+        
+        guard let startVC = vc else { return }
+        let nv = Screens.navigation(root: startVC)
         window.rootViewController = nv
         window.makeKeyAndVisible()
     }

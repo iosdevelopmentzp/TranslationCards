@@ -98,8 +98,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
 }
 
 extension SignUpViewController: TransitionAnimatorMaker {
-    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
-        
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+        guard let secondViewController = secondViewController else { return }
         containerView.insertSubview(secondViewController.view, belowSubview: view)
         
         let action = { [weak self] in
@@ -108,6 +108,9 @@ extension SignUpViewController: TransitionAnimatorMaker {
                 self.bottomBackgroundView.transform = CGAffineTransform.init(translationX: 0, y: self.bottomBackgroundView.bounds.height)
             }) { [weak self] (_) in
                 self?.view.alpha = 0.0
+                if transitionType == .pop {
+                    self?.view.removeFromSuperview()
+                }
             }
             
             UIView.animate(withDuration: duration * 0.5) { [weak self] in
@@ -124,7 +127,7 @@ extension SignUpViewController: TransitionAnimatorMaker {
         }
     }
     
-    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
         containerView.addSubview(view)
         view.alpha = 0.0
         
@@ -143,7 +146,7 @@ extension SignUpViewController: TransitionAnimatorMaker {
             UIView.animate(withDuration: duration,
                            animations: { [weak self] in
                     self?.bottomBackgroundView.transform = CGAffineTransform.identity
-            })
+                })
         }
         
         guard delay > 0 else {

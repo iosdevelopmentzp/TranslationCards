@@ -18,7 +18,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     fileprivate let logInButton = RoundedButton()
     fileprivate let signUpButton = UIButton()
     fileprivate let stackView = UIStackView()
-    fileprivate let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    fileprivate let activityIndicator = UIActivityIndicatorView()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -40,6 +40,9 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         }
         
         view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
     
     override func setupView() {
@@ -56,6 +59,8 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
             $0.borderColor = .secondaryUiColor
             $0.autocapitalizationType = .none
         }
+        
+        activityIndicator.hidesWhenStopped = true
     }
     
     override func localizable() {
@@ -69,9 +74,6 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     override func binding() {
         super.binding()
-        viewModel.bind(withLogin: loginTextField.rx.text,
-                       withPassword: passwordTextField.rx.text,
-                       didPressButton: logInButton.rx.tap)
         viewModel
             .isValideText
             .distinctUntilChanged()
@@ -90,18 +92,30 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         
         viewModel
             .bind(didPressSignUpButton: signUpButton.rx.tap)
+        
+        viewModel.bind(withLogin: loginTextField.rx.text,
+                       withPassword: passwordTextField.rx.text,
+                       didPressButton: logInButton.rx.tap)
+        viewModel
+            .isActivityIndicatorAnimate
+            .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
     }
 }
 
 extension LogInViewController: TransitionAnimatorMaker {
-    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
         
         let action = { [weak self] in
-            UIView.animate(withDuration: duration) {
+            UIView.animate(withDuration: duration, animations: {
                 [self?.logInButton, self?.passwordTextField, self?.loginTextField].forEach {
                     $0?.alpha = 0.0
                 }
-            }
+            }, completion: {[weak self] (_) in
+                if transitionType == .pop {
+                    self?.view.removeFromSuperview()
+                }
+            })
         }
         guard delay > 0 else {
             action()
@@ -113,7 +127,7 @@ extension LogInViewController: TransitionAnimatorMaker {
         }
     }
     
-    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController, containerView: UIView) {
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
         let action = { [weak self] in
             UIView.animate(withDuration: duration) {
                 [self?.logInButton, self?.passwordTextField, self?.loginTextField].forEach {

@@ -29,7 +29,12 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
                            animated: false)
         self.viewModel.router.viewController = self
         setupAppereance()
-        self.delegate = viewModel
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+        bind()
     }
     
     fileprivate func setupAppereance() {
@@ -37,7 +42,6 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         let barItemAppearace = UIBarButtonItem.appearance()
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .normal)
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .highlighted)
-        hideSeparator()
         if #available(iOS 13.0, *) {
             let navBarAppearace = UINavigationBarAppearance()
             navBarAppearace.backgroundColor = .mainDarkColor
@@ -56,4 +60,7 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     }
     
     func setupView() { }
+    func bind() {
+        delegate = viewModel.navigationControllerDelegate
+    }
 }

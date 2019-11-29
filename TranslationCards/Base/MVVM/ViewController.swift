@@ -27,9 +27,8 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .white
+        view.backgroundColor = .mainDarkColor
         setupConstraints()
-        binding()
     }
     
     override func viewDidLoad() {
@@ -38,6 +37,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         setupTable()
         setupNavigationBar()
         localizable()
+        binding()
     }
     
     func onModelUpdates() {}

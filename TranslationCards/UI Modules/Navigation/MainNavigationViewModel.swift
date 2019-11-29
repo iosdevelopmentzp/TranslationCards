@@ -10,8 +10,24 @@ import UIKit
 
 class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     
+    let transitionAnimator = TransitionAnimator()
+    
     override init(root: UIViewController) {
         super.init(root: root)
-        transitionAnimator = TransitionAnimator()
+        navigationControllerDelegate = NavigationControllerDelegate(transitionAnimator: transitionAnimator)
+        modalTransitionAnimatorDelegate = ModalTransitionAnimationDelegate(modalAnimator: ModalTransitionAnimator())
+    }
+    
+    func willPresentViewController(_ viewControllerToPresent: UIViewController, isAnimated: Bool) {
+        guard isAnimated else {
+            return
+        }
+        
+        if let modalAnimator = modalTransitionAnimatorDelegate,
+            modalAnimator.animator.isValidatedPresentedViewController(viewControllerToPresent)
+        {
+            viewControllerToPresent.modalPresentationStyle = .custom
+            viewControllerToPresent.transitioningDelegate = modalAnimator
+        }
     }
 }

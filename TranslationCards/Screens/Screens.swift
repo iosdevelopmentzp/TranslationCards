@@ -9,6 +9,16 @@
 import UIKit
 
 struct Screens {
+    static func createCard() -> CreateCardPopUpViewController {
+        let vm = CreateCardPopUpViewModel()
+        return CreateCardPopUpViewController(viewModel: vm)
+    }
+    
+    static func main() -> MainViewController {
+        let vm = MainViewModel()
+        return MainViewController(viewModel: vm)
+    }
+    
     static func navigation(root: UIViewController) -> MainNavigationViewController {
         let vm = MainNavigationViewModel(root: root)
         return MainNavigationViewController(viewModel: vm)

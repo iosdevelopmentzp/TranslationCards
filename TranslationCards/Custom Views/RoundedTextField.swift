@@ -28,7 +28,7 @@ final class RoundedTextField: UITextField {
             guard let text = placeholderText else {
                 attributedPlaceholder = nil
                 return }
-            attributedPlaceholder = .placeholder(withText: text)
+            attributedPlaceholder = .placeholderLight(withText: text)
         }
     }
     

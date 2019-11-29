@@ -9,11 +9,19 @@
 import UIKit
 
 extension NSAttributedString {
-    static func placeholder(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
+    static func placeholderLight(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
         .init(string: text,
               attributes: [
                 .font : UIFont.robotoThin(size: size),
                 .foregroundColor: UIColor.placeholderLightColor
+        ])
+    }
+    
+    static func placeholderDark(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
+        .init(string: text,
+              attributes: [
+                .font : UIFont.robotoThin(size: size),
+                .foregroundColor: UIColor.placeholderDarkColor
         ])
     }
     

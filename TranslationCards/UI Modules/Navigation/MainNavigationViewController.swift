@@ -9,4 +9,14 @@
 import UIKit
 
 class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
+    
+    override func setupView() {
+        super.setupView()
+        hideSeparator()
+    }
+    
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        viewModel.willPresentViewController(viewControllerToPresent, isAnimated: flag)
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
 }

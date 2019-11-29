@@ -8,45 +8,19 @@
 
 import RxSwift
 
-class NavigationViewModel<R: Router>: NSObject, UINavigationControllerDelegate {
+class NavigationViewModel<R: Router>: NSObject {
     
     let disposeBag = DisposeBag()
 
     let router: R
     let root: UIViewController
-    var transitionAnimator: UIViewControllerAnimatedTransitioning?
+    
+    var modalTransitionAnimatorDelegate: ModalTransitionDelegate?
+    var navigationControllerDelegate: UINavigationControllerDelegate?
 
     init(root: UIViewController) {
         router = R()
         self.root = root
         super.init()
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) { }
-    
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-    }
-    
-    
-    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
-        return .all
-    }
-    
-    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
-        return .portrait
-    }
-    
-    
-    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return nil
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch operation {
-        case .push, .pop:
-            return transitionAnimator
-        default:
-            return nil
-        }
     }
 }
