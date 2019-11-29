@@ -14,6 +14,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     
     let database = Firestore.firestore()
 
+    // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
         return database
             .collection(.userCollection)
@@ -38,8 +39,16 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .delete()
     }
     
-    
-    
-    
-
+    // MARK: - Card
+    func saveCard(_ card: TranslateCard) -> Observable<Void> {
+         database
+            .collection(.userCollection)
+            .document(card.userOwnerId)
+            .collection(.languages)
+            .document(card.language.stringRepresentation)
+            .collection(.cards)
+            .document()
+            .rx
+            .setData(card.representation)
+    }
 }

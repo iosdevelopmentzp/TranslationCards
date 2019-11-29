@@ -85,6 +85,10 @@
 		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
 		3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3C2391A30D00C9AA48 /* UIView.swift */; };
+		3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */; };
+		3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD402391B4E100C9AA48 /* Date.swift */; };
+		3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */; };
+		3BFCBD462391CD2600C9AA48 /* LanguageBind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -168,6 +172,10 @@
 		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
 		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
 		3BFCBD3C2391A30D00C9AA48 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateCard.swift; sourceTree = "<group>"; };
+		3BFCBD402391B4E100C9AA48 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SringRepresantation.swift; sourceTree = "<group>"; };
+		3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageBind.swift; sourceTree = "<group>"; };
 		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -225,6 +233,7 @@
 				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3BC52C2C238FC466006FB7F8 /* UITextField.swift */,
 				3BFCBD3C2391A30D00C9AA48 /* UIView.swift */,
+				3BFCBD402391B4E100C9AA48 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -339,6 +348,7 @@
 				3B825B8F238688F7009D62E8 /* Auth */,
 				3B825B9C238692B3009D62E8 /* Credentials */,
 				3B825B9D238692CE009D62E8 /* Database */,
+				3BFCBD422391BB3700C9AA48 /* Translate */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -373,6 +383,8 @@
 			isa = PBXGroup;
 			children = (
 				3B825B9A23868E69009D62E8 /* User.swift */,
+				3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */,
+				3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -401,6 +413,7 @@
 			children = (
 				3B825B9423868AED009D62E8 /* Error */,
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
+				3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -477,6 +490,13 @@
 				3B88E93223913F2C0052DB7F /* Transition Animation */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		3BFCBD422391BB3700C9AA48 /* Translate */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Translate;
 			sourceTree = "<group>";
 		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
@@ -634,6 +654,8 @@
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
 				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
+				3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */,
+				3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */,
 				3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */,
 				3BC52C3F238FF952006FB7F8 /* CreateCardPopUpViewController.swift in Sources */,
 				3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */,
@@ -661,6 +683,7 @@
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
 				3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */,
 				3B825BB32386DFEC009D62E8 /* SignUpRouter.swift in Sources */,
+				3BFCBD462391CD2600C9AA48 /* LanguageBind.swift in Sources */,
 				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
 				3BC99CC923902A9500D0D869 /* NavigationControllerDelegate.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
@@ -669,6 +692,7 @@
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
+				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,

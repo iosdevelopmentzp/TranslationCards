@@ -13,6 +13,8 @@ final class User {
     private (set) var email: String?
     private (set) var displayName: String?
     private (set) var avatarUrl: String?
+//    private (set) var sourceLanguage: Language
+//    private (set) var targetLanguage: Language
     
     init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
         self.uid = uid
