@@ -9,5 +9,7 @@
 import Foundation
 
 class CreateCardPopUpRouter: Router {
-    
+    func dissmis() {
+        viewController?.dismiss(animated: true, completion: nil)
+    }
 }

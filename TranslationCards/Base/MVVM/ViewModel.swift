@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 class ViewModel<R: Router>: NSObject {
     
@@ -15,6 +16,7 @@ class ViewModel<R: Router>: NSObject {
     let services = Services.shared
     let router: R
     var updated = {}
+    var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
     
     override init() {
         router = R()

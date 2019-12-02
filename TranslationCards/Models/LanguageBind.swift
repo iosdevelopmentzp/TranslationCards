@@ -17,6 +17,11 @@ struct LanguageBind {
     let sourceLanguage: Language
     let targetLanguage: Language
     
+    init(source sourceLanguage: Language, target targetLanguage: Language) {
+        self.sourceLanguage = sourceLanguage
+        self.targetLanguage = targetLanguage
+    }
+    
     init?(withString string: String) {
         let components = string.components(separatedBy: "&")
         guard components.count == 2,
@@ -27,6 +32,8 @@ struct LanguageBind {
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
     }
+    
+    static var `default`:LanguageBind { .init(source: .rus, target: .eng) }
 }
 
 extension LanguageBind: SringRepresantation {

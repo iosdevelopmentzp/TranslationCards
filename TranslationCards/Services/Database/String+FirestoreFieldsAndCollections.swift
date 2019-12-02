@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    static let userCollection = "users"
-    static let languages = "languages"
-    static let cards = "cards"
+    static let databaseUserCollection = "users"
+    static let databaseLanguagesCollection = "languages"
+    static let databaseCardsCollection = "cards"
 }

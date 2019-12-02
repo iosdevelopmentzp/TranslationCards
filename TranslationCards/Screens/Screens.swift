@@ -9,8 +9,8 @@
 import UIKit
 
 struct Screens {
-    static func createCard() -> CreateCardPopUpViewController {
-        let vm = CreateCardPopUpViewModel()
+    static func createCard(forUserId userId: String, language: LanguageBind) -> CreateCardPopUpViewController {
+        let vm = CreateCardPopUpViewModel(userId: userId, language: language)
         return CreateCardPopUpViewController(viewModel: vm)
     }
     

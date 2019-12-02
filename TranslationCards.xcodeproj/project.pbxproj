@@ -42,6 +42,10 @@
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
 		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
+		3B573AF9239500F4006D5D5C /* CardsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AF8239500F4006D5D5C /* CardsService.swift */; };
+		3B573AFB239502BB006D5D5C /* CardsServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFA239502BB006D5D5C /* CardsServiceV1.swift */; };
+		3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFD23953B03006D5D5C /* AlertModel.swift */; };
+		3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */; };
 		3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51182387E56700DCB5FB /* NavigationViewController.swift */; };
 		3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */; };
 		3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */; };
@@ -129,6 +133,10 @@
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B573AF8239500F4006D5D5C /* CardsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsService.swift; sourceTree = "<group>"; };
+		3B573AFA239502BB006D5D5C /* CardsServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsServiceV1.swift; sourceTree = "<group>"; };
+		3B573AFD23953B03006D5D5C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		3B5D51182387E56700DCB5FB /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
 		3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationViewController.swift; sourceTree = "<group>"; };
@@ -330,6 +338,24 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		3B573AF723950067006D5D5C /* Cards Service */ = {
+			isa = PBXGroup;
+			children = (
+				3B573AF8239500F4006D5D5C /* CardsService.swift */,
+				3B573AFA239502BB006D5D5C /* CardsServiceV1.swift */,
+			);
+			path = "Cards Service";
+			sourceTree = "<group>";
+		};
+		3B573AFC23953AEA006D5D5C /* Alert Making */ = {
+			isa = PBXGroup;
+			children = (
+				3B573AFD23953B03006D5D5C /* AlertModel.swift */,
+				3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */,
+			);
+			path = "Alert Making";
+			sourceTree = "<group>";
+		};
 		3B5D511C2387E6AE00DCB5FB /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,7 +374,7 @@
 				3B825B8F238688F7009D62E8 /* Auth */,
 				3B825B9C238692B3009D62E8 /* Credentials */,
 				3B825B9D238692CE009D62E8 /* Database */,
-				3BFCBD422391BB3700C9AA48 /* Translate */,
+				3B573AF723950067006D5D5C /* Cards Service */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -487,16 +513,10 @@
 		3BC99CC62390272D00D0D869 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				3B573AFC23953AEA006D5D5C /* Alert Making */,
 				3B88E93223913F2C0052DB7F /* Transition Animation */,
 			);
 			path = Tools;
-			sourceTree = "<group>";
-		};
-		3BFCBD422391BB3700C9AA48 /* Translate */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Translate;
 			sourceTree = "<group>";
 		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
@@ -674,6 +694,7 @@
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
+				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
 				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
 				3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
@@ -692,13 +713,16 @@
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
+				3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */,
 				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,
+				3B573AFB239502BB006D5D5C /* CardsServiceV1.swift in Sources */,
 				3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */,
 				3BC52C46239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift in Sources */,
+				3B573AF9239500F4006D5D5C /* CardsService.swift in Sources */,
 				3B5D51322388301200DCB5FB /* TransitionAnimator.swift in Sources */,
 				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,

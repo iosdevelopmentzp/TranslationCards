@@ -9,10 +9,10 @@
 import UIKit
 
 class CreateTranslateCardView: UIView {
-    let rootTextField = UITextView()
-    let translateLabel = UILabel()
-    let translateTextField = UITextView()
-    let rootLabel = UILabel()
+    let sourceTextField = UITextView()
+    let targetHeaderLabel = UILabel()
+    let targetTextField = UITextView()
+    let sourceHeaderLabel = UILabel()
     let saveButton = UIButton()
     
     override init(frame: CGRect) {
@@ -29,42 +29,42 @@ class CreateTranslateCardView: UIView {
     fileprivate func setupConstraints() {
         let padding: CGFloat = 16.0
 
-        addSubview(rootLabel)
-        rootLabel.snp.makeConstraints {
+        addSubview(sourceHeaderLabel)
+        sourceHeaderLabel.snp.makeConstraints {
             $0.left.equalToSuperview().offset(padding * 1.5)
             $0.top.equalToSuperview().offset(padding)
             $0.right.equalToSuperview().inset(padding)
         }
         
-        addSubview(rootTextField)
-        rootTextField.snp.makeConstraints { [weak self] in
+        addSubview(sourceTextField)
+        sourceTextField.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
-            $0.top.equalTo(self.rootLabel.snp.bottom)
+            $0.top.equalTo(self.sourceHeaderLabel.snp.bottom)
             $0.right.equalToSuperview().inset(padding)
             $0.left.equalToSuperview().offset(padding)
         }
         
-        addSubview(translateLabel)
-        translateLabel.snp.makeConstraints { [weak self] in
+        addSubview(targetHeaderLabel)
+        targetHeaderLabel.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
-            $0.top.equalTo(self.rootTextField.snp.bottom).offset(padding / 2)
+            $0.top.equalTo(self.sourceTextField.snp.bottom).offset(padding / 2)
             $0.left.equalToSuperview().offset(padding * 1.5)
             $0.right.equalToSuperview().inset(padding)
         }
         
-        addSubview(translateTextField)
-        translateTextField.snp.makeConstraints {[weak self] in
+        addSubview(targetTextField)
+        targetTextField.snp.makeConstraints {[weak self] in
             guard let self = self else { return }
-            $0.top.equalTo(self.translateLabel.snp.bottom)
+            $0.top.equalTo(self.targetHeaderLabel.snp.bottom)
             $0.left.equalToSuperview().offset(padding)
             $0.right.equalToSuperview().inset(padding)
-            $0.height.equalTo(self.rootTextField.snp.height)
+            $0.height.equalTo(self.sourceTextField.snp.height)
         }
         
         addSubview(saveButton)
         saveButton.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
-            $0.top.equalTo(self.translateTextField.snp.bottom).offset(padding)
+            $0.top.equalTo(self.targetTextField.snp.bottom).offset(padding)
             $0.left.equalToSuperview().offset(padding)
             $0.bottom.right.equalToSuperview().inset(padding)
             $0.height.equalTo(50.0)
@@ -77,18 +77,18 @@ class CreateTranslateCardView: UIView {
         backgroundColor = .white
         
         #if DEBUG
-        rootLabel.text = "Root label"
-        translateLabel.text = "Translate label"
-        rootTextField.text = "Test text"
-        translateTextField.text = "Test text"
+        sourceHeaderLabel.text = "Root label"
+        targetHeaderLabel.text = "Translate label"
+        sourceTextField.text = "Test text"
+        targetTextField.text = "Test text"
         saveButton.setTitle("Tes save title", for: .normal)
         #endif
 
-        [rootLabel, translateLabel].forEach {
+        [sourceHeaderLabel, targetHeaderLabel].forEach {
             $0.textColor = .gray
         }
         
-        [rootTextField, translateTextField].forEach {
+        [sourceTextField, targetTextField].forEach {
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.borderWidth = 1.0
             $0.layer.cornerRadius = 9.0

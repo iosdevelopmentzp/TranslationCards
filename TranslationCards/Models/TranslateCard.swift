@@ -16,6 +16,7 @@ enum LearningLevel: Int {
 }
 
 struct TranslateCard {
+    let language: LanguageBind
     let userOwnerId: String
     let dateCreated: Date
     var dateUpdated: Date
@@ -24,7 +25,21 @@ struct TranslateCard {
     var numberGuesses: Int
     var numberrAttempts: Int
     var learningLevel: LearningLevel
-    let language: LanguageBind
+    
+    
+    init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
+        self.userOwnerId = userId
+        self.language = language
+        self.sourcePhrase = sourcePhrase
+        self.targetPhrase = targetPhrase
+        // Default Initialization
+        let currentDate = Date()
+        self.dateCreated = currentDate
+        self.dateUpdated = currentDate
+        self.numberGuesses = 0
+        self.numberrAttempts = 0
+        self.learningLevel = .low
+    }
     
     init?(withData data: [String: Any]) {
         guard let userOwnerId = data["userOwnerId"] as? String,

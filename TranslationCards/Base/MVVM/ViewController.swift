@@ -33,6 +33,15 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel
+            .alertModel
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (alertModel) in
+                guard let model = alertModel else { return }
+                let alert = AlertBuilder.buildAlertController(for: model)
+                self?.present(alert, animated: true, completion: nil) })
+            .disposed(by: disposeBag)
+        
         setupView()
         setupTable()
         setupNavigationBar()

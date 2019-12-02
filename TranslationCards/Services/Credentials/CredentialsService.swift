@@ -12,4 +12,5 @@ import RxRelay
 protocol CredentialsService: Service {
     var user: BehaviorRelay<User?> { get }
     func editUser() -> Observable<Void>
+    func getCurrentUser() -> Observable<User>
 }

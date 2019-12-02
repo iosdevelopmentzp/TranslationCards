@@ -7,15 +7,26 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxDataSources
+
 
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
-    fileprivate let plusCardButton = PlusButton()
+    fileprivate let addCardButton = PlusButton()
+    fileprivate let tableView = UITableView()
     
     override func setupConstraints() {
         super.setupConstraints()
         
-        view.addSubview(plusCardButton)
-        plusCardButton.snp.makeConstraints { [weak self] in
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
+            $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
+        view.addSubview(addCardButton)
+        addCardButton.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.width.height.equalTo(60.0)
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(30.0)
@@ -23,9 +34,17 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         }
     }
     
+    override func setupTable() {
+        super.setupTable()
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+    }
+    
     override func setupView() {
         super.setupView()
-        plusCardButton.tintColor = .white
+        addCardButton.tintColor = .white
     }
     
     override func setupNavigationBar() {
@@ -34,7 +53,8 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     }
     
     override func binding() {
-        viewModel.bind(plusButtonPressed: plusCardButton.rx.tap)
+        super.binding()
+        viewModel.bind(addCardPressed: addCardButton.rx.tap)
     }
     
     override func localizable() {

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var vc: UIViewController?
         
         #if DEBUG
-        vc = Screens.main()
+        vc = Screens.logIn()
         #else
         vc = Screens.logIn()
         #endif

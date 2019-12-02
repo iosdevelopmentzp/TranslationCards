@@ -25,14 +25,17 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     
     override func binding() {
         super.binding()
+        viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
+                       translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
+                       saveButtonPressed: createTranslateCardView.saveButton.rx.tap)
     }
     
     override func localizable() {
         super.localizable()
-        createTranslateCardView.rootLabel.attributedText = .placeholderDark(withText: "Set new phrase")
-         createTranslateCardView.translateLabel.attributedText = .placeholderDark(withText: "Set translate of new phrase")
-        createTranslateCardView.rootTextField.text = ""
-        createTranslateCardView.translateTextField.text = ""
+        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderDark(withText: "Set new phrase")
+         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderDark(withText: "Set translation of new phrase")
+        createTranslateCardView.sourceTextField.text = ""
+        createTranslateCardView.targetTextField.text = ""
         createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save new card", size: 20.0), for: .normal)
     }
 }

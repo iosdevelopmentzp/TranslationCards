@@ -68,7 +68,6 @@ class AuthServiceV1: NSObject, AuthService {
             
             return Disposables.create()
         }
-       
     }
     
     func signOut() -> Observable<Void> {

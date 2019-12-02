@@ -10,7 +10,18 @@ import RxSwift
 import RxRelay
 
 class CredentialsServiceV1: NSObject, CredentialsService {
-
+    
+    enum OwnError: Error {
+        case userNotFoundUserEqualNill
+        
+        var localizedDescription: String {
+            switch self {
+            case .userNotFoundUserEqualNill:
+                return "User not found. User == nil"
+            }
+        }
+    }
+    
     var user: BehaviorRelay<User?> = BehaviorRelay.init(value: nil)
     private var database: DatabaseService
     
@@ -22,5 +33,15 @@ class CredentialsServiceV1: NSObject, CredentialsService {
         return .empty()
     }
     
-    
+    func getCurrentUser() -> Observable<User> {
+        Observable<User>.create { [weak self] (observer) -> Disposable in
+            if let user = self?.user.value {
+                observer.onNext(user)
+                observer.onCompleted()
+            } else {
+                observer.onError(OwnError.userNotFoundUserEqualNill)
+            }
+            return Disposables.create()
+        }
+    }
 }

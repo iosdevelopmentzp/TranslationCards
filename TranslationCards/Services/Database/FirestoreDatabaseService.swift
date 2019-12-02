@@ -17,7 +17,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
         return database
-            .collection(.userCollection)
+            .collection(.databaseUserCollection)
             .document(user.uid)
             .rx
             .setData(user.representation)
@@ -25,7 +25,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     
     func updateUser(_ user: User) -> Observable<Void> {
         return database
-            .collection(.userCollection)
+            .collection(.databaseUserCollection)
             .document(user.uid)
             .rx
             .setData(user.representation)
@@ -33,7 +33,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     
     func deleteUser(_ user: User) -> Observable<Void> {
         return database
-            .collection(.userCollection)
+            .collection(.databaseUserCollection)
             .document(user.uid)
             .rx
             .delete()
@@ -42,13 +42,32 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     // MARK: - Card
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
          database
-            .collection(.userCollection)
+            .collection(.databaseUserCollection)
             .document(card.userOwnerId)
-            .collection(.languages)
+            .collection(.databaseLanguagesCollection)
             .document(card.language.stringRepresentation)
-            .collection(.cards)
+            .collection(.databaseCardsCollection)
             .document()
             .rx
             .setData(card.representation)
+    }
+    
+    func getLanguageBindesList(forUserId userId: String) -> Observable<[LanguageBind]> {
+        database
+            .collection(.databaseUserCollection)
+            .document(userId)
+            .collection(.databaseLanguagesCollection)
+            .rx
+            .getDocuments()
+            .map({ (snapshot) -> [LanguageBind] in
+                var languages: Array<LanguageBind> = []
+                snapshot.documents.forEach({ (document) in
+                    guard let language = LanguageBind(withString: document.documentID) else {
+                        return
+                    }
+                    languages.append(language)
+                })
+                return languages
+            })
     }
 }
