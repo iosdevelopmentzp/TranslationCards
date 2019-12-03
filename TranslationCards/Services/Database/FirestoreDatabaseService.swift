@@ -23,8 +23,21 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .setData(user.representation)
     }
     
+    func fetchUser(withUserId userId: String) -> Observable<User?> {
+        database
+            .collection(.databaseUserCollection)
+            .document(userId)
+            .rx
+            .getDocument()
+            .map { (snapshot) -> User? in
+                guard let data = snapshot.data() else {
+                    return nil
+                }
+                return User(withData: data) }
+    }
+    
     func updateUser(_ user: User) -> Observable<Void> {
-        return database
+        database
             .collection(.databaseUserCollection)
             .document(user.uid)
             .rx

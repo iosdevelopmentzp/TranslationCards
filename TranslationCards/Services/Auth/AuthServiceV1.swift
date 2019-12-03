@@ -27,11 +27,22 @@ class AuthServiceV1: NSObject, AuthService {
                 .rx
                 .signIn(withEmail: email, password: password)
                 .subscribe(onNext: { [weak self] (result) in
-                    let user = User(uid: result.user.uid,
-                                    email: result.user.email,
-                                    username: nil,
-                                    avatarUrl: result.user.photoURL?.absoluteString)
-                    self?.credentials.user.accept(user)
+                    
+                    self?.database
+                        .fetchUser(withUserId: result.user.uid)
+                        .subscribe(onNext: { (user) in
+                            guard let user = user else {
+                                observer.onError(AuthServiceError.failedFetchUserFromDataBase)
+                                return
+                            }
+                            self?.credentials.user.accept(user)
+                            observer.onNext(())
+                            observer.onCompleted()
+                        }, onError: { (error) in
+                            observer.onError(error)
+                        })
+                        .disposed(by: self?.disposeBag ?? DisposeBag())
+                    
                     observer.onNext(())
                     }, onError: { (error) in
                         debugPrint(error.localizedDescription)
@@ -39,8 +50,6 @@ class AuthServiceV1: NSObject, AuthService {
                 }).disposed(by: self?.disposeBag ?? DisposeBag())
             return Disposables.create()
         }
-        
-        
     }
     
     func signUp(withEmail email: String, password: String, displayName: String) -> Observable<Void> {
@@ -77,5 +86,9 @@ class AuthServiceV1: NSObject, AuthService {
         } catch {
             return .error(error)
         }
+    }
+    
+    enum AuthServiceError: Error {
+        case failedFetchUserFromDataBase
     }
 }
