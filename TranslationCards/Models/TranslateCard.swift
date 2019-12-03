@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 enum LearningLevel: Int {
     case low = 0
@@ -66,6 +68,12 @@ struct TranslateCard {
         self.numberrAttempts = numberrAttempts
         self.learningLevel = learningLevel
         self.language = language
+    }
+}
+
+extension TranslateCard: DatabaseServiceAccessing {
+    func sendToDatabase() -> Observable<Void> {
+        database.saveCard(self)
     }
 }
 

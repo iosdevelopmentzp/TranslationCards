@@ -11,11 +11,8 @@ final class Services {
     static let shared = Services()
     private init() {}
     
-    // MARK: - Private services
-    private lazy var realTimeDatabase: DatabaseService = FirestoreDatabaseService()
-    
     // MARK: - Public services
+    lazy var realTimeDatabase: DatabaseService = FirestoreDatabaseService()
     lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase)
     lazy var auth: AuthService = AuthServiceV1(credentials: credentials, database: realTimeDatabase)
-    lazy var cardsService: CardsServiceV1 = CardsServiceV1(database: realTimeDatabase)
 }

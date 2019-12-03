@@ -16,5 +16,6 @@ protocol DatabaseService: Service {
     
     // MARK: - Translate cards
     func saveCard(_ card: TranslateCard) -> Observable<Void>
+    func appendNewLanguage(_ language: LanguageBind, forUser user: User) -> Observable<Void>
     func getLanguageBindesList(forUserId userId: String) -> Observable<[LanguageBind]>
 }

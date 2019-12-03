@@ -13,9 +13,10 @@ enum Language: String {
     case eng
 }
 
-struct LanguageBind {
+struct LanguageBind: Equatable {
     let sourceLanguage: Language
     let targetLanguage: Language
+    static let k_separator = "_"
     
     init(source sourceLanguage: Language, target targetLanguage: Language) {
         self.sourceLanguage = sourceLanguage
@@ -23,11 +24,22 @@ struct LanguageBind {
     }
     
     init?(withString string: String) {
-        let components = string.components(separatedBy: "&")
+        let components = string.components(separatedBy: LanguageBind.k_separator)
         guard components.count == 2,
             let sourceLanguage = Language(rawValue: components[0]),
             let targetLanguage = Language(rawValue: components[1]) else {
             return nil
+        }
+        self.sourceLanguage = sourceLanguage
+        self.targetLanguage = targetLanguage
+    }
+    
+    init?(withData data: [String : Any]) {
+        guard let sourceString = data["sourceLanguage"] as? String,
+        let sourceLanguage = Language(rawValue: sourceString),
+        let targetString = data["targetLanguage"] as? String,
+            let targetLanguage = Language(rawValue: targetString) else {
+                return nil
         }
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
@@ -38,6 +50,15 @@ struct LanguageBind {
 
 extension LanguageBind: SringRepresantation {
     var stringRepresentation: String {
-        return "\(sourceLanguage.rawValue)&\(targetLanguage.rawValue)"
+        return "\(sourceLanguage.rawValue)\(LanguageBind.k_separator)\(targetLanguage.rawValue)"
+    }
+}
+
+extension LanguageBind: DataRepresentation {
+    var representation: [String : Any] {
+        return [
+            "sourceLanguage": sourceLanguage.rawValue,
+            "targetLanguage": targetLanguage.rawValue
+        ]
     }
 }

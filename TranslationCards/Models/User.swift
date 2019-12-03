@@ -7,24 +7,22 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 final class User {
     private (set) var uid: String
-    private (set) var currentLanguage: LanguageBind
+    private (set) var currentLanguage: LanguageBind?
+    private (set) var languages = BehaviorRelay<[LanguageBind]>.init(value: [])
     private (set) var email: String?
     private (set) var displayName: String?
     private (set) var avatarUrl: String?
     
-    init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil, currentLanguage: LanguageBind? = nil) {
+    init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
         self.uid = uid
         self.email = email
         self.displayName = username
         self.avatarUrl = avatarUrl
-        if let language = currentLanguage {
-            self.currentLanguage = language
-        } else {
-            self.currentLanguage = LanguageBind(source: .rus, target: .eng)
-        }
     }
     
     init?(withData data: [String: Any]) {
@@ -36,8 +34,29 @@ final class User {
         self.displayName = data["displayName"] as? String
         self.avatarUrl = data["avatarUrl"] as? String
         if let currentLanguageString = data["currentLanguage"] as? String {
-            self.currentLanguage = LanguageBind(withString: currentLanguageString) ?? LanguageBind.default
-        } else { self.currentLanguage = LanguageBind.default}
+            self.currentLanguage = LanguageBind(withString: currentLanguageString)
+        }
+        if let languagesString = data["languages"] as? [String] {
+            let languages = languagesString
+                                .map { LanguageBind(withString: $0) }
+                                .compactMap{$0}
+            self.languages.accept(languages)
+        }
+    }
+    
+    enum UserModelError: Error {
+        case suchLanguageAlreadyExists
+    }
+}
+
+extension User: DatabaseServiceAccessing {
+    func appendLanguage(newLanguage: LanguageBind) -> Observable<Void> {
+        guard !languages.value.contains(newLanguage) else {
+            return .error(User.UserModelError.suchLanguageAlreadyExists)
+        }
+        let newLanguages = languages.value + [newLanguage]
+        languages.accept(newLanguages)
+        return database.appendNewLanguage(newLanguage, forUser: self)
     }
 }
 
@@ -45,11 +64,13 @@ extension User: DataRepresentation {
     var representation: [String : Any] {
         var data: [String : Any] = [:]
         data["uid"] = uid
-        data["currentLanguage"] = currentLanguage.stringRepresentation
+        if let currentLanguage = currentLanguage { data["currentLanguage"] = currentLanguage.stringRepresentation}
         if let email = email { data["email"] = email }
         if let username = displayName { data["displayName"] = username }
         if let avatarUrl = avatarUrl { data["avatarUrl"] = avatarUrl }
-        
+        if languages.value.count > 0 {
+            data["languages"] = languages.value.map { $0.stringRepresentation }
+        }
         return data
     }
 }

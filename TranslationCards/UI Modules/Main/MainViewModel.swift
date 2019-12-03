@@ -12,53 +12,50 @@ import RxCocoa
 
 final class MainViewModel: ViewModel<MainRouter> {
     
-    var dictionaries = BehaviorRelay<[LanguageBind]>.init(value: [])
+    var sections = BehaviorRelay<[Section]>.init(value: [])
+    fileprivate var userChangesSubscription: Disposable?
+    fileprivate var user: User?
+    
+    override init() {
+        super.init()
+        
+        services.credentials.user.subscribe(onNext: { [weak self] (user) in
+            guard let user = user else {
+                self?.userChangesSubscription?.dispose()
+                self?.sections.accept([])
+                self?.user = nil
+                return
+            }
+            self?.user = user
+            self?.makeSubscribesToUser(user)
+        })
+            .disposed(by: disposeBag)
+    }
     
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
         plusPressed.subscribe() { [weak self] _ in
-            self?.services
-                .credentials
-                .getCurrentUser()
-                .subscribe(onNext: { (user) in
-                    self?.router.route(to: .createCard(forUserId: user.uid, language: user.currentLanguage))
-                }, onError: { (error) in
-                    debugPrint("Failed attempt to create new card with error - \(error)")
+            guard let user = self?.user, let currentLang = user.currentLanguage else {
                     let okAction = AlertModel.ActionModel(title: "Ok",
                                                           style: .destructive,
                                                           handler: nil)
                     let alertModel = AlertModel(actionModels: [okAction],
-                                                title: "Failed attempt to create new card with error - \(error.localizedDescription)",
-                        message: nil,
-                        prefferedStyle: .alert)
+                                                title: "Something went wrong",
+                                                message: "User does not have current language",
+                                                prefferedStyle: .alert)
                     self?.alertModel.accept(alertModel)
-                })
-                .disposed(by: self?.disposeBag ?? DisposeBag())
-             }
+                    return
+            }
+            self?.router.route(to: .createCard(forUserId: user.uid, language: currentLang))
+        }
         .disposed(by: disposeBag)
     }
     
-    fileprivate func getDictionaries() -> Observable<[LanguageBind]> {
-        return .create { [weak self] (observer) -> Disposable in
-            self?.services
-                .credentials
-                .getCurrentUser()
-                .map { (user) -> String in return user.uid }
-                .subscribe(onNext: { (userId) in
-                    self?.services
-                        .cardsService
-                        .getLanguageBindsList(forUserWithId: userId)
-                        .subscribe(onNext: { (langueges) in
-                            observer.onNext(langueges)
-                            observer.onCompleted()
-                        }, onError: { (error) in
-                            observer.onError(error)
-                        })
-                        .disposed(by: self?.disposeBag ?? DisposeBag())
-                }, onError: { (error) in
-                    observer.onError(error)
-                })
-                .disposed(by: self?.disposeBag ?? DisposeBag())
-            return Disposables.create()
-        }
+    fileprivate func makeSubscribesToUser(_ user: User) {
+        let subscription = user.languages
+            .subscribe(onNext: { [weak self] (languages) in
+                let items = languages.map{ $0.stringRepresentation}
+                self?.sections.accept([Section(items: items)])
+            })
+        subscription.disposed(by: disposeBag)
     }
 }

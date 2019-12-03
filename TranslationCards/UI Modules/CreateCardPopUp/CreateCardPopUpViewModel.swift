@@ -40,9 +40,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     }
     
     fileprivate func saveTranslationCard(card: TranslateCard) {
-        services
-            .cardsService
-            .saveCard(card)
+        card.sendToDatabase()
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.dissmis()
                 }, onError: { [weak self] (error) in

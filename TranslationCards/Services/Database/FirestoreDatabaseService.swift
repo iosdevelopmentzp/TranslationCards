@@ -11,8 +11,8 @@ import FirebaseFirestore
 import RxFirebaseFirestore
 
 class FirestoreDatabaseService: NSObject, DatabaseService {
-    
-    let database = Firestore.firestore()
+    fileprivate let database = Firestore.firestore()
+    fileprivate let disposeBag = DisposeBag()
 
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
@@ -41,7 +41,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     
     // MARK: - Card
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
-         database
+        return database
             .collection(.databaseUserCollection)
             .document(card.userOwnerId)
             .collection(.databaseLanguagesCollection)
@@ -53,7 +53,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func getLanguageBindesList(forUserId userId: String) -> Observable<[LanguageBind]> {
-        database
+        return database
             .collection(.databaseUserCollection)
             .document(userId)
             .collection(.databaseLanguagesCollection)
@@ -69,5 +69,41 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
                 })
                 return languages
             })
+    }
+    
+    func appendNewLanguage(_ language: LanguageBind, forUser user: User) -> Observable<Void> {
+        let userReferance = database.collection(.databaseUserCollection).document(user.uid)
+        let languagesReferance = userReferance.collection(.databaseLanguagesCollection).document(language.stringRepresentation)
+        let languagesData = user.languages.value.map{ $0.stringRepresentation }
+        
+        return Observable<Void>.create { [weak self] (observer) -> Disposable in
+            self?.database.runTransaction({ (transaction, errorPointer) -> Any? in
+                do {
+                    let userDocument = try transaction.getDocument(userReferance)
+                    transaction.updateData(["languages": languagesData], forDocument: userDocument.reference)
+                    transaction.setData(language.representation, forDocument: languagesReferance)
+                } catch {
+                    let error = NSError(domain: "TranslationCardsFirebaseError",
+                                        code: -1,
+                                        userInfo: [NSLocalizedDescriptionKey: "\(error.localizedDescription)"])
+                    errorPointer?.pointee = error
+                    return nil
+                }
+                return nil
+            }, completion: { (object, error) in
+                if let error = error {
+                    observer.onError(error)
+                } else {
+                    observer.onNext(())
+                    observer.onCompleted()
+                }
+            })
+            return Disposables.create()
+        }
+    }
+    
+    // MARK: - Errors
+    enum FirestoreError: Error {
+        case languageExisted
     }
 }

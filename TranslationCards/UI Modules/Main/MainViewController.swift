@@ -33,11 +33,25 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
             $0.right.equalTo(self.view.safeAreaLayoutGuide).inset(16.0)
         }
     }
-    
+    private  var dataSource: RxTableViewSectionedReloadDataSource<MainViewModel.Section>?
     override func setupTable() {
         super.setupTable()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
+        
+        let dataSource = RxTableViewSectionedReloadDataSource<MainViewModel.Section>(configureCell: {
+            (_, tableView, indexPath, item) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self),
+                                                     for: indexPath)
+            cell.textLabel?.text = item
+            return cell })
+        self.dataSource = dataSource
+        
+        viewModel
+            .sections
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
     }
@@ -55,6 +69,11 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     override func binding() {
         super.binding()
         viewModel.bind(addCardPressed: addCardButton.rx.tap)
+        
+        
+       
+        
+       
     }
     
     override func localizable() {
