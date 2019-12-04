@@ -96,6 +96,7 @@ class CreateTranslateCardView: UIView {
             $0.font = .robotoRegular(size: 20.0)
             $0.autocorrectionType = .no
             $0.autocapitalizationType = .none
+            $0.textColor = .black
         }
         saveButton.setBorder(withColor: .borderColotDak, borderWidth: 1.0, cornerRadius: 10.0)
         saveButton.backgroundColor = UIColor.validateAccentColor

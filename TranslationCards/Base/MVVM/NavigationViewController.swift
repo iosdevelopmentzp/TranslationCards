@@ -42,6 +42,7 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         let barItemAppearace = UIBarButtonItem.appearance()
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .normal)
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .highlighted)
+        let navigationBarAppearace = UINavigationBar.appearance()
         if #available(iOS 13.0, *) {
             let navBarAppearace = UINavigationBarAppearance()
             navBarAppearace.backgroundColor = .mainDarkColor
@@ -50,8 +51,8 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
             UINavigationBar.appearance().standardAppearance = navBarAppearace
             UINavigationBar.appearance().prefersLargeTitles = true
         } else {
-            let navigationBarAppearace = UINavigationBar.appearance()
             navigationBarAppearace.barTintColor = .mainDarkColor
+            navigationBarAppearace.tintColor = .white
             navigationBarAppearace.isTranslucent = false
             navigationBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             navigationBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute

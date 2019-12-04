@@ -81,10 +81,10 @@ extension TranslateCard: DataRepresentation {
     var representation: [String : Any] {
         return [
             "userOwnerId" : userOwnerId,
-            "dateCreated" : dateCreated,
+            "dateCreated" : dateCreated.asString,
             "sourcePhrase" : sourcePhrase,
             "targetPhrase" : targetPhrase,
-            "dateUpdated" : dateUpdated,
+            "dateUpdated" : dateUpdated.asString,
             "numberGuesses" : numberGuesses,
             "numberrAttempts" : numberrAttempts,
             "learningLevel" : learningLevel.rawValue,

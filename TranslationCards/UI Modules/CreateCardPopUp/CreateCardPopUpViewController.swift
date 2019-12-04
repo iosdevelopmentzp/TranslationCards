@@ -11,6 +11,7 @@ import RxCocoa
 
 final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter, CreateCardPopUpViewModel> {
     fileprivate let createTranslateCardView = CreateTranslateCardView()
+    fileprivate let tapGesture = UITapGestureRecognizer()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -23,11 +24,17 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         }
     }
     
+    override func setupView() {
+        super.setupView()
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     override func binding() {
         super.binding()
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap)
+        viewModel.bindTapGesture(event: tapGesture.rx.event)
     }
     
     override func localizable() {

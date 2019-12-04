@@ -15,6 +15,7 @@ import RxDataSources
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
     fileprivate let addCardButton = PlusButton()
     fileprivate let tableView = UITableView()
+    private  var dataSource: RxTableViewSectionedReloadDataSource<MainViewModel.Section>?
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -33,7 +34,7 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
             $0.right.equalTo(self.view.safeAreaLayoutGuide).inset(16.0)
         }
     }
-    private  var dataSource: RxTableViewSectionedReloadDataSource<MainViewModel.Section>?
+    
     override func setupTable() {
         super.setupTable()
         
@@ -44,6 +45,8 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self),
                                                      for: indexPath)
             cell.textLabel?.text = item
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .white
             return cell })
         self.dataSource = dataSource
         
@@ -54,6 +57,13 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
+        
+        tableView
+            .rx
+            .itemSelected
+            .subscribe(onNext: { [weak self] (indexPath) in
+                self?.tableView.deselectRow(at: indexPath, animated: true) })
+            .disposed(by: disposeBag)
     }
     
     override func setupView() {
@@ -69,11 +79,7 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     override func binding() {
         super.binding()
         viewModel.bind(addCardPressed: addCardButton.rx.tap)
-        
-        
-       
-        
-       
+        viewModel.bindSelectesItemEvent(tableView.rx.itemSelected)
     }
     
     override func localizable() {

@@ -46,17 +46,26 @@ final class User {
     
     enum UserModelError: Error {
         case suchLanguageAlreadyExists
+        case languagesDoesNotContainNewCurrentLanguage
     }
 }
 
 extension User: DatabaseServiceAccessing {
-    func appendLanguage(newLanguage: LanguageBind) -> Observable<Void> {
+    func appendLanguage(newLanguage: LanguageBind, andCurrentLanguage currentLanguage: LanguageBind) -> Observable<Void> {
         guard !languages.value.contains(newLanguage) else {
             return .error(User.UserModelError.suchLanguageAlreadyExists)
         }
         let newLanguages = languages.value + [newLanguage]
         languages.accept(newLanguages)
-        return database.appendNewLanguage(newLanguage, forUser: self)
+        return database.appendNewLanguage(newLanguage, currentLanguage: currentLanguage, forUser: self)
+    }
+    
+    func setCurrentLanguageAndSend(currentLanguage: LanguageBind) -> Observable<Void> {
+        guard languages.value.contains(currentLanguage) else {
+            return .error(User.UserModelError.languagesDoesNotContainNewCurrentLanguage)
+        }
+        self.currentLanguage = currentLanguage
+        return database.updateUser(withUserId: uid, withData: ["currentLanguage": currentLanguage.stringRepresentation])
     }
 }
 

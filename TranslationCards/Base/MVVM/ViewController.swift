@@ -18,12 +18,20 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.router.viewController = self
-        self.viewModel.updated = onModelUpdates
+        self.viewModel.updated = { [weak self] in
+            self?.onModelUpdates()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    #if DEBUG
+    deinit {
+        debugPrint("\(self) deinited.")
+    }
+    #endif
     
     override func loadView() {
         super.loadView()

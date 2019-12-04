@@ -28,6 +28,20 @@ final class MainViewModel: ViewModel<MainRouter> {
             }
             self?.user = user
             self?.makeSubscribesToUser(user)
+            
+            #if DEBUG
+            if user.languages.value.count <= 0 {
+                user.appendLanguage(newLanguage: LanguageBind.default,
+                                    andCurrentLanguage: LanguageBind.default)
+                    .subscribe(onNext: { (_) in
+                        debugPrint("Success add user language - \(LanguageBind.default)")
+                    }, onError: { [weak self] (error) in
+                        let wrongAlert = AlertModel.warningAlert(message: "Failed add user language - with error \(error)", handler: nil)
+                        self?.alertModel.accept(wrongAlert)
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
+            }
+            #endif
         })
             .disposed(by: disposeBag)
     }
@@ -48,6 +62,17 @@ final class MainViewModel: ViewModel<MainRouter> {
             self?.router.route(to: .createCard(forUserId: user.uid, language: currentLang))
         }
         .disposed(by: disposeBag)
+    }
+    
+    func bindSelectesItemEvent(_ selectedEvent: ControlEvent<IndexPath>) {
+        selectedEvent
+            .subscribe(onNext: {[weak self] (indexPath) in
+                guard let languageString = self?.sections.value[indexPath.section].items[indexPath.row],
+                    let language = LanguageBind(withString: languageString),
+                    let user = self?.user else { return }
+                self?.router.route(to: .cardList(language: language, userId: user.uid))
+            })
+            .disposed(by: disposeBag)
     }
     
     fileprivate func makeSubscribesToUser(_ user: User) {

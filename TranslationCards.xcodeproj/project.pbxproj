@@ -46,6 +46,10 @@
 		3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */; };
 		3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB323965F75009110A7 /* MainViewModel+Sections.swift */; };
 		3B5A3BB623968D56009110A7 /* DatabaseServiceAccessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB523968D56009110A7 /* DatabaseServiceAccessing.swift */; };
+		3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB82396A345009110A7 /* CardsListRouter.swift */; };
+		3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB92396A345009110A7 /* CardsListViewController.swift */; };
+		3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */; };
+		3B5A3BC02396A51A009110A7 /* CardInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BBF2396A51A009110A7 /* CardInfoCell.swift */; };
 		3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51182387E56700DCB5FB /* NavigationViewController.swift */; };
 		3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */; };
 		3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */; };
@@ -137,6 +141,10 @@
 		3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		3B5A3BB323965F75009110A7 /* MainViewModel+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewModel+Sections.swift"; sourceTree = "<group>"; };
 		3B5A3BB523968D56009110A7 /* DatabaseServiceAccessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceAccessing.swift; sourceTree = "<group>"; };
+		3B5A3BB82396A345009110A7 /* CardsListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListRouter.swift; sourceTree = "<group>"; };
+		3B5A3BB92396A345009110A7 /* CardsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListViewController.swift; sourceTree = "<group>"; };
+		3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListViewModel.swift; sourceTree = "<group>"; };
+		3B5A3BBF2396A51A009110A7 /* CardInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardInfoCell.swift; sourceTree = "<group>"; };
 		3B5D51182387E56700DCB5FB /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		3B5D51192387E56700DCB5FB /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
 		3B5D511D2387E6F100DCB5FB /* MainNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +225,7 @@
 				3B825BAF2386DF92009D62E8 /* Sign Up */,
 				3BC52C2F238FD70F006FB7F8 /* Main */,
 				3BC52C3A238FF8EE006FB7F8 /* CreateCardPopUp */,
+				3B5A3BB72396A321009110A7 /* Cards List */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -226,6 +235,7 @@
 			children = (
 				3B319F2B23855FC00038A7AC /* LogInViewController.swift */,
 				3B319F2C23855FC00038A7AC /* LogInViewModel.swift */,
+				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3B319F2A23855FC00038A7AC /* LogInRouter.swift */,
 			);
 			path = LogIn;
@@ -238,7 +248,6 @@
 				3B319F36238567E00038A7AC /* NSAttributedString.swift */,
 				3B319F5D23856E600038A7AC /* UIFont.swift */,
 				3B825BAD2386CD81009D62E8 /* String.swift */,
-				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3BC52C2C238FC466006FB7F8 /* UITextField.swift */,
 				3BFCBD3C2391A30D00C9AA48 /* UIView.swift */,
 				3BFCBD402391B4E100C9AA48 /* Date.swift */,
@@ -282,6 +291,7 @@
 		3B319F5F238571660038A7AC /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B5A3BBE2396A3EF009110A7 /* Cells */,
 				3BC52C2E238FD6E1006FB7F8 /* Register Card VIew */,
 				3B319F602385719E0038A7AC /* RoundedTextField.swift */,
 				3B319F6223857BFE0038A7AC /* RoundedButton.swift */,
@@ -345,6 +355,24 @@
 				3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */,
 			);
 			path = "Alert Making";
+			sourceTree = "<group>";
+		};
+		3B5A3BB72396A321009110A7 /* Cards List */ = {
+			isa = PBXGroup;
+			children = (
+				3B5A3BB92396A345009110A7 /* CardsListViewController.swift */,
+				3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */,
+				3B5A3BB82396A345009110A7 /* CardsListRouter.swift */,
+			);
+			path = "Cards List";
+			sourceTree = "<group>";
+		};
+		3B5A3BBE2396A3EF009110A7 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3B5A3BBF2396A51A009110A7 /* CardInfoCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		3B5D511C2387E6AE00DCB5FB /* Navigation */ = {
@@ -667,6 +695,7 @@
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
 				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
 				3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */,
+				3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */,
 				3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */,
 				3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */,
 				3BC52C3F238FF952006FB7F8 /* CreateCardPopUpViewController.swift in Sources */,
@@ -682,6 +711,8 @@
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
+				3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */,
+				3B5A3BC02396A51A009110A7 /* CardInfoCell.swift in Sources */,
 				3B825B8B2386885B009D62E8 /* Services.swift in Sources */,
 				3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
@@ -693,6 +724,7 @@
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
+				3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */,
 				3B319F32238562EE0038A7AC /* UIColor.swift in Sources */,
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
 				3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */,

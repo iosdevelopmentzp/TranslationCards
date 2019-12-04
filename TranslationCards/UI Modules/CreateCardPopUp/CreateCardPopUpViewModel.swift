@@ -33,9 +33,14 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                                                   language: language,
                                                   sourcePhrase: newPhrase,
                                                   targetPhrase: translation)
-                
                 self?.saveTranslationCard(card: translateCard)
             })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindTapGesture(event: ControlEvent<UITapGestureRecognizer>) {
+        event.subscribe(onNext: { [weak self] (tap) in
+            self?.router.dissmis() })
             .disposed(by: disposeBag)
     }
     

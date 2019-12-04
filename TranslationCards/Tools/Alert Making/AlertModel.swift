@@ -19,4 +19,11 @@ struct AlertModel {
     var title: String?
     var message: String?
     var prefferedStyle: UIAlertController.Style
+    
+    static func warningAlert(message: String?, handler: ((UIAlertAction) -> ())?) -> AlertModel {
+        let okAction = ActionModel(title: "Ok", style: .default) { (action) in
+            handler?(action)
+        }
+        return AlertModel(actionModels: [okAction], title: "Something went wrong", message: message, prefferedStyle: .alert)
+    }
 }

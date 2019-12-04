@@ -18,6 +18,12 @@ class ViewModel<R: Router>: NSObject {
     var updated = {}
     var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
     
+    #if DEBUG
+       deinit {
+           debugPrint("\(self) deinited.")
+       }
+    #endif
+    
     override init() {
         router = R()
         super.init()
