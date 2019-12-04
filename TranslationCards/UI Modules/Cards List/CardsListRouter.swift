@@ -9,5 +9,19 @@
 import Foundation
 
 final class CardsListRouter: Router {
+    enum Route {
+        case slideShow(cards: [TranslateCard])
+    }
     
+    func route(to type: Route) {
+        switch type {
+        case .slideShow(let cards):
+            pushSlideShow(cards: cards)
+        }
+    }
+    
+    fileprivate func pushSlideShow(cards: [TranslateCard]) {
+        let vc = Screens.cardSlideShow(cards: cards)
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
 }

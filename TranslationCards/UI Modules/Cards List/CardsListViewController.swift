@@ -10,6 +10,7 @@ import UIKit
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
+    fileprivate let startCardSlideShowButton = UIButton.playButton
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -18,6 +19,14 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         tableView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
+        view.addSubview(startCardSlideShowButton)
+        startCardSlideShowButton.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
+            $0.width.height.equalTo(60.0)
+            $0.right.equalTo(self.view.safeAreaLayoutGuide).inset(16.0)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-30.0)
         }
     }
     
@@ -53,5 +62,12 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .titleText
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
+    }
+    
+    override func binding() {
+        super.binding()
+        
+        viewModel
+            .bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
     }
 }

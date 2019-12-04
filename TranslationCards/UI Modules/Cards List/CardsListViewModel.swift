@@ -8,7 +8,7 @@
 
 import Foundation
 import RxSwift
-import RxRelay
+import RxCocoa
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
     var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
@@ -29,6 +29,14 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 let wrongAlert = AlertModel.warningAlert(message: "Failed get cards list with error \(error)", handler: nil)
                 self?.alertModel.accept(wrongAlert)
             })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
+        startShowPressed
+            .subscribe(onNext: { [weak self] (_) in
+                guard let self = self else { return }
+                self.router.route(to: .slideShow(cards: self.cardsDataSource.value)) })
             .disposed(by: disposeBag)
     }
 }

@@ -50,11 +50,18 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
 extension CreateCardPopUpViewController: TransitionAnimatorMaker {
     
     func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+        
         UIView.animate(withDuration: duration * 0.3,
                        delay: delay,
                        animations: { [weak self] in
-                        self?.view.backgroundColor = UIColor.clear
+                        self?.view.backgroundColor = .clear
+        })
+        
+        UIView.animate(withDuration: duration,
+                       delay: delay,
+                       animations: { [weak self] in
                         self?.createTranslateCardView.transform = CGAffineTransform.init(scaleX: 0.6, y: 0.6)
+                        self?.createTranslateCardView.alpha = 0.0
         }) { [weak self] (_) in
             self?.view.removeFromSuperview()
         }

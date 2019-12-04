@@ -9,6 +9,11 @@
 import UIKit
 
 struct Screens {
+    static func cardSlideShow(cards: [TranslateCard]) -> CardSlideShowViewController {
+        let vm = CardSlideShowViewModel(cards: cards)
+        return CardSlideShowViewController(viewModel: vm)
+    }
+    
     static func cardsList(withLanguage language: LanguageBind, forUserId userId: String) -> CardsListViewController {
         let vm = CardsListViewModel(language: language, userId: userId)
         return CardsListViewController(viewModel: vm)

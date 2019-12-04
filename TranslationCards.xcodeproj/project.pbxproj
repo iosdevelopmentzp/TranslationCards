@@ -92,6 +92,15 @@
 		3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */; };
 		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
+		3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */; };
+		3BEE43CB2397D88A008F35AA /* CardSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */; };
+		3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */; };
+		3BEE43CE2397DA9B008F35AA /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43CD2397DA9B008F35AA /* UIButton.swift */; };
+		3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43CF2397DB0A008F35AA /* UIImage.swift */; };
+		3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D22397FA96008F35AA /* CardCell.swift */; };
+		3BEE43D523980055008F35AA /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D423980055008F35AA /* NSObject.swift */; };
+		3BEE43D7239803AB008F35AA /* CardSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSide.swift */; };
+		3BEE43DA239808B5008F35AA /* CardSlideShowFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D9239808B5008F35AA /* CardSlideShowFlowLayout.swift */; };
 		3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3C2391A30D00C9AA48 /* UIView.swift */; };
 		3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */; };
 		3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD402391B4E100C9AA48 /* Date.swift */; };
@@ -187,6 +196,15 @@
 		3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimator.swift; sourceTree = "<group>"; };
 		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
 		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
+		3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowRouter.swift; sourceTree = "<group>"; };
+		3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewController.swift; sourceTree = "<group>"; };
+		3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewModel.swift; sourceTree = "<group>"; };
+		3BEE43CD2397DA9B008F35AA /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		3BEE43CF2397DB0A008F35AA /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		3BEE43D22397FA96008F35AA /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
+		3BEE43D423980055008F35AA /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
+		3BEE43D6239803AB008F35AA /* CardSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSide.swift; sourceTree = "<group>"; };
+		3BEE43D9239808B5008F35AA /* CardSlideShowFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowFlowLayout.swift; sourceTree = "<group>"; };
 		3BFCBD3C2391A30D00C9AA48 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateCard.swift; sourceTree = "<group>"; };
 		3BFCBD402391B4E100C9AA48 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -226,6 +244,7 @@
 				3BC52C2F238FD70F006FB7F8 /* Main */,
 				3BC52C3A238FF8EE006FB7F8 /* CreateCardPopUp */,
 				3B5A3BB72396A321009110A7 /* Cards List */,
+				3BEE43C62397D858008F35AA /* CardSlideShow */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -251,6 +270,9 @@
 				3BC52C2C238FC466006FB7F8 /* UITextField.swift */,
 				3BFCBD3C2391A30D00C9AA48 /* UIView.swift */,
 				3BFCBD402391B4E100C9AA48 /* Date.swift */,
+				3BEE43CD2397DA9B008F35AA /* UIButton.swift */,
+				3BEE43CF2397DB0A008F35AA /* UIImage.swift */,
+				3BEE43D423980055008F35AA /* NSObject.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -291,8 +313,11 @@
 		3B319F5F238571660038A7AC /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				3B5A3BBE2396A3EF009110A7 /* Cells */,
-				3BC52C2E238FD6E1006FB7F8 /* Register Card VIew */,
+				3BEE43D8239806BD008F35AA /* Flow Layout */,
+				3BEE43D12397FA6A008F35AA /* Collection Cell */,
+				3B5A3BBE2396A3EF009110A7 /* Table Cells */,
+				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
+				3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */,
 				3B319F602385719E0038A7AC /* RoundedTextField.swift */,
 				3B319F6223857BFE0038A7AC /* RoundedButton.swift */,
 				3BC52C36238FDA2C006FB7F8 /* PlusButton.swift */,
@@ -367,12 +392,12 @@
 			path = "Cards List";
 			sourceTree = "<group>";
 		};
-		3B5A3BBE2396A3EF009110A7 /* Cells */ = {
+		3B5A3BBE2396A3EF009110A7 /* Table Cells */ = {
 			isa = PBXGroup;
 			children = (
 				3B5A3BBF2396A51A009110A7 /* CardInfoCell.swift */,
 			);
-			path = Cells;
+			path = "Table Cells";
 			sourceTree = "<group>";
 		};
 		3B5D511C2387E6AE00DCB5FB /* Navigation */ = {
@@ -500,15 +525,6 @@
 			path = "Transition Animation";
 			sourceTree = "<group>";
 		};
-		3BC52C2E238FD6E1006FB7F8 /* Register Card VIew */ = {
-			isa = PBXGroup;
-			children = (
-				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
-				3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */,
-			);
-			path = "Register Card VIew";
-			sourceTree = "<group>";
-		};
 		3BC52C2F238FD70F006FB7F8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -537,6 +553,33 @@
 				3B88E93223913F2C0052DB7F /* Transition Animation */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		3BEE43C62397D858008F35AA /* CardSlideShow */ = {
+			isa = PBXGroup;
+			children = (
+				3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */,
+				3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */,
+				3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */,
+			);
+			path = CardSlideShow;
+			sourceTree = "<group>";
+		};
+		3BEE43D12397FA6A008F35AA /* Collection Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3BEE43D22397FA96008F35AA /* CardCell.swift */,
+				3BEE43D6239803AB008F35AA /* CardSide.swift */,
+			);
+			path = "Collection Cell";
+			sourceTree = "<group>";
+		};
+		3BEE43D8239806BD008F35AA /* Flow Layout */ = {
+			isa = PBXGroup;
+			children = (
+				3BEE43D9239808B5008F35AA /* CardSlideShowFlowLayout.swift */,
+			);
+			path = "Flow Layout";
 			sourceTree = "<group>";
 		};
 		AEB8CE9735F50815070E1637 /* Frameworks */ = {
@@ -694,6 +737,7 @@
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
 				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
+				3BEE43DA239808B5008F35AA /* CardSlideShowFlowLayout.swift in Sources */,
 				3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */,
 				3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */,
 				3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */,
@@ -708,6 +752,8 @@
 				3B5A3BB623968D56009110A7 /* DatabaseServiceAccessing.swift in Sources */,
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
+				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
+				3BEE43D7239803AB008F35AA /* CardSide.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
@@ -724,22 +770,28 @@
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
+				3BEE43CE2397DA9B008F35AA /* UIButton.swift in Sources */,
 				3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */,
+				3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */,
 				3B319F32238562EE0038A7AC /* UIColor.swift in Sources */,
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
 				3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */,
+				3BEE43CB2397D88A008F35AA /* CardSlideShowViewController.swift in Sources */,
 				3B825BB32386DFEC009D62E8 /* SignUpRouter.swift in Sources */,
 				3BFCBD462391CD2600C9AA48 /* LanguageBind.swift in Sources */,
 				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
 				3BC99CC923902A9500D0D869 /* NavigationControllerDelegate.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
+				3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */,
 				3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */,
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */,
+				3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */,
 				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,
+				3BEE43D523980055008F35AA /* NSObject.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
