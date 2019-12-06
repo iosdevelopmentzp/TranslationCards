@@ -11,6 +11,7 @@ import RxCocoa
 import RxDataSources
 
 final class CardSlideShowViewController: ViewController<CardSlideShowRouter, CardSlideShowViewModel> {
+    
     fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     fileprivate let flowLayout = CardSlideShowFlowLayout()
     
@@ -33,5 +34,11 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
                 cell.configure(withCard: card)
             }
         ])
+    }
+    
+    override func setupView() {
+        super.setupView()
+        collectionView.backgroundColor = .clear
+        collectionView.decelerationRate = .fast
     }
 }

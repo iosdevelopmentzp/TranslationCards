@@ -26,4 +26,8 @@ extension UIView {
         layer.borderWidth = borderWidth
         layer.cornerRadius = cornerRadius
     }
+    
+    func bringToFront() {
+        superview?.bringSubviewToFront(self)
+    }
 }

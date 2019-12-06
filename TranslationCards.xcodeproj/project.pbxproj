@@ -76,6 +76,7 @@
 		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
 		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
+		3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSideView.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField.swift */; };
 		3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C30238FD816006FB7F8 /* MainRouter.swift */; };
@@ -99,7 +100,6 @@
 		3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43CF2397DB0A008F35AA /* UIImage.swift */; };
 		3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D22397FA96008F35AA /* CardCell.swift */; };
 		3BEE43D523980055008F35AA /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D423980055008F35AA /* NSObject.swift */; };
-		3BEE43D7239803AB008F35AA /* CardSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSide.swift */; };
 		3BEE43DA239808B5008F35AA /* CardSlideShowFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D9239808B5008F35AA /* CardSlideShowFlowLayout.swift */; };
 		3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3C2391A30D00C9AA48 /* UIView.swift */; };
 		3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */; };
@@ -203,7 +203,7 @@
 		3BEE43CF2397DB0A008F35AA /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3BEE43D22397FA96008F35AA /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 		3BEE43D423980055008F35AA /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
-		3BEE43D6239803AB008F35AA /* CardSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSide.swift; sourceTree = "<group>"; };
+		3BEE43D6239803AB008F35AA /* CardSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSideView.swift; sourceTree = "<group>"; };
 		3BEE43D9239808B5008F35AA /* CardSlideShowFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowFlowLayout.swift; sourceTree = "<group>"; };
 		3BFCBD3C2391A30D00C9AA48 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateCard.swift; sourceTree = "<group>"; };
@@ -569,7 +569,7 @@
 			isa = PBXGroup;
 			children = (
 				3BEE43D22397FA96008F35AA /* CardCell.swift */,
-				3BEE43D6239803AB008F35AA /* CardSide.swift */,
+				3BEE43D6239803AB008F35AA /* CardSideView.swift */,
 			);
 			path = "Collection Cell";
 			sourceTree = "<group>";
@@ -753,7 +753,6 @@
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
-				3BEE43D7239803AB008F35AA /* CardSide.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
@@ -788,6 +787,7 @@
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
+				3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */,
 				3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */,
 				3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */,
 				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,

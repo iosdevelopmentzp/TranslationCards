@@ -6,14 +6,19 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RxSwift
+import RxCocoa
 
-class CardSide: UIView {
+class CardSideView: UIView {
 
+    fileprivate let tapGesture = UITapGestureRecognizer()
     fileprivate(set) var textLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupConstraints()
+        setupView()
+        setupGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +38,23 @@ class CardSide: UIView {
     }
     
     func setupView() {
+        setShadow(withColor: .white,
+                  opacity: 0.4,
+                  radius: 5.0,
+                  offset: .init(width: 2.0, height: 2.0))
         layer.cornerRadius = 10.0
+        textLabel.textAlignment = .center
         textLabel.numberOfLines = 0
+        textLabel.isUserInteractionEnabled = false
+    }
+    
+    func setupGesture() {
+        addGestureRecognizer(tapGesture)
+    }
+}
+
+extension Reactive where Base: CardSideView {
+    var tapped: ControlEvent<UITapGestureRecognizer>  {
+        return base.tapGesture.rx.event
     }
 }
