@@ -131,6 +131,10 @@ final class BackCardSideView: UIView {
             $0.setBackgroundImage(speakerImage, for: .normal)
             $0.tintColor = .white
         }
+        
+        [topTextLabel, bottomTextLabel].forEach {
+            $0.numberOfLines = 0
+        }
     }
     
     fileprivate func bind() {

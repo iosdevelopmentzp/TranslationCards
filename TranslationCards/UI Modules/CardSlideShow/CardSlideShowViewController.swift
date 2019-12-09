@@ -53,5 +53,4 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         super.viewDidDisappear(animated)
         viewModel.viewDisappeared()
     }
-    
 }

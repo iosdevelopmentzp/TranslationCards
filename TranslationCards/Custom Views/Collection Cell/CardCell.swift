@@ -64,7 +64,7 @@ class CardCell: UICollectionViewCell {
                 $0.center.equalToSuperview()
                 $0.left.equalToSuperview()
                 $0.right.equalToSuperview()
-                $0.height.equalToSuperview().multipliedBy(0.6)
+                $0.height.equalToSuperview().multipliedBy(0.8)
             }
         }
     }

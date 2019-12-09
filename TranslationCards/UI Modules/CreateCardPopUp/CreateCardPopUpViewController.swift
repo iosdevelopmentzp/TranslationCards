@@ -27,6 +27,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     override func setupView() {
         super.setupView()
         view.addGestureRecognizer(tapGesture)
+        view.backgroundColor = .clear
     }
     
     override func binding() {
@@ -39,11 +40,11 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     
     override func localizable() {
         super.localizable()
-        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderDark(withText: "Set new phrase")
-         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderDark(withText: "Set translation of new phrase")
+        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "Set new phrase")
+         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "New phrase")
         createTranslateCardView.sourceTextField.text = ""
         createTranslateCardView.targetTextField.text = ""
-        createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save new card", size: 20.0), for: .normal)
+        createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
     }
 }
 
@@ -51,26 +52,59 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
     
     func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
         
+        let blurEffectView = secondViewController?.getBlurEffect()
+        
         UIView.animate(withDuration: duration * 0.3,
                        delay: delay,
-                       animations: { [weak self] in
-                        self?.view.backgroundColor = .clear
+                       animations: {
+                        blurEffectView?.alpha = 0.0
+        }, completion: {
+            [weak self] (_) in
+            blurEffectView?.removeFromSuperview()
+            self?.createTranslateCardView.subviews.forEach {
+                $0.alpha = 0.0
+            }
         })
         
-        UIView.animate(withDuration: duration,
-                       delay: delay,
-                       animations: { [weak self] in
-                        self?.createTranslateCardView.transform = CGAffineTransform.init(scaleX: 0.6, y: 0.6)
-                        self?.createTranslateCardView.alpha = 0.0
-        }) { [weak self] (_) in
-            self?.view.removeFromSuperview()
+        let xAnimation = CABasicAnimation(keyPath: "transform.scale.x")
+        xAnimation.toValue = 0.3
+        xAnimation.duration = duration / 2
+        xAnimation.timingFunction = CAMediaTimingFunction.init(name: .easeInEaseOut)
+        xAnimation.fillMode = CAMediaTimingFillMode.forwards
+        xAnimation.isRemovedOnCompletion = false
+        
+        let yAnimation = CABasicAnimation(keyPath: "transform.scale.y")
+        yAnimation.toValue = 0.3
+        yAnimation.duration = duration / 2
+        yAnimation.timingFunction = CAMediaTimingFunction.init(name: .easeInEaseOut)
+        yAnimation.fillMode = CAMediaTimingFillMode.forwards
+        yAnimation.isRemovedOnCompletion = false
+        
+        let alphaAnimation = CABasicAnimation(keyPath: "opacity")
+        alphaAnimation.toValue = 0.0
+        alphaAnimation.duration = duration / 2
+        alphaAnimation.fillMode = CAMediaTimingFillMode.forwards
+        alphaAnimation.isRemovedOnCompletion = false
+        
+        let groupAnimation = CAAnimationGroup()
+        groupAnimation.duration = duration / 2
+        groupAnimation.timingFunction = CAMediaTimingFunction.init(name: .easeInEaseOut)
+        groupAnimation.isRemovedOnCompletion = false
+        groupAnimation.fillMode = .forwards
+        groupAnimation.animations = [xAnimation, yAnimation, alphaAnimation]
+        createTranslateCardView.layer.add(groupAnimation, forKey: "scale")
+        
+        Timer.scheduledTimer(withTimeInterval: duration / 2,
+                             repeats: false) { [weak self] (_) in
+                                self?.createTranslateCardView.removeFromSuperview()
         }
     }
     
     func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
-        view.backgroundColor = .clear
         createTranslateCardView.transform = CGAffineTransform.init(scaleX: 0.6, y: 0.6)
         createTranslateCardView.alpha = 0.0
+        let blurView = secondViewController?.appendBlurEffect(style: .light)
+        blurView?.alpha = 0.0
         
         containerView.addSubview(view)
         
@@ -86,8 +120,8 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         UIView.animate(withDuration: duration * 0.3,
                        delay: delay,
                        animations: { [weak self] in
-                        self?.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
                         self?.createTranslateCardView.alpha = 1.0
+                        blurView?.alpha = 1.0
         }) { (_) in }
     }
     

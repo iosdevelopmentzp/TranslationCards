@@ -32,6 +32,14 @@ class SpeechServiceV1: SpeechService {
     
     //MARK: - Private
     fileprivate func speakText(_ text: String, languageIdentifier: String) {
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
+            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("audioSession properties weren't set because of an error \(error).")
+        }
+        
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: languageIdentifier)
 

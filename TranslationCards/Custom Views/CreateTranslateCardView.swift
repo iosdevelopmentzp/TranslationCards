@@ -73,8 +73,7 @@ class CreateTranslateCardView: UIView {
     
     fileprivate func setupView() {
         layer.cornerRadius = 10.0
-        setShadow()
-        backgroundColor = .white
+        backgroundColor = UIColor.mainDarkColor.darker()
         
         #if DEBUG
         sourceHeaderLabel.text = "Root label"
@@ -85,7 +84,8 @@ class CreateTranslateCardView: UIView {
         #endif
 
         [sourceHeaderLabel, targetHeaderLabel].forEach {
-            $0.textColor = .gray
+            $0.textColor = .white
+            $0.font = .robotoRegular(size: 40)
         }
         
         [sourceTextField, targetTextField].forEach {
@@ -100,6 +100,5 @@ class CreateTranslateCardView: UIView {
         }
         saveButton.setBorder(withColor: .borderColotDak, borderWidth: 1.0, cornerRadius: 10.0)
         saveButton.backgroundColor = UIColor.validateAccentColor
-        saveButton.setShadow()
     }
 }

@@ -29,7 +29,7 @@ class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
             }
             toVC.startAnimationBeforeAppear(withDelay: 0,
                                             duration: duration,
-                                            secondViewController: nil,
+                                            secondViewController: transitionContext.viewController(forKey: .from),
                                             containerView: transitionContext.containerView,
                                             transitionType: .present)
         case .dismiss:
