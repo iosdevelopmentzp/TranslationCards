@@ -34,6 +34,13 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
                 cell.configure(withCard: card)
             }
         ])
+        
+        let endDisplayingObsrvable = collectionView
+            .rx
+            .didEndDisplayingCell
+            .map { (_, indexPath) -> IndexPath in
+                return indexPath }
+        viewModel.bindWithDidEndDisplayingCellAtIndexPath(endDisplayingObsrvable)
     }
     
     override func setupView() {

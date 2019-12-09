@@ -34,16 +34,23 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.setupTable()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        viewModel
-            .cardsDataSource
-            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) {
-                (row, element, cell) in
-                cell.textLabel?.text = "\(element.language.sourceLanguage) - \(element.sourcePhrase)\n\(element.language.targetLanguage) - \(element.targetPhrase)"
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.textColor = .white
-                cell.backgroundColor = .clear
-        }
-        .disposed(by: disposeBag)
+        
+        disposeBag.insert([
+            
+            tableView.rx.itemSelected.subscribe(onNext: { [weak self] (indexPath) in
+                self?.tableView.deselectRow(at: indexPath, animated: true)
+            }),
+            
+            viewModel
+                .cardsDataSource
+                .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) {
+                    (row, element, cell) in
+                    cell.imageView?.image = element.language.sourceLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0))
+                    cell.textLabel?.text = element.sourcePhrase
+                    cell.textLabel?.numberOfLines = 0
+                    cell.textLabel?.textColor = .white
+                    cell.backgroundColor = .clear }
+        ])
     }
     
     override func setupView() {

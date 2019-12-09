@@ -67,8 +67,7 @@ final class MainViewModel: ViewModel<MainRouter> {
     func bindSelectesItemEvent(_ selectedEvent: ControlEvent<IndexPath>) {
         selectedEvent
             .subscribe(onNext: {[weak self] (indexPath) in
-                guard let languageString = self?.sections.value[indexPath.section].items[indexPath.row],
-                    let language = LanguageBind(withString: languageString),
+                guard let language = self?.sections.value[indexPath.section].items[indexPath.row],
                     let user = self?.user else { return }
                 self?.router.route(to: .cardList(language: language, userId: user.uid))
             })
@@ -76,10 +75,10 @@ final class MainViewModel: ViewModel<MainRouter> {
     }
     
     fileprivate func makeSubscribesToUser(_ user: User) {
-        let subscription = user.languages
+        let subscription = user
+            .languages
             .subscribe(onNext: { [weak self] (languages) in
-                let items = languages.map{ $0.stringRepresentation}
-                self?.sections.accept([Section(items: items)])
+                self?.sections.accept([Section(items: languages)])
             })
         subscription.disposed(by: disposeBag)
     }

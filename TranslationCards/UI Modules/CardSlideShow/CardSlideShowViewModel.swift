@@ -16,4 +16,14 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         self.cards.accept(cards)
         super.init()
     }
+    
+    func bindWithDidEndDisplayingCellAtIndexPath(_ endDisplayingCell: Observable<IndexPath>) {
+        endDisplayingCell
+            .subscribe(onNext: { [weak self] (indexPath) in
+//                guard indexPath.row == 0, var oldCards = self?.cards.value else { return }
+//                oldCards.remove(at: indexPath.row)
+//                self?.cards.accept(oldCards)
+            })
+            .disposed(by: disposeBag)
+    }
 }

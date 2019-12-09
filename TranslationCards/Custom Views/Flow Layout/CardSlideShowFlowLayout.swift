@@ -11,6 +11,7 @@ import RxCocoa
 
 class CardSlideShowFlowLayout: UICollectionViewLayout {
     
+    private var disposeBag = DisposeBag()
     private var cashe: [UICollectionViewLayoutAttributes] = []
     private let cellPadding: CGFloat = 10
     private var contentHeight: CGFloat {
@@ -19,6 +20,21 @@ class CardSlideShowFlowLayout: UICollectionViewLayout {
     private var contentWidth: CGFloat = 0
 
     // MARK: - Override methods
+    override init() {
+        super.init()
+        NotificationCenter
+            .default
+            .rx
+            .notification(UIDevice.orientationDidChangeNotification)
+            .subscribe(onNext: { [weak self] (notification) in
+                self?.prepare() })
+            .disposed(by: disposeBag)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
@@ -43,16 +59,20 @@ class CardSlideShowFlowLayout: UICollectionViewLayout {
     }
     
     override func prepare() {
-        guard cashe.isEmpty, let collectionView = collectionView else { return }
+        cashe.removeAll()
+        guard let collectionView = collectionView,
+            collectionView.numberOfItems(inSection: 0) > 0 else { return }
         
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
         
         let columnWidth = calculateWidthOneItem()
         let columnHeight = contentHeight
+        let leftPadding = collectionView.bounds.width / 2 - columnWidth / 2
+        let rightPadding = columnWidth
         
         var xOffset: [CGFloat] = []
         for item in 0..<numberOfItems {
-            let offset = columnWidth * CGFloat(item)
+            let offset = columnWidth * CGFloat(item) + leftPadding
             xOffset.append(offset)
         }
         let yOffset: CGFloat = 0.0
@@ -68,7 +88,7 @@ class CardSlideShowFlowLayout: UICollectionViewLayout {
             cashe.append(attributes)
         }
         
-        contentWidth = CGFloat(numberOfItems) * columnWidth
+        contentWidth = CGFloat(numberOfItems) * columnWidth + rightPadding * 2
     }
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
@@ -106,8 +126,7 @@ class CardSlideShowFlowLayout: UICollectionViewLayout {
     // MARK: Private
     fileprivate func calculateWidthOneItem() -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
-        let inset = collectionView.contentInset
-        return collectionView.bounds.width - (inset.left + inset.right)
+        return collectionView.bounds.width * 0.7
     }
     
     fileprivate func calculateHeightOneItem() -> CGFloat {

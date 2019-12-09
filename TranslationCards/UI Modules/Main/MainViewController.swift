@@ -38,16 +38,17 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     override func setupTable() {
         super.setupTable()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
+        tableView.register(LanguageCell.self, forCellReuseIdentifier: LanguageCell.typeName)
         
         let dataSource = RxTableViewSectionedReloadDataSource<MainViewModel.Section>(configureCell: {
             (_, tableView, indexPath, item) -> UITableViewCell in
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self),
+            let cell = tableView.dequeueReusableCell(withIdentifier: LanguageCell.typeName,
                                                      for: indexPath)
-            cell.textLabel?.text = item
-            cell.backgroundColor = .clear
-            cell.textLabel?.textColor = .white
-            return cell })
+            guard let languageCell = cell as? LanguageCell else {
+                return cell
+            }
+            languageCell.configure(withLanguage: item)
+            return languageCell })
         self.dataSource = dataSource
         
         viewModel
@@ -69,6 +70,9 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     override func setupView() {
         super.setupView()
         addCardButton.tintColor = .white
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44.0
     }
     
     override func setupNavigationBar() {

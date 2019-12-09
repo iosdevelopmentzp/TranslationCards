@@ -10,6 +10,11 @@ import UIKit
 
 enum ImageType: String {
     case playButton
+    case to
+    
+    // Flags icons
+    case engFlagIcon = "engIcon"
+    case rusFlagIcon = "rusIcon"
 }
 
 extension UIImage {
@@ -18,5 +23,13 @@ extension UIImage {
             fatalError("Failed create image with name \(type.rawValue)")
         }
         return image.withRenderingMode(renderringMode)
+    }
+    
+    func scaledToSize(_ newSize:CGSize) -> UIImage{
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+        draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }

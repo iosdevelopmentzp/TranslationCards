@@ -8,11 +8,6 @@
 
 import Foundation
 
-enum Language: String {
-    case rus
-    case eng
-}
-
 struct LanguageBind: Equatable {
     let sourceLanguage: Language
     let targetLanguage: Language
@@ -46,6 +41,12 @@ struct LanguageBind: Equatable {
     }
     
     static var `default`:LanguageBind { .init(source: .rus, target: .eng) }
+}
+
+extension LanguageBind: CustomStringConvertible {
+    var description: String {
+        return "From \(sourceLanguage) to \(targetLanguage)"
+    }
 }
 
 extension LanguageBind: SringRepresantation {

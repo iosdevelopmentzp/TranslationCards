@@ -12,7 +12,7 @@ import RxCocoa
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
     var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
-    lazy var titleText = Observable<String>.just("\(language.stringRepresentation) cards list")
+    lazy var titleText = Observable<String>.just("\(language.sourceLanguage) to \(language.targetLanguage)")
     
     fileprivate let language: LanguageBind
     fileprivate let userId: String

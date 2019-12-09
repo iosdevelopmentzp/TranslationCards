@@ -13,16 +13,27 @@ class CardCell: UICollectionViewCell {
     
     fileprivate let disposeBag = DisposeBag()
     fileprivate let faceSide = CardSideView()
-    fileprivate let backSide = CardSideView()
+    fileprivate let backSide = BackCardSideView()
+    
+    fileprivate let tapGesture = UITapGestureRecognizer()
+    fileprivate let dragGesture = UIPanGestureRecognizer()
     
     fileprivate let flipFromLeftOptions: UIView.AnimationOptions = [.transitionFlipFromLeft, .showHideTransitionViews]
     fileprivate let flipFromRightOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
-    fileprivate var showedFace: Bool = false
+    fileprivate var showedFace: Bool = false {
+        didSet {
+            if showedFace {
+                faceSide.addGestureRecognizer(tapGesture)
+            } else {
+                backSide.addGestureRecognizer(tapGesture)
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
-        setupView()
+        setupGesture()
         binding()
     }
     
@@ -32,39 +43,61 @@ class CardCell: UICollectionViewCell {
     
     func configure(withCard card: TranslateCard) {
         showFaceSide(isShowFace: true, withAnimation: false)
-        debugPrint("showing back - \(showedFace)")
-        faceSide.textLabel.text = "\(card.language.sourceLanguage.rawValue):\n\(card.sourcePhrase)"
-        
-        backSide.textLabel.text = "\(card.language.sourceLanguage.rawValue):\n\(card.sourcePhrase)\n\n\n\(card.language.targetLanguage.rawValue):\n\(card.targetPhrase)"
+        faceSide.configure(withCard: card)
+        backSide.configure(withCard: card)
     }
     
     // MARK: - Private
+    fileprivate func setupGesture() {
+        faceSide.addGestureRecognizer(tapGesture)
+        faceSide.addGestureRecognizer(dragGesture)
+    }
+    
     fileprivate func setupConstraints() {
         backSide.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(backSide)
-        backSide.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets.init(top: 30, left: 30, bottom: 30, right: 30))
-        }
-        
         contentView.addSubview(faceSide)
-        faceSide.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets.init(top: 30, left: 30, bottom: 30, right: 30))
+        [backSide, faceSide].forEach {
+            $0.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                $0.left.equalToSuperview()
+                $0.right.equalToSuperview()
+                $0.height.equalToSuperview().multipliedBy(0.6)
+            }
         }
-        
-    }
-    
-    fileprivate func setupView() {
-        faceSide.backgroundColor = .accentColor
-        backSide.backgroundColor = .red
-        backgroundColor = .clear
     }
     
     fileprivate func binding() {
-        
-        Observable.merge(faceSide.rx.tapped.asObservable(), backSide.rx.tapped.asObservable())
-            .subscribe { [weak self] (gesture) in
-                self?.switchSide(withAnimation: true) }
+        tapGesture
+            .rx
+            .event
+            .subscribe(onNext: { [weak self] (_) in
+                self?.switchSide(withAnimation: true) })
             .disposed(by: disposeBag)
+        
+        dragGesture
+            .rx
+            .event
+            .subscribe(onNext: { /*[weak self]*/ (sender) in
+                
+                // TODO: - Implement pan gesture later
+                
+                //guard let self = self else { return }
+                /*
+                switch sender.state {
+                case .changed:
+                    let translation = sender.translation(in: self)
+                    self.faceSide.center = CGPoint(x: self.faceSide.center.x, y: self.faceSide.center.y + translation.y)
+                    sender.setTranslation(CGPoint.zero, in: self)
+                case .ended:
+                    self.updateConstraints()
+                default: break
+                }
+                */
+            })
+            .disposed(by: disposeBag)
+        
+        dragGesture.delegate = self
     }
     
     fileprivate func showFaceSide(isShowFace: Bool, withAnimation: Bool) {
@@ -92,5 +125,11 @@ class CardCell: UICollectionViewCell {
         }
        
         self.showedFace = !self.showedFace
+    }
+}
+
+extension CardCell: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

@@ -10,13 +10,13 @@ import RxDataSources
 
 extension MainViewModel {
     struct Section: SectionModelType {
-        var items: [String]
+        var items: [LanguageBind]
         
-        init(items: [String]) {
+        init(items: [LanguageBind]) {
             self.items = items
         }
         
-        init(original: Section, items: [String]) {
+        init(original: Section, items: [LanguageBind]) {
             self = original
             self.items = items
         }
