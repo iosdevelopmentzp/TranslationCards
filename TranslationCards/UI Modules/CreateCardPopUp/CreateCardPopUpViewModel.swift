@@ -38,12 +38,12 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             .disposed(by: disposeBag)
     }
     
-    func bindTapGesture(event: ControlEvent<UITapGestureRecognizer>) {
-        event.subscribe(onNext: { [weak self] (tap) in
-            self?.router.dissmis() })
-            .disposed(by: disposeBag)
-    }
-    
+//    func bindTapGesture(event: ControlEvent<UITapGestureRecognizer>) {
+//        event.subscribe(onNext: { [weak self] (tap) in
+//            self?.router.dissmis() })
+//            .disposed(by: disposeBag)
+//    }
+//    
     fileprivate func saveTranslationCard(card: TranslateCard) {
         card.sendToDatabase()
             .subscribe(onNext: { [weak self] (_) in

@@ -19,7 +19,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         createTranslateCardView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.center.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.5)
+            $0.height.equalToSuperview().multipliedBy(0.8)
             $0.width.equalTo(self.view.safeAreaLayoutGuide).multipliedBy(0.95)
         }
     }
@@ -35,13 +35,20 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap)
-        viewModel.bindTapGesture(event: tapGesture.rx.event)
+//        viewModel.bindTapGesture(event: tapGesture.rx.event)
+        tapGesture
+            .rx
+            .event
+            .subscribe(onNext: { [weak self] (gesture) in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func localizable() {
         super.localizable()
-        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "Set new phrase")
-         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "New phrase")
+        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase")
+         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
         createTranslateCardView.sourceTextField.text = ""
         createTranslateCardView.targetTextField.text = ""
         createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
