@@ -11,6 +11,8 @@ import RxCocoa
 
 class CardCell: UICollectionViewCell {
     
+    let speakData = BehaviorRelay<SpeechData?>.init(value: nil)
+    
     fileprivate let disposeBag = DisposeBag()
     fileprivate let faceSide = CardSideView()
     fileprivate let backSide = BackCardSideView()
@@ -68,6 +70,15 @@ class CardCell: UICollectionViewCell {
     }
     
     fileprivate func binding() {
+        
+        Observable<SpeechData?>
+            .merge(faceSide.speakData.asObservable(), backSide.speakData.asObservable())
+            .compactMap{$0}
+            .subscribe(onNext: { [weak self] (speakData) in
+                self?.speakData.accept(speakData)
+            })
+            .disposed(by: disposeBag)
+        
         tapGesture
             .rx
             .event

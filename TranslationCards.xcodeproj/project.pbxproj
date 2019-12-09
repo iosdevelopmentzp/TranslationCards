@@ -66,6 +66,7 @@
 		3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF098239E2E77007CDA17 /* SpeechService.swift */; };
 		3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09A239E2E9A007CDA17 /* SpeechServiceV1.swift */; };
 		3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */; };
+		3B6CF09F239E5CFA007CDA17 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09E239E5CFA007CDA17 /* Reusable.swift */; };
 		3B825B8B2386885B009D62E8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B892386885B009D62E8 /* Services.swift */; };
 		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
 		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
@@ -178,6 +179,7 @@
 		3B6CF098239E2E77007CDA17 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
 		3B6CF09A239E2E9A007CDA17 /* SpeechServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechServiceV1.swift; sourceTree = "<group>"; };
 		3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechLanguageType.swift; sourceTree = "<group>"; };
+		3B6CF09E239E5CFA007CDA17 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		3B825B892386885B009D62E8 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				3BEE43CF2397DB0A008F35AA /* UIImage.swift */,
 				3BEE43D423980055008F35AA /* NSObject.swift */,
 				3B031E10239BBE5E00946F8D /* CGFloat.swift */,
+				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -815,6 +818,7 @@
 				3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */,
 				3BC99CC923902A9500D0D869 /* NavigationControllerDelegate.swift in Sources */,
 				3B031E11239BBE5E00946F8D /* CGFloat.swift in Sources */,
+				3B6CF09F239E5CFA007CDA17 /* Reusable.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
 				3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */,
 				3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */,

@@ -10,23 +10,31 @@ import RxSwift
 import RxCocoa
 
 final class BackCardSideView: UIView {
+    
+    var speakData = BehaviorRelay<SpeechData?>.init(value: nil)
 
     fileprivate let topContainerView = UIView()
     fileprivate let topImageView = UIImageView()
     fileprivate let topTextLabel = UILabel()
+    fileprivate let topSpeakButton = UIButton(type: .custom)
     
     fileprivate let bottomContainerView = UIView()
     fileprivate let bottomImageView = UIImageView()
     fileprivate let bottomTextLabel = UILabel()
+    fileprivate let bottomSpeakButton = UIButton(type: .custom)
     
     fileprivate let stackView = UIStackView()
     
+    fileprivate let disposeBag = DisposeBag()
     fileprivate let cornerRadius: CGFloat = 10.0
+    fileprivate var topLanguage: Language?
+    fileprivate var bottomLanguage: Language?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
         setupView()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -37,10 +45,12 @@ final class BackCardSideView: UIView {
         topImageView.image = card.language.sourceLanguage.flagIcon
         topTextLabel.text = card.sourcePhrase
         topContainerView.backgroundColor  = card.language.sourceLanguage.associativeColor
+        topLanguage = card.language.sourceLanguage
        
         bottomImageView.image = card.language.targetLanguage.flagIcon
         bottomTextLabel.text = card.targetPhrase
         bottomContainerView.backgroundColor = card.language.targetLanguage.associativeColor
+        bottomLanguage = card.language.targetLanguage
     }
     
     // MARK: - Private
@@ -60,8 +70,10 @@ final class BackCardSideView: UIView {
         bottomImageContainer.addSubview(bottomImageView)
         topContainerView.addSubview(topImageContainer)
         topContainerView.addSubview(topTextLabel)
+        topContainerView.addSubview(topSpeakButton)
         bottomContainerView.addSubview(bottomImageContainer)
         bottomContainerView.addSubview(bottomTextLabel)
+        bottomContainerView.addSubview(bottomSpeakButton)
         
         [topImageView, bottomImageView].forEach {
             $0.snp.makeConstraints {
@@ -76,11 +88,18 @@ final class BackCardSideView: UIView {
             }
         }
         
+        [topSpeakButton, bottomSpeakButton].forEach {
+            $0.snp.makeConstraints {
+                $0.width.height.equalTo(20.0)
+                $0.right.bottom.equalToSuperview().inset(padding)
+            }
+        }
+           
         topTextLabel.snp.makeConstraints {[weak self] in
             guard let self = self else { return }
             $0.top.equalToSuperview().offset(padding)
             $0.right.equalToSuperview().inset(padding)
-            $0.bottom.lessThanOrEqualTo(self.topContainerView.snp.bottom)
+            $0.bottom.lessThanOrEqualTo(self.topSpeakButton.snp.top)
             $0.left.equalTo(topImageContainer.snp.right).offset(padding)
         }
         
@@ -88,7 +107,7 @@ final class BackCardSideView: UIView {
             guard let self = self else { return }
             $0.top.equalToSuperview().offset(padding)
             $0.right.equalToSuperview().inset(padding)
-            $0.bottom.lessThanOrEqualTo(self.bottomContainerView.snp.bottom)
+            $0.bottom.lessThanOrEqualTo(self.bottomSpeakButton.snp.top)
             $0.left.equalTo(bottomImageContainer.snp.right).offset(padding)
         }
     }
@@ -106,5 +125,39 @@ final class BackCardSideView: UIView {
         
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
+        
+        let speakerImage = UIImage.image(withType: .speaker, renderringMode: .alwaysTemplate)
+        [topSpeakButton, bottomSpeakButton].forEach {
+            $0.setBackgroundImage(speakerImage, for: .normal)
+            $0.tintColor = .white
+        }
+    }
+    
+    fileprivate func bind() {
+        topSpeakButton
+            .rx
+            .tap
+            .subscribe(onNext: { [weak self] (_) in
+                guard let text = self?.topTextLabel.text,
+                    let language = self?.topLanguage else {
+                        self?.speakData.accept(nil)
+                        return
+                }
+                self?.speakData.accept((text, language))
+            })
+            .disposed(by: disposeBag)
+        
+        bottomSpeakButton
+            .rx
+            .tap
+            .subscribe(onNext: { [weak self] (_) in
+                guard let text = self?.bottomTextLabel.text,
+                    let language = self?.bottomLanguage else {
+                        self?.speakData.accept(nil)
+                        return
+                }
+                self?.speakData.accept((text, language))
+            })
+            .disposed(by: disposeBag)
     }
 }

@@ -30,17 +30,17 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         collectionView.register(CardCell.self, forCellWithReuseIdentifier: CardCell.typeName)
         
         disposeBag.insert([
-            viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { row,card,cell in
+            viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
+                guard let self = self else { return }
                 cell.configure(withCard: card)
+                cell
+                    .speakData
+                    .skip(1)
+                    .compactMap{ $0 }
+                    .bind(to: self.viewModel.cellSpeechData)
+                    .disposed(by: cell.rx.reuseBag)
             }
         ])
-        
-        let endDisplayingObsrvable = collectionView
-            .rx
-            .didEndDisplayingCell
-            .map { (_, indexPath) -> IndexPath in
-                return indexPath }
-        viewModel.bindWithDidEndDisplayingCellAtIndexPath(endDisplayingObsrvable)
     }
     
     override func setupView() {
@@ -48,4 +48,10 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         collectionView.backgroundColor = .clear
         collectionView.decelerationRate = .fast
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDisappeared()
+    }
+    
 }

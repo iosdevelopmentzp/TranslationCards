@@ -7,23 +7,30 @@
 //
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
 final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     var cards = BehaviorRelay<[TranslateCard]>.init(value: [])
+    let cellSpeechData = BehaviorRelay<SpeechData?>.init(value: nil)
     
     init(cards: [TranslateCard]) {
         self.cards.accept(cards)
         super.init()
+        bind()
     }
     
-    func bindWithDidEndDisplayingCellAtIndexPath(_ endDisplayingCell: Observable<IndexPath>) {
-        endDisplayingCell
-            .subscribe(onNext: { [weak self] (indexPath) in
-//                guard indexPath.row == 0, var oldCards = self?.cards.value else { return }
-//                oldCards.remove(at: indexPath.row)
-//                self?.cards.accept(oldCards)
+    func viewDisappeared() {
+        services.speechService.stopSpeaking()
+    }
+    
+    // MARK: - Private
+    fileprivate func bind() {
+        cellSpeechData
+            .compactMap{$0}
+            .subscribe(onNext: { [weak self]  (speechData) in
+                self?.services.speechService.speakText(speechData)
             })
             .disposed(by: disposeBag)
     }
+    
 }

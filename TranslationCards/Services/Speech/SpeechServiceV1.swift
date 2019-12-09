@@ -9,17 +9,25 @@
 import AVFoundation
 
 class SpeechServiceV1: SpeechService {
-    func speakText(_ text: String, language: SpeechLanguageType? = nil) {
-        if let lenguage = language {
-            speakText(text, languageIdentifier: lenguage.identifier)
+    
+    fileprivate let speechSynthesizer = AVSpeechSynthesizer()
+    
+    func speakText(_ inputData: SpeechData) {
+        if let lenguage = inputData.language {
+            let speechType = SpeechLanguageType.initWithLanguage(language: lenguage)
+            speakText(inputData.text, languageIdentifier: speechType.identifier)
             return
         }
         
-        guard let detectedLanguageIdentifier = text.detectLanguage(),
+        guard let detectedLanguageIdentifier = inputData.text.detectLanguage(),
             let speechLangTyppe = SpeechLanguageType.initWithLanguageDetectedIdentifier(detectedLanguageIdentifier) else {
             return
         }
-        speakText(text, languageIdentifier: speechLangTyppe.identifier)
+        speakText(inputData.text, languageIdentifier: speechLangTyppe.identifier)
+    }
+    
+    func stopSpeaking() {
+        speechSynthesizer.stopSpeaking(at: .word)
     }
     
     //MARK: - Private
@@ -27,7 +35,7 @@ class SpeechServiceV1: SpeechService {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: languageIdentifier)
 
-        let synth = AVSpeechSynthesizer()
-        synth.speak(utterance)
+        speechSynthesizer.stopSpeaking(at: .word)
+        speechSynthesizer.speak(utterance)
     }
 }

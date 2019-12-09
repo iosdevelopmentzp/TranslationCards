@@ -11,6 +11,7 @@ import UIKit
 enum ImageType: String {
     case playButton
     case to
+    case speaker
     
     // Flags icons
     case engFlagIcon = "engIcon"

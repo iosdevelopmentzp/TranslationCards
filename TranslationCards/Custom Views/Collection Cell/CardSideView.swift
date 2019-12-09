@@ -11,15 +11,21 @@ import RxCocoa
 
 class CardSideView: UIView {
 
+    var speakData = BehaviorRelay<SpeechData?>.init(value: nil)
+    
+    fileprivate let speakButton = UIButton(type: .custom)
     fileprivate let textLabel = UILabel()
     fileprivate let iconImageView = UIImageView()
-    fileprivate var gradientColors: (UIColor, UIColor)?
+    
+    fileprivate var language: Language?
     fileprivate var gradientLayer: CAGradientLayer?
+    fileprivate let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
         setupView()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -29,6 +35,7 @@ class CardSideView: UIView {
     func configure(withCard card: TranslateCard) {
         textLabel.text = "\(card.sourcePhrase)"
         iconImageView.image = card.language.sourceLanguage.flagIcon
+        language = card.language.sourceLanguage
         
         gradientLayer?.removeFromSuperlayer()
         let topColor = card.language.sourceLanguage.associativeColor
@@ -45,24 +52,30 @@ class CardSideView: UIView {
     }
     
     fileprivate func setupConstraints() {
+        let  containerView = UIView()
+        containerView.addSubview(iconImageView)
+        iconImageView.snp.makeConstraints { $0.edges.equalToSuperview()}
+        addSubview(containerView)
+        let padding: CGFloat = 16.0
+        containerView.snp.makeConstraints {
+            $0.width.height.equalTo(44.0)
+            $0.top.left.equalToSuperview().offset(padding)
+        }
+        
+        addSubview(speakButton)
+        speakButton.snp.makeConstraints {
+            $0.width.height.equalTo(20.0)
+            $0.right.bottom.equalToSuperview().inset(padding)
+        }
+        
         addSubview(textLabel)
         textLabel.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.center.equalToSuperview()
             $0.leading.equalToSuperview().offset(8.0)
             $0.right.equalToSuperview().inset(8.0)
-            $0.top.greaterThanOrEqualTo(self).offset(8.0)
-            $0.bottom.lessThanOrEqualTo(self).inset(8.0)
-        }
-        
-        let  containerView = UIView()
-        containerView.addSubview(iconImageView)
-        iconImageView.snp.makeConstraints { $0.edges.equalToSuperview()}
-        addSubview(containerView)
-        let imagePadding: CGFloat = 16.0
-        containerView.snp.makeConstraints {
-            $0.width.height.equalTo(44.0)
-            $0.top.left.equalToSuperview().offset(imagePadding)
+            $0.top.greaterThanOrEqualTo(self.iconImageView.snp.bottom).offset(4.0)
+            $0.bottom.lessThanOrEqualTo(self.speakButton.snp.top).inset(8.0)
         }
     }
     
@@ -78,5 +91,25 @@ class CardSideView: UIView {
         textLabel.isUserInteractionEnabled = false
         
         iconImageView.contentMode = .scaleAspectFit
+        
+        let image = UIImage.image(withType: .speaker, renderringMode: .alwaysTemplate)
+        speakButton.setBackgroundImage(image, for: .normal)
+        speakButton.tintColor = .white
+    }
+    
+    fileprivate func bind() {
+        speakButton
+            .rx
+            .tap
+            .map { [weak self] (_) -> SpeechData? in
+                guard let language = self?.language,
+                    let text = self?.textLabel.text else {
+                    return nil
+                }
+                return  (text: text, language: language) }
+            .subscribe(onNext: { [weak self] (inputData) in
+                self?.speakData.accept(inputData)
+            })
+            .disposed(by: disposeBag)
     }
 }
