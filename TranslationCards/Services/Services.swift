@@ -15,4 +15,5 @@ final class Services {
     lazy var realTimeDatabase: DatabaseService = FirestoreDatabaseService()
     lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase)
     lazy var auth: AuthService = AuthServiceV1(credentials: credentials, database: realTimeDatabase)
+    lazy var speechService: SpeechService = SpeechServiceV1()
 }

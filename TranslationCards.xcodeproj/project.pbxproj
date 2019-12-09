@@ -63,6 +63,9 @@
 		3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51232387F41100DCB5FB /* RegisterCardView.swift */; };
 		3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */; };
 		3B5D51322388301200DCB5FB /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5D51312388301200DCB5FB /* TransitionAnimator.swift */; };
+		3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF098239E2E77007CDA17 /* SpeechService.swift */; };
+		3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09A239E2E9A007CDA17 /* SpeechServiceV1.swift */; };
+		3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */; };
 		3B825B8B2386885B009D62E8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B892386885B009D62E8 /* Services.swift */; };
 		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
 		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
@@ -172,6 +175,9 @@
 		3B5D51232387F41100DCB5FB /* RegisterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCardView.swift; sourceTree = "<group>"; };
 		3B5D51252387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithTopPlaceholder.swift; sourceTree = "<group>"; };
 		3B5D51312388301200DCB5FB /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
+		3B6CF098239E2E77007CDA17 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		3B6CF09A239E2E9A007CDA17 /* SpeechServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechServiceV1.swift; sourceTree = "<group>"; };
+		3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechLanguageType.swift; sourceTree = "<group>"; };
 		3B825B892386885B009D62E8 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -423,6 +429,16 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		3B6CF097239E2E49007CDA17 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				3B6CF098239E2E77007CDA17 /* SpeechService.swift */,
+				3B6CF09A239E2E9A007CDA17 /* SpeechServiceV1.swift */,
+				3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */,
+			);
+			path = Speech;
+			sourceTree = "<group>";
+		};
 		3B825B8723868809009D62E8 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,6 +446,7 @@
 				3B825B892386885B009D62E8 /* Services.swift */,
 				3B825B8F238688F7009D62E8 /* Auth */,
 				3B825B9C238692B3009D62E8 /* Credentials */,
+				3B6CF097239E2E49007CDA17 /* Speech */,
 				3B825B9D238692CE009D62E8 /* Database */,
 			);
 			path = Services;
@@ -813,6 +830,7 @@
 				3BEE43D523980055008F35AA /* NSObject.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
+				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,
@@ -820,6 +838,7 @@
 				3BC52C46239013D7006FB7F8 /* ModalTransitionAnimationDelegate.swift in Sources */,
 				3B5D51322388301200DCB5FB /* TransitionAnimator.swift in Sources */,
 				3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */,
+				3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
@@ -829,6 +848,7 @@
 				3B031E19239C048A00946F8D /* BackCardSideView.swift in Sources */,
 				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
+				3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
