@@ -21,7 +21,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     func bind(withNewPhrase newPhrase: ControlProperty<String>,
               translation: ControlProperty<String>,
-              saveButtonPressed: ControlEvent<Void>) {
+              saveButtonPressed: ControlEvent<Void>,
+              cancelButtonPressed: ControlEvent<Void>) {
         
         let inputData = Observable.combineLatest(newPhrase, translation)
         saveButtonPressed
@@ -36,14 +37,14 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 self?.saveTranslationCard(card: translateCard)
             })
             .disposed(by: disposeBag)
+        
+        cancelButtonPressed
+            .subscribe(onNext: { [weak self] (_) in
+                self?.router.dissmis()
+            })
+            .disposed(by: disposeBag)
     }
-    
-//    func bindTapGesture(event: ControlEvent<UITapGestureRecognizer>) {
-//        event.subscribe(onNext: { [weak self] (tap) in
-//            self?.router.dissmis() })
-//            .disposed(by: disposeBag)
-//    }
-//    
+
     fileprivate func saveTranslationCard(card: TranslateCard) {
         card.sendToDatabase()
             .subscribe(onNext: { [weak self] (_) in

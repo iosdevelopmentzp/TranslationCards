@@ -18,6 +18,8 @@ class CreateTranslateCardView: UIView {
     let targetHeaderLabel = UILabel()
     let targetTextField = UITextView()
     let saveButton = UIButton()
+    let cancelButton = UIButton()
+    let buttonStackView = UIStackView()
     fileprivate let targetFlagIcon = BehaviorRelay<UIImage?>.init(value: nil)
     fileprivate let targetSelectLanguageButton = UIButton(type: .custom)
     
@@ -67,15 +69,6 @@ class CreateTranslateCardView: UIView {
             $0.height.equalTo(self.sourceTextField.snp.height)
         }
         
-        addSubview(saveButton)
-        saveButton.snp.makeConstraints { [weak self] in
-            guard let self = self else { return }
-            $0.top.equalTo(self.targetTextField.snp.bottom).offset(padding)
-            $0.left.equalToSuperview().offset(padding)
-            $0.bottom.right.equalToSuperview().inset(padding)
-            $0.height.equalTo(50.0)
-        }
-        
         addSubview(sourceSelectLanguageButton)
         sourceSelectLanguageButton.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
@@ -93,19 +86,22 @@ class CreateTranslateCardView: UIView {
             $0.width.height.equalTo(30.0)
             $0.left.equalTo(self.targetTextField.snp.right).offset(4.0)
         }
+        
+        addSubview(buttonStackView)
+        buttonStackView.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
+            $0.top.equalTo(self.targetTextField.snp.bottom).offset(padding)
+            $0.left.equalToSuperview().offset(padding)
+            $0.bottom.right.equalToSuperview().inset(padding)
+            $0.height.equalTo(50.0)
+        }
+        buttonStackView.addArrangedSubview(cancelButton)
+        buttonStackView.addArrangedSubview(saveButton)
     }
     
     fileprivate func setupView() {
         layer.cornerRadius = 10.0
-        backgroundColor = UIColor.mainDarkColor.darker()
-        
-        #if DEBUG
-        sourceHeaderLabel.text = "Root label"
-        targetHeaderLabel.text = "Translate label"
-        sourceTextField.text = "Test text"
-        targetTextField.text = "Test text"
-        saveButton.setTitle("Tes save title", for: .normal)
-        #endif
+        backgroundColor = .clear
 
         [sourceHeaderLabel, targetHeaderLabel].forEach {
             $0.textColor = .white
@@ -122,8 +118,15 @@ class CreateTranslateCardView: UIView {
             $0.autocapitalizationType = .none
             $0.textColor = .black
         }
-        saveButton.setBorder(withColor: .borderColotDak, borderWidth: 1.0, cornerRadius: 10.0)
-        saveButton.backgroundColor = UIColor.validateAccentColor
+        
+        [cancelButton, saveButton].forEach {
+            $0.setBorder(withColor: .borderColotDak, borderWidth: 1.0, cornerRadius: 10.0)
+        }
+        saveButton.backgroundColor = .validateAccentColor
+        cancelButton.backgroundColor = .cancelButton
+        buttonStackView.axis = .horizontal
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 10.0
         
         [sourceSelectLanguageButton, targetSelectLanguageButton].forEach {
             $0.setBackgroundImage(.image(withType: .rusFlagIcon, renderringMode: .alwaysOriginal), for: .normal)

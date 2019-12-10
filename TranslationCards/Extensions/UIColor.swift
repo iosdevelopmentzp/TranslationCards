@@ -17,11 +17,15 @@ extension UIColor {
     static var placeholderDarkColor: UIColor { .init(red: 150.0/255.0, green: 150.0/255.0, blue: 150.0/255.0, alpha: 1.0) }
     static var defaultTextColor: UIColor { .white }
     static var separatorColor: UIColor { .init(red: 200.0/255.0, green: 199.0/255.0, blue: 204.0/255.0, alpha: 1.0)}
-    static var notValidateButton: UIColor { .gray }
     static var shadowColorDark: UIColor { .lightGray }
     static var shadowColorLight: UIColor { .white }
     static var borderColorLight: UIColor { .lightGray }
     static var borderColotDak: UIColor { .darkGray }
+    
+    
+    // Buttons
+    static var notValidateButton: UIColor { .gray }
+    static var cancelButton: UIColor? { UIColor.init(hexString: "E64F60") }
 }
 
 extension UIColor {

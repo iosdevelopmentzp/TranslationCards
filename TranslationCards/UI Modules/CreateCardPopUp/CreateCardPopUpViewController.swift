@@ -34,8 +34,9 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         super.binding()
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
-                       saveButtonPressed: createTranslateCardView.saveButton.rx.tap)
-//        viewModel.bindTapGesture(event: tapGesture.rx.event)
+                       saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
+                       cancelButtonPressed: createTranslateCardView.cancelButton.rx.tap)
+
         tapGesture
             .rx
             .event
@@ -52,6 +53,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         createTranslateCardView.sourceTextField.text = ""
         createTranslateCardView.targetTextField.text = ""
         createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
+        createTranslateCardView.cancelButton.setAttributedTitle(.defaultText(withText: "Cancel"), for: .normal)
     }
 }
 
