@@ -1,0 +1,68 @@
+//
+//  PickerViewModel.swift
+//  TranslationCards
+//
+//  Created by Dmytro Vorko on 10.12.2019.
+//  Copyright © 2019 Dmytro Vorko. All rights reserved.
+//
+
+import RxCocoa
+import RxSwift
+
+final class PickerViewModel: ViewModel<PickerRouter> {
+    
+    let items: BehaviorRelay<[String]> = .init(value: [])
+    let selectedItem = BehaviorRelay<(row: Int, component: Int)>.init(value: (0,0))
+    let title = BehaviorRelay<String>.init(value: "")
+    fileprivate let finishLanguage = BehaviorRelay<Language?>.init(value: nil)
+    fileprivate let currentLanguage = BehaviorRelay<Language?>.init(value: nil)
+    
+    init(callBackLanguage: BehaviorRelay<Language>, titleLabel: String) {
+        super.init()
+        
+        currentLanguage.accept(callBackLanguage.value)
+        
+        var supportedLanguages = Language.allCases
+        supportedLanguages.sort(by: {
+            $0.description < $1.description
+        })
+        if let initialSelectedRow = supportedLanguages.firstIndex(of: callBackLanguage.value) {
+            selectedItem.accept((row: initialSelectedRow, component: 0))
+        }
+        let newItems = supportedLanguages.map{ $0.description }
+        items.accept(newItems)
+        
+        selectedItem
+            .subscribe(onNext: { [weak self] (selectedItem) in
+                let language = supportedLanguages[selectedItem.row]
+                self?.currentLanguage.accept(language)
+            })
+            .disposed(by: disposeBag)
+        
+        finishLanguage
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak callBackLanguage] (language) in
+                callBackLanguage?.accept(language)
+            })
+            .disposed(by: disposeBag)
+        
+        title.accept(titleLabel)
+    }
+    
+    func bind(cancelAction: ControlEvent<Void>, doneAction: ControlEvent<Void>) {
+        cancelAction
+            .subscribe(onNext: { [weak self] (_) in
+                self?.router.route(to: .dissmis)
+            })
+            .disposed(by: disposeBag)
+        
+        doneAction
+            .subscribe(onNext: { [weak self] (_) in
+                guard let currentLanguage = self?.currentLanguage.value else {
+                    return
+                }
+                self?.finishLanguage.accept(currentLanguage)
+                self?.router.route(to: .dissmis) })
+            .disposed(by: disposeBag)
+    }
+}

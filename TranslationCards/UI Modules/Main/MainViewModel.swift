@@ -28,20 +28,6 @@ final class MainViewModel: ViewModel<MainRouter> {
             }
             self?.user = user
             self?.makeSubscribesToUser(user)
-            
-            #if DEBUG
-            if user.languages.value.count <= 0 {
-                user.appendLanguage(newLanguage: LanguageBind.default,
-                                    andCurrentLanguage: LanguageBind.default)
-                    .subscribe(onNext: { (_) in
-                        debugPrint("Success add user language - \(LanguageBind.default)")
-                    }, onError: { [weak self] (error) in
-                        let wrongAlert = AlertModel.warningAlert(message: "Failed add user language - with error \(error)", handler: nil)
-                        self?.alertModel.accept(wrongAlert)
-                    })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
-            }
-            #endif
         })
             .disposed(by: disposeBag)
     }

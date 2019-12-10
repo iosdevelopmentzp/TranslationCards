@@ -36,7 +36,13 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
                        cancelButtonPressed: createTranslateCardView.cancelButton.rx.tap)
+        
+        viewModel.bind(withSourceSelectLanguageButton: createTranslateCardView.sourceSelectLanguageButton.rx.tap,
+                       targetSelectLanguageButton: createTranslateCardView.targetSelectLanguageButton.rx.tap)
 
+        viewModel.bind(sourceButtonImage: createTranslateCardView.sourceSelectLanguageButton.rx.backgroundImage(),
+                       targetButtonImage: createTranslateCardView.targetSelectLanguageButton.rx.backgroundImage())
+        
         tapGesture
             .rx
             .event

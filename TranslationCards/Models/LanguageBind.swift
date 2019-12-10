@@ -13,7 +13,11 @@ struct LanguageBind: Equatable {
     let targetLanguage: Language
     static let k_separator = "_"
     
+    /// sourceLanguage and targetLanguage should not be the same
     init(source sourceLanguage: Language, target targetLanguage: Language) {
+        guard sourceLanguage != targetLanguage else {
+            fatalError("Attempt create LanguageBind with the same languages")
+        }
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
     }

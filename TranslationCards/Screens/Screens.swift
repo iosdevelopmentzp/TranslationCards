@@ -6,9 +6,15 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RxSwift
+import RxCocoa
 
 struct Screens {
+    static func languagePickerView(currentLanguage: BehaviorRelay<Language>, title: String) -> PickerViewController {
+        let vm = PickerViewModel(callBackLanguage: currentLanguage, titleLabel: title)
+        return PickerViewController(viewModel: vm)
+    }
+    
     static func cardSlideShow(cards: [TranslateCard]) -> CardSlideShowViewController {
         let vm = CardSlideShowViewModel(cards: cards)
         return CardSlideShowViewController(viewModel: vm)

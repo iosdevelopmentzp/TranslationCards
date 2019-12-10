@@ -12,16 +12,14 @@ import RxCocoa
 class CreateTranslateCardView: UIView {
     let sourceTextField = UITextView()
     let sourceHeaderLabel = UILabel()
-    fileprivate let sourceSelectLanguageButton = UIButton(type: .custom)
-    fileprivate let sourceFlagIcon = BehaviorRelay<UIImage?>.init(value: nil)
+    let sourceSelectLanguageButton = UIButton(type: .custom)
     
     let targetHeaderLabel = UILabel()
     let targetTextField = UITextView()
     let saveButton = UIButton()
     let cancelButton = UIButton()
     let buttonStackView = UIStackView()
-    fileprivate let targetFlagIcon = BehaviorRelay<UIImage?>.init(value: nil)
-    fileprivate let targetSelectLanguageButton = UIButton(type: .custom)
+    let targetSelectLanguageButton = UIButton(type: .custom)
     
     fileprivate let diposeBag = DisposeBag()
     

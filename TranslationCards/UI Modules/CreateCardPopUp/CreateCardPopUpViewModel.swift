@@ -12,11 +12,52 @@ import RxCocoa
 final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     fileprivate let userId: String
-    fileprivate let language: LanguageBind
+    fileprivate let startedLanguage: LanguageBind
+    
+    fileprivate lazy var language = BehaviorRelay<LanguageBind>.init(value: startedLanguage)
+    fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
+    fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
     
     init(userId: String, language: LanguageBind) {
         self.userId = userId
-        self.language = language
+        self.startedLanguage = language
+        super.init()
+        
+        sourceLanguage
+            .filter({ [weak self] (sourceLanguage) -> Bool in
+                guard let self = self else { return false }
+                return self.language.value.sourceLanguage != sourceLanguage
+            })
+            .subscribe(onNext: { [weak self] (newSourceLanguage) in
+                guard let self = self else { return }
+                let oldSourceLanguage = self.language.value.sourceLanguage
+                let oldTargetLanguage = self.language.value.targetLanguage
+                let newTargetLanguage = newSourceLanguage == oldTargetLanguage ? oldSourceLanguage : oldTargetLanguage
+                if newTargetLanguage != self.targetLanguage.value {
+                    self.targetLanguage.accept(newTargetLanguage)
+                }
+                let newBindLanguage = LanguageBind(source: newSourceLanguage, target: newTargetLanguage)
+                self.language.accept(newBindLanguage)
+            })
+            .disposed(by: disposeBag)
+        
+        targetLanguage
+            .filter({ [weak self] (targetLanguage) -> Bool in
+                guard let self = self else { return false }
+                return self.language.value.targetLanguage != targetLanguage
+            })
+            .subscribe(onNext: { [weak self] (newTargetLanguage) in
+                guard let self = self else { return }
+                let oldSourceLanguage = self.language.value.sourceLanguage
+                let oldTargetLanguage = self.language.value.targetLanguage
+                let newSourceLanguage = newTargetLanguage == oldSourceLanguage ? oldTargetLanguage : oldSourceLanguage
+                if newSourceLanguage != self.sourceLanguage.value {
+                    self.sourceLanguage.accept(newSourceLanguage)
+                }
+                let newBindLanguage = LanguageBind(source: newSourceLanguage, target: newTargetLanguage)
+                self.language.accept(newBindLanguage)
+            })
+            .disposed(by: disposeBag)
     }
     
     func bind(withNewPhrase newPhrase: ControlProperty<String>,
@@ -31,7 +72,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 guard !newPhrase.isEmpty, !translation.isEmpty,
                     let userId = self?.userId, let language = self?.language else { return }
                 let translateCard = TranslateCard(userId: userId,
-                                                  language: language,
+                                                  language: language.value,
                                                   sourcePhrase: newPhrase,
                                                   targetPhrase: translation)
                 self?.saveTranslationCard(card: translateCard)
@@ -44,7 +85,37 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             })
             .disposed(by: disposeBag)
     }
+    
+    func bind(withSourceSelectLanguageButton sourceLanguageButton: ControlEvent<Void>,
+                          targetSelectLanguageButton: ControlEvent<Void>) {
+        sourceLanguageButton
+            .subscribe(onNext: { [weak self] (_) in
+                guard let self = self else { return }
+                self.router.route(to: .languagePickerView(currentLanguage: self.sourceLanguage,
+                                                          title: "Source language")) })
+            .disposed(by: disposeBag)
+        
+        targetSelectLanguageButton
+            .subscribe(onNext: { [weak self] (_) in
+                guard let self = self else { return }
+                self.router.route(to: .languagePickerView(currentLanguage: self.targetLanguage,
+                                                          title: "Source language")) })
+            .disposed(by: disposeBag)
+    }
+    
+    func bind(sourceButtonImage: Binder<UIImage?>, targetButtonImage: Binder<UIImage?>) {
+        sourceLanguage
+            .map { $0.flagIcon }
+            .bind(to: sourceButtonImage)
+            .disposed(by: disposeBag)
+        
+        targetLanguage
+            .map { $0.flagIcon }
+            .bind(to: targetButtonImage)
+            .disposed(by: disposeBag)
+    }
 
+    // MARK: - Private
     fileprivate func saveTranslationCard(card: TranslateCard) {
         card.sendToDatabase()
             .subscribe(onNext: { [weak self] (_) in
