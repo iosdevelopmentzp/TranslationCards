@@ -66,16 +66,57 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Card
-    func saveCard(_ card: TranslateCard) -> Observable<Void> {
-        return database
-            .collection(.databaseUserCollection)
-            .document(card.userOwnerId)
-            .collection(.databaseLanguagesCollection)
-            .document(card.language.stringRepresentation)
-            .collection(.databaseCardsCollection)
-            .document()
-            .rx
-            .setData(card.representation)
+    func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void> {
+        let userReferance = database.collection(.databaseUserCollection).document(card.userOwnerId)
+        let languageReferance = userReferance.collection(.databaseLanguagesCollection).document(card.language.id)
+        let cardDocumentReferance = languageReferance.collection(.databaseCardsCollection).document(card.id)
+            
+        return Observable<Void>.create { [weak self] (observer) -> Disposable in
+           
+            let saveCardAction = {
+                self?.database.runTransaction({ (transaction, errorPoint) -> Any? in
+                    if isCurrentLanguage {
+                        transaction.updateData(["currentLanguage": card.language.stringRepresentation],
+                                               forDocument: userReferance)
+                    }
+                    transaction.setData(card.representation, forDocument: cardDocumentReferance)
+                    return nil
+                }) { (object, error) in
+                    if let error = error {
+                        observer.onError(error)
+                    } else {
+                        observer.onNext(())
+                        observer.onCompleted()
+                    }
+                }
+            }
+            
+            let firstCreateLanguageThenSaveCard = {
+                languageReferance.setData(card.language.representation) { (error) in
+                    if let error = error {
+                        observer.onError(error)
+                        return
+                    }
+                    saveCardAction()
+                }
+            }
+            
+            languageReferance
+                .rx
+                .isDocumentExist()
+                .subscribe(onNext: { (isExist) in
+                    if isExist {
+                        saveCardAction()
+                    } else {
+                        firstCreateLanguageThenSaveCard()
+                    }
+                }, onError: { (error) in
+                    firstCreateLanguageThenSaveCard()
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            
+            return Disposables.create()
+        }
     }
     
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]> {
@@ -97,42 +138,20 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             })
     }
     
-    func appendNewLanguage(_ language: LanguageBind, currentLanguage: LanguageBind, forUser user: User) -> Observable<Void> {
-        let userReferance = database.collection(.databaseUserCollection).document(user.uid)
-        let languagesReferance = userReferance.collection(.databaseLanguagesCollection).document(language.stringRepresentation)
-        let languagesData = user.languages.value.map{ $0.stringRepresentation }
-        
-        return Observable<Void>.create { [weak self] (observer) -> Disposable in
-            self?.database.runTransaction({ (transaction, errorPointer) -> Any? in
-                    transaction.updateData(["languages": languagesData], forDocument: userReferance)
-                    transaction.updateData(["currentLanguage": currentLanguage.stringRepresentation], forDocument: userReferance)
-                    transaction.setData(language.representation, forDocument: languagesReferance)
-                return nil
-            }, completion: { (object, error) in
-                if let error = error {
-                    observer.onError(error)
-                } else {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }
-            })
-            return Disposables.create()
-        }
-    }
-    
     func getCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]> {
         database
             .collection(.databaseUserCollection)
             .document(userId)
             .collection(.databaseLanguagesCollection)
-            .document(language.stringRepresentation)
+            .document(language.id)
             .collection(.databaseCardsCollection)
             .rx
             .getDocuments()
             .map { (snapshot) -> [TranslateCard] in
                 var cards = Array<TranslateCard>()
                 snapshot.documents.forEach{
-                    guard let card = TranslateCard(withData: $0.data()) else { return }
+                    guard var card = TranslateCard(withData: $0.data()) else { return }
+                    card.id = $0.reference.documentID
                     cards.append(card)
                 }
                 return cards }

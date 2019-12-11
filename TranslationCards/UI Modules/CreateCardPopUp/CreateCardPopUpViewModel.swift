@@ -18,9 +18,9 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
     fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
     
-    init(userId: String, language: LanguageBind) {
+    init(userId: String, language: LanguageBind?) {
         self.userId = userId
-        self.startedLanguage = language
+        self.startedLanguage = language ?? LanguageBind.default
         super.init()
         
         sourceLanguage

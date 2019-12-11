@@ -16,6 +16,8 @@
 		3B242F6C239FA91800B90C41 /* PickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F69239FA91800B90C41 /* PickerRouter.swift */; };
 		3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6A239FA91800B90C41 /* PickerViewController.swift */; };
 		3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6B239FA91800B90C41 /* PickerViewModel.swift */; };
+		3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F70239FFF8500B90C41 /* ListenerService.swift */; };
+		3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */; };
 		3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2023855F4A0038A7AC /* ViewController.swift */; };
 		3B319F2423855F4B0038A7AC /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2123855F4A0038A7AC /* Router.swift */; };
 		3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2223855F4B0038A7AC /* ViewModel.swift */; };
@@ -91,6 +93,7 @@
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
 		3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSideView.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
+		3BAFCE6123A1052400605882 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAFCE6023A1052400605882 /* DocumentReference.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField.swift */; };
 		3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C30238FD816006FB7F8 /* MainRouter.swift */; };
 		3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C31238FD816006FB7F8 /* MainViewController.swift */; };
@@ -131,6 +134,8 @@
 		3B242F69239FA91800B90C41 /* PickerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerRouter.swift; sourceTree = "<group>"; };
 		3B242F6A239FA91800B90C41 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		3B242F6B239FA91800B90C41 /* PickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewModel.swift; sourceTree = "<group>"; };
+		3B242F70239FFF8500B90C41 /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
+		3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerServiceV1.swift; sourceTree = "<group>"; };
 		3B319F2023855F4A0038A7AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3B319F2123855F4A0038A7AC /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		3B319F2223855F4B0038A7AC /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -207,6 +212,7 @@
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
+		3BAFCE6023A1052400605882 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
 		3BC52C2C238FC466006FB7F8 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3BC52C30238FD816006FB7F8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		3BC52C31238FD816006FB7F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -262,6 +268,15 @@
 			path = Picker;
 			sourceTree = "<group>";
 		};
+		3B242F6F239FFF5800B90C41 /* Listener */ = {
+			isa = PBXGroup;
+			children = (
+				3B242F70239FFF8500B90C41 /* ListenerService.swift */,
+				3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */,
+			);
+			path = Listener;
+			sourceTree = "<group>";
+		};
 		3B319F1F238559F30038A7AC /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +328,7 @@
 				3B031E10239BBE5E00946F8D /* CGFloat.swift */,
 				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
 				3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */,
+				3BAFCE6023A1052400605882 /* DocumentReference.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -468,6 +484,7 @@
 				3B825B9C238692B3009D62E8 /* Credentials */,
 				3B6CF097239E2E49007CDA17 /* Speech */,
 				3B825B9D238692CE009D62E8 /* Database */,
+				3B242F6F239FFF5800B90C41 /* Listener */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -833,11 +850,13 @@
 				3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */,
 				3B5A3BB623968D56009110A7 /* DatabaseServiceAccessing.swift in Sources */,
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
+				3BAFCE6123A1052400605882 /* DocumentReference.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
+				3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */,
 				3B6CF0A4239E7D4C007CDA17 /* UIViewController.swift in Sources */,
 				3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */,
 				3B5A3BC02396A51A009110A7 /* CardInfoCell.swift in Sources */,
@@ -901,6 +920,7 @@
 				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
 				3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */,
+				3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,7 @@ import Foundation
 
 final class MainRouter: Router {
     enum Route {
-        case createCard(forUserId: String, language: LanguageBind)
+        case createCard(forUserId: String, language: LanguageBind?)
         case cardList(language: LanguageBind, userId: String)
     }
     
@@ -24,7 +24,7 @@ final class MainRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func openCreateCardView(forUserId userId: String, language: LanguageBind) {
+    fileprivate func openCreateCardView(forUserId userId: String, language: LanguageBind?) {
         let vc = Screens.createCard(forUserId: userId, language: language)
         viewController?.navigationController?.present(vc, animated: true, completion: nil)
     }

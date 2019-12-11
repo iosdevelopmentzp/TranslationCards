@@ -27,7 +27,7 @@ struct TranslateCard {
     var numberGuesses: Int
     var numberrAttempts: Int
     var learningLevel: LearningLevel
-    
+    var id: String
     
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
@@ -41,6 +41,7 @@ struct TranslateCard {
         self.numberGuesses = 0
         self.numberrAttempts = 0
         self.learningLevel = .low
+        self.id = UUID().uuidString
     }
     
     init?(withData data: [String: Any]) {
@@ -56,7 +57,8 @@ struct TranslateCard {
             let learningLevelInt = data["learningLevel"] as? Int,
             let learningLevel = LearningLevel(rawValue: learningLevelInt),
             let languageString = data["language"] as? String,
-            let language = LanguageBind(withString: languageString)
+            let language = LanguageBind(withString: languageString),
+            let id = data["id"] as? String
         else { return nil }
         
         self.userOwnerId = userOwnerId
@@ -68,6 +70,7 @@ struct TranslateCard {
         self.numberrAttempts = numberrAttempts
         self.learningLevel = learningLevel
         self.language = language
+        self.id = id
     }
 }
 
@@ -88,7 +91,8 @@ extension TranslateCard: DataRepresentation {
             "numberGuesses" : numberGuesses,
             "numberrAttempts" : numberrAttempts,
             "learningLevel" : learningLevel.rawValue,
-            "language": language.stringRepresentation
+            "language": language.stringRepresentation,
+            "id": id
         ]
     }
 }

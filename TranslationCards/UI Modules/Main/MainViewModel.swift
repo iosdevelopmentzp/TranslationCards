@@ -13,28 +13,31 @@ import RxCocoa
 final class MainViewModel: ViewModel<MainRouter> {
     
     var sections = BehaviorRelay<[Section]>.init(value: [])
-    fileprivate var userChangesSubscription: Disposable?
-    fileprivate var user: User?
+    fileprivate weak var user: User?
     
     override init() {
         super.init()
         
-        services.credentials.user.subscribe(onNext: { [weak self] (user) in
-            guard let user = user else {
-                self?.userChangesSubscription?.dispose()
-                self?.sections.accept([])
-                self?.user = nil
-                return
-            }
-            self?.user = user
-            self?.makeSubscribesToUser(user)
-        })
+        guard let user = services.credentials.user.value else {
+            alertModel.accept(.warningAlert(message: "Failed get current user.", handler: nil))
+            return
+        }
+        
+        self.user = user
+        services
+            .listener
+            .listenLanguageBindList(forUserWithId: user.uid)
+            .subscribe(onNext: { [weak self] (changed) in
+                self?.proccessDocumentChanges(changed)
+                }, onError: { [weak self] (error) in
+                    self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
+                })
             .disposed(by: disposeBag)
     }
     
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
         plusPressed.subscribe() { [weak self] _ in
-            guard let user = self?.user, let currentLang = user.currentLanguage else {
+            guard let userId = self?.user?.uid else {
                     let okAction = AlertModel.ActionModel(title: "Ok",
                                                           style: .destructive,
                                                           handler: nil)
@@ -45,7 +48,7 @@ final class MainViewModel: ViewModel<MainRouter> {
                     self?.alertModel.accept(alertModel)
                     return
             }
-            self?.router.route(to: .createCard(forUserId: user.uid, language: currentLang))
+            self?.router.route(to: .createCard(forUserId: userId, language: self?.user?.currentLanguage))
         }
         .disposed(by: disposeBag)
     }
@@ -60,12 +63,28 @@ final class MainViewModel: ViewModel<MainRouter> {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func makeSubscribesToUser(_ user: User) {
-        let subscription = user
-            .languages
-            .subscribe(onNext: { [weak self] (languages) in
-                self?.sections.accept([Section(items: languages)])
-            })
-        subscription.disposed(by: disposeBag)
+    // MARK: - Private
+    fileprivate func proccessDocumentChanges(_ documentChanges: ChangedDocuments<LanguageBind>) {
+        guard var itemsForChange = sections.value.first?.items else {
+            if documentChanges.type == .added {
+                sections.accept([Section(items: documentChanges.changedObjects)])
+            }
+            return
+        }
+        
+        switch documentChanges.type {
+        case .added:
+            documentChanges.changedObjects.forEach {
+                itemsForChange.append($0)
+            }
+        case .modified:
+            break
+        case .removed:
+            documentChanges.changedObjects.forEach {
+                guard let index = itemsForChange.firstIndex(of: $0) else { return }
+                itemsForChange.remove(at: index)
+            }
+        }
+        sections.accept([Section(items: itemsForChange)])
     }
 }
