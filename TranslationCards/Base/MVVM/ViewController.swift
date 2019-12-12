@@ -35,7 +35,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .mainDarkColor
+        view.backgroundColor = .mainBackgroundColor
         setupConstraints()
     }
     

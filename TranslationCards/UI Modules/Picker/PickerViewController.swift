@@ -94,7 +94,7 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
         
         cancelButton.setTitleColor(UIColor.cancelButton, for: .normal)
         doneButton.setTitleColor(.pickerViewButtonTitleColor, for: .normal)
-        titleLabel.textColor = .mainDarkColor
+        titleLabel.textColor = .mainBackgroundColor
     }
     
     override func binding() {

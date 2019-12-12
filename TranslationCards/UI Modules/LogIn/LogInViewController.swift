@@ -47,7 +47,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     override func setupView() {
         super.setupView()
-        view.backgroundColor = .mainDarkColor
+        view.backgroundColor = .mainBackgroundColor
         
         stackView.axis = .vertical
         stackView.spacing = 25.0

@@ -9,7 +9,12 @@
 import UIKit
 
 extension UIColor {
-    static var mainDarkColor: UIColor { UIColor(hexString: "1B1B1B")! }
+    static var mainBackgroundColor: UIColor {
+        UIColor(hexString: "112D32")!
+//        "255350" - dark green
+//        "1B1B1B" - matte black
+//        "112D32" - green
+    }
     static var secondaryUiColor: UIColor { .white }
     static var accentColor: UIColor { UIColor(hexString: "F9D342")! }
     static var validateAccentColor: UIColor { UIColor.green }

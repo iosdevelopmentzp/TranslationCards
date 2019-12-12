@@ -51,7 +51,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     
     override func setupView() {
         super.setupView()
-        view.backgroundColor = .mainDarkColor
+        view.backgroundColor = .mainBackgroundColor
         bottomBackgroundView.backgroundColor = .accentColor
         signUpButton.backgroundColor = .notValidateButton
         activityIndicator.hidesWhenStopped = true
@@ -74,7 +74,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             .skip(1)
             .subscribe(onNext: { (isValide) in
                 UIView.animate(withDuration: 0.3) { [weak self] in
-                    self?.signUpButton.backgroundColor = isValide ? .mainDarkColor : .notValidateButton
+                    self?.signUpButton.backgroundColor = isValide ? .mainBackgroundColor : .notValidateButton
                 }
             })
             .disposed(by: disposeBag)

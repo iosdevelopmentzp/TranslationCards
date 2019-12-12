@@ -45,13 +45,13 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         let navigationBarAppearace = UINavigationBar.appearance()
         if #available(iOS 13.0, *) {
             let navBarAppearace = UINavigationBarAppearance()
-            navBarAppearace.backgroundColor = .mainDarkColor
+            navBarAppearace.backgroundColor = .mainBackgroundColor
             navBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             navBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             UINavigationBar.appearance().standardAppearance = navBarAppearace
             UINavigationBar.appearance().prefersLargeTitles = true
         } else {
-            navigationBarAppearace.barTintColor = .mainDarkColor
+            navigationBarAppearace.barTintColor = .mainBackgroundColor
             navigationBarAppearace.tintColor = .white
             navigationBarAppearace.isTranslucent = false
             navigationBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
