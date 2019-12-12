@@ -258,6 +258,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B1544CC23A28C84004C0B75 /* ColorChoice */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ColorChoice;
+			sourceTree = "<group>";
+		};
 		3B242F68239FA8FB00B90C41 /* Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,6 +296,7 @@
 		3B319F2623855F780038A7AC /* UI Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3B1544CC23A28C84004C0B75 /* ColorChoice */,
 				3B5D511C2387E6AE00DCB5FB /* Navigation */,
 				3B319F2923855FAD0038A7AC /* LogIn */,
 				3B825BAF2386DF92009D62E8 /* Sign Up */,

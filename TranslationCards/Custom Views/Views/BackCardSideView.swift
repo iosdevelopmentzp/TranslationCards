@@ -30,6 +30,8 @@ final class BackCardSideView: UIView {
     fileprivate var topLanguage: Language?
     fileprivate var bottomLanguage: Language?
     
+    fileprivate var gradientLayer: CAGradientLayer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
@@ -41,16 +43,24 @@ final class BackCardSideView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer?.frame = bounds
+    }
+    
     func configure(withCard card: TranslateCard) {
         topImageView.image = card.language.sourceLanguage.flagIcon
         topTextLabel.text = card.sourcePhrase
-        topContainerView.backgroundColor  = card.language.sourceLanguage.associativeColor
         topLanguage = card.language.sourceLanguage
        
         bottomImageView.image = card.language.targetLanguage.flagIcon
         bottomTextLabel.text = card.targetPhrase
-        bottomContainerView.backgroundColor = card.language.targetLanguage.associativeColor
         bottomLanguage = card.language.targetLanguage
+        
+        gradientLayer?.removeFromSuperlayer()
+        let topColor = card.language.sourceLanguage.associativeColor
+        let bottomColor = card.language.targetLanguage.associativeColor
+        gradientLayer = setGradient(colorTop: topColor, colorBottom: bottomColor)
     }
     
     // MARK: - Private

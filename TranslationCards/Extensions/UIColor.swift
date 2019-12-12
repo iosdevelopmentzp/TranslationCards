@@ -27,7 +27,6 @@ extension UIColor {
     static var borderColorLight: UIColor { .lightGray }
     static var borderColotDak: UIColor { .darkGray }
     
-    
     // Buttons
     static var notValidateButton: UIColor { .gray }
     static var cancelButton: UIColor? { UIColor.init(hexString: "E64F60") }

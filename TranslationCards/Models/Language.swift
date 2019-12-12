@@ -36,16 +36,16 @@ enum Language: String, CustomStringConvertible, CaseIterable {
         return .flagIcon(forLanguage: self)
     }
     
-    var associativeColor: UIColor? {
+    var associativeColor: UIColor {
         switch self {
         case .rus:
-            return UIColor(hexString: "0C1AA3")
+            return UIColor(hexString: "0C1AA3")!
         case .eng:
-            return UIColor(hexString: "C80F24")
+            return UIColor(hexString: "C80F24")!
         case .spa:
-            return UIColor(hexString: "C60A1F")
+            return UIColor(hexString: "C60A1F")!
         case .deu:
-            return UIColor(hexString: "FFCF00")
+            return UIColor(hexString: "FFCF00")!
         }
     }
 }

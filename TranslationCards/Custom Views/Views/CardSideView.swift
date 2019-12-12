@@ -38,7 +38,7 @@ class CardSideView: UIView {
         language = card.language.sourceLanguage
         
         gradientLayer?.removeFromSuperlayer()
-        let topColor = card.language.sourceLanguage.associativeColor ?? .orange
+        let topColor = card.language.sourceLanguage.associativeColor
         if let lighterColor = topColor.lighter() {
             gradientLayer = setGradient(colorTop: lighterColor,
                                         colorBottom: topColor)
