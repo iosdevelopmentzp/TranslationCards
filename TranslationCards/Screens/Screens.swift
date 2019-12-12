@@ -10,8 +10,8 @@ import RxSwift
 import RxCocoa
 
 struct Screens {
-    static func languagePickerView(currentLanguage: BehaviorRelay<Language>, title: String) -> PickerViewController {
-        let vm = PickerViewModel(callBackLanguage: currentLanguage, titleLabel: title)
+    static func languagePickerView(currentLanguage: BehaviorRelay<Language>, languageList: [Language]? = nil, title: String) -> PickerViewController {
+        let vm = PickerViewModel(callBackLanguage: currentLanguage, languageList: languageList, titleLabel: title)
         return PickerViewController(viewModel: vm)
     }
     

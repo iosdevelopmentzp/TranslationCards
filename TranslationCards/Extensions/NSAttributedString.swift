@@ -12,7 +12,7 @@ extension NSAttributedString {
     static func placeholderLight(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
         .init(string: text,
               attributes: [
-                .font : UIFont.robotoThin(size: size),
+                .font : UIFont.font(type: .roboto, weight: .thin, size: size),
                 .foregroundColor: UIColor.placeholderLightColor
         ])
     }
@@ -20,7 +20,7 @@ extension NSAttributedString {
     static func placeholderDark(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
         .init(string: text,
               attributes: [
-                .font : UIFont.robotoThin(size: size),
+                .font : UIFont.font(type: .roboto, weight: .thin, size: size),
                 .foregroundColor: UIColor.placeholderDarkColor
         ])
     }
@@ -28,7 +28,7 @@ extension NSAttributedString {
     static func defaultText(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
         .init(string: text,
               attributes: [
-                .font : UIFont.robotoRegular(size: size),
+                .font : UIFont.font(type: .roboto, weight: .regular, size: size),
                 .foregroundColor: UIColor.defaultTextColor
         ])
     }
@@ -36,7 +36,7 @@ extension NSAttributedString {
     static func accent(withText text: String, size: CGFloat = 17.0) -> NSAttributedString {
         .init(string: text,
               attributes: [
-                .font : UIFont.robotoRegular(size: size),
+                .font : UIFont.font(type: .roboto, weight: .regular, size: size),
                 .foregroundColor: UIColor.accentColor
         ])
     }
@@ -48,7 +48,7 @@ extension NSAttributedString {
     static var navigationBarButtomItemAttribute: [NSAttributedString.Key : Any] {
         return [
             .foregroundColor: UIColor.accentColor,
-            .font: UIFont.robotoRegular(size: 23.0)
+            .font: UIFont.font(type: .roboto, weight: .regular, size: 23)
         ]
     }
 }

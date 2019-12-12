@@ -11,6 +11,13 @@ import UIKit
 enum Language: String, CustomStringConvertible, CaseIterable {
     case rus
     case eng
+    case spa
+    case deu
+    
+    func next() -> Language {
+        let allCases = type(of: self).allCases
+        return allCases[(allCases.firstIndex(of: self)! + 1) % allCases.count]
+    }
     
     var description: String {
         switch self {
@@ -18,23 +25,27 @@ enum Language: String, CustomStringConvertible, CaseIterable {
             return "Russian"
         case .eng:
             return "English"
+        case .spa:
+            return "Spanich"
+        case .deu:
+            return "Deutsch"
         }
     }
     
     var flagIcon: UIImage? {
-        let name = "\(rawValue)Icon"
-        guard let imageType = ImageType(rawValue: name)  else {
-            return nil
-        }
-        return .image(withType: imageType, renderringMode: .alwaysOriginal)
+        return .flagIcon(forLanguage: self)
     }
     
-    var associativeColor: UIColor {
+    var associativeColor: UIColor? {
         switch self {
         case .rus:
-            return .blue
+            return UIColor(hexString: "0C1AA3")
         case .eng:
-            return .red
+            return UIColor(hexString: "C80F24")
+        case .spa:
+            return UIColor(hexString: "C60A1F")
+        case .deu:
+            return UIColor(hexString: "FFCF00")
         }
     }
 }

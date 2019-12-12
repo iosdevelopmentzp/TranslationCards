@@ -76,7 +76,7 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             let saveCardAction = {
                 self?.database.runTransaction({ (transaction, errorPoint) -> Any? in
                     if isCurrentLanguage {
-                        transaction.updateData(["currentLanguage": card.language.stringRepresentation],
+                        transaction.updateData(["currentLanguage": card.language.targetLanguage.rawValue],
                                                forDocument: userReferance)
                     }
                     transaction.setData(card.representation, forDocument: cardDocumentReferance)

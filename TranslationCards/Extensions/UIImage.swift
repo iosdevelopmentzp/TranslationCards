@@ -12,13 +12,14 @@ enum ImageType: String {
     case playButton
     case to
     case speaker
-    
-    // Flags icons
-    case engFlagIcon = "engIcon"
-    case rusFlagIcon = "rusIcon"
 }
 
 extension UIImage {
+    static func flagIcon(forLanguage language: Language) -> UIImage? {
+        let imageName = "\(language.rawValue)" + "Icon"
+        return UIImage(named: imageName)
+    }
+    
     static func image(withType type: ImageType, renderringMode: RenderingMode = .alwaysTemplate) -> UIImage {
         guard let image = UIImage(named: type.rawValue) else {
             fatalError("Failed create image with name \(type.rawValue)")

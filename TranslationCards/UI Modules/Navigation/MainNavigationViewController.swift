@@ -15,6 +15,10 @@ class MainNavigationViewController: NavigationViewController<MainNavigationRoute
         hideSeparator()
     }
     
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+        viewController.navigationController?.navigationBar.topItem?.title = ""
+    }
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         viewModel.willPresentViewController(viewControllerToPresent, isAnimated: flag)
         super.present(viewControllerToPresent, animated: flag, completion: completion)

@@ -59,6 +59,7 @@ class AuthServiceV1: NSObject, AuthService {
                 .createUser(withEmail: email, password: password)
                 .subscribe(onNext: { [weak self] (result) in
                     let user = User(uid: result.user.uid,
+                                    nativeLanguage: .rus,
                                     email: result.user.email,
                                     username: displayName,
                                     avatarUrl: result.user.photoURL?.absoluteString)

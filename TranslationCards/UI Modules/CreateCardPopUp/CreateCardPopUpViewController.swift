@@ -54,7 +54,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     
     override func localizable() {
         super.localizable()
-        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase")
+        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase in the native language")
          createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
         createTranslateCardView.sourceTextField.text = ""
         createTranslateCardView.targetTextField.text = ""

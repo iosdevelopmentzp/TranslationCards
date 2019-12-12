@@ -17,12 +17,12 @@ class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
         navigationControllerDelegate = NavigationControllerDelegate(transitionAnimator: transitionAnimator)
         modalTransitionAnimatorDelegate = ModalTransitionAnimationDelegate(modalAnimator: ModalTransitionAnimator())
     }
-    
+
     func willPresentViewController(_ viewControllerToPresent: UIViewController, isAnimated: Bool) {
         guard isAnimated else {
             return
         }
-        
+
         if let modalAnimator = modalTransitionAnimatorDelegate,
             modalAnimator.animator.isValidatedPresentedViewController(viewControllerToPresent)
         {

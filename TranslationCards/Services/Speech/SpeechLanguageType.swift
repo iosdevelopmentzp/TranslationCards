@@ -11,13 +11,19 @@ import Foundation
 enum SpeechLanguageType: String {
     case rus
     case eng
+    case spa
+    case deu
     
     static func initWithLanguage(language: Language) -> Self {
         switch language {
         case .rus:
-            return SpeechLanguageType.rus
+            return .rus
         case .eng:
-            return SpeechLanguageType.eng
+            return .eng
+        case .spa:
+            return .spa
+        case .deu:
+            return .deu
         }
     }
    
@@ -37,6 +43,10 @@ enum SpeechLanguageType: String {
             return "ru-RU"
         case .eng:
             return "en-GB"
+        case .spa:
+            return "es-ES"
+        case .deu:
+            return "de-DE"
         }
     }
 }

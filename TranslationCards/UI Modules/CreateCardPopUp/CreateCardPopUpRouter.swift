@@ -12,7 +12,7 @@ import RxCocoa
 class CreateCardPopUpRouter: Router {
     
     enum Route {
-        case languagePickerView(currentLanguage: BehaviorRelay<Language>, title: String)
+        case languagePickerView(currentLanguage: BehaviorRelay<Language>, languageList: [Language]? = nil, title: String)
     }
     
     func dissmis() {
@@ -21,15 +21,18 @@ class CreateCardPopUpRouter: Router {
     
     func route(to type: Route) {
         switch type {
-        case .languagePickerView(let currentLanguage, let title):
+        case .languagePickerView(let currentLanguage, let languageList, let title):
             presentLanguagePicker(currentLanguage: currentLanguage,
+                                  languageList: languageList,
                                   title: title)
         }
     }
     
     // MARK: - Private
-    fileprivate func presentLanguagePicker(currentLanguage: BehaviorRelay<Language>, title: String) {
-        let vc = Screens.languagePickerView(currentLanguage: currentLanguage, title: title)
+    fileprivate func presentLanguagePicker(currentLanguage: BehaviorRelay<Language>, languageList: [Language]? = nil, title: String) {
+        let vc = Screens.languagePickerView(currentLanguage: currentLanguage, languageList: languageList, title: title)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.transitioningDelegate = vc
         viewController?.present(vc, animated: true, completion: nil)
     }
 }

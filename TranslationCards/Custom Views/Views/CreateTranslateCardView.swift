@@ -103,7 +103,7 @@ class CreateTranslateCardView: UIView {
 
         [sourceHeaderLabel, targetHeaderLabel].forEach {
             $0.textColor = .white
-            $0.font = .robotoRegular(size: 40)
+            $0.font = .font(type: .roboto, weight: .regular, size: 40.0)
         }
         
         [sourceTextField, targetTextField].forEach {
@@ -111,7 +111,7 @@ class CreateTranslateCardView: UIView {
             $0.layer.borderWidth = 1.0
             $0.layer.cornerRadius = 9.0
             $0.backgroundColor = .white
-            $0.font = .robotoRegular(size: 20.0)
+            $0.font = .font(type: .roboto, size: 20.0)
             $0.autocorrectionType = .no
             $0.autocapitalizationType = .none
             $0.textColor = .black
@@ -125,9 +125,5 @@ class CreateTranslateCardView: UIView {
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         buttonStackView.spacing = 10.0
-        
-        [sourceSelectLanguageButton, targetSelectLanguageButton].forEach {
-            $0.setBackgroundImage(.image(withType: .rusFlagIcon, renderringMode: .alwaysOriginal), for: .normal)
-        }
     }
 }

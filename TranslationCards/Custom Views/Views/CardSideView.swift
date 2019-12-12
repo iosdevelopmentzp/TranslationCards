@@ -38,7 +38,7 @@ class CardSideView: UIView {
         language = card.language.sourceLanguage
         
         gradientLayer?.removeFromSuperlayer()
-        let topColor = card.language.sourceLanguage.associativeColor
+        let topColor = card.language.sourceLanguage.associativeColor ?? .orange
         if let lighterColor = topColor.lighter() {
             gradientLayer = setGradient(colorTop: lighterColor,
                                         colorBottom: topColor)
@@ -89,6 +89,8 @@ class CardSideView: UIView {
         textLabel.textAlignment = .center
         textLabel.numberOfLines = 0
         textLabel.isUserInteractionEnabled = false
+        textLabel.textColor = .white
+        textLabel.font = .font(type: .roboto, weight: .bold, size: 20)
         
         iconImageView.contentMode = .scaleAspectFit
         

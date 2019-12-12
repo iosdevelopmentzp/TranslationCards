@@ -8,12 +8,37 @@
 
 import UIKit
 
-extension UIFont {
-    static func robotoThin(size: CGFloat = 17.0) -> UIFont {
-        UIFont(name: "Roboto-Thin", size: size)!
-    }
+enum FontType: String {
+    case roboto = "Roboto"
+}
+
+enum FontWeight: String {
+    case black = "Black"
+    case bold = "Bold"
+    case italic = "Italic"
+    case light = "Light"
+    case medium = "Medium"
+    case regular = "Regular"
+    case thin = "Thin"
     
-    static func robotoRegular(size: CGFloat = 17.0) -> UIFont {
-        UIFont(name: "Roboto-Regular", size: size)!
+    func withItalic() -> String {
+        switch self {
+        case .regular, .italic:
+            return rawValue
+        default:
+            return rawValue + "Italic"
+        }
+    }
+}
+
+extension UIFont {
+    
+    static func font(type: FontType, weight: FontWeight = .regular, withItalic: Bool = false, size: CGFloat = 17.0) -> UIFont {
+        let weightName = withItalic ? weight.withItalic() : weight.rawValue
+        let fontName = type.rawValue + "-" + weightName
+        guard let font = UIFont(name: fontName, size: size) else {
+            fatalError("Something went wrong. Failed get font with name \(fontName)")
+        }
+        return font
     }
 }

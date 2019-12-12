@@ -134,6 +134,8 @@ final class BackCardSideView: UIView {
         
         [topTextLabel, bottomTextLabel].forEach {
             $0.numberOfLines = 0
+            $0.textColor = .white
+            $0.font = .font(type: .roboto, weight: .bold, size: 20)
         }
     }
     

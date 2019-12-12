@@ -37,7 +37,7 @@ final class MainViewModel: ViewModel<MainRouter> {
     
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
         plusPressed.subscribe() { [weak self] _ in
-            guard let userId = self?.user?.uid else {
+            guard let user = self?.user else {
                     let okAction = AlertModel.ActionModel(title: "Ok",
                                                           style: .destructive,
                                                           handler: nil)
@@ -48,7 +48,9 @@ final class MainViewModel: ViewModel<MainRouter> {
                     self?.alertModel.accept(alertModel)
                     return
             }
-            self?.router.route(to: .createCard(forUserId: userId, language: self?.user?.currentLanguage))
+            let sourceLanguage = user.currentLanguage ?? user.nativeLanguage.next()
+            let languageBind = LanguageBind(source: user.nativeLanguage, target: sourceLanguage)
+            self?.router.route(to: .createCard(forUserId: user.uid, language: languageBind))
         }
         .disposed(by: disposeBag)
     }

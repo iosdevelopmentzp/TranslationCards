@@ -61,7 +61,7 @@ final class RoundedTextField: UITextField {
     func setupView() {
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor.cgColor
-        font = .robotoRegular()
+        font = .font(type: .roboto)
         textColor = .defaultTextColor
     }
 }

@@ -88,18 +88,24 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     func bind(withSourceSelectLanguageButton sourceLanguageButton: ControlEvent<Void>,
                           targetSelectLanguageButton: ControlEvent<Void>) {
+
+// NOTE: - Implement if need source language action
+        /*
         sourceLanguageButton
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self else { return }
                 self.router.route(to: .languagePickerView(currentLanguage: self.sourceLanguage,
                                                           title: "Source language")) })
             .disposed(by: disposeBag)
+ */
         
         targetSelectLanguageButton
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self else { return }
+                let targetLanguages = Language.allCases.filter{ $0 != self.sourceLanguage.value}
                 self.router.route(to: .languagePickerView(currentLanguage: self.targetLanguage,
-                                                          title: "Source language")) })
+                                                          languageList: targetLanguages,
+                                                          title: "Target language")) })
             .disposed(by: disposeBag)
     }
     

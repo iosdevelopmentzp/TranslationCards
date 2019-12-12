@@ -17,12 +17,12 @@ final class PickerViewModel: ViewModel<PickerRouter> {
     fileprivate let finishLanguage = BehaviorRelay<Language?>.init(value: nil)
     fileprivate let currentLanguage = BehaviorRelay<Language?>.init(value: nil)
     
-    init(callBackLanguage: BehaviorRelay<Language>, titleLabel: String) {
+    init(callBackLanguage: BehaviorRelay<Language>, languageList: [Language]? =  nil,titleLabel: String) {
         super.init()
         
         currentLanguage.accept(callBackLanguage.value)
         
-        var supportedLanguages = Language.allCases
+        var supportedLanguages = languageList ?? Language.allCases
         supportedLanguages.sort(by: {
             $0.description < $1.description
         })

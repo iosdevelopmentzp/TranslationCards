@@ -306,7 +306,6 @@
 			children = (
 				3B319F2B23855FC00038A7AC /* LogInViewController.swift */,
 				3B319F2C23855FC00038A7AC /* LogInViewModel.swift */,
-				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3B319F2A23855FC00038A7AC /* LogInRouter.swift */,
 			);
 			path = LogIn;
@@ -328,6 +327,7 @@
 				3B031E10239BBE5E00946F8D /* CGFloat.swift */,
 				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
 				3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */,
+				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3BAFCE6023A1052400605882 /* DocumentReference.swift */,
 			);
 			path = Extensions;

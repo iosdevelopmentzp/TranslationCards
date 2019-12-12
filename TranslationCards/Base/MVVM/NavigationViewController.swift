@@ -37,8 +37,8 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         bind()
     }
     
+    // MARK: - Private
     fileprivate func setupAppereance() {
-        
         let barItemAppearace = UIBarButtonItem.appearance()
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .normal)
         barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .highlighted)
@@ -61,6 +61,7 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     }
     
     func setupView() { }
+    
     func bind() {
         delegate = viewModel.navigationControllerDelegate
     }
