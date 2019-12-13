@@ -13,7 +13,6 @@ import RxCocoa
 final class SignUpViewModel: ViewModel<SignUpRouter> {
     
     var isValided = BehaviorSubject<Bool>.init(value: false)
-    var isActivityAnimate = BehaviorSubject<Bool>.init(value: false)
     
     fileprivate var loginName = BehaviorSubject<String>.init(value: "")
     fileprivate var password = BehaviorSubject<String>.init(value: "")
@@ -53,14 +52,15 @@ final class SignUpViewModel: ViewModel<SignUpRouter> {
         signUpEvent
             .withLatestFrom(commonObservable)
             .subscribe(onNext: { [weak self] (login, password, displayName) in
-                self?.isActivityAnimate.onNext(true)
+                self?.startActivityIndicator.accept(true)
                 self?.services.auth.signUp(withEmail: login,
                                            password: password,
                                            displayName: displayName)
                     .subscribe(onNext: {
-                        self?.isActivityAnimate.onNext(false)
+                        self?.router.route(to: .choiseLanguage)
+                        self?.startActivityIndicator.accept(false)
                     }, onError: { (error) in
-                        self?.isActivityAnimate.onNext(false)
+                        self?.startActivityIndicator.accept(false)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })

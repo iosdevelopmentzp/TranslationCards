@@ -11,12 +11,33 @@ import Foundation
 final class SignUpRouter: Router {
     enum Router {
         case back
+        case mainView
+        case choiseLanguage
     }
     
     func route(to type: Router) {
         switch type {
         case .back:
             viewController?.navigationController?.popViewController(animated: true)
+        case .mainView:
+            pushMainView()
+        case .choiseLanguage:
+            pushChoiseLanguage()
         }
+    }
+    
+    // MARK: - Private
+    fileprivate func pushChoiseLanguage() {
+        let vc = Screens.nativeLanguageChoise()
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    fileprivate func pushMainView() {
+        guard let viewController = viewController,
+            viewController.isTopOfNavigationStack else {
+                return
+        }
+        let vc = Screens.main()
+        viewController.navigationController?.setViewControllers([vc], animated: true)
     }
 }

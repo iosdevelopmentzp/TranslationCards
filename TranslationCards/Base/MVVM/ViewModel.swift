@@ -17,6 +17,7 @@ class ViewModel<R: Router>: NSObject {
     let router: R
     var updated = {}
     var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
+    var startActivityIndicator: BehaviorRelay<Bool> = .init(value: false)
     
     #if DEBUG
        deinit {

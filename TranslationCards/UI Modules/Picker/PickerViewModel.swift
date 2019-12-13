@@ -17,7 +17,7 @@ final class PickerViewModel: ViewModel<PickerRouter> {
     fileprivate let finishLanguage = BehaviorRelay<Language?>.init(value: nil)
     fileprivate let currentLanguage = BehaviorRelay<Language?>.init(value: nil)
     
-    init(callBackLanguage: BehaviorRelay<Language>, languageList: [Language]? =  nil,titleLabel: String) {
+    init(callBackLanguage: BehaviorRelay<Language?>, languageList: [Language]? =  nil,titleLabel: String) {
         super.init()
         
         currentLanguage.accept(callBackLanguage.value)
@@ -26,7 +26,7 @@ final class PickerViewModel: ViewModel<PickerRouter> {
         supportedLanguages.sort(by: {
             $0.description < $1.description
         })
-        if let initialSelectedRow = supportedLanguages.firstIndex(of: callBackLanguage.value) {
+        if let language = callBackLanguage.value, let initialSelectedRow = supportedLanguages.firstIndex(of: language) {
             selectedItem.accept((row: initialSelectedRow, component: 0))
         }
         let newItems = supportedLanguages.map{ $0.description }

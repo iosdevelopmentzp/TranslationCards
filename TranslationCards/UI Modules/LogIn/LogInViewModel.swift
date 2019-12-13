@@ -13,7 +13,6 @@ import RxCocoa
 final class LogInViewModel: ViewModel<LogInRouter> {
     
     var isValideText = BehaviorRelay.init(value: false)
-    var isActivityIndicatorAnimate = BehaviorSubject.init(value: false)
     
     // MARK: - Public methods
     func bind(withLogin login: ControlProperty<String?>,
@@ -38,12 +37,12 @@ final class LogInViewModel: ViewModel<LogInRouter> {
         didPressButton
             .withLatestFrom(userInputs)
             .subscribe(onNext: { [weak self] (login, password) in
-                self?.isActivityIndicatorAnimate.onNext(true)
+                self?.startActivityIndicator.accept(true)
                 self?.services.auth.signIn(withEmail: login, password: password)
                     .subscribe(onNext: { (_) in
-                        self?.isActivityIndicatorAnimate.onNext(false)
+                        self?.startActivityIndicator.accept(false)
                     }, onError: { (error) in
-                        self?.isActivityIndicatorAnimate.onNext(false)
+                        self?.startActivityIndicator.accept(false)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })
@@ -72,8 +71,12 @@ final class LogInViewModel: ViewModel<LogInRouter> {
             .credentials
             .user
             .subscribe(onNext: { [weak self] (user) in
-                guard user != nil else { return}
-                self?.router.route(to: .mainNavigation) })
+                guard let user = user else { return}
+                guard user.nativeLanguage != nil else {
+                    self?.router.route(to: .choiceLanguage)
+                    return
+                }
+                self?.router.route(to: .mainView) })
             .disposed(by: disposeBag)
     }
 }

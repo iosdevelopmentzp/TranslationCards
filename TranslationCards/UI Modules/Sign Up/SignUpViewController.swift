@@ -13,7 +13,6 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     fileprivate let bottomBackgroundView = UIView()
     fileprivate let registerCardView = RegisterCardView()
     fileprivate let signUpButton = RoundedButton()
-    fileprivate let activityIndicator = UIActivityIndicatorView(style: .gray)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -42,11 +41,6 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             $0.centerX.equalToSuperview()
             $0.height.equalTo(self.bottomBackgroundView).multipliedBy(0.7)
         }
-        
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
     }
     
     override func setupView() {
@@ -54,7 +48,6 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         view.backgroundColor = .mainBackgroundColor
         bottomBackgroundView.backgroundColor = .accentColor
         signUpButton.backgroundColor = .notValidateButton
-        activityIndicator.hidesWhenStopped = true
     }
     
     override func setupNavigationBar() {
@@ -77,11 +70,6 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
                     self?.signUpButton.backgroundColor = isValide ? .mainBackgroundColor : .notValidateButton
                 }
             })
-            .disposed(by: disposeBag)
-        
-        viewModel
-            .isActivityAnimate
-            .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
     }
     

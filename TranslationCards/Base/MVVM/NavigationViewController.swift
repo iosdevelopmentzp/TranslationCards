@@ -25,8 +25,6 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         self.viewModel = viewModel
         super.init(nibName: nil,
                    bundle: nil)
-        setViewControllers([viewModel.root],
-                           animated: false)
         self.viewModel.router.viewController = self
         setupAppereance()
     }

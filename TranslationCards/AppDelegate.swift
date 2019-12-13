@@ -13,6 +13,7 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    lazy var appRouter = AppRouter()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,17 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileprivate func setupView() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        var vc: UIViewController?
-        
-        #if DEBUG
-        vc = Screens.logIn()
-        #else
-        vc = Screens.logIn()
-        #endif
-        
-        guard let startVC = vc else { return }
-        let nv = Screens.navigation(root: startVC)
-        window.rootViewController = nv
+        let vc = appRouter.buildStartView()
+        window.rootViewController = vc
         window.makeKeyAndVisible()
     }
 }

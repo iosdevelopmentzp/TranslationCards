@@ -13,6 +13,9 @@
 		3B031E15239BEA1700946F8D /* FlagImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B031E14239BEA1700946F8D /* FlagImages.xcassets */; };
 		3B031E17239BEA7200946F8D /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E16239BEA7200946F8D /* Language.swift */; };
 		3B031E19239C048A00946F8D /* BackCardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E18239C048A00946F8D /* BackCardSideView.swift */; };
+		3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */; };
+		3B1544D123A29311004C0B75 /* LanguageChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */; };
+		3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */; };
 		3B242F6C239FA91800B90C41 /* PickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F69239FA91800B90C41 /* PickerRouter.swift */; };
 		3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6A239FA91800B90C41 /* PickerViewController.swift */; };
 		3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6B239FA91800B90C41 /* PickerViewModel.swift */; };
@@ -93,7 +96,9 @@
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
 		3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSideView.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
-		3BAFCE6123A1052400605882 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAFCE6023A1052400605882 /* DocumentReference.swift */; };
+		3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CustomOperators.swift */; };
+		3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference.swift */; };
+		3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414C23A3DA9400C20EFA /* AppRouter.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField.swift */; };
 		3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C30238FD816006FB7F8 /* MainRouter.swift */; };
 		3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C31238FD816006FB7F8 /* MainViewController.swift */; };
@@ -131,6 +136,9 @@
 		3B031E14239BEA1700946F8D /* FlagImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagImages.xcassets; sourceTree = "<group>"; };
 		3B031E16239BEA7200946F8D /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		3B031E18239C048A00946F8D /* BackCardSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackCardSideView.swift; sourceTree = "<group>"; };
+		3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceRouter.swift; sourceTree = "<group>"; };
+		3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceViewController.swift; sourceTree = "<group>"; };
+		3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceViewModel.swift; sourceTree = "<group>"; };
 		3B242F69239FA91800B90C41 /* PickerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerRouter.swift; sourceTree = "<group>"; };
 		3B242F6A239FA91800B90C41 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		3B242F6B239FA91800B90C41 /* PickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewModel.swift; sourceTree = "<group>"; };
@@ -212,7 +220,9 @@
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
-		3BAFCE6023A1052400605882 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
+		3BC0414823A3CE2300C20EFA /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
+		3BC0414A23A3D16200C20EFA /* DocumentReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
+		3BC0414C23A3DA9400C20EFA /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		3BC52C2C238FC466006FB7F8 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3BC52C30238FD816006FB7F8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		3BC52C31238FD816006FB7F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -258,11 +268,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B1544CC23A28C84004C0B75 /* ColorChoice */ = {
+		3B1544CC23A28C84004C0B75 /* LangChoice */ = {
 			isa = PBXGroup;
 			children = (
+				3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */,
+				3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */,
+				3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */,
 			);
-			path = ColorChoice;
+			path = LangChoice;
 			sourceTree = "<group>";
 		};
 		3B242F68239FA8FB00B90C41 /* Picker */ = {
@@ -296,7 +309,6 @@
 		3B319F2623855F780038A7AC /* UI Modules */ = {
 			isa = PBXGroup;
 			children = (
-				3B1544CC23A28C84004C0B75 /* ColorChoice */,
 				3B5D511C2387E6AE00DCB5FB /* Navigation */,
 				3B319F2923855FAD0038A7AC /* LogIn */,
 				3B825BAF2386DF92009D62E8 /* Sign Up */,
@@ -305,6 +317,7 @@
 				3B5A3BB72396A321009110A7 /* Cards List */,
 				3BEE43C62397D858008F35AA /* CardSlideShow */,
 				3B242F68239FA8FB00B90C41 /* Picker */,
+				3B1544CC23A28C84004C0B75 /* LangChoice */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -336,7 +349,8 @@
 				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
 				3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */,
 				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
-				3BAFCE6023A1052400605882 /* DocumentReference.swift */,
+				3BC0414A23A3D16200C20EFA /* DocumentReference.swift */,
+				3BC0414823A3CE2300C20EFA /* CustomOperators.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -409,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				3B5721AE23853C8D008CAB42 /* AppDelegate.swift */,
+				3BC0414C23A3DA9400C20EFA /* AppRouter.swift */,
 				3B319F30238562D60038A7AC /* Extensions */,
 				3B319F1F238559F30038A7AC /* Base */,
 				3B319F33238563B90038A7AC /* Screens */,
@@ -842,6 +857,7 @@
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
 				3B5D51222387E71400DCB5FB /* MainNavigationRouter.swift in Sources */,
+				3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */,
 				3BEE43DA239808B5008F35AA /* CardSlideShowFlowLayout.swift in Sources */,
 				3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */,
 				3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */,
@@ -858,7 +874,6 @@
 				3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */,
 				3B5A3BB623968D56009110A7 /* DatabaseServiceAccessing.swift in Sources */,
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
-				3BAFCE6123A1052400605882 /* DocumentReference.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
@@ -872,7 +887,9 @@
 				3B5D511A2387E56700DCB5FB /* NavigationViewController.swift in Sources */,
 				3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */,
 				3B031E13239BD92900946F8D /* LanguageCell.swift in Sources */,
+				3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
+				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
@@ -900,6 +917,7 @@
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
+				3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */,
 				3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */,
@@ -907,6 +925,7 @@
 				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,
 				3B031E17239BEA7200946F8D /* Language.swift in Sources */,
 				3BEE43D523980055008F35AA /* NSObject.swift in Sources */,
+				3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
 				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
@@ -927,6 +946,7 @@
 				3B031E19239C048A00946F8D /* BackCardSideView.swift in Sources */,
 				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
+				3B1544D123A29311004C0B75 /* LanguageChoiceViewController.swift in Sources */,
 				3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */,
 				3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */,
 			);

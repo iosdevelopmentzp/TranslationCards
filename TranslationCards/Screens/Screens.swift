@@ -10,9 +10,17 @@ import RxSwift
 import RxCocoa
 
 struct Screens {
-    static func languagePickerView(currentLanguage: BehaviorRelay<Language>, languageList: [Language]? = nil, title: String) -> PickerViewController {
-        let vm = PickerViewModel(callBackLanguage: currentLanguage, languageList: languageList, titleLabel: title)
-        return PickerViewController(viewModel: vm)
+    static func nativeLanguageChoise() -> LanguageChoiceViewController {
+        let vm = LanguageChoiceViewModel()
+        return LanguageChoiceViewController(viewModel: vm)
+    }
+    
+    static func languagePickerView(callBackLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String) -> PickerViewController {
+        let vm = PickerViewModel(callBackLanguage: callBackLanguage, languageList: languageList, titleLabel: title)
+        let vc = PickerViewController(viewModel: vm)
+        vc.transitioningDelegate = vc
+        vc.modalPresentationStyle = .overCurrentContext
+        return vc
     }
     
     static func cardSlideShow(cards: [TranslateCard]) -> CardSlideShowViewController {
@@ -35,8 +43,8 @@ struct Screens {
         return MainViewController(viewModel: vm)
     }
     
-    static func navigation(root: UIViewController) -> MainNavigationViewController {
-        let vm = MainNavigationViewModel(root: root)
+    static func navigation() -> MainNavigationViewController {
+        let vm = MainNavigationViewModel()
         return MainNavigationViewController(viewModel: vm)
     }
     

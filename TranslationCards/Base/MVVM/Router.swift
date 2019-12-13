@@ -14,4 +14,11 @@ class Router: NSObject {
     required override init() {
         super.init()
     }
+    
+    func routeToStartController() {
+        guard let startVc = viewController?.navigationController?.viewControllers.first else {
+            return
+        }
+        viewController?.navigationController?.popToViewController(startVc, animated: true)
+    }
 }

@@ -38,18 +38,21 @@ final class MainViewModel: ViewModel<MainRouter> {
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
         plusPressed.subscribe() { [weak self] _ in
             guard let user = self?.user else {
-                    let okAction = AlertModel.ActionModel(title: "Ok",
-                                                          style: .destructive,
-                                                          handler: nil)
-                    let alertModel = AlertModel(actionModels: [okAction],
-                                                title: "Something went wrong",
-                                                message: "User does not have current language",
-                                                prefferedStyle: .alert)
-                    self?.alertModel.accept(alertModel)
-                    return
+                self?.alertModel.accept(.warningAlert(message: "Failed get user", handler: { (_) in
+                    self?.router.routeToStartController()
+                }))
+                self?.router.routeToStartController()
+                return
             }
-            let sourceLanguage = user.currentLanguage ?? user.nativeLanguage.next()
-            let languageBind = LanguageBind(source: user.nativeLanguage, target: sourceLanguage)
+            guard let nativeLanguage = user.nativeLanguage else {
+                self?.alertModel.accept(.warningAlert(message: "User does not have native language", handler: { (_) in
+                    self?.router.routeToStartController()
+                }))
+                return
+            }
+            
+            let sourceLanguage = user.currentLanguage ?? nativeLanguage.next()
+            let languageBind = LanguageBind(source: nativeLanguage, target: sourceLanguage)
             self?.router.route(to: .createCard(forUserId: user.uid, language: languageBind))
         }
         .disposed(by: disposeBag)

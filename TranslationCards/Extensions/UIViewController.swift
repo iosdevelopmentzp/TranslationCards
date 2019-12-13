@@ -29,4 +29,12 @@ extension UIViewController {
         let blurView = view.subviews.first { $0 is UIVisualEffectView }
         return blurView as? UIVisualEffectView
     }
+    
+    var isTopOfNavigationStack: Bool {
+        guard let naviagation = navigationController,
+            let topViewController = naviagation.viewControllers.last else {
+            return false
+        }
+        return topViewController === self
+    }
 }

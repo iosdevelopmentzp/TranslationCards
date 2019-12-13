@@ -13,14 +13,12 @@ class NavigationViewModel<R: Router>: NSObject {
     let disposeBag = DisposeBag()
 
     let router: R
-    let root: UIViewController
     
     var modalTransitionAnimatorDelegate: ModalTransitionDelegate?
     var navigationControllerDelegate: UINavigationControllerDelegate?
 
-    init(root: UIViewController) {
+    override init() {
         router = R()
-        self.root = root
         super.init()
     }
 }

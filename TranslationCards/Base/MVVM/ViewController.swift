@@ -14,6 +14,8 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     let viewModel: VM
     let disposeBag = DisposeBag()
     
+    let activityIndicator = UIActivityIndicatorView(style: .gray)
+    
     init(viewModel: VM) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -58,10 +60,28 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     }
     
     func onModelUpdates() {}
-    func setupConstraints() {}
-    func setupView() {}
+    func setupConstraints() {
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    func setupView() {
+        activityIndicator.hidesWhenStopped = true
+    }
     func setupTable() {}
     func setupNavigationBar() {}
     func localizable() {}
-    func binding() {}
+    func binding() {
+        viewModel
+            .startActivityIndicator
+            .subscribe(onNext: { [weak self] (isActive) in
+                isActive ? self?.activityIndicator.startAnimating() : self?.activityIndicator.stopAnimating()
+                guard isActive, let activityIndicator = self?.activityIndicator else {
+                    return
+                }
+                self?.view.bringSubviewToFront(activityIndicator)
+            })
+            .disposed(by: disposeBag)
+    }
 }

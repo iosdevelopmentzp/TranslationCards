@@ -12,8 +12,8 @@ class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     
     let transitionAnimator = TransitionAnimator()
     
-    override init(root: UIViewController) {
-        super.init(root: root)
+    override init() {
+        super.init()
         navigationControllerDelegate = NavigationControllerDelegate(transitionAnimator: transitionAnimator)
         modalTransitionAnimatorDelegate = ModalTransitionAnimationDelegate(modalAnimator: ModalTransitionAnimator())
     }

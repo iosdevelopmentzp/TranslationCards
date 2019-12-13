@@ -18,7 +18,6 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     fileprivate let logInButton = RoundedButton()
     fileprivate let signUpButton = UIButton()
     fileprivate let stackView = UIStackView()
-    fileprivate let activityIndicator = UIActivityIndicatorView()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -38,11 +37,6 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(safeArea.snp.bottom).inset(20.0)
         }
-        
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
     }
     
     override func setupView() {
@@ -59,8 +53,6 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
             $0.borderColor = .secondaryUiColor
             $0.autocapitalizationType = .none
         }
-        
-        activityIndicator.hidesWhenStopped = true
     }
     
     override func localizable() {
@@ -96,10 +88,6 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         viewModel.bind(withLogin: loginTextField.rx.text,
                        withPassword: passwordTextField.rx.text,
                        didPressButton: logInButton.rx.tap)
-        viewModel
-            .isActivityIndicatorAnimate
-            .bind(to: activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
     }
 }
 

@@ -30,6 +30,7 @@ extension UIColor {
     // Buttons
     static var notValidateButton: UIColor { .gray }
     static var cancelButton: UIColor? { UIColor.init(hexString: "E64F60") }
+    static var innactiveButtonTitleColor: UIColor { UIColor.lightGray }
     
     // Picker View
     static var pickerViewColor: UIColor { UIColor(hexString: "D2D5DB")! }

@@ -18,6 +18,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
     fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
     
+    fileprivate var callBackLanguage: BehaviorRelay<Language?> = .init(value: nil)
+    
     init(userId: String, language: LanguageBind?) {
         self.userId = userId
         self.startedLanguage = language ?? LanguageBind.default
@@ -58,6 +60,11 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 self.language.accept(newBindLanguage)
             })
             .disposed(by: disposeBag)
+        
+        callBackLanguage
+            .compactMap{ $0 }
+            .bind(to: self.targetLanguage)
+            .disposed(by: disposeBag)
     }
     
     func bind(withNewPhrase newPhrase: ControlProperty<String>,
@@ -89,7 +96,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     func bind(withSourceSelectLanguageButton sourceLanguageButton: ControlEvent<Void>,
                           targetSelectLanguageButton: ControlEvent<Void>) {
 
-// NOTE: - Implement if need source language action
+// NOTE: - Implement if need source language action click
         /*
         sourceLanguageButton
             .subscribe(onNext: { [weak self] (_) in
@@ -103,7 +110,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self else { return }
                 let targetLanguages = Language.allCases.filter{ $0 != self.sourceLanguage.value}
-                self.router.route(to: .languagePickerView(currentLanguage: self.targetLanguage,
+                self.callBackLanguage.accept(self.targetLanguage.value)
+                self.router.route(to: .languagePickerView(currentLanguage: self.callBackLanguage,
                                                           languageList: targetLanguages,
                                                           title: "Target language")) })
             .disposed(by: disposeBag)

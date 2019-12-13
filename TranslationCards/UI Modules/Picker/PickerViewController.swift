@@ -22,12 +22,6 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
     // Constants
     fileprivate static let heightProportion: CGFloat = 0.3
     
-    override func loadView() {
-        super.loadView()
-//        transitioningDelegate = self
-//        modalPresentationStyle = .overCurrentContext
-    }
-    
     override func setupConstraints() {
         super.setupConstraints()
         
