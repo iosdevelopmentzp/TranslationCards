@@ -80,11 +80,17 @@ class AuthServiceV1: NSObject, AuthService {
     }
     
     func signOut() -> Observable<Void> {
-        do {
-            try auth.signOut()
-            return .empty()
-        } catch {
-            return .error(error)
+        
+        return .create { [weak self] (observer) -> Disposable in
+            do {
+                try self?.auth.signOut()
+                self?.credentials.user.accept(nil)
+                observer.onNext(())
+                observer.onCompleted()
+            } catch {
+                observer.onError(error)
+            }
+            return Disposables.create()
         }
     }
     

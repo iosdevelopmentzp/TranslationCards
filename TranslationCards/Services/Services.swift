@@ -12,8 +12,9 @@ final class Services {
     private init() {}
     
     // MARK: - Public services
+    lazy var userDefaults: KeyValueStorageService = UserDefaultsService()
     lazy var realTimeDatabase: DatabaseService = FirestoreDatabaseService()
-    lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase)
+    lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase, keyStorage: userDefaults)
     lazy var auth: AuthService = AuthServiceV1(credentials: credentials, database: realTimeDatabase)
     lazy var speechService: SpeechService = SpeechServiceV1()
     lazy var listener: ListenerService = ListenerServiceV1()

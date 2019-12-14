@@ -11,37 +11,45 @@ import RxRelay
 
 class CredentialsServiceV1: NSObject, CredentialsService {
     
-    enum OwnError: Error {
-        case userNotFoundUserEqualNill
-        
-        var localizedDescription: String {
-            switch self {
-            case .userNotFoundUserEqualNill:
-                return "User not found. User == nil"
-            }
-        }
-    }
-    
-    var user: BehaviorRelay<User?> = BehaviorRelay.init(value: nil)
+    var user: BehaviorRelay<User?>
     private var database: DatabaseService
+    private var keyStorage: KeyValueStorageService
+    private var disposeBag = DisposeBag()
     
-    init(database: DatabaseService) {
+    init(database: DatabaseService, keyStorage: KeyValueStorageService) {
         self.database = database
-    }
-    
-    func editUser() -> Observable<Void> {
-        return .empty()
-    }
-    
-    func getCurrentUser() -> Observable<User> {
-        Observable<User>.create { [weak self] (observer) -> Disposable in
-            if let user = self?.user.value {
-                observer.onNext(user)
-                observer.onCompleted()
-            } else {
-                observer.onError(OwnError.userNotFoundUserEqualNill)
-            }
-            return Disposables.create()
+        self.keyStorage = keyStorage
+        
+        if let userData: [String: Any] = try? keyStorage.value(forKey: KeyStorage.userDataKey),
+            let user = User(withData: userData) {
+            self.user = .init(value: user)
+        } else {
+            self.user = .init(value: nil)
         }
+        super.init()
+        
+        if let userId = self.user.value?.uid {
+            fetchRemoteUser(withId: userId)
+        }
+        
+        user.subscribe(onNext: { [weak self] (user) in
+                guard let user = user else {
+                    self?.keyStorage.deleteValue(forKey: KeyStorage.userDataKey)
+                    return
+                }
+                self?.keyStorage.setValue(user.representation, forKey: KeyStorage.userDataKey) })
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func fetchRemoteUser(withId userId: String) {
+        database
+            .fetchUser(withUserId: userId)
+            .subscribe(onNext: { [weak self] (user) in
+                self?.user.accept(user)
+                }, onError: { [weak self] (error) in
+                    debugPrint("Failed fetch remote user, with error \(error)")
+                    self?.user.accept(nil)
+            })
+            .disposed(by: disposeBag)
     }
 }

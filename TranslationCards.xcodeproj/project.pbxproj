@@ -94,6 +94,9 @@
 		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
 		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
+		3B9550B223A4E86100BC9E8E /* KeyValueStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */; };
+		3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */; };
+		3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B523A50EE700BC9E8E /* KeyStorage.swift */; };
 		3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSideView.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
 		3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CustomOperators.swift */; };
@@ -219,6 +222,9 @@
 		3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
+		3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageService.swift; sourceTree = "<group>"; };
+		3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		3B9550B523A50EE700BC9E8E /* KeyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStorage.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
 		3BC0414823A3CE2300C20EFA /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
 		3BC0414A23A3D16200C20EFA /* DocumentReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
@@ -508,6 +514,7 @@
 				3B6CF097239E2E49007CDA17 /* Speech */,
 				3B825B9D238692CE009D62E8 /* Database */,
 				3B242F6F239FFF5800B90C41 /* Listener */,
+				3B9550B023A4E66B00BC9E8E /* UserDefaults */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -614,6 +621,16 @@
 				3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */,
 			);
 			path = "Transition Animation";
+			sourceTree = "<group>";
+		};
+		3B9550B023A4E66B00BC9E8E /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */,
+				3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */,
+				3B9550B523A50EE700BC9E8E /* KeyStorage.swift */,
+			);
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 		3BA376A0239FA49300665A8B /* Views */ = {
@@ -860,6 +877,7 @@
 				3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */,
 				3BEE43DA239808B5008F35AA /* CardSlideShowFlowLayout.swift in Sources */,
 				3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */,
+				3B9550B223A4E86100BC9E8E /* KeyValueStorageService.swift in Sources */,
 				3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */,
 				3BFCBD412391B4E100C9AA48 /* Date.swift in Sources */,
 				3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */,
@@ -900,6 +918,7 @@
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
 				3BEE43CE2397DA9B008F35AA /* UIButton.swift in Sources */,
 				3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */,
+				3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */,
 				3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */,
 				3B319F32238562EE0038A7AC /* UIColor.swift in Sources */,
 				3B319F5E23856E600038A7AC /* UIFont.swift in Sources */,
@@ -929,6 +948,7 @@
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
 				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
+				3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,

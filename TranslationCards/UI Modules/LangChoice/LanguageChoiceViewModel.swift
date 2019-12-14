@@ -43,9 +43,7 @@ class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
                     return
                 }
                 guard let user = self?.services.credentials.user.value else {
-                    self?.alertModel.accept(.warningAlert(message: "User was not found", handler: { [weak self] (_) in
-                        self?.router.routeToStartController()
-                    }))
+                    self?.alertModel.accept(.warningAlert(message: "User was not found", handler: nil))
                     return
                 }
                 self?.startActivityIndicator.accept(true)
@@ -55,9 +53,7 @@ class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
                             self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: { (_) in
-                                self?.router.routeToStartController()
-                            })) })
+                            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil)) })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })
             .disposed(by: disposeBag)

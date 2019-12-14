@@ -15,6 +15,7 @@ import RxDataSources
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
     fileprivate let addCardButton = PlusButton()
     fileprivate let tableView = UITableView()
+    fileprivate let signOutBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: nil, action: nil)
     private  var dataSource: RxTableViewSectionedReloadDataSource<MainViewModel.Section>?
     
     override func setupConstraints() {
@@ -78,11 +79,14 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationItem.hidesBackButton = true
+        
+        navigationItem.rightBarButtonItem = signOutBarButtonItem
     }
     
     override func binding() {
         super.binding()
         viewModel.bind(addCardPressed: addCardButton.rx.tap)
+        viewModel.bind(logoutEvent: signOutBarButtonItem.rx.tap)
         viewModel.bindSelectesItemEvent(tableView.rx.itemSelected)
     }
     

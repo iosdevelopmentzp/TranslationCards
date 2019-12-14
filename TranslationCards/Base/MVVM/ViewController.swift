@@ -14,7 +14,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     let viewModel: VM
     let disposeBag = DisposeBag()
     
-    let activityIndicator = UIActivityIndicatorView(style: .gray)
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     init(viewModel: VM) {
         self.viewModel = viewModel

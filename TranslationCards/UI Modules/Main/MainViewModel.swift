@@ -13,7 +13,7 @@ import RxCocoa
 final class MainViewModel: ViewModel<MainRouter> {
     
     var sections = BehaviorRelay<[Section]>.init(value: [])
-    fileprivate weak var user: User?
+    fileprivate var user: User?
     
     override init() {
         super.init()
@@ -35,26 +35,37 @@ final class MainViewModel: ViewModel<MainRouter> {
             .disposed(by: disposeBag)
     }
     
+    func bind(logoutEvent: ControlEvent<Void>) {
+        logoutEvent
+            .subscribe(onNext: {[weak self] _ in
+                self?.services
+                    .auth
+                    .signOut()
+                    .subscribe(onNext: { [weak self] _ in
+                        self?.user = nil
+                        }, onError: { [weak self] (error) in
+                            self?.alertModel.accept(.warningAlert(message: "Failed attempt to sign out. Error \(error)", handler: nil))
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
-        plusPressed.subscribe() { [weak self] _ in
+        plusPressed.subscribe(onNext: { [weak self] _ in
             guard let user = self?.user else {
-                self?.alertModel.accept(.warningAlert(message: "Failed get user", handler: { (_) in
-                    self?.router.routeToStartController()
-                }))
-                self?.router.routeToStartController()
+                self?.alertModel.accept(.warningAlert(message: "Failed get user", handler: nil))
                 return
             }
             guard let nativeLanguage = user.nativeLanguage else {
-                self?.alertModel.accept(.warningAlert(message: "User does not have native language", handler: { (_) in
-                    self?.router.routeToStartController()
-                }))
+                self?.alertModel.accept(.warningAlert(message: "User does not have native language", handler: nil))
                 return
             }
             
             let sourceLanguage = user.currentLanguage ?? nativeLanguage.next()
             let languageBind = LanguageBind(source: nativeLanguage, target: sourceLanguage)
             self?.router.route(to: .createCard(forUserId: user.uid, language: languageBind))
-        }
+        })
         .disposed(by: disposeBag)
     }
     
