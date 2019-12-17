@@ -94,6 +94,7 @@
 		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
 		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
+		3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */; };
 		3B9550B223A4E86100BC9E8E /* KeyValueStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */; };
 		3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */; };
 		3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B523A50EE700BC9E8E /* KeyStorage.swift */; };
@@ -222,6 +223,7 @@
 		3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
+		3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CABasicAnimation.swift; sourceTree = "<group>"; };
 		3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageService.swift; sourceTree = "<group>"; };
 		3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		3B9550B523A50EE700BC9E8E /* KeyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStorage.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				3B825BB62386ED89009D62E8 /* UINavigationController.swift */,
 				3BC0414A23A3D16200C20EFA /* DocumentReference.swift */,
 				3BC0414823A3CE2300C20EFA /* CustomOperators.swift */,
+				3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -937,6 +940,7 @@
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */,
+				3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */,
 				3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */,

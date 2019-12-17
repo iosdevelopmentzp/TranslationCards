@@ -116,28 +116,68 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
     }
     
     func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
-        createTranslateCardView.transform = CGAffineTransform.init(scaleX: 0.6, y: 0.6)
-        createTranslateCardView.alpha = 0.0
+        
         let blurView = secondViewController?.appendBlurEffect(style: .light)
         blurView?.alpha = 0.0
-        
+        UIView.animate(withDuration: duration * 0.3, delay: delay, animations: {
+            blurView?.alpha = 1.0
+        })
         containerView.addSubview(view)
+        view.layoutIfNeeded()
         
-        UIView.animate(withDuration: duration,
-                       delay: delay,
-                       usingSpringWithDamping: 0.6,
-                       initialSpringVelocity: 0.2,
-                       options: .curveEaseIn,
-                       animations: { [weak self] in
-                        self?.createTranslateCardView.transform = CGAffineTransform.identity
-        }) { (_) in }
+        let screenSize = containerView.bounds.size
         
-        UIView.animate(withDuration: duration * 0.3,
-                       delay: delay,
-                       animations: { [weak self] in
-                        self?.createTranslateCardView.alpha = 1.0
-                        blurView?.alpha = 1.0
-        }) { (_) in }
+        // Text fields
+        let verticalAnimation1 = CABasicAnimation.animation(withKeyType: .translationY,
+                                                            duration: duration * 0.5,
+                                                            fromValue: screenSize.height,
+                                                            toValue: 0)
+        createTranslateCardView.sourceTextField.layer.add(verticalAnimation1, forKey: "translationYTextField")
+        
+        createTranslateCardView.targetTextField.transform = .init(translationX: 0, y: screenSize.height)
+        let verticalAnimation2 = CABasicAnimation.animation(withKeyType: .translationY,
+                                                            duration: verticalAnimation1.duration,
+                                                            fromValue: nil,
+                                                            toValue: 0,
+                                                            delay: verticalAnimation1.duration * 0.2)
+        createTranslateCardView.targetTextField.layer.add(verticalAnimation2, forKey: "translationYTextField")
+
+        // Text labels
+        let labelShiftX = max(createTranslateCardView.targetHeaderLabel.bounds.width, createTranslateCardView.sourceHeaderLabel.bounds.width)
+        [createTranslateCardView.targetHeaderLabel, createTranslateCardView.sourceHeaderLabel].forEach {
+            $0.transform = .init(translationX: -labelShiftX, y: 0)
+            $0.alpha = 0
+        }
+        UIView.animate(withDuration: duration) { [weak self] in
+            [self?.createTranslateCardView.targetHeaderLabel, self?.createTranslateCardView.sourceHeaderLabel].forEach {
+                $0?.transform = CGAffineTransform.identity
+                $0?.alpha = 1.0
+            }
+        }
+        
+        // language buttons
+        let buttonShiftX = max(createTranslateCardView.targetSelectLanguageButton.bounds.width, createTranslateCardView.sourceSelectLanguageButton.bounds.width)
+        [createTranslateCardView.targetSelectLanguageButton, createTranslateCardView.sourceSelectLanguageButton].forEach {
+            $0.transform = .init(translationX: buttonShiftX, y: 0)
+            $0.alpha = 0.0
+        }
+        UIView.animate(withDuration: duration) { [weak self] in
+            [self?.createTranslateCardView.targetSelectLanguageButton, self?.createTranslateCardView.sourceSelectLanguageButton].forEach {
+                $0?.transform = CGAffineTransform.identity
+                $0?.alpha = 1.0
+            }
+        }
+        
+        // cancel, save buttons
+        [createTranslateCardView.cancelButton, createTranslateCardView.saveButton].forEach {
+            $0.alpha = 0.0
+        }
+        
+        UIView.animate(withDuration: duration / 2, delay: duration / 2, animations: { [weak self] in
+            [self?.createTranslateCardView.cancelButton, self?.createTranslateCardView.saveButton].forEach {
+                $0?.alpha = 1.0
+            }
+        })
     }
     
     func typesWhichSupportedAnimation() -> [NavigationOperationType] {
