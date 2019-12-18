@@ -62,8 +62,6 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         super.localizable()
         createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase in the native language")
          createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
-        createTranslateCardView.sourceTextField.text = ""
-        createTranslateCardView.targetTextField.text = ""
         createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
         createTranslateCardView.cancelButton.setAttributedTitle(.defaultText(withText: "Cancel"), for: .normal)
         createTranslateCardView.removeButton.setAttributedTitle(.defaultText(withText: "Remove"), for: .normal)
