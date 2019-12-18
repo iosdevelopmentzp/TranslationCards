@@ -7,6 +7,14 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+
+extension UIView {
+    static func setupAllViewsAppereance() {
+        NVActivityIndicatorView.setupAppereance()
+        UINavigationController.setupAppeareance()
+    }
+}
 
 extension UIView {
     func setShadow(withColor color: UIColor = .shadowColorDark,

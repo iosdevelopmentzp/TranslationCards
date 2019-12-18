@@ -66,6 +66,13 @@ class CardView: UIView {
             .subscribe(onNext: { [weak self] (_) in
                 self?.switchSide(withAnimation: true) })
             .disposed(by: disposeBag)
+        
+        Observable.merge(faceSideView.speakData.asObservable(), backSideView.speakData.asObservable())
+            .compactMap{ $0 }
+            .subscribe(onNext: { [weak self] (dataSpeak) in
+                self?.speakData.accept(dataSpeak)
+            })
+            .disposed(by: disposeBag)
     }
     
     fileprivate func showFaceSide(isShowFace: Bool, withAnimation: Bool) {

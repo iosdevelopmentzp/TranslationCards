@@ -16,7 +16,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     init(cards: [TranslateCard]) {
         self.cards.accept(cards)
         super.init()
-        bind()
+        binding()
     }
     
     func viewDisappeared() {
@@ -24,7 +24,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     }
     
     // MARK: - Private
-    fileprivate func bind() {
+    fileprivate func binding() {
         cellSpeechData
             .compactMap{$0}
             .subscribe(onNext: { [weak self]  (speechData) in

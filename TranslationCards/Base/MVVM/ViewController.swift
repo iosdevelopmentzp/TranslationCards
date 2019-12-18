@@ -9,13 +9,12 @@
 import UIKit
 import RxSwift
 import JJFloatingActionButton
+import NVActivityIndicatorView
 
 class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     let viewModel: VM
     let disposeBag = DisposeBag()
-    
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     init(viewModel: VM) {
         self.viewModel = viewModel
@@ -45,10 +44,10 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupTable()
         setupNavigationBar()
-        localizable()
         binding()
+        setupTable()
+        localizable()
     }
     
     
@@ -58,15 +57,8 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     }
     
     func onModelUpdates() {}
-    func setupConstraints() {
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
-    func setupView() {
-        activityIndicator.hidesWhenStopped = true
-    }
+    func setupConstraints() {}
+    func setupView() {}
     func setupTable() {}
     func setupNavigationBar() {}
     func localizable() {}
@@ -83,17 +75,22 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         
         viewModel
             .startActivityIndicator
-            .subscribe(onNext: { [weak self] (isActive) in
-                isActive ? self?.activityIndicator.startAnimating() : self?.activityIndicator.stopAnimating()
-                guard isActive, let activityIndicator = self?.activityIndicator else {
+            .subscribe(onNext: { isActive in
+                let indicator =  NVActivityIndicatorPresenter.sharedInstance
+                guard isActive != indicator.isAnimating else {
                     return
                 }
-                self?.view.bringSubviewToFront(activityIndicator)
+                guard isActive else {
+                    indicator.stopAnimating()
+                    return
+                }
+                let activityData = ActivityData()
+                indicator.startAnimating(activityData)
             })
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Private    
+    // MARK: - Private
     fileprivate func setupActionButtons() {
         guard let mainNavigation = navigationController as? MainNavigationViewController else {
             return

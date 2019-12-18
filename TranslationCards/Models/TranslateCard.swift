@@ -74,27 +74,27 @@ class TranslateCard {
     }
 }
 
-extension TranslateCard: DatabaseServiceAccessing {
+extension TranslateCard: ServicesAccessing {
     func update(sourcePhrase: String, targetPhrase: String) -> Observable<Void> {
         self.sourcePhrase = sourcePhrase
         self.targetPhrase = targetPhrase
-        return database.saveCard(self)
+        return services.realTimeDatabase.saveCard(self)
     }
     
     func moveFromArchive() -> Observable<Void> {
-        database.moveCardFromArchive(self)
+        services.realTimeDatabase.moveCardFromArchive(self)
     }
     
     func moveToArchive() -> Observable<Void> {
-        database.moveCardToArchive(self)
+        services.realTimeDatabase.moveCardToArchive(self)
     }
     
     func save() -> Observable<Void> {
-        database.saveCard(self)
+        services.realTimeDatabase.saveCard(self)
     }
     
     func remove() -> Observable<Void> {
-        database.removeCard(self)
+        services.realTimeDatabase.removeCard(self)
     }
 }
 

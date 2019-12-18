@@ -10,10 +10,9 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class ViewModel<R: Router>: NSObject {
+class ViewModel<R: Router>: NSObject, ServicesAccessing {
     
     let disposeBag = DisposeBag()
-    let services = Services.shared
     let router: R
     var updated = {}
     var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)

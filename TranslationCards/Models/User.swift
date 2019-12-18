@@ -61,7 +61,7 @@ final class User {
                 return Disposables.create()
             }
             self.nativeLanguage = newLanguage
-            self.database.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
+            self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
                 .subscribe(onNext: { (_) in
                     observer.onNext(())
                     observer.onCompleted()
@@ -97,7 +97,7 @@ final class User {
     }
 }
 
-extension User: DatabaseServiceAccessing {
+extension User: ServicesAccessing {
    
 }
 

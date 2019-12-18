@@ -14,6 +14,11 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
     fileprivate lazy var editButton = JJActionItem()
     fileprivate lazy var switchLocationCard = JJActionItem()
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.stopSpeach()
+    }
+    
     override func setupConstraints() {
         super.setupConstraints()
         let padding: CGFloat = 50.0
@@ -39,6 +44,7 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
         super.binding()
         viewModel.bind(editEvent: editButton.rx.tap)
         viewModel.bind(switchLocationEvent: switchLocationCard.rx.tap)
+        viewModel.bind(speakData: cardView.speakData)
     }
     
     override func localizable() {

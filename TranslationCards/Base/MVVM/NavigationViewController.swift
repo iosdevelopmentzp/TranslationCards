@@ -27,7 +27,6 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         super.init(nibName: nil,
                    bundle: nil)
         self.viewModel.router.viewController = self
-        setupAppereance()
     }
     
     override func viewDidLoad() {
@@ -38,28 +37,6 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     }
     
     // MARK: - Private
-    fileprivate func setupAppereance() {
-        let barItemAppearace = UIBarButtonItem.appearance()
-        barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .normal)
-        barItemAppearace.setTitleTextAttributes(NSAttributedString.navigationBarButtomItemAttribute, for: .highlighted)
-        let navigationBarAppearace = UINavigationBar.appearance()
-        if #available(iOS 13.0, *) {
-            let navBarAppearace = UINavigationBarAppearance()
-            navBarAppearace.backgroundColor = .mainBackgroundColor
-            navBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
-            navBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
-            UINavigationBar.appearance().standardAppearance = navBarAppearace
-            UINavigationBar.appearance().prefersLargeTitles = true
-        } else {
-            navigationBarAppearace.barTintColor = .mainBackgroundColor
-            navigationBarAppearace.tintColor = .white
-            navigationBarAppearace.isTranslucent = false
-            navigationBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
-            navigationBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
-            navigationBarAppearace.prefersLargeTitles = true
-        }
-    }
-    
     func setupView() { }
     func setupConstraints() {}
     func binding() {
