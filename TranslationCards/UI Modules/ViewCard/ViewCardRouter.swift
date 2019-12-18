@@ -11,12 +11,15 @@ import Foundation
 final class ViewCardRouter: Router {
     enum Route {
         case editCard(card: TranslateCard)
+        case dismiss
     }
     
     func route(to type: Route) {
         switch type {
         case .editCard(let card):
             presentEditCard(card)
+        case .dismiss:
+            viewController?.navigationController?.popViewController(animated: true)
         }
     }
     

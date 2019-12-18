@@ -12,4 +12,5 @@ extension String {
     static let databaseUserCollection = "users"
     static let databaseLanguagesCollection = "languages"
     static let databaseCardsCollection = "cards"
+    static let databaseArchiveCardsCollection = "archive"
 }

@@ -66,6 +66,66 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Card
+    func moveCardFromArchive(_ card: TranslateCard) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(FirestoreError.serviceDeallocated)
+                return Disposables.create()
+            }
+            
+            let oldCardReferance = self.archiveCardDocument(withUserId: card.userOwnerId,
+                                                            languageId: card.language.id,
+                                                            documentId: card.id)
+            let newCardReferance = self.cardDocument(withUserId: card.userOwnerId,
+                                                     languageId: card.language.id,
+                                                     documentId: card.id)
+            
+            self.database.runTransaction({ (transaction, error) -> Any? in
+                transaction.deleteDocument(oldCardReferance)
+                transaction.setData(card.representation, forDocument: newCardReferance)
+                return nil
+            }) { (_, error) in
+                if let error = error {
+                    observer.onError(error)
+                } else {
+                    observer.onNext(())
+                    observer.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func moveCardToArchive(_ card: TranslateCard) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(FirestoreError.serviceDeallocated)
+                return Disposables.create()
+            }
+            
+            let oldCardReferance = self.cardDocument(withUserId: card.userOwnerId,
+                                                     languageId: card.language.id,
+                                                     documentId: card.id)
+            let newCardReferance = self.archiveCardDocument(withUserId: card.userOwnerId,
+                                                            languageId: card.language.id,
+                                                            documentId: card.id)
+            
+            self.database.runTransaction({ (transaction, error) -> Any? in
+                transaction.deleteDocument(oldCardReferance)
+                transaction.setData(card.representation, forDocument: newCardReferance)
+                return nil
+            }) { (_, error) in
+                if let error = error {
+                    observer.onError(error)
+                } else {
+                    observer.onNext(())
+                    observer.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
     func removeCard(_ card: TranslateCard) -> Observable<Void> {
         return database
             .collection(.databaseUserCollection)
@@ -162,15 +222,37 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .map { (snapshot) -> [TranslateCard] in
                 var cards = Array<TranslateCard>()
                 snapshot.documents.forEach{
-                    guard var card = TranslateCard(withData: $0.data()) else { return }
+                    guard let card = TranslateCard(withData: $0.data()) else { return }
                     card.id = $0.reference.documentID
                     cards.append(card)
                 }
                 return cards }
     }
     
+    // MARK: - Private
+    fileprivate func archiveCardDocument(withUserId userId: String, languageId: String, documentId: String) -> DocumentReference {
+        database
+            .collection(.databaseUserCollection)
+            .document(userId)
+            .collection(.databaseLanguagesCollection)
+            .document(languageId)
+            .collection(.databaseArchiveCardsCollection)
+            .document(documentId)
+    }
+    
+    fileprivate func cardDocument(withUserId userId: String, languageId: String, documentId: String) -> DocumentReference {
+        database
+            .collection(.databaseUserCollection)
+            .document(userId)
+            .collection(.databaseLanguagesCollection)
+            .document(languageId)
+            .collection(.databaseCardsCollection)
+            .document(documentId)
+    }
+    
     // MARK: - Errors
     enum FirestoreError: Error {
         case languageExisted
+        case serviceDeallocated
     }
 }

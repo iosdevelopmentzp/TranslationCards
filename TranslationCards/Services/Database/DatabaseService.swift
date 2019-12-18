@@ -16,6 +16,8 @@ protocol DatabaseService: Service {
     func deleteUser(_ user: User) -> Observable<Void>
     
     // MARK: - Translate cards
+    func moveCardFromArchive(_ card: TranslateCard) -> Observable<Void>
+    func moveCardToArchive(_ card: TranslateCard) -> Observable<Void>
     func removeCard(_ card: TranslateCard) -> Observable<Void>
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void>
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]>

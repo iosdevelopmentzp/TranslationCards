@@ -81,6 +81,14 @@ extension TranslateCard: DatabaseServiceAccessing {
         return database.saveCard(self)
     }
     
+    func moveFromArchive() -> Observable<Void> {
+        database.moveCardFromArchive(self)
+    }
+    
+    func moveToArchive() -> Observable<Void> {
+        database.moveCardToArchive(self)
+    }
+    
     func save() -> Observable<Void> {
         database.saveCard(self)
     }

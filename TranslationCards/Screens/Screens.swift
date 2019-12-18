@@ -10,8 +10,13 @@ import RxSwift
 import RxCocoa
 
 struct Screens {
+    static func viewCard(withArchivedCard card: TranslateCard) -> ViewCardViewController {
+        let vm = ViewCardViewModel(card: card, mode: .archive)
+        return ViewCardViewController(viewModel: vm)
+    }
+    
     static func viewCard(withCard card: TranslateCard) -> ViewCardViewController {
-        let vm = ViewCardViewModel(card: card)
+        let vm = ViewCardViewModel(card: card, mode: .actual)
         return ViewCardViewController(viewModel: vm)
     }
     
