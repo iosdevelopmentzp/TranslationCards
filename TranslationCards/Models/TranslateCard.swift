@@ -29,6 +29,9 @@ class TranslateCard {
     var learningLevel: LearningLevel
     var id: String
     
+    // set true and save, if you want send card to archive
+    var isArchived: Bool = false
+    
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
         self.language = language

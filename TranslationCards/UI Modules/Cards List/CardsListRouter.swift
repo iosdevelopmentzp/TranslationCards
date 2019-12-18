@@ -12,6 +12,7 @@ final class CardsListRouter: Router {
     enum Route {
         case slideShow(cards: [TranslateCard])
         case cardView(card: TranslateCard)
+        case archivedList(language: LanguageBind, userId: String)
     }
     
     func route(to type: Route) {
@@ -20,10 +21,17 @@ final class CardsListRouter: Router {
             pushSlideShow(cards: cards)
         case .cardView(let card):
             pushCardView(forCard: card)
+        case .archivedList(let language, let userId):
+            pushArchivedList(language: language, userId: userId)
         }
     }
     
     // MARK: - Private
+    fileprivate func pushArchivedList(language: LanguageBind, userId: String) {
+        let vc = Screens.archiveCardsList(withLanguage: language, forUserId: userId)
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     fileprivate func pushCardView(forCard card: TranslateCard) {
         let vc = Screens.viewCard(withCard: card)
         viewController?.navigationController?.pushViewController(vc, animated: true)

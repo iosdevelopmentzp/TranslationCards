@@ -22,6 +22,7 @@ protocol DatabaseService: Service {
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void>
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]>
     func getCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]>
+    func getArchivedCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]>
 }
 
 extension DatabaseService {

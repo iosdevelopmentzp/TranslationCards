@@ -229,6 +229,26 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
                 return cards }
     }
     
+    func getArchivedCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]> {
+        database
+        .collection(.databaseUserCollection)
+        .document(userId)
+        .collection(.databaseLanguagesCollection)
+        .document(language.id)
+        .collection(.databaseArchiveCardsCollection)
+        .rx
+        .getDocuments()
+        .map { (snapshot) -> [TranslateCard] in
+            var cards = Array<TranslateCard>()
+            snapshot.documents.forEach{
+                guard let card = TranslateCard(withData: $0.data()) else { return }
+                card.id = $0.reference.documentID
+                card.isArchived = true
+                cards.append(card)
+            }
+            return cards }
+    }
+    
     // MARK: - Private
     fileprivate func archiveCardDocument(withUserId userId: String, languageId: String, documentId: String) -> DocumentReference {
         database

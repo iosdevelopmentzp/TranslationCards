@@ -12,6 +12,7 @@ import JJFloatingActionButton
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
     fileprivate let startCardSlideShowButton = JJActionItem()
+    fileprivate let archiveListButton = JJActionItem()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -55,6 +56,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.setupView()
         tableView.backgroundColor = .clear
         
+        archiveListButton.imageView.image = .image(withType: .archived, renderringMode: .alwaysTemplate)
         startCardSlideShowButton.imageView.image = .image(withType: .playButton, renderringMode: .alwaysTemplate)
     }
     
@@ -70,19 +72,21 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         
+        archiveListButton.titleLabel.text = "View archive"
         startCardSlideShowButton.titleLabel.text = "Start slide show"
     }
     
     override func binding() {
         super.binding()
         
-        viewModel
-            .bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
+        viewModel.bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
+        viewModel.bindWith(openArchivedList: archiveListButton.rx.tap)
     }
 }
 
 extension CardsListViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [startCardSlideShowButton]
+        let buttons = viewModel.mode.value == .actual ? [startCardSlideShowButton, archiveListButton] : []
+        return buttons
     }
 }

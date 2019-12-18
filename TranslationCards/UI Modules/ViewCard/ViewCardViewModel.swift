@@ -20,9 +20,9 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     lazy var title = BehaviorRelay<String>.init(value: card.value.sourcePhrase)
     let mode: BehaviorRelay<ViewCardMode>
     
-    init(card: TranslateCard, mode: ViewCardMode) {
+    init(card: TranslateCard) {
         self.card = .init(value: card)
-        self.mode = .init(value: mode) 
+        self.mode = card.isArchived ? .init(value: .archive) : .init(value: .actual)
         super.init()
     }
     

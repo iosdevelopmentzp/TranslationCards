@@ -10,13 +10,8 @@ import RxSwift
 import RxCocoa
 
 struct Screens {
-    static func viewCard(withArchivedCard card: TranslateCard) -> ViewCardViewController {
-        let vm = ViewCardViewModel(card: card, mode: .archive)
-        return ViewCardViewController(viewModel: vm)
-    }
-    
     static func viewCard(withCard card: TranslateCard) -> ViewCardViewController {
-        let vm = ViewCardViewModel(card: card, mode: .actual)
+        let vm = ViewCardViewModel(card: card)
         return ViewCardViewController(viewModel: vm)
     }
     
@@ -38,8 +33,13 @@ struct Screens {
         return CardSlideShowViewController(viewModel: vm)
     }
     
+    static func archiveCardsList(withLanguage language: LanguageBind, forUserId userId: String) -> CardsListViewController {
+        let vm = CardsListViewModel(language: language, userId: userId, mode: .archive)
+        return CardsListViewController(viewModel: vm)
+    }
+    
     static func cardsList(withLanguage language: LanguageBind, forUserId userId: String) -> CardsListViewController {
-        let vm = CardsListViewModel(language: language, userId: userId)
+        let vm = CardsListViewModel(language: language, userId: userId, mode: .actual)
         return CardsListViewController(viewModel: vm)
     }
     
