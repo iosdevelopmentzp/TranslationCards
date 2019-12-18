@@ -12,6 +12,8 @@ import RxCocoa
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
     var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
+    var selectedItem: BehaviorRelay<IndexPath?> = .init(value: nil)
+    
     lazy var titleText = Observable<String>.just("\(language.sourceLanguage) to \(language.targetLanguage)")
     
     fileprivate let language: LanguageBind
@@ -28,6 +30,15 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             }, onError: { [weak self] (error) in
                 let wrongAlert = AlertModel.warningAlert(message: "Failed get cards list with error \(error)", handler: nil)
                 self?.alertModel.accept(wrongAlert)
+            })
+            .disposed(by: disposeBag)
+        
+        selectedItem
+            .subscribe(onNext: { [weak self] (indexPath) in
+                guard let indexPath = indexPath, let cards =  self?.cardsDataSource.value,
+                    indexPath.row < cards.count, indexPath.row >= 0 else { return }
+                let card = cards[indexPath.row]
+                self?.router.route(to: .cardView(card: card))
             })
             .disposed(by: disposeBag)
     }

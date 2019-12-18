@@ -19,6 +19,8 @@ class CreateTranslateCardView: UIView {
     let saveButton = UIButton()
     let cancelButton = UIButton()
     let buttonStackView = UIStackView()
+    let verticalButtonStackView = UIStackView()
+    let removeButton = UIButton()
     let targetSelectLanguageButton = UIButton(type: .custom)
     
     fileprivate let diposeBag = DisposeBag()
@@ -31,6 +33,11 @@ class CreateTranslateCardView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(withCard card: TranslateCard) {
+        sourceTextField.text = card.sourcePhrase
+        targetTextField.text = card.targetPhrase
     }
     
     // MARK: - Private
@@ -86,15 +93,26 @@ class CreateTranslateCardView: UIView {
         }
         
         addSubview(buttonStackView)
-        buttonStackView.snp.makeConstraints { [weak self] in
+        buttonStackView.addArrangedSubview(cancelButton)
+        buttonStackView.addArrangedSubview(saveButton)
+        [cancelButton, saveButton].forEach {
+            $0.snp.makeConstraints {
+                $0.height.equalTo(50.0) }
+        }
+        
+        addSubview(verticalButtonStackView)
+        verticalButtonStackView.addArrangedSubview(buttonStackView)
+        verticalButtonStackView.addArrangedSubview(removeButton)
+        removeButton.snp.makeConstraints {
+            $0.height.equalTo(30.0)
+        }
+        
+        verticalButtonStackView.snp.makeConstraints {[weak self] in
             guard let self = self else { return }
             $0.top.equalTo(self.targetTextField.snp.bottom).offset(padding)
             $0.left.equalToSuperview().offset(padding)
-            $0.bottom.right.equalToSuperview().inset(padding)
-            $0.height.equalTo(50.0)
+            $0.right.bottom.equalToSuperview().inset(padding)
         }
-        buttonStackView.addArrangedSubview(cancelButton)
-        buttonStackView.addArrangedSubview(saveButton)
     }
     
     fileprivate func setupView() {
@@ -117,13 +135,17 @@ class CreateTranslateCardView: UIView {
             $0.textColor = .black
         }
         
-        [cancelButton, saveButton].forEach {
+        [cancelButton, saveButton, removeButton].forEach {
             $0.setBorder(withColor: .borderColotDak, borderWidth: 1.0, cornerRadius: 10.0)
         }
         saveButton.backgroundColor = .validateAccentColor
         cancelButton.backgroundColor = .cancelButton
+        removeButton.backgroundColor = .removeButton
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         buttonStackView.spacing = 10.0
+        
+        verticalButtonStackView.axis = .vertical
+        verticalButtonStackView.spacing = 10.0
     }
 }

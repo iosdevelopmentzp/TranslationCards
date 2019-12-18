@@ -66,6 +66,18 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Card
+    func removeCard(_ card: TranslateCard) -> Observable<Void> {
+        return database
+            .collection(.databaseUserCollection)
+            .document(card.userOwnerId)
+            .collection(.databaseLanguagesCollection)
+            .document(card.language.id)
+            .collection(.databaseCardsCollection)
+            .document(card.id)
+            .rx
+            .delete()
+    }
+    
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void> {
         let userReferance = database.collection(.databaseUserCollection).document(card.userOwnerId)
         let languageReferance = userReferance.collection(.databaseLanguagesCollection).document(card.language.id)

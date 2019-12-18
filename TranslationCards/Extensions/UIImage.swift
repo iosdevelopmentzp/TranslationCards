@@ -12,6 +12,9 @@ enum ImageType: String {
     case playButton
     case to
     case speaker
+    case plus
+    case edit
+    case leftArrow
 }
 
 extension UIImage {

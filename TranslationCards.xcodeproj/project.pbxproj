@@ -94,7 +94,14 @@
 		3B825BB42386DFEC009D62E8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */; };
 		3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */; };
 		3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BB62386ED89009D62E8 /* UINavigationController.swift */; };
+		3B85039A23AA150300481989 /* CAAnimationGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039923AA150300481989 /* CAAnimationGroup.swift */; };
+		3B85039C23AA276B00481989 /* JJActionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039B23AA276B00481989 /* JJActionItem.swift */; };
+		3B85039E23AA2F3200481989 /* ActionButtonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */; };
 		3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */; };
+		3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */; };
+		3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */; };
+		3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */; };
+		3B8CF25B23A8EAC000C2249A /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25A23A8EAC000C2249A /* CardView.swift */; };
 		3B9550B223A4E86100BC9E8E /* KeyValueStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */; };
 		3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */; };
 		3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B523A50EE700BC9E8E /* KeyStorage.swift */; };
@@ -121,7 +128,6 @@
 		3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */; };
 		3BEE43CB2397D88A008F35AA /* CardSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */; };
 		3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */; };
-		3BEE43CE2397DA9B008F35AA /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43CD2397DA9B008F35AA /* UIButton.swift */; };
 		3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43CF2397DB0A008F35AA /* UIImage.swift */; };
 		3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D22397FA96008F35AA /* CardCell.swift */; };
 		3BEE43D523980055008F35AA /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D423980055008F35AA /* NSObject.swift */; };
@@ -223,7 +229,14 @@
 		3B825BB12386DFEC009D62E8 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3B825BB22386DFEC009D62E8 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3B825BB62386ED89009D62E8 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
+		3B85039923AA150300481989 /* CAAnimationGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAAnimationGroup.swift; sourceTree = "<group>"; };
+		3B85039B23AA276B00481989 /* JJActionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJActionItem.swift; sourceTree = "<group>"; };
+		3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonDataSource.swift; sourceTree = "<group>"; };
 		3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CABasicAnimation.swift; sourceTree = "<group>"; };
+		3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardRouter.swift; sourceTree = "<group>"; };
+		3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewController.swift; sourceTree = "<group>"; };
+		3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewModel.swift; sourceTree = "<group>"; };
+		3B8CF25A23A8EAC000C2249A /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageService.swift; sourceTree = "<group>"; };
 		3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		3B9550B523A50EE700BC9E8E /* KeyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStorage.swift; sourceTree = "<group>"; };
@@ -249,7 +262,6 @@
 		3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowRouter.swift; sourceTree = "<group>"; };
 		3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewController.swift; sourceTree = "<group>"; };
 		3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewModel.swift; sourceTree = "<group>"; };
-		3BEE43CD2397DA9B008F35AA /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		3BEE43CF2397DB0A008F35AA /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3BEE43D22397FA96008F35AA /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 		3BEE43D423980055008F35AA /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
@@ -326,6 +338,7 @@
 				3BEE43C62397D858008F35AA /* CardSlideShow */,
 				3B242F68239FA8FB00B90C41 /* Picker */,
 				3B1544CC23A28C84004C0B75 /* LangChoice */,
+				3B8CF25323A8E74000C2249A /* ViewCard */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -350,7 +363,6 @@
 				3BC52C2C238FC466006FB7F8 /* UITextField.swift */,
 				3BFCBD3C2391A30D00C9AA48 /* UIView.swift */,
 				3BFCBD402391B4E100C9AA48 /* Date.swift */,
-				3BEE43CD2397DA9B008F35AA /* UIButton.swift */,
 				3BEE43CF2397DB0A008F35AA /* UIImage.swift */,
 				3BEE43D423980055008F35AA /* NSObject.swift */,
 				3B031E10239BBE5E00946F8D /* CGFloat.swift */,
@@ -360,6 +372,8 @@
 				3BC0414A23A3D16200C20EFA /* DocumentReference.swift */,
 				3BC0414823A3CE2300C20EFA /* CustomOperators.swift */,
 				3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */,
+				3B85039923AA150300481989 /* CAAnimationGroup.swift */,
+				3B85039B23AA276B00481989 /* JJActionItem.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -585,6 +599,7 @@
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
 				3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */,
 				3B5A3BB523968D56009110A7 /* DatabaseServiceAccessing.swift */,
+				3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -626,6 +641,16 @@
 			path = "Transition Animation";
 			sourceTree = "<group>";
 		};
+		3B8CF25323A8E74000C2249A /* ViewCard */ = {
+			isa = PBXGroup;
+			children = (
+				3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */,
+				3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */,
+				3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */,
+			);
+			path = ViewCard;
+			sourceTree = "<group>";
+		};
 		3B9550B023A4E66B00BC9E8E /* UserDefaults */ = {
 			isa = PBXGroup;
 			children = (
@@ -639,6 +664,7 @@
 		3BA376A0239FA49300665A8B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B8CF25A23A8EAC000C2249A /* CardView.swift */,
 				3BEE43D6239803AB008F35AA /* CardSideView.swift */,
 				3B031E18239C048A00946F8D /* BackCardSideView.swift */,
 				3B5D51232387F41100DCB5FB /* RegisterCardView.swift */,
@@ -899,6 +925,7 @@
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
+				3B85039C23AA276B00481989 /* JJActionItem.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
 				3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */,
 				3B6CF0A4239E7D4C007CDA17 /* UIViewController.swift in Sources */,
@@ -909,17 +936,20 @@
 				3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */,
 				3B031E13239BD92900946F8D /* LanguageCell.swift in Sources */,
 				3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */,
+				3B85039A23AA150300481989 /* CAAnimationGroup.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
 				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
+				3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */,
 				3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
-				3BEE43CE2397DA9B008F35AA /* UIButton.swift in Sources */,
+				3B8CF25B23A8EAC000C2249A /* CardView.swift in Sources */,
+				3B85039E23AA2F3200481989 /* ActionButtonDataSource.swift in Sources */,
 				3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */,
 				3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */,
 				3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */,
@@ -939,6 +969,7 @@
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
+				3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */,
 				3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */,
 				3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
@@ -963,6 +994,7 @@
 				3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
+				3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,

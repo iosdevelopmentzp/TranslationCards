@@ -17,13 +17,13 @@ enum LearningLevel: Int {
     case highest
 }
 
-struct TranslateCard {
+class TranslateCard {
     let language: LanguageBind
     let userOwnerId: String
     let dateCreated: Date
     var dateUpdated: Date
-    let sourcePhrase: String
-    let targetPhrase: String
+    fileprivate(set) var sourcePhrase: String
+    fileprivate(set) var targetPhrase: String
     var numberGuesses: Int
     var numberrAttempts: Int
     var learningLevel: LearningLevel
@@ -44,7 +44,7 @@ struct TranslateCard {
         self.id = UUID().uuidString
     }
     
-    init?(withData data: [String: Any]) {
+    required init?(withData data: [String: Any]) {
         guard let userOwnerId = data["userOwnerId"] as? String,
             let dateCreatedString = data["dateCreated"] as? String,
             let dateCreated = Date.initWithString(dateCreatedString),
@@ -75,8 +75,18 @@ struct TranslateCard {
 }
 
 extension TranslateCard: DatabaseServiceAccessing {
-    func sendToDatabase() -> Observable<Void> {
+    func update(sourcePhrase: String, targetPhrase: String) -> Observable<Void> {
+        self.sourcePhrase = sourcePhrase
+        self.targetPhrase = targetPhrase
+        return database.saveCard(self)
+    }
+    
+    func save() -> Observable<Void> {
         database.saveCard(self)
+    }
+    
+    func remove() -> Observable<Void> {
+        database.removeCard(self)
     }
 }
 

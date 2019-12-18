@@ -9,20 +9,38 @@
 import RxSwift
 import RxCocoa
 
+enum CreateCardMode {
+    case create
+    case edit
+}
+
 final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
-    fileprivate let userId: String
-    fileprivate let startedLanguage: LanguageBind
+    var isRemoveButtonHidden: BehaviorRelay<Bool>
+    let mode: BehaviorRelay<CreateCardMode>
     
-    fileprivate lazy var language = BehaviorRelay<LanguageBind>.init(value: startedLanguage)
+    fileprivate let userId: String
+    fileprivate var language: BehaviorRelay<LanguageBind>
     fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
     fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
+    fileprivate var card: TranslateCard?
     
     fileprivate var callBackLanguage: BehaviorRelay<Language?> = .init(value: nil)
     
-    init(userId: String, language: LanguageBind?) {
+    init(withCard card: TranslateCard) {
+        mode = .init(value: .edit)
+        self.userId = card.id
+        self.language = .init(value: card.language)
+        self.card = card
+        self.isRemoveButtonHidden = .init(value: false)
+        super.init()
+    }
+    
+    init(userId: String, language: LanguageBind) {
+        mode = .init(value: .create)
         self.userId = userId
-        self.startedLanguage = language ?? LanguageBind.default
+        self.language = .init(value: language)
+        self.isRemoveButtonHidden = .init(value: true)
         super.init()
         
         sourceLanguage
@@ -70,19 +88,36 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     func bind(withNewPhrase newPhrase: ControlProperty<String>,
               translation: ControlProperty<String>,
               saveButtonPressed: ControlEvent<Void>,
-              cancelButtonPressed: ControlEvent<Void>) {
+              cancelButtonPressed: ControlEvent<Void>,
+              removeButtonPressed: ControlEvent<Void>) {
+        
+        if mode.value == .edit, let card = card {
+            newPhrase.onNext(card.sourcePhrase)
+            translation.onNext(card.targetPhrase)
+        }
         
         let inputData = Observable.combineLatest(newPhrase, translation)
         saveButtonPressed
             .withLatestFrom(inputData)
             .subscribe(onNext: { [weak self] (newPhrase, translation) in
-                guard !newPhrase.isEmpty, !translation.isEmpty,
-                    let userId = self?.userId, let language = self?.language else { return }
-                let translateCard = TranslateCard(userId: userId,
-                                                  language: language.value,
+                guard !newPhrase.isEmpty, !translation.isEmpty else {
+                    self?.alertModel.accept(.warningAlert(message: "Fill in all the fields", handler: nil))
+                    return
+                }
+                
+                guard let self = self else { return }
+                
+                guard self.mode.value == .create else {
+                    if let card = self.card, card.sourcePhrase != newPhrase || card.targetPhrase != translation {
+                        self.updateCard(sourcePhrase: newPhrase, targetPhrase: translation, card: card)
+                    }
+                    return
+                }
+                let translateCard = TranslateCard(userId: self.userId,
+                                                  language: self.language.value,
                                                   sourcePhrase: newPhrase,
                                                   targetPhrase: translation)
-                self?.saveTranslationCard(card: translateCard)
+                self.saveTranslationCard(card: translateCard)
             })
             .disposed(by: disposeBag)
         
@@ -91,22 +126,27 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 self?.router.dissmis()
             })
             .disposed(by: disposeBag)
+        
+        removeButtonPressed
+            .withLatestFrom(mode)
+            .filter { (mode) -> Bool in
+                mode == .edit }
+            .subscribe(onNext: { [weak self] (_) in
+                guard let card = self?.card else {
+                    debugPrint("Failed remove card. Card not created")
+                    return
+                }
+                self?.removeCard(card)
+            })
+            .disposed(by: disposeBag)
     }
     
     func bind(withSourceSelectLanguageButton sourceLanguageButton: ControlEvent<Void>,
                           targetSelectLanguageButton: ControlEvent<Void>) {
-
-// NOTE: - Implement if need source language action click
-        /*
-        sourceLanguageButton
-            .subscribe(onNext: { [weak self] (_) in
-                guard let self = self else { return }
-                self.router.route(to: .languagePickerView(currentLanguage: self.sourceLanguage,
-                                                          title: "Source language")) })
-            .disposed(by: disposeBag)
- */
         
         targetSelectLanguageButton
+            .withLatestFrom(mode)
+            .filter{ $0 == .create }
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self else { return }
                 let targetLanguages = Language.allCases.filter{ $0 != self.sourceLanguage.value}
@@ -130,22 +170,47 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     }
 
     // MARK: - Private
-    fileprivate func saveTranslationCard(card: TranslateCard) {
-        card.sendToDatabase()
+    fileprivate func updateCard(sourcePhrase: String, targetPhrase: String, card: TranslateCard) {
+        guard sourcePhrase != card.sourcePhrase || targetPhrase != card.targetPhrase else {
+            return
+        }
+        self.startActivityIndicator.accept(true)
+        card.update(sourcePhrase: sourcePhrase, targetPhrase: targetPhrase)
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.dissmis()
+                self?.startActivityIndicator.accept(false)
                 }, onError: { [weak self] (error) in
-                    let description = "Failed save card with error - \(error.localizedDescription)"
-                    debugPrint(description)
-                    let okAction = AlertModel.ActionModel(title: "Ok",
-                                                          style: .destructive) { (_) in
-                            self?.router.dissmis()
-                    }
-                    let alertModel = AlertModel(actionModels: [okAction],
-                                                title: description,
-                                                message: nil,
-                                                prefferedStyle: .alert)
-                    self?.alertModel.accept(alertModel)
+                    self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
+                    self?.startActivityIndicator.accept(false)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func removeCard(_ card: TranslateCard) {
+        self.startActivityIndicator.accept(true)
+        card.remove().subscribe(onNext: { [weak self] (_) in
+            self?.router.dissmis()
+            self?.startActivityIndicator.accept(false)
+        }, onError: { [weak self] (error) in
+            self?.startActivityIndicator.accept(false)
+            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: { [weak self] (_) in
+                self?.router.dissmis()
+            }))
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    fileprivate func saveTranslationCard(card: TranslateCard) {
+        self.startActivityIndicator.accept(true)
+        card.save()
+            .subscribe(onNext: { [weak self] (_) in
+                self?.router.dissmis()
+                self?.startActivityIndicator.accept(false)
+                }, onError: { [weak self] (error) in
+                    self?.startActivityIndicator.accept(false)
+                    self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: { (_) in
+                        self?.router.dissmis()
+                    }))
                 })
             .disposed(by: disposeBag)
     }

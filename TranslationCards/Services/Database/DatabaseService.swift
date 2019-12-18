@@ -16,6 +16,7 @@ protocol DatabaseService: Service {
     func deleteUser(_ user: User) -> Observable<Void>
     
     // MARK: - Translate cards
+    func removeCard(_ card: TranslateCard) -> Observable<Void>
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void>
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]>
     func getCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]>
@@ -25,7 +26,11 @@ extension DatabaseService {
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool = false) -> Observable<Void> {
         var isCurrentLanguage = false
         if let user = Services.shared.credentials.user.value, user.uid == card.userOwnerId {
-            isCurrentLanguage = user.currentLanguage == nil
+            if let currentLanguage = user.currentLanguage {
+                isCurrentLanguage = currentLanguage != card.language.targetLanguage
+            } else {
+                isCurrentLanguage = true
+            }
         }
         return saveCard(card, cardLanguageIsCurrentLanguage: isCurrentLanguage)
     }

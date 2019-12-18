@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import JJFloatingActionButton
 
 class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
@@ -43,20 +44,17 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel
-            .alertModel
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (alertModel) in
-                guard let model = alertModel else { return }
-                let alert = AlertBuilder.buildAlertController(for: model)
-                self?.present(alert, animated: true, completion: nil) })
-            .disposed(by: disposeBag)
-        
         setupView()
         setupTable()
         setupNavigationBar()
         localizable()
         binding()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupActionButtons()
     }
     
     func onModelUpdates() {}
@@ -73,6 +71,16 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     func setupNavigationBar() {}
     func localizable() {}
     func binding() {
+        // default binding
+        viewModel
+            .alertModel
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (alertModel) in
+                guard let model = alertModel else { return }
+                let alert = AlertBuilder.buildAlertController(for: model)
+                self?.present(alert, animated: true, completion: nil) })
+            .disposed(by: disposeBag)
+        
         viewModel
             .startActivityIndicator
             .subscribe(onNext: { [weak self] (isActive) in
@@ -83,5 +91,20 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
                 self?.view.bringSubviewToFront(activityIndicator)
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Private    
+    fileprivate func setupActionButtons() {
+        guard let mainNavigation = navigationController as? MainNavigationViewController else {
+            return
+        }
+        
+        guard let buttonDataSource = self as? ActionButtonDataSource else {
+            mainNavigation.configureActionButtons([])
+            return
+        }
+        
+        let buttons = buttonDataSource.getActionButtons()
+        mainNavigation.configureActionButtons(buttons)
     }
 }

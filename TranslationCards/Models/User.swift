@@ -12,7 +12,14 @@ import RxRelay
 
 final class User {
     private (set) var uid: String
-    private (set) var currentLanguage: Language?
+    private (set) var currentLanguage: Language? {
+        didSet {
+            guard let language = currentLanguage else {
+                return
+            }
+            debugPrint("Changed current language \(language)")
+        }
+    }
     private (set) var nativeLanguage: Language?
     private (set) var email: String?
     private (set) var displayName: String?

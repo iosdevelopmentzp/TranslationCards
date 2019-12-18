@@ -28,6 +28,11 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         super.setupView()
         view.addGestureRecognizer(tapGesture)
         view.backgroundColor = .clear
+        
+        viewModel
+            .isRemoveButtonHidden
+            .bind(to: createTranslateCardView.removeButton.rx.isHidden)
+            .disposed(by: disposeBag)
     }
     
     override func binding() {
@@ -35,7 +40,8 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
-                       cancelButtonPressed: createTranslateCardView.cancelButton.rx.tap)
+                       cancelButtonPressed: createTranslateCardView.cancelButton.rx.tap,
+                       removeButtonPressed: createTranslateCardView.removeButton.rx.tap)
         
         viewModel.bind(withSourceSelectLanguageButton: createTranslateCardView.sourceSelectLanguageButton.rx.tap,
                        targetSelectLanguageButton: createTranslateCardView.targetSelectLanguageButton.rx.tap)
@@ -60,6 +66,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         createTranslateCardView.targetTextField.text = ""
         createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
         createTranslateCardView.cancelButton.setAttributedTitle(.defaultText(withText: "Cancel"), for: .normal)
+        createTranslateCardView.removeButton.setAttributedTitle(.defaultText(withText: "Remove"), for: .normal)
     }
 }
 
@@ -117,7 +124,7 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
     
     func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
         
-        let blurView = secondViewController?.appendBlurEffect(style: .light)
+        let blurView = secondViewController?.appendBlurEffect(style: .dark)
         blurView?.alpha = 0.0
         UIView.animate(withDuration: duration * 0.3, delay: delay, animations: {
             blurView?.alpha = 1.0
@@ -128,19 +135,30 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         let screenSize = containerView.bounds.size
         
         // Text fields
+        let sourceColor = createTranslateCardView.sourceTextField.textColor
+        let targetColor = createTranslateCardView.targetTextField.textColor
+        createTranslateCardView.sourceTextField.textColor = .clear
+        createTranslateCardView.targetTextField.textColor = .clear
+        Timer.scheduledTimer(withTimeInterval: duration * 0.5, repeats: false) { [weak self] (_) in
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.createTranslateCardView.sourceTextField.textColor = sourceColor
+                self?.createTranslateCardView.targetTextField.textColor = targetColor
+            }
+        }
+        
+        
         let verticalAnimation1 = CABasicAnimation.animation(withKeyType: .translationY,
                                                             duration: duration * 0.5,
                                                             fromValue: screenSize.height,
                                                             toValue: 0)
-        createTranslateCardView.sourceTextField.layer.add(verticalAnimation1, forKey: "translationYTextField")
+        createTranslateCardView.sourceTextField.layer.add(verticalAnimation1, forKey: "translationYTextFieldSource")
         
-        createTranslateCardView.targetTextField.transform = .init(translationX: 0, y: screenSize.height)
         let verticalAnimation2 = CABasicAnimation.animation(withKeyType: .translationY,
                                                             duration: verticalAnimation1.duration,
-                                                            fromValue: nil,
+                                                            fromValue: screenSize.height,
                                                             toValue: 0,
                                                             delay: verticalAnimation1.duration * 0.2)
-        createTranslateCardView.targetTextField.layer.add(verticalAnimation2, forKey: "translationYTextField")
+        createTranslateCardView.targetTextField.layer.add(verticalAnimation2, forKey: "translationYTextFieldTarget")
 
         // Text labels
         let labelShiftX = max(createTranslateCardView.targetHeaderLabel.bounds.width, createTranslateCardView.sourceHeaderLabel.bounds.width)
@@ -169,13 +187,14 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         }
         
         // cancel, save buttons
-        [createTranslateCardView.cancelButton, createTranslateCardView.saveButton].forEach {
+        let buttons = [createTranslateCardView.cancelButton, createTranslateCardView.saveButton, createTranslateCardView.removeButton]
+        buttons.forEach {
             $0.alpha = 0.0
         }
         
-        UIView.animate(withDuration: duration / 2, delay: duration / 2, animations: { [weak self] in
-            [self?.createTranslateCardView.cancelButton, self?.createTranslateCardView.saveButton].forEach {
-                $0?.alpha = 1.0
+        UIView.animate(withDuration: duration / 2, delay: duration / 2, animations: {
+            buttons.forEach {
+                $0.alpha = 1.0
             }
         })
     }

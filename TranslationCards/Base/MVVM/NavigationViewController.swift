@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import JJFloatingActionButton
 
 class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigationController {
 
@@ -31,8 +32,9 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupConstraints()
         setupView()
-        bind()
+        binding()
     }
     
     // MARK: - Private
@@ -59,8 +61,17 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     }
     
     func setupView() { }
-    
-    func bind() {
+    func setupConstraints() {}
+    func binding() {
         delegate = viewModel.navigationControllerDelegate
+        
+        viewModel
+            .alertModel
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (alertModel) in
+                guard let model = alertModel else { return }
+                let alert = AlertBuilder.buildAlertController(for: model)
+                self?.present(alert, animated: true, completion: nil) })
+            .disposed(by: disposeBag)
     }
 }

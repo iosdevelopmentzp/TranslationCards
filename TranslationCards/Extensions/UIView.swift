@@ -21,10 +21,12 @@ extension UIView {
     
     func setBorder(withColor color: UIColor = .borderColotDak,
                    borderWidth: CGFloat = 1.0,
-                   cornerRadius: CGFloat = 5.0) {
+                   cornerRadius: CGFloat? = nil) {
         layer.borderColor = color.cgColor
         layer.borderWidth = borderWidth
-        layer.cornerRadius = cornerRadius
+        if let cornerRadius = cornerRadius {
+            layer.cornerRadius = cornerRadius
+        }
     }
     
     func bringToFront() {

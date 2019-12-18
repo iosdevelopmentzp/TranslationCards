@@ -18,9 +18,11 @@ target 'TranslationCards' do
   pod 'RxDataSources'
   pod 'RxKeyboard'
   
-  
   # Firebase
   pod 'Firebase/Analytics'
+
+  # UIViews
+  pod 'JJFloatingActionButton'
   
   # UI
   pod 'SnapKit', '~>5.0.0'

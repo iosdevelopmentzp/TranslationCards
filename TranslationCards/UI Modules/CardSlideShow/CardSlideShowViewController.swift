@@ -21,7 +21,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
-            $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+            $0.top.left.right.equalTo(self.view.safeAreaLayoutGuide)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(30.0)
         }
     }
     

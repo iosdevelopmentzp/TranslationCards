@@ -10,6 +10,11 @@ import RxSwift
 import RxCocoa
 
 struct Screens {
+    static func viewCard(withCard card: TranslateCard) -> ViewCardViewController {
+        let vm = ViewCardViewModel(card: card)
+        return ViewCardViewController(viewModel: vm)
+    }
+    
     static func nativeLanguageChoise() -> LanguageChoiceViewController {
         let vm = LanguageChoiceViewModel()
         return LanguageChoiceViewController(viewModel: vm)
@@ -33,7 +38,12 @@ struct Screens {
         return CardsListViewController(viewModel: vm)
     }
     
-    static func createCard(forUserId userId: String, language: LanguageBind?) -> CreateCardPopUpViewController {
+    static func editCard(forCard card: TranslateCard) -> CreateCardPopUpViewController {
+        let vm = CreateCardPopUpViewModel(withCard: card)
+        return CreateCardPopUpViewController(viewModel: vm)
+    }
+    
+    static func createCard(forUserId userId: String, language: LanguageBind) -> CreateCardPopUpViewController {
         let vm = CreateCardPopUpViewModel(userId: userId, language: language)
         return CreateCardPopUpViewController(viewModel: vm)
     }

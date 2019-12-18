@@ -11,9 +11,17 @@ import UIKit
 enum AnimationKeyType: String {
     case translationY = "transform.translation.y"
     case translationX = "transform.translation.x"
+    case opacity = "opacity"
+    case positionX = "position.x"
+    case positionY = "position.y"
 }
 
 extension CABasicAnimation {
+    
+    /// Parameters defaults:
+    /// timingFunction = CAMediaTimingFunction(name: .linear) 
+    /// fillMode = .forwards
+    /// isRemovedOnCompletion = false
     static func animation(withKeyType key: AnimationKeyType, duration: TimeInterval, fromValue: Any?, toValue: Any?, delay: TimeInterval = 0) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: key.rawValue)
         animation.duration = duration

@@ -28,7 +28,9 @@ extension UIColor {
     static var borderColotDak: UIColor { .darkGray }
     
     // Buttons
+    static var neutralButton: UIColor { UIColor(hexString: "666666")! }
     static var notValidateButton: UIColor { .gray }
+    static var removeButton: UIColor { UIColor(hexString: "d11a2a")!}
     static var cancelButton: UIColor? { UIColor.init(hexString: "E64F60") }
     static var innactiveButtonTitleColor: UIColor { UIColor.lightGray }
     

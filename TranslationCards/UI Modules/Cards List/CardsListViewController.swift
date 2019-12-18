@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
-    fileprivate let startCardSlideShowButton = UIButton.playButton
+    fileprivate let startCardSlideShowButton = JJActionItem()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -19,14 +20,6 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         tableView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
-        }
-        
-        view.addSubview(startCardSlideShowButton)
-        startCardSlideShowButton.snp.makeConstraints { [weak self] in
-            guard let self = self else { return }
-            $0.width.height.equalTo(60.0)
-            $0.right.equalTo(self.view.safeAreaLayoutGuide).inset(16.0)
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-30.0)
         }
     }
     
@@ -49,13 +42,20 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
                     cell.textLabel?.text = element.sourcePhrase
                     cell.textLabel?.numberOfLines = 0
                     cell.textLabel?.textColor = .white
-                    cell.backgroundColor = .clear }
+                    cell.backgroundColor = .clear },
+            
+            tableView
+                .rx
+                .itemSelected
+                .bind(to: viewModel.selectedItem)
         ])
     }
     
     override func setupView() {
         super.setupView()
         tableView.backgroundColor = .clear
+        
+        startCardSlideShowButton.imageView.image = .image(withType: .playButton, renderringMode: .alwaysTemplate)
     }
     
     override func setupNavigationBar() {
@@ -69,6 +69,8 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .titleText
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
+        
+        startCardSlideShowButton.titleLabel.text = "Start slide show"
     }
     
     override func binding() {
@@ -76,5 +78,11 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         
         viewModel
             .bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
+    }
+}
+
+extension CardsListViewController: ActionButtonDataSource {
+    func getActionButtons() -> [JJActionItem] {
+        return [startCardSlideShowButton]
     }
 }

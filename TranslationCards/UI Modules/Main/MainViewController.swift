@@ -13,7 +13,6 @@ import RxDataSources
 
 
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
-    fileprivate let addCardButton = PlusButton()
     fileprivate let tableView = UITableView()
     fileprivate let signOutBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: nil, action: nil)
     private  var dataSource: RxTableViewSectionedReloadDataSource<MainViewModel.Section>?
@@ -25,14 +24,6 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         tableView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
-        }
-        
-        view.addSubview(addCardButton)
-        addCardButton.snp.makeConstraints { [weak self] in
-            guard let self = self else { return }
-            $0.width.height.equalTo(60.0)
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(30.0)
-            $0.right.equalTo(self.view.safeAreaLayoutGuide).inset(16.0)
         }
     }
     
@@ -70,8 +61,6 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     
     override func setupView() {
         super.setupView()
-        addCardButton.tintColor = .white
-        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44.0
     }
@@ -85,7 +74,6 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     
     override func binding() {
         super.binding()
-        viewModel.bind(addCardPressed: addCardButton.rx.tap)
         viewModel.bind(logoutEvent: signOutBarButtonItem.rx.tap)
         viewModel.bindSelectesItemEvent(tableView.rx.itemSelected)
     }
