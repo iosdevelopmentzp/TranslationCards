@@ -23,6 +23,7 @@ target 'TranslationCards' do
 
   # UIViews
   pod 'JJFloatingActionButton'
+  pod 'NVActivityIndicatorView'
   
   # UI
   pod 'SnapKit', '~>5.0.0'
