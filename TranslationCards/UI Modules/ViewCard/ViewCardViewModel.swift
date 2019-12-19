@@ -50,7 +50,8 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     }
     
     func bind(switchLocationEvent: ControlEvent<Void>) {
-        
+#warning("Uncomment later")
+        /*
         switchLocationEvent
             .withLatestFrom(mode)
             .subscribe(onNext: { [weak self] (mode) in
@@ -85,5 +86,6 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
                 }
             })
             .disposed(by: disposeBag)
+ */
     }
 }

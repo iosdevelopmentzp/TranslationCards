@@ -109,7 +109,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 
                 guard self.mode.value == .create else {
                     if let card = self.card, card.sourcePhrase != newPhrase || card.targetPhrase != translation {
-                        self.updateCard(sourcePhrase: newPhrase, targetPhrase: translation, card: card)
+                        self.updateCard(sourcePhrase: newPhrase, targetPhrase: translation, forCard: card)
                     }
                     return
                 }
@@ -170,48 +170,73 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     }
 
     // MARK: - Private
-    fileprivate func updateCard(sourcePhrase: String, targetPhrase: String, card: TranslateCard) {
-        guard sourcePhrase != card.sourcePhrase || targetPhrase != card.targetPhrase else {
+    fileprivate func updateCard(sourcePhrase: String, targetPhrase: String, forCard card: TranslateCard) {
+        guard sourcePhrase != card.sourcePhrase || targetPhrase != card.targetPhrase,
+            !sourcePhrase.isEmpty, !targetPhrase.isEmpty else {
             return
         }
-        self.startActivityIndicator.accept(true)
         card.update(sourcePhrase: sourcePhrase, targetPhrase: targetPhrase)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.router.dissmis()
-                self?.startActivityIndicator.accept(false)
+        
+        self.startActivityIndicator.accept(true)
+        User.user(withId: card.userOwnerId)
+            .subscribe(onNext: { [weak self] (user) in
+                user.saveCard(card)
+                    .subscribe(onNext: { [weak self] (_) in
+                        self?.router.dissmis()
+                        self?.startActivityIndicator.accept(false)
+                        }, onError: { [weak self] (error) in
+                            self?.startActivityIndicator.accept(false)
+                            self?.alertModel.accept(.warningAlert(message: "Failed update card. \(error.localizedDescription)", handler: nil))
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
                 }, onError: { [weak self] (error) in
-                    self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
                     self?.startActivityIndicator.accept(false)
+                    self?.alertModel.accept(.warningAlert(message: "Failed get user with id \(card.userOwnerId) with error \(error)", handler: nil))
             })
             .disposed(by: disposeBag)
     }
     
     fileprivate func removeCard(_ card: TranslateCard) {
         self.startActivityIndicator.accept(true)
-        card.remove().subscribe(onNext: { [weak self] (_) in
-            self?.router.dissmis()
-            self?.startActivityIndicator.accept(false)
-        }, onError: { [weak self] (error) in
-            self?.startActivityIndicator.accept(false)
-            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: { [weak self] (_) in
-                self?.router.dissmis()
-            }))
-        })
-        .disposed(by: disposeBag)
+        
+        User.user(withId: card.userOwnerId)
+            .subscribe(onNext: { [weak self] (user) in
+                user.removeCard(card)
+                    .subscribe(onNext: { [weak self] (_) in
+                        self?.router.dissmis()
+                        self?.startActivityIndicator.accept(false)
+                        }, onError: { [weak self] (error) in
+                            self?.startActivityIndicator.accept(false)
+                            self?.alertModel.accept(.warningAlert(message: "Failed get remove card with error \(error.localizedDescription)", handler: nil))
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
+                }, onError: { [weak self] (error) in
+                    self?.startActivityIndicator.accept(false)
+                    self?.alertModel.accept(.warningAlert(message: "Failed get user with error \(error.localizedDescription)", handler: nil))
+            })
+            .disposed(by: disposeBag)
     }
     
     fileprivate func saveTranslationCard(card: TranslateCard) {
         self.startActivityIndicator.accept(true)
-        card.save()
-            .subscribe(onNext: { [weak self] (_) in
-                self?.router.dissmis()
-                self?.startActivityIndicator.accept(false)
-                }, onError: { [weak self] (error) in
-                    self?.startActivityIndicator.accept(false)
-                    self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: { (_) in
+        
+        User.user(withId: card.userOwnerId)
+            .subscribe(onNext: { [weak self] (user) in
+                user.saveCard(card)
+                    .subscribe(onNext: { [weak self] (_) in
                         self?.router.dissmis()
-                    }))
-                })
-            .disposed(by: disposeBag)
+                        self?.startActivityIndicator.accept(false)
+                        }, onError: { (error) in
+                            self?.startActivityIndicator.accept(false)
+                            self?.alertModel.accept(.warningAlert(message: "Failed save card with error \(error.localizedDescription)", handler: nil))
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
+                
+            }, onError: { [weak self] (error) in
+                self?.startActivityIndicator.accept(false)
+                self?.alertModel.accept(.warningAlert(message: "Failed get user with error \(error.localizedDescription)", handler: nil))
+                }
+        )
+        .disposed(by: disposeBag)
     }
 }

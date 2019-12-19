@@ -28,8 +28,8 @@ class CredentialsServiceV1: NSObject, CredentialsService {
         }
         super.init()
         
-        if let userId = self.user.value?.uid {
-            fetchRemoteUser(withId: userId)
+        if let user = self.user.value {
+            user.synchronizeWithRemote()
         }
         
         user.subscribe(onNext: { [weak self] (user) in
@@ -41,6 +41,7 @@ class CredentialsServiceV1: NSObject, CredentialsService {
             .disposed(by: disposeBag)
     }
     
+    // MARK: - Private
     fileprivate func fetchRemoteUser(withId userId: String) {
         database
             .fetchUser(withUserId: userId)

@@ -11,21 +11,23 @@ import RxSwift
 import RxRelay
 
 final class User {
-    private (set) var uid: String
-    private (set) var currentLanguage: Language?
-    private (set) var nativeLanguage: Language?
-    private (set) var email: String?
-    private (set) var displayName: String?
-    private (set) var avatarUrl: String?
+    fileprivate (set) var uid: String
+    fileprivate (set) var currentLanguage: Language?
+    fileprivate (set) var nativeLanguage: Language?
+    fileprivate (set) var email: String?
+    fileprivate (set) var displayName: String?
+    fileprivate (set) var avatarUrl: String?
     
     private var disposeBag = DisposeBag()
     
-    // MARK: - Buffer Properties
+    // MARK: - Cash Properties
+    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     fileprivate(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
     /// playlists stored using LanguageBind key value.
     fileprivate(set) var playlists: BehaviorRelay<[LanguageBind: [Playlist]]?> = .init(value: nil)
     /// cardsList stored using Playlist.description key value.
     fileprivate(set) var cardsList: BehaviorRelay<[String: [TranslateCard]]?> = .init(value: nil)
+    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     
     init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
         self.uid = uid
@@ -52,33 +54,11 @@ final class User {
         }
     }
     
-    // MARK: - Private
-    func updateNativeLanguage(newLanguage: Language) -> Observable<Void> {
-        return .create { [weak self] (observer) -> Disposable in
-            guard let self = self, !(newLanguage ==? self.nativeLanguage) else {
-                observer.onNext(())
-                observer.onCompleted()
-                return Disposables.create()
-            }
-            self.nativeLanguage = newLanguage
-            self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
-                .subscribe(onNext: { (_) in
-                    observer.onNext(())
-                    observer.onCompleted()
-                }, onError: { [weak self] (error) in
-                    self?.nativeLanguage = newLanguage
-                    observer.onError(error)
-                })
-                .disposed(by: self.disposeBag)
-            return Disposables.create()
-        }
-    }
-    
     // MARK: - Static methods
-    static func user(withId id: String) -> Observable<User?> {
+    static func user(withId id: String) -> Observable<User> {
         if let user = Services.shared.credentials.user.value,
             user.uid == id {
-            return Observable<User?>.create { (observer) -> Disposable in
+            return Observable<User>.create { (observer) -> Disposable in
                 observer.onNext(user)
                 observer.onCompleted()
                 return Disposables.create()
@@ -91,7 +71,48 @@ final class User {
         }
     }
     
+    static var currentUser: BehaviorRelay<User?> {
+        return Services.shared.credentials.user
+    }
     // MARK: - Private
+    fileprivate func acceptRemoteData(_ data: [String: Any]) {
+        guard let uid = data["uid"] as? String,
+                uid == self.uid else {
+                return
+        }
+        self.email = data["email"] as? String
+        self.displayName = data["displayName"] as? String
+        self.avatarUrl = data["avatarUrl"] as? String
+        if let currentLanguageString = data["currentLanguage"] as? String {
+            self.currentLanguage = Language(rawValue: currentLanguageString)
+        }
+        
+        if let nativeLanguageStr = data["nativeLanguage"] as? String,
+            let nativeLanguage = Language(rawValue: nativeLanguageStr) {
+            self.nativeLanguage = nativeLanguage
+        }
+    }
+    
+    fileprivate func updatePlaylists(forLanguage language: LanguageBind) {
+        fetchPlaylists(forLanguage: language)
+            .subscribe(onNext: { [weak self] (_) in
+                debugPrint("Succesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language)")
+                }, onError: { [weak self] (error) in
+                    debugPrint("Unsuccesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language) with error \(error)")
+            })
+        .disposed(by: disposeBag)
+    }
+    
+    fileprivate func updateLanguages() {
+        fetchLanguages()
+            .subscribe(onNext: { [weak self] (_) in
+                debugPrint("Succesfull update languages for user with id \(self?.uid ?? "Unknown ID")")
+            }, onError: { [weak self] (error) in
+                debugPrint("Unsuccesfull update languages for user with id \(self?.uid ?? "Unknown ID") with error \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
     fileprivate func updateCards(forPlaylist playlist: Playlist) {
         fetchCards(forPlaylist: playlist)
             .subscribe(onNext: { (_) in
@@ -112,7 +133,7 @@ enum UserWorkWithDatabaseErrors: Error {
     case userObjectDeallocated
 }
 
-// MARK: - Database access
+// MARK: - Services access
 extension User: ServicesAccessing {
     func fetchLanguages() -> Observable<Void> {
         return .create { [weak self] (observer) -> Disposable in
@@ -199,6 +220,8 @@ extension User: ServicesAccessing {
                 .subscribe(onNext: { [weak self] (_) in
                     observer.onNext(())
                     observer.onCompleted()
+                    self?.updateLanguages()
+                    self?.updatePlaylists(forLanguage: card.language)
                     guard let playlists = self?.playlists.value?[card.language] else {
                         return
                     }
@@ -249,6 +272,39 @@ extension User: ServicesAccessing {
             
             return Disposables.create()
         }
+    }
+    
+    func updateNativeLanguage(newLanguage: Language) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self, !(newLanguage ==? self.nativeLanguage) else {
+                observer.onNext(())
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.nativeLanguage = newLanguage
+            self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
+                .subscribe(onNext: { (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                }, onError: { [weak self] (error) in
+                    self?.nativeLanguage = newLanguage
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    func synchronizeWithRemote() {
+        services
+            .realTimeDatabase
+            .getUserData(userId: uid)
+            .subscribe(onNext: { [weak self] (data) in
+                self?.acceptRemoteData(data)
+            }, onError: { [weak self] (error) in
+                debugPrint("Unsuccesfull synchronize user \(self?.uid ?? "Unknow id") with remote data. Error \(error)")
+            })
+            .disposed(by: disposeBag)
     }
 }
 

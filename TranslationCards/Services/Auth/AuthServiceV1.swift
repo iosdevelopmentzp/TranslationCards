@@ -31,10 +31,6 @@ class AuthServiceV1: NSObject, AuthService {
                     self?.database
                         .fetchUser(withUserId: result.user.uid)
                         .subscribe(onNext: { (user) in
-                            guard let user = user else {
-                                observer.onError(AuthServiceError.failedFetchUserFromDataBase)
-                                return
-                            }
                             self?.credentials.user.accept(user)
                             observer.onNext(())
                             observer.onCompleted()

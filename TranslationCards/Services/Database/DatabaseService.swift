@@ -11,9 +11,10 @@ import RxSwift
 protocol DatabaseService: Service {
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void>
-    func fetchUser(withUserId userId: String) -> Observable<User?>
+    func fetchUser(withUserId userId: String) -> Observable<User>
     func updateUser(withUserId userId: String, withData data: [String: Any]) -> Observable<Void>
     func deleteUser(withId userId: String) -> Observable<Void>
+    func getUserData(userId: String) -> Observable<[String: Any]>
     
     // MARK: - Translate cards
     func removeCard(_ card: TranslateCard) -> Observable<Void>

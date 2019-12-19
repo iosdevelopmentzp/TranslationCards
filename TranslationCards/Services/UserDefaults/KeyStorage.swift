@@ -9,5 +9,6 @@
 import Foundation
 
 struct KeyStorage {
+    static let userIdKey: String = "userIdKey"
     static let userDataKey: String = "userDataKey"
 }

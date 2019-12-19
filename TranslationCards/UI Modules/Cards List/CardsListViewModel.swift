@@ -72,6 +72,8 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     }
     
     fileprivate func fetchRemoteData() {
+#warning("Uncomment later")
+        /*
         var observer: Observable<[TranslateCard]>
         switch mode.value {
         case .actual:
@@ -92,5 +94,6 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                     self?.alertModel.accept(wrongAlert)
             })
             .disposed(by: disposeBag)
+ */
     }
 }

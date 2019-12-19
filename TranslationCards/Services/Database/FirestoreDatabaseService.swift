@@ -21,14 +21,23 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .setData(user.representation)
     }
     
-    func fetchUser(withUserId userId: String) -> Observable<User?> {
-        userDocumentReference(forUserId: userId).rx
-            .getDocument()
-            .map { (snapshot) -> User? in
-                guard let data = snapshot.data() else {
-                    return nil
-                }
-                return User(withData: data) }
+    func fetchUser(withUserId userId: String) -> Observable<User> {
+        return .create { [weak self] (observer) -> Disposable in
+            self?.userDocumentReference(forUserId: userId).rx
+                .getDocument()
+                .subscribe(onNext: { (snapshot) in
+                    guard let data = snapshot.data(),
+                        let user = User(withData: data) else {
+                            observer.onError(FirestoreError.failedCreateUserFromSnapshot)
+                            return
+                    }
+                    observer.onNext(user)
+                    observer.onCompleted()
+                }, onError: { (error) in
+                    observer.onError(error) })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
     }
     
     func updateUser(withUserId userId: String, withData data: [String: Any]) -> Observable<Void> {
@@ -39,6 +48,14 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     func deleteUser(withId userId: String) -> Observable<Void> {
         userDocumentReference(forUserId: userId).rx
             .delete()
+    }
+    
+    func getUserData(userId: String) -> Observable<[String: Any]> {
+        userDocumentReference(forUserId: userId)
+        .rx
+            .getDocument()
+            .map { (snapshot) -> [String: Any] in
+                return snapshot.data() ?? [:] }
     }
     
     // MARK: - Card
@@ -238,5 +255,6 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     enum FirestoreError: Error {
         case languageExisted
         case serviceDeallocated
+        case failedCreateUserFromSnapshot
     }
 }
