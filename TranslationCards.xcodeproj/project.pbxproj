@@ -82,7 +82,6 @@
 		3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */; };
 		3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9523868AFB009D62E8 /* ServiceError.swift */; };
 		3B825B9823868B27009D62E8 /* BaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9723868B27009D62E8 /* BaseError.swift */; };
-		3B825B9B23868E69009D62E8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9A23868E69009D62E8 /* User.swift */; };
 		3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9E238692F6009D62E8 /* CredentialsService.swift */; };
 		3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */; };
 		3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA3238695DA009D62E8 /* DatabaseService.swift */; };
@@ -128,6 +127,7 @@
 		3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */; };
 		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
+		3BE63ED423AB99D7003B1EDC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9A23868E69009D62E8 /* User.swift */; };
 		3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */; };
 		3BEE43CB2397D88A008F35AA /* CardSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */; };
 		3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */; };
@@ -953,7 +953,6 @@
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
-				3B825B9B23868E69009D62E8 /* User.swift in Sources */,
 				3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */,
 				3BFCBD3D2391A30D00C9AA48 /* UIView.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
@@ -1006,6 +1005,7 @@
 				3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
+				3BE63ED423AB99D7003B1EDC /* User.swift in Sources */,
 				3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
