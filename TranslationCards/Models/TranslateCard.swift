@@ -10,13 +10,6 @@ import Foundation
 import RxSwift
 import RxRelay
 
-enum LearningLevel: Int {
-    case low = 0
-    case middle
-    case high
-    case highest
-}
-
 class TranslateCard {
     let language: LanguageBind
     let userOwnerId: String
@@ -24,10 +17,10 @@ class TranslateCard {
     var dateUpdated: Date
     fileprivate(set) var sourcePhrase: String
     fileprivate(set) var targetPhrase: String
-    var numberGuesses: Int
-    var numberrAttempts: Int
-    var learningLevel: LearningLevel
     var id: String
+    
+    // if card will save on server need to set this property
+    var playlistId: String = "Unknown"
     
     // set true and save, if you want send card to archive
     var isArchived: Bool = false
@@ -41,9 +34,6 @@ class TranslateCard {
         let currentDate = Date()
         self.dateCreated = currentDate
         self.dateUpdated = currentDate
-        self.numberGuesses = 0
-        self.numberrAttempts = 0
-        self.learningLevel = .low
         self.id = UUID().uuidString
     }
     
@@ -55,10 +45,6 @@ class TranslateCard {
             let dateUpdated = Date.initWithString(dateUpdatedString),
             let rootPhrase = data["sourcePhrase"] as? String,
             let translatePhrase = data["targetPhrase"] as? String,
-            let numberGuesses = data["numberGuesses"] as? Int,
-            let numberrAttempts = data["numberrAttempts"] as? Int,
-            let learningLevelInt = data["learningLevel"] as? Int,
-            let learningLevel = LearningLevel(rawValue: learningLevelInt),
             let languageString = data["language"] as? String,
             let language = LanguageBind(withString: languageString),
             let id = data["id"] as? String
@@ -69,9 +55,6 @@ class TranslateCard {
         self.dateUpdated = dateUpdated
         self.sourcePhrase = rootPhrase
         self.targetPhrase = translatePhrase
-        self.numberGuesses = numberGuesses
-        self.numberrAttempts = numberrAttempts
-        self.learningLevel = learningLevel
         self.language = language
         self.id = id
     }
@@ -82,14 +65,6 @@ extension TranslateCard: ServicesAccessing {
         self.sourcePhrase = sourcePhrase
         self.targetPhrase = targetPhrase
         return services.realTimeDatabase.saveCard(self)
-    }
-    
-    func moveFromArchive() -> Observable<Void> {
-        services.realTimeDatabase.moveCardFromArchive(self)
-    }
-    
-    func moveToArchive() -> Observable<Void> {
-        services.realTimeDatabase.moveCardToArchive(self)
     }
     
     func save() -> Observable<Void> {
@@ -109,9 +84,6 @@ extension TranslateCard: DataRepresentation {
             "sourcePhrase" : sourcePhrase,
             "targetPhrase" : targetPhrase,
             "dateUpdated" : dateUpdated.asString,
-            "numberGuesses" : numberGuesses,
-            "numberrAttempts" : numberrAttempts,
-            "learningLevel" : learningLevel.rawValue,
             "language": language.stringRepresentation,
             "id": id
         ]

@@ -98,6 +98,7 @@
 		3B85039C23AA276B00481989 /* JJActionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039B23AA276B00481989 /* JJActionItem.swift */; };
 		3B85039E23AA2F3200481989 /* ActionButtonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */; };
 		3B8503A023AA5F2000481989 /* NVActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039F23AA5F2000481989 /* NVActivityIndicatorView.swift */; };
+		3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8503A123AA843D00481989 /* MyWordsData.swift */; };
 		3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */; };
 		3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */; };
 		3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */; };
@@ -107,6 +108,7 @@
 		3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */; };
 		3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9550B523A50EE700BC9E8E /* KeyStorage.swift */; };
 		3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43D6239803AB008F35AA /* CardSideView.swift */; };
+		3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA5FB123AB6379002ED2FB /* Playlist.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
 		3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CustomOperators.swift */; };
 		3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference.swift */; };
@@ -234,6 +236,7 @@
 		3B85039B23AA276B00481989 /* JJActionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJActionItem.swift; sourceTree = "<group>"; };
 		3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonDataSource.swift; sourceTree = "<group>"; };
 		3B85039F23AA5F2000481989 /* NVActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorView.swift; sourceTree = "<group>"; };
+		3B8503A123AA843D00481989 /* MyWordsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWordsData.swift; sourceTree = "<group>"; };
 		3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CABasicAnimation.swift; sourceTree = "<group>"; };
 		3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardRouter.swift; sourceTree = "<group>"; };
 		3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +245,7 @@
 		3B9550B123A4E86100BC9E8E /* KeyValueStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStorageService.swift; sourceTree = "<group>"; };
 		3B9550B323A4E92000BC9E8E /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		3B9550B523A50EE700BC9E8E /* KeyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStorage.swift; sourceTree = "<group>"; };
+		3BAA5FB123AB6379002ED2FB /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
 		3BC0414823A3CE2300C20EFA /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
 		3BC0414A23A3D16200C20EFA /* DocumentReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
@@ -472,6 +476,7 @@
 				3B5721BC23853C8E008CAB42 /* Info.plist */,
 				3B5721C323854980008CAB42 /* GoogleService-Info.plist */,
 				3B031E14239BEA1700946F8D /* FlagImages.xcassets */,
+				3B8503A123AA843D00481989 /* MyWordsData.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -572,6 +577,7 @@
 				3BFCBD3E2391B07E00C9AA48 /* TranslateCard.swift */,
 				3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */,
 				3B031E16239BEA7200946F8D /* Language.swift */,
+				3BAA5FB123AB6379002ED2FB /* Playlist.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -920,6 +926,7 @@
 				3BC52C37238FDA2C006FB7F8 /* PlusButton.swift in Sources */,
 				3BC52C42238FFF85006FB7F8 /* CreateTranslateCardView.swift in Sources */,
 				3B242F6C239FA91800B90C41 /* PickerRouter.swift in Sources */,
+				3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */,
 				3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */,
 				3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */,
 				3B5A3BB623968D56009110A7 /* ServicesAccessing.swift in Sources */,
@@ -986,6 +993,7 @@
 				3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
+				3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */,
 				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
 				3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,

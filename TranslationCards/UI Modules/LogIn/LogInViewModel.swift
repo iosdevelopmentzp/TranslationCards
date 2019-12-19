@@ -20,7 +20,7 @@ final class LogInViewModel: ViewModel<LogInRouter> {
               didPressButton: ControlEvent<Void>) {
         
         #if DEBUG
-        login.onNext("test@gmail.com")
+        login.onNext("dima@gmail.com")
         password.onNext("testtest")
         #endif
         

@@ -12,7 +12,7 @@ struct LanguageBind: Equatable {
     let sourceLanguage: Language
     let targetLanguage: Language
     var id: String { return stringRepresentation }
-    static let k_separator = "_"
+    fileprivate static let k_separator = "_"
     
     /// sourceLanguage and targetLanguage should not be the same
     init(source sourceLanguage: Language, target targetLanguage: Language) {

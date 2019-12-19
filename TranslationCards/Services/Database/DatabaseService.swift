@@ -13,16 +13,18 @@ protocol DatabaseService: Service {
     func createUser(_ user: User) -> Observable<Void>
     func fetchUser(withUserId userId: String) -> Observable<User?>
     func updateUser(withUserId userId: String, withData data: [String: Any]) -> Observable<Void>
-    func deleteUser(_ user: User) -> Observable<Void>
+    func deleteUser(withId userId: String) -> Observable<Void>
     
     // MARK: - Translate cards
-    func moveCardFromArchive(_ card: TranslateCard) -> Observable<Void>
-    func moveCardToArchive(_ card: TranslateCard) -> Observable<Void>
     func removeCard(_ card: TranslateCard) -> Observable<Void>
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void>
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]>
-    func getCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]>
-    func getArchivedCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]>
+    func getCards(withLanguage language: LanguageBind, playlistName: String,  userId: String) -> Observable<[TranslateCard]>
+    func getCards(withPlaylist playlist: Playlist) -> Observable<[TranslateCard]>
+    
+    // MARK: - Playlists
+    func savePlaylist(_ playlist: Playlist) -> Observable<Void>
+    func removePlaylist(_ playlist: Playlist) -> Observable<Void>
 }
 
 extension DatabaseService {

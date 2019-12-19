@@ -11,6 +11,7 @@ import Foundation
 extension String {
     static let databaseUserCollection = "users"
     static let databaseLanguagesCollection = "languages"
+    static let databasePlaylistsCollection = "playlists"
     static let databaseCardsCollection = "cards"
     static let databaseArchiveCardsCollection = "archive"
 }

@@ -11,23 +11,18 @@ import FirebaseFirestore
 import RxFirebaseFirestore
 
 class FirestoreDatabaseService: NSObject, DatabaseService {
+    
     fileprivate let database = Firestore.firestore()
     fileprivate let disposeBag = DisposeBag()
 
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
-        return database
-            .collection(.databaseUserCollection)
-            .document(user.uid)
-            .rx
+        userDocumentReference(forUserId: user.uid).rx
             .setData(user.representation)
     }
     
     func fetchUser(withUserId userId: String) -> Observable<User?> {
-        database
-            .collection(.databaseUserCollection)
-            .document(userId)
-            .rx
+        userDocumentReference(forUserId: userId).rx
             .getDocument()
             .map { (snapshot) -> User? in
                 guard let data = snapshot.data() else {
@@ -37,164 +32,62 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func updateUser(withUserId userId: String, withData data: [String: Any]) -> Observable<Void> {
-        let userReference = database.collection(.databaseUserCollection).document(userId)
-        
-        return .create { [weak self] (observer) -> Disposable in
-            self?.database.runTransaction({ (transaction, errorPoint) -> Any? in
-                
-                    transaction.updateData(data, forDocument: userReference)
-                
-                return nil
-            }, completion: { (object, error) in
-                if let error = error {
-                    observer.onError(error)
-                } else {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }
-            })
-            return Disposables.create()
-        }
+        userDocumentReference(forUserId: userId).rx
+            .updateData(data)
     }
     
-    func deleteUser(_ user: User) -> Observable<Void> {
-        return database
-            .collection(.databaseUserCollection)
-            .document(user.uid)
-            .rx
+    func deleteUser(withId userId: String) -> Observable<Void> {
+        userDocumentReference(forUserId: userId).rx
             .delete()
     }
     
     // MARK: - Card
-    func moveCardFromArchive(_ card: TranslateCard) -> Observable<Void> {
-        return .create { [weak self] (observer) -> Disposable in
-            guard let self = self else {
-                observer.onError(FirestoreError.serviceDeallocated)
-                return Disposables.create()
-            }
-            
-            let oldCardReferance = self.archiveCardDocument(withUserId: card.userOwnerId,
-                                                            languageId: card.language.id,
-                                                            documentId: card.id)
-            let newCardReferance = self.cardDocument(withUserId: card.userOwnerId,
-                                                     languageId: card.language.id,
-                                                     documentId: card.id)
-            
-            self.database.runTransaction({ (transaction, error) -> Any? in
-                transaction.deleteDocument(oldCardReferance)
-                transaction.setData(card.representation, forDocument: newCardReferance)
-                return nil
-            }) { (_, error) in
-                if let error = error {
-                    observer.onError(error)
-                } else {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }
-            }
-            return Disposables.create()
-        }
-    }
-    
-    func moveCardToArchive(_ card: TranslateCard) -> Observable<Void> {
-        return .create { [weak self] (observer) -> Disposable in
-            guard let self = self else {
-                observer.onError(FirestoreError.serviceDeallocated)
-                return Disposables.create()
-            }
-            
-            let oldCardReferance = self.cardDocument(withUserId: card.userOwnerId,
-                                                     languageId: card.language.id,
-                                                     documentId: card.id)
-            let newCardReferance = self.archiveCardDocument(withUserId: card.userOwnerId,
-                                                            languageId: card.language.id,
-                                                            documentId: card.id)
-            
-            self.database.runTransaction({ (transaction, error) -> Any? in
-                transaction.deleteDocument(oldCardReferance)
-                transaction.setData(card.representation, forDocument: newCardReferance)
-                return nil
-            }) { (_, error) in
-                if let error = error {
-                    observer.onError(error)
-                } else {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }
-            }
-            return Disposables.create()
-        }
-    }
-    
     func removeCard(_ card: TranslateCard) -> Observable<Void> {
-        return database
-            .collection(.databaseUserCollection)
-            .document(card.userOwnerId)
-            .collection(.databaseLanguagesCollection)
-            .document(card.language.id)
-            .collection(.databaseCardsCollection)
-            .document(card.id)
-            .rx
+        cardDocumentReference(forCard: card).rx
             .delete()
     }
     
     func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void> {
-        let userReferance = database.collection(.databaseUserCollection).document(card.userOwnerId)
-        let languageReferance = userReferance.collection(.databaseLanguagesCollection).document(card.language.id)
-        let cardDocumentReferance = languageReferance.collection(.databaseCardsCollection).document(card.id)
-            
-        return Observable<Void>.create { [weak self] (observer) -> Disposable in
-           
-            let saveCardAction = {
-                self?.database.runTransaction({ (transaction, errorPoint) -> Any? in
-                    if isCurrentLanguage {
-                        transaction.updateData(["currentLanguage": card.language.targetLanguage.rawValue],
-                                               forDocument: userReferance)
-                    }
-                    transaction.setData(card.representation, forDocument: cardDocumentReferance)
-                    return nil
-                }) { (object, error) in
-                    if let error = error {
-                        observer.onError(error)
-                    } else {
-                        observer.onNext(())
-                        observer.onCompleted()
-                    }
-                }
+        
+        if isCurrentLanguage {
+            updateUser(withUserId: card.userOwnerId, withData: ["currentLanguage": card.language.targetLanguage.rawValue])
+                .subscribe(onNext: { (_) in
+                    debugPrint("Successfully updated current language")
+                }, onError: { (error) in
+                    debugPrint("Error! Unsuccesfull updated current language with error \(error)")
+                })
+            .disposed(by: disposeBag)
+        }
+        
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(FirestoreError.serviceDeallocated)
+                return Disposables.create()
             }
-            
-            let firstCreateLanguageThenSaveCard = {
-                languageReferance.setData(card.language.representation) { (error) in
-                    if let error = error {
-                        observer.onError(error)
-                        return
-                    }
-                    saveCardAction()
-                }
-            }
-            
-            languageReferance
-                .rx
+            self.languageDocumentReference(forUserId: card.userOwnerId, language: card.language).rx
                 .isDocumentExist()
                 .subscribe(onNext: { (isExist) in
                     if isExist {
-                        saveCardAction()
+                        self.saveCard(card)
+                        .bind(to: observer)
+                            .disposed(by: self.disposeBag)
                     } else {
-                        firstCreateLanguageThenSaveCard()
+                        self.firstCreateLanguageDocumentThenSaveCard(card)
+                        .bind(to: observer)
+                            .disposed(by: self.disposeBag)
                     }
-                }, onError: { (error) in
-                    firstCreateLanguageThenSaveCard()
+                }, onError: { (_) in
+                    self.firstCreateLanguageDocumentThenSaveCard(card)
+                    .bind(to: observer)
+                        .disposed(by: self.disposeBag)
                 })
-                .disposed(by: self?.disposeBag ?? DisposeBag())
-            
+                .disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
     
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]> {
-        database
-            .collection(.databaseUserCollection)
-            .document(userId)
+        userDocumentReference(forUserId: userId)
             .collection(.databaseLanguagesCollection)
             .rx
             .getDocuments()
@@ -210,12 +103,12 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             })
     }
     
-    func getCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]> {
-        database
-            .collection(.databaseUserCollection)
-            .document(userId)
+    func getCards(withLanguage language: LanguageBind, playlistName: String, userId: String) -> Observable<[TranslateCard]> {
+        userDocumentReference(forUserId: userId)
             .collection(.databaseLanguagesCollection)
             .document(language.id)
+            .collection(.databasePlaylistsCollection)
+            .document(playlistName)
             .collection(.databaseCardsCollection)
             .rx
             .getDocuments()
@@ -224,53 +117,107 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
                 snapshot.documents.forEach{
                     guard let card = TranslateCard(withData: $0.data()) else { return }
                     card.id = $0.reference.documentID
+                    card.playlistId = playlistName
                     cards.append(card)
                 }
                 return cards }
     }
     
-    func getArchivedCards(withLanguage language: LanguageBind, userId: String) -> Observable<[TranslateCard]> {
-        database
-        .collection(.databaseUserCollection)
-        .document(userId)
-        .collection(.databaseLanguagesCollection)
-        .document(language.id)
-        .collection(.databaseArchiveCardsCollection)
-        .rx
-        .getDocuments()
-        .map { (snapshot) -> [TranslateCard] in
-            var cards = Array<TranslateCard>()
-            snapshot.documents.forEach{
-                guard let card = TranslateCard(withData: $0.data()) else { return }
-                card.id = $0.reference.documentID
-                card.isArchived = true
-                cards.append(card)
-            }
-            return cards }
+    func getCards(withPlaylist playlist: Playlist) -> Observable<[TranslateCard]> {
+        cardsCollectionReferance(forPlaylist: playlist).rx
+            .getDocuments()
+            .map {(snapshot) -> [TranslateCard] in
+                var cards = Array<TranslateCard>()
+                snapshot.documents.forEach{
+                    guard let card = TranslateCard(withData: $0.data()) else { return }
+                    card.id = $0.reference.documentID
+                    card.playlistId = playlist.id
+                    cards.append(card)
+                }
+                return cards
+        }
+    }
+    
+    // MARK: - Playlists
+    func savePlaylist(_ playlist: Playlist) -> Observable<Void> {
+        playlistDocumentReferance(forPlaylist: playlist).rx
+            .setData(playlist.representation)
+    }
+    
+    func removePlaylist(_ playlist: Playlist) -> Observable<Void> {
+        playlistDocumentReferance(forPlaylist: playlist).rx
+            .delete()
     }
     
     // MARK: - Private
-    fileprivate func archiveCardDocument(withUserId userId: String, languageId: String, documentId: String) -> DocumentReference {
-        database
-            .collection(.databaseUserCollection)
-            .document(userId)
-            .collection(.databaseLanguagesCollection)
-            .document(languageId)
-            .collection(.databaseArchiveCardsCollection)
-            .document(documentId)
+    fileprivate func saveCard(_ card: TranslateCard) -> Observable<Void> {
+        cardDocumentReference(forCard: card).rx
+            .setData(card.representation)
     }
     
-    fileprivate func cardDocument(withUserId userId: String, languageId: String, documentId: String) -> DocumentReference {
+    fileprivate func firstCreateLanguageDocumentThenSaveCard(_ card: TranslateCard) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(FirestoreError.serviceDeallocated)
+                return Disposables.create()
+            }
+            self.languageDocumentReference(forUserId: card.userOwnerId, language: card.language).rx
+                .setData(card.language.representation)
+                .subscribe(onNext: { (_) in
+                    self.saveCard(card)
+                        .bind(to: observer)
+                        .disposed(by: self.disposeBag)
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    // MARK: - Get references
+    fileprivate func languageDocumentReference(forUserId userId: String, language: LanguageBind) -> DocumentReference {
+        userDocumentReference(forUserId: userId)
+            .collection(.databaseLanguagesCollection)
+            .document(language.id)
+    }
+    
+    fileprivate func userDocumentReference(forUserId userId: String) -> DocumentReference {
         database
             .collection(.databaseUserCollection)
             .document(userId)
+    }
+    
+    fileprivate func cardsCollectionReferance(forPlaylist playlist: Playlist) -> CollectionReference {
+        userDocumentReference(forUserId: playlist.userOwnerId)
             .collection(.databaseLanguagesCollection)
-            .document(languageId)
+            .document(playlist.language.id)
+            .collection(.databasePlaylistsCollection)
+            .document(playlist.id)
             .collection(.databaseCardsCollection)
-            .document(documentId)
     }
     
-    // MARK: - Errors
+    fileprivate func playlistDocumentReferance(forPlaylist playlist: Playlist) -> DocumentReference {
+            userDocumentReference(forUserId: playlist.userOwnerId)
+            .collection(.databaseLanguagesCollection)
+            .document(playlist.language.id)
+            .collection(.databasePlaylistsCollection)
+            .document(playlist.id)
+    }
+    
+    fileprivate func cardDocumentReference(forCard card: TranslateCard) -> DocumentReference {
+        database
+            .collection(.databaseUserCollection)
+            .document(card.userOwnerId)
+            .collection(.databaseLanguagesCollection)
+            .document(card.language.id)
+            .collection(.databasePlaylistsCollection)
+            .document(card.playlistId)
+            .collection(.databaseCardsCollection)
+            .document(card.id)
+    }
+    
+    // MARK: - Enums
     enum FirestoreError: Error {
         case languageExisted
         case serviceDeallocated
