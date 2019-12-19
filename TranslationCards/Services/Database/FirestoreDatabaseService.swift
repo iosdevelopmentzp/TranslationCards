@@ -149,6 +149,23 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .delete()
     }
     
+    func getPlaylistList(userId: String, language: LanguageBind) -> Observable<[Playlist]> {
+        userDocumentReference(forUserId: userId)
+            .collection(.databaseLanguagesCollection)
+            .document(language.id)
+            .collection(.databasePlaylistsCollection)
+            .rx
+            .getDocuments()
+            .map { (snapshot) -> [Playlist] in
+                var playlists: Array<Playlist> = []
+                snapshot.documents.forEach {
+                    guard let playlist = Playlist(withData: $0.data()) else { return }
+                    playlists.append(playlist)
+                }
+                return playlists
+        }
+    }
+    
     // MARK: - Private
     fileprivate func saveCard(_ card: TranslateCard) -> Observable<Void> {
         cardDocumentReference(forCard: card).rx

@@ -12,7 +12,7 @@ import RxRelay
 
 class TranslateCard {
     let language: LanguageBind
-    let userOwnerId: String
+    fileprivate(set) var userOwnerId: String
     let dateCreated: Date
     var dateUpdated: Date
     fileprivate(set) var sourcePhrase: String
@@ -58,21 +58,14 @@ class TranslateCard {
         self.language = language
         self.id = id
     }
-}
-
-extension TranslateCard: ServicesAccessing {
-    func update(sourcePhrase: String, targetPhrase: String) -> Observable<Void> {
+    
+    func update(sourcePhrase: String, targetPhrase: String) {
         self.sourcePhrase = sourcePhrase
         self.targetPhrase = targetPhrase
-        return services.realTimeDatabase.saveCard(self)
     }
     
-    func save() -> Observable<Void> {
-        services.realTimeDatabase.saveCard(self)
-    }
-    
-    func remove() -> Observable<Void> {
-        services.realTimeDatabase.removeCard(self)
+    func updateOwnerUserId(newId: String) {
+        userOwnerId = newId
     }
 }
 

@@ -12,20 +12,20 @@ import RxRelay
 
 final class User {
     private (set) var uid: String
-    private (set) var currentLanguage: Language? {
-        didSet {
-            guard let language = currentLanguage else {
-                return
-            }
-            debugPrint("Changed current language \(language)")
-        }
-    }
+    private (set) var currentLanguage: Language?
     private (set) var nativeLanguage: Language?
     private (set) var email: String?
     private (set) var displayName: String?
     private (set) var avatarUrl: String?
     
     private var disposeBag = DisposeBag()
+    
+    // MARK: - Buffer Properties
+    fileprivate(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
+    /// playlists stored using LanguageBind key value.
+    fileprivate(set) var playlists: BehaviorRelay<[LanguageBind: [Playlist]]?> = .init(value: nil)
+    /// cardsList stored using Playlist.description key value.
+    fileprivate(set) var cardsList: BehaviorRelay<[String: [TranslateCard]]?> = .init(value: nil)
     
     init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
         self.uid = uid
@@ -91,14 +91,165 @@ final class User {
         }
     }
     
+    // MARK: - Private
+    fileprivate func updateCards(forPlaylist playlist: Playlist) {
+        fetchCards(forPlaylist: playlist)
+            .subscribe(onNext: { (_) in
+                debugPrint("Succesfull update cards for playlist \(playlist.description)")
+            }, onError: { (error) in
+                debugPrint("Unsuccesfull update cards for playlist \(playlist.description) with error \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
     enum UserModelError: Error {
         case suchLanguageAlreadyExists
         case languagesDoesNotContainNewCurrentLanguage
     }
 }
 
+enum UserWorkWithDatabaseErrors: Error {
+    case userObjectDeallocated
+}
+
+// MARK: - Database access
 extension User: ServicesAccessing {
-   
+    func fetchLanguages() -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            self.services
+                .realTimeDatabase
+                .getLanguageList(forUserId: self.uid)
+                .subscribe(onNext: { [weak self] (languages) in
+                    self?.languages.accept(languages)
+                    observer.onNext(())
+                    observer.onCompleted()
+                    }, onError: { [weak self] (error) in
+                        debugPrint("Failed fetch languages list fo userId \(self?.uid ?? "Unknow ID")")
+                        observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    func fetchPlaylists(forLanguage language: LanguageBind) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            
+            self.services
+                .realTimeDatabase
+                .getPlaylistList(userId: self.uid, language: language)
+                .subscribe(onNext: { [weak self] (playlists) in
+                    guard let self = self else { return }
+                    var oldPlaylists = self.playlists.value ?? [:]
+                    oldPlaylists[language] = playlists
+                    self.playlists.accept(oldPlaylists)
+                    observer.onNext(())
+                    observer.onCompleted()
+                    }, onError: { (error) in
+                        observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    func fetchCards(forPlaylist playlist: Playlist) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            
+            self.services
+                .realTimeDatabase
+                .getCards(withPlaylist: playlist)
+                .subscribe(onNext: { [weak self] (cards) in
+                    guard let self = self else { return }
+                    var oldCards = self.cardsList.value ?? [:]
+                    oldCards[playlist.description] = cards
+                    self.cardsList.accept(oldCards)
+                    observer.onNext(())
+                    observer.onCompleted()
+                    }, onError: { (error) in
+                        observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    func saveCard(_ card: TranslateCard) -> Observable<Void> {
+        card.updateOwnerUserId(newId: uid)
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            self.services
+                .realTimeDatabase
+                .saveCard(card, cardLanguageIsCurrentLanguage: self.currentLanguage == nil)
+                .subscribe(onNext: { [weak self] (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    guard let playlists = self?.playlists.value?[card.language] else {
+                        return
+                    }
+                    let playlist = playlists.filter{ $0.id == card.playlistId}.first
+                    guard let playlistForReload = playlist else {
+                        return
+                    }
+                    self?.updateCards(forPlaylist: playlistForReload)
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            
+            return Disposables.create()
+        }
+    }
+    
+    func removeCard(_ card: TranslateCard) -> Observable<Void> {
+        return .create {[weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            guard card.userOwnerId == self.uid else {
+                observer.onNext(())
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            
+            self.services
+                .realTimeDatabase
+                .removeCard(card)
+                .subscribe(onNext: { [weak self] (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    guard let playlists = self?.playlists.value?[card.language] else {
+                        return
+                    }
+                    let playlist = playlists.filter{ $0.id == card.playlistId}.first
+                    guard let playlistForReload = playlist else {
+                        return
+                    }
+                    self?.updateCards(forPlaylist: playlistForReload)
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            
+            return Disposables.create()
+        }
+    }
 }
 
 extension User: DataRepresentation {

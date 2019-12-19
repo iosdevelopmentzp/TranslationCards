@@ -48,6 +48,12 @@ struct LanguageBind: Equatable {
     static var `default`:LanguageBind { .init(source: .rus, target: .eng) }
 }
 
+extension LanguageBind: Hashable {
+    static func == (lhs: LanguageBind, rhs: LanguageBind) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 extension LanguageBind: CustomStringConvertible {
     var description: String {
         return "From \(sourceLanguage) to \(targetLanguage)"

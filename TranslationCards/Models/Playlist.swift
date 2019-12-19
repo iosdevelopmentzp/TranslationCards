@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Playlist {
+class Playlist {
     let name: String
     let dateCreated: Date
     let numberOfCards: Int
@@ -16,7 +16,17 @@ struct Playlist {
     let language: LanguageBind
     var id: String { return name }
     
-    init?(withData data: [String : Any]) {
+    // MARK: - Buffer properties
+    
+    init(name: String, dateCreated: Date, userOwnerId: String, language: LanguageBind) {
+        self.name = name
+        self.dateCreated = dateCreated
+        self.userOwnerId = userOwnerId
+        self.language = language
+        self.numberOfCards = 0
+    }
+    
+    required init?(withData data: [String : Any]) {
         guard let name = data["name"] as? String,
             let dateCreatedString = data["dateCreated"] as? String,
             let date = Date.initWithString(dateCreatedString),
@@ -31,6 +41,12 @@ struct Playlist {
         self.numberOfCards = numberOfCards
         self.userOwnerId = userOwnerId
         self.language = language
+    }
+}
+
+extension Playlist: CustomStringConvertible {
+    var description: String {
+        return "Playlist: userId: \(userOwnerId), \(language.id), name: \(name)"
     }
 }
 

@@ -23,20 +23,7 @@ protocol DatabaseService: Service {
     func getCards(withPlaylist playlist: Playlist) -> Observable<[TranslateCard]>
     
     // MARK: - Playlists
+    func getPlaylistList(userId: String, language: LanguageBind) -> Observable<[Playlist]>
     func savePlaylist(_ playlist: Playlist) -> Observable<Void>
     func removePlaylist(_ playlist: Playlist) -> Observable<Void>
-}
-
-extension DatabaseService {
-    func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool = false) -> Observable<Void> {
-        var isCurrentLanguage = false
-        if let user = Services.shared.credentials.user.value, user.uid == card.userOwnerId {
-            if let currentLanguage = user.currentLanguage {
-                isCurrentLanguage = currentLanguage != card.language.targetLanguage
-            } else {
-                isCurrentLanguage = true
-            }
-        }
-        return saveCard(card, cardLanguageIsCurrentLanguage: isCurrentLanguage)
-    }
 }
