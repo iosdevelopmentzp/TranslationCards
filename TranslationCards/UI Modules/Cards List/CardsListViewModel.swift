@@ -10,29 +10,23 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-enum CardsListMode {
-    case actual
-    case archive
-}
-
 final class CardsListViewModel: ViewModel<CardsListRouter> {
     var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
+    var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
+    var currentPlaylist: BehaviorRelay<Playlist?> = .init(value: nil)
     var selectedItem: BehaviorRelay<IndexPath?> = .init(value: nil)
-    var mode: BehaviorRelay<CardsListMode>
     
     lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
     
     fileprivate let language: LanguageBind
-    fileprivate let userId: String
+    fileprivate let user: User
     
-    init(language: LanguageBind, userId: String, mode: CardsListMode) {
+    init(language: LanguageBind, user: User) {
         self.language = language
-        self.userId = userId
-        self.mode = .init(value: mode)
+        self.user = user
         super.init()
         
-        updateTitle()
-        fetchRemoteData()
+        self.titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
         
         selectedItem
             .subscribe(onNext: { [weak self] (indexPath) in
@@ -40,6 +34,37 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                     indexPath.row < cards.count, indexPath.row >= 0 else { return }
                 let card = cards[indexPath.row]
                 self?.router.route(to: .cardView(card: card))
+            })
+            .disposed(by: disposeBag)
+        
+        fetchPlaylists()
+        
+        self.user
+            .cardsList
+            .subscribe(onNext: { [weak self] (cardsDictionary) in
+                guard let currentPlaylist = self?.currentPlaylist.value else { return }
+                let cards = cardsDictionary?.filter{ $0.key == currentPlaylist}.first?.value
+                guard let newCards = cards else { return }
+                self?.cardsDataSource.accept(newCards)
+            })
+            .disposed(by: disposeBag)
+        
+        self.user
+            .playlists
+            .subscribe(onNext: { [weak self] (playlisctsDictionary) in
+                guard let playlisctsDictionary = playlisctsDictionary else { return }
+                guard let language = self?.language else { return }
+                let playlists = playlisctsDictionary.filter{ $0.key == language}.first?.value
+                guard let newPlaylists = playlists else { return }
+                self?.playlists.accept(newPlaylists)
+                self?.currentPlaylist.accept(newPlaylists.first)
+            })
+            .disposed(by: disposeBag)
+        
+        currentPlaylist
+            .subscribe(onNext: { [weak self] (playlist) in
+                guard let playlist = playlist else { return }
+                self?.fetchCardsForPlaylists(playlist: playlist)
             })
             .disposed(by: disposeBag)
     }
@@ -52,48 +77,26 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             .disposed(by: disposeBag)
     }
     
-    func bindWith(openArchivedList: ControlEvent<Void>) {
-        openArchivedList
-            .subscribe(onNext: { [weak self] (_) in
-                guard let self = self else { return }
-                self.router.route(to: .archivedList(language: self.language, userId: self.userId))
-            })
-            .disposed(by: disposeBag)
-    }
-    
     // MARK: - Private
-    fileprivate func updateTitle() {
-        switch mode.value {
-        case .actual:
-            titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
-        case .archive:
-            titleText.accept("Archive of \(language.sourceLanguage.rawValue) to \(language.targetLanguage.rawValue)")
-        }
-    }
-    
-    fileprivate func fetchRemoteData() {
-#warning("Uncomment later")
-        /*
-        var observer: Observable<[TranslateCard]>
-        switch mode.value {
-        case .actual:
-            observer = services
-                .realTimeDatabase
-                .getCards(withLanguage: language, userId: userId)
-        case .archive:
-            observer = services
-                .realTimeDatabase
-                .getArchivedCards(withLanguage: language, userId: userId)
-        }
-        
-        observer
-            .subscribe(onNext: { [weak self] (cards) in
-                self?.cardsDataSource.accept(cards)
+    fileprivate func fetchCardsForPlaylists(playlist: Playlist) {
+        self.user.fetchCards(forPlaylist: playlist)
+            .subscribe(onNext: { (_) in
+                debugPrint("succesfull load cards")
                 }, onError: { [weak self] (error) in
-                    let wrongAlert = AlertModel.warningAlert(message: "Failed get cards list with error \(error)", handler: nil)
-                    self?.alertModel.accept(wrongAlert)
+                    debugPrint("unsuccesfull load cards")
+                    self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load cards with Error \(error)", handler: nil))
             })
             .disposed(by: disposeBag)
- */
+    }
+    
+    fileprivate func fetchPlaylists() {
+        self.user.fetchPlaylists(forLanguage: language)
+            .subscribe(onNext: { [weak self] (_) in
+                debugPrint("succesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
+                }, onError: { [weak self] (error) in
+                    debugPrint("unsuccesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
+                    self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load playlist with Error \(error)", handler: nil))
+            })
+            .disposed(by: disposeBag)
     }
 }

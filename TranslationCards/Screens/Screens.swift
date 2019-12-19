@@ -33,13 +33,8 @@ struct Screens {
         return CardSlideShowViewController(viewModel: vm)
     }
     
-    static func archiveCardsList(withLanguage language: LanguageBind, forUserId userId: String) -> CardsListViewController {
-        let vm = CardsListViewModel(language: language, userId: userId, mode: .archive)
-        return CardsListViewController(viewModel: vm)
-    }
-    
-    static func cardsList(withLanguage language: LanguageBind, forUserId userId: String) -> CardsListViewController {
-        let vm = CardsListViewModel(language: language, userId: userId, mode: .actual)
+    static func cardsList(withLanguage language: LanguageBind,  user: User) -> CardsListViewController {
+        let vm = CardsListViewModel(language: language, user: user)
         return CardsListViewController(viewModel: vm)
     }
     

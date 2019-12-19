@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Playlist {
+class Playlist: Equatable, Hashable {
     let name: String
     let dateCreated: Date
     let numberOfCards: Int
@@ -41,6 +41,16 @@ class Playlist {
         self.numberOfCards = numberOfCards
         self.userOwnerId = userOwnerId
         self.language = language
+    }
+    
+    static func == (lhs: Playlist, rhs: Playlist) -> Bool {
+        return lhs.name == rhs.name && lhs.userOwnerId == rhs.userOwnerId && lhs.language == rhs.language
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(userOwnerId)
+        hasher.combine(language)
     }
 }
 

@@ -65,8 +65,8 @@ final class MainViewModel: ViewModel<MainRouter> {
         selectedEvent
             .subscribe(onNext: {[weak self] (indexPath) in
                 guard let language = self?.sections.value[indexPath.section].items[indexPath.row],
-                let user = self?.user else { return }
-                self?.router.route(to: .cardList(language: language, userId: user.uid))
+                    let user = self?.user else { return }
+                self?.router.route(to: .cardList(language: language, user: user))
             })
             .disposed(by: disposeBag)
     }

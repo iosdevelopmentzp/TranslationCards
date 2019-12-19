@@ -26,7 +26,7 @@ final class User {
     /// playlists stored using LanguageBind key value.
     fileprivate(set) var playlists: BehaviorRelay<[LanguageBind: [Playlist]]?> = .init(value: nil)
     /// cardsList stored using Playlist.description key value.
-    fileprivate(set) var cardsList: BehaviorRelay<[String: [TranslateCard]]?> = .init(value: nil)
+    fileprivate(set) var cardsList: BehaviorRelay<[Playlist: [TranslateCard]]?> = .init(value: nil)
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     
     init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
@@ -195,7 +195,7 @@ extension User: ServicesAccessing {
                 .subscribe(onNext: { [weak self] (cards) in
                     guard let self = self else { return }
                     var oldCards = self.cardsList.value ?? [:]
-                    oldCards[playlist.description] = cards
+                    oldCards[playlist] = cards
                     self.cardsList.accept(oldCards)
                     observer.onNext(())
                     observer.onCompleted()

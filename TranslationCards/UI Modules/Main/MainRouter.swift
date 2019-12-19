@@ -10,19 +10,19 @@ import Foundation
 
 final class MainRouter: Router {
     enum Route {
-        case cardList(language: LanguageBind, userId: String)
+        case cardList(language: LanguageBind, user: User)
     }
     
     func route(to type: Route) {
         switch type {
-        case .cardList(let language, let userId):
-            openCardsList(language: language, userId: userId)
+        case .cardList(let language, let user):
+            openCardsList(language: language, user: user)
         }
     }
     
     // MARK: - Private
-    fileprivate func openCardsList(language: LanguageBind, userId: String) {
-        let vc = Screens.cardsList(withLanguage: language, forUserId: userId)
+    fileprivate func openCardsList(language: LanguageBind, user: User) {
+        let vc = Screens.cardsList(withLanguage: language, user: user)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }

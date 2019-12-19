@@ -197,10 +197,26 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             }
             self.languageDocumentReference(forUserId: card.userOwnerId, language: card.language).rx
                 .setData(card.language.representation)
-                .subscribe(onNext: { (_) in
+                .subscribe(onNext: { [weak self] (_) in
+#warning("Remove after test")
+                    #if DEBUG
+                    let playlist = Playlist(name: "Unknown", dateCreated: Date(), userOwnerId: card.userOwnerId, language: card.language)
+                    self?.savePlaylist(playlist)
+                        .subscribe(onNext: { (_) in
+                            self?.saveCard(card)
+                                .bind(to: observer)
+                                .disposed(by: self?.disposeBag ?? DisposeBag())
+                        }, onError: { (error) in
+                            observer.onError(error)
+                        })
+                        .disposed(by: self?.disposeBag ?? DisposeBag())
+                    #endif
+#warning("Uncomment after test")
+                    /*
                     self.saveCard(card)
                         .bind(to: observer)
                         .disposed(by: self.disposeBag)
+                    */
                 }, onError: { (error) in
                     observer.onError(error)
                 })
