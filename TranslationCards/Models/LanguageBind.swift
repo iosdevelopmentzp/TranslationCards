@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LanguageBind: Equatable {
+struct LanguageBind: Equatable, Decodable {
     let sourceLanguage: Language
     let targetLanguage: Language
     var id: String { return stringRepresentation }

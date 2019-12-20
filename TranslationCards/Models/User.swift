@@ -25,7 +25,7 @@ final class User {
     fileprivate(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
     /// playlists stored using LanguageBind key value.
     fileprivate(set) var playlists: BehaviorRelay<[LanguageBind: [Playlist]]?> = .init(value: nil)
-    /// cardsList stored using Playlist.description key value.
+    /// cardsList stored using Playlist  key value.
     fileprivate(set) var cardsList: BehaviorRelay<[Playlist: [TranslateCard]]?> = .init(value: nil)
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     

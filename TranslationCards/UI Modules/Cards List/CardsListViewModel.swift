@@ -9,12 +9,13 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RSSelectionMenu
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
     var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
     var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
-    var currentPlaylist: BehaviorRelay<Playlist?> = .init(value: nil)
-    var selectedItem: BehaviorRelay<IndexPath?> = .init(value: nil)
+    var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
+    var didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
     
     lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
     
@@ -28,7 +29,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         
         self.titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
         
-        selectedItem
+        didSelectedItemEvent
             .subscribe(onNext: { [weak self] (indexPath) in
                 guard let indexPath = indexPath, let cards =  self?.cardsDataSource.value,
                     indexPath.row < cards.count, indexPath.row >= 0 else { return }
@@ -42,10 +43,14 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         self.user
             .cardsList
             .subscribe(onNext: { [weak self] (cardsDictionary) in
-                guard let currentPlaylist = self?.currentPlaylist.value else { return }
-                let cards = cardsDictionary?.filter{ $0.key == currentPlaylist}.first?.value
-                guard let newCards = cards else { return }
-                self?.cardsDataSource.accept(newCards)
+                guard let currentPlaylist = self?.selectedPlaylist.value else { return }
+                var cards: [TranslateCard] = []
+                currentPlaylist.forEach { (playlist) in
+                    let potentialCards = cardsDictionary?.filter{ $0.key == playlist}.first?.value
+                    guard let newCards = potentialCards else { return }
+                    cards += newCards
+                }
+                self?.cardsDataSource.accept(cards)
             })
             .disposed(by: disposeBag)
         
@@ -57,14 +62,22 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 let playlists = playlisctsDictionary.filter{ $0.key == language}.first?.value
                 guard let newPlaylists = playlists else { return }
                 self?.playlists.accept(newPlaylists)
-                self?.currentPlaylist.accept(newPlaylists.first)
+                
+                // set selectedPlaylist first playlist, if selectedPlaylist count == 0
+                guard let firstPlaylist = playlists?.first,
+                    let self = self,
+                    self.selectedPlaylist.value.count == 0 else { return }
+                self.selectedPlaylist.accept([firstPlaylist])
             })
             .disposed(by: disposeBag)
         
-        currentPlaylist
-            .subscribe(onNext: { [weak self] (playlist) in
-                guard let playlist = playlist else { return }
-                self?.fetchCardsForPlaylists(playlist: playlist)
+        selectedPlaylist
+            .subscribe(onNext: { [weak self] (playlists) in
+                guard playlists.count > 0 else {
+                    self?.cardsDataSource.accept([])
+                    return
+                }
+                self?.fetchCardsForSelectedPlaylists(playlists)
             })
             .disposed(by: disposeBag)
     }
@@ -77,16 +90,28 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             .disposed(by: disposeBag)
     }
     
+    func bindWith(playlistsSelectionEvent: ControlEvent<Void>) {
+        playlistsSelectionEvent
+            .subscribe(onNext: { [weak self] (_) in
+                guard let self = self, self.playlists.value.count > 1 else { return }
+                
+                self.router.route(to: .selectPlaylist(dataSource: self.playlists.value, selected: self.selectedPlaylist))
+            })
+            .disposed(by: disposeBag)
+    }
+    
     // MARK: - Private
-    fileprivate func fetchCardsForPlaylists(playlist: Playlist) {
-        self.user.fetchCards(forPlaylist: playlist)
-            .subscribe(onNext: { (_) in
-                debugPrint("succesfull load cards")
+    fileprivate func fetchCardsForSelectedPlaylists(_ playlists: [Playlist]) {
+        playlists.forEach { [weak self] in
+            self?.user.fetchCards(forPlaylist: $0)
+                .subscribe(onNext: { (_) in
+                    debugPrint("succesfull load cards")
                 }, onError: { [weak self] (error) in
                     debugPrint("unsuccesfull load cards")
                     self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load cards with Error \(error)", handler: nil))
-            })
-            .disposed(by: disposeBag)
+                })
+                .disposed(by: disposeBag)
+        }
     }
     
     fileprivate func fetchPlaylists() {

@@ -8,8 +8,13 @@
 
 import RxSwift
 import RxCocoa
+import RSSelectionMenu
 
 struct Screens {
+    static func playlistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) -> RSSelectionMenu<Playlist> {
+        return RSSelectionMenu<Playlist>.initWith(dataSource: dataSource, selected: selected)
+    }
+    
     static func viewCard(withCard card: TranslateCard) -> ViewCardViewController {
         let vm = ViewCardViewModel(card: card)
         return ViewCardViewController(viewModel: vm)

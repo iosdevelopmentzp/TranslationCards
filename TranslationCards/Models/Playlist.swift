@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Playlist: Equatable, Hashable {
+final class Playlist: Equatable, Hashable {
     let name: String
     let dateCreated: Date
     let numberOfCards: Int
@@ -70,4 +70,7 @@ extension Playlist: DataRepresentation {
             "language": language.stringRepresentation
         ]
     }
+}
+
+extension Playlist: Decodable {
 }

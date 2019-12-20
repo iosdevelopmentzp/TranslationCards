@@ -12,6 +12,7 @@ import JJFloatingActionButton
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
     fileprivate let startCardSlideShowButton = JJActionItem()
+    fileprivate let choicePlaylistButton = UIButton(type: .custom)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -27,8 +28,12 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.setupTable()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
+ 
         disposeBag.insert([
+            
+            tableView
+                .rx
+                .setDelegate(self),
             
             tableView.rx.itemSelected.subscribe(onNext: { [weak self] (indexPath) in
                 self?.tableView.deselectRow(at: indexPath, animated: true)
@@ -47,15 +52,18 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             tableView
                 .rx
                 .itemSelected
-                .bind(to: viewModel.selectedItem)
+                .bind(to: viewModel.didSelectedItemEvent)
         ])
     }
     
     override func setupView() {
         super.setupView()
-        tableView.backgroundColor = .clear
-        
+        // startCardSlideShowButton
         startCardSlideShowButton.imageView.image = .image(withType: .playButton, renderringMode: .alwaysTemplate)
+        // choise button
+        choicePlaylistButton.backgroundColor = .red
+        // table view
+        tableView.backgroundColor = .clear
     }
     
     override func setupNavigationBar() {
@@ -71,12 +79,21 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .disposed(by: disposeBag)
         
         startCardSlideShowButton.titleLabel.text = "Start slide show"
+        choicePlaylistButton.setTitle("Choose playlist", for: .normal)
     }
     
     override func binding() {
         super.binding()
         
         viewModel.bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
+        viewModel.bindWith(playlistsSelectionEvent: choicePlaylistButton.rx.tap)
+    }
+}
+
+extension CardsListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        choicePlaylistButton.frame = .init(x: 0, y: 0, width: view.bounds.width, height: 40.0)
+        return choicePlaylistButton
     }
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum Language: String, CustomStringConvertible, CaseIterable {
+enum Language: String, CustomStringConvertible, CaseIterable, Decodable {
     case rus
     case eng
     case spa
