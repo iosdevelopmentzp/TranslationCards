@@ -14,7 +14,13 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     let cellSpeechData = BehaviorRelay<SpeechData?>.init(value: nil)
     
     init(cards: [TranslateCard]) {
-        self.cards.accept(cards)
+        let isShuffle = arc4random() % 2 == 0 ? true : false
+        if isShuffle {
+            let shuffleArray = cards.shuffled()
+            self.cards.accept(shuffleArray)
+        } else {
+            self.cards.accept(cards)
+        }
         super.init()
         binding()
     }

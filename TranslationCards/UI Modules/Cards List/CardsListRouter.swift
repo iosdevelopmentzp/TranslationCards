@@ -12,7 +12,7 @@ import RxCocoa
 final class CardsListRouter: Router {
     enum Route {
         case slideShow(cards: [TranslateCard])
-        case cardView(card: TranslateCard)
+        case cardView(card: TranslateCard, user: User)
         case selectPlaylist(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>)
     }
     
@@ -20,8 +20,8 @@ final class CardsListRouter: Router {
         switch type {
         case .slideShow(let cards):
             pushSlideShow(cards: cards)
-        case .cardView(let card):
-            pushCardView(forCard: card)
+        case .cardView(let card, let user):
+            pushCardView(forCard: card, user: user)
         case .selectPlaylist(let dataSource, let selected):
             presentSelectPlaylistMenu(dataSource: dataSource, selected: selected)
         }
@@ -34,8 +34,8 @@ final class CardsListRouter: Router {
         menu.show(style: .present, from: sourceVC)
     }
     
-    fileprivate func pushCardView(forCard card: TranslateCard) {
-        let vc = Screens.viewCard(withCard: card)
+    fileprivate func pushCardView(forCard card: TranslateCard, user: User) {
+        let vc = Screens.viewCard(withCard: card, user: user)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     

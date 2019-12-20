@@ -9,20 +9,15 @@
 import RxSwift
 import RxCocoa
 
-enum ViewCardMode {
-    case actual
-    case archive
-}
-
 final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     
+    let user: User
     let card: BehaviorRelay<TranslateCard>
     lazy var title = BehaviorRelay<String>.init(value: card.value.sourcePhrase)
-    let mode: BehaviorRelay<ViewCardMode>
     
-    init(card: TranslateCard) {
+    init(card: TranslateCard, user: User) {
         self.card = .init(value: card)
-        self.mode = card.isArchived ? .init(value: .archive) : .init(value: .actual)
+        self.user = user
         super.init()
     }
     
@@ -44,48 +39,8 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
             .subscribe(onNext: { [weak self] (_) in
                 self?.stopSpeach()
                 guard let self = self else { return }
-                self.router.route(to: .editCard(card: self.card.value))
+                self.router.route(to: .editCard(card: self.card.value, user: self.user))
             })
             .disposed(by: disposeBag)
-    }
-    
-    func bind(switchLocationEvent: ControlEvent<Void>) {
-#warning("Uncomment later")
-        /*
-        switchLocationEvent
-            .withLatestFrom(mode)
-            .subscribe(onNext: { [weak self] (mode) in
-                self?.stopSpeach()
-                switch mode {
-                case .actual:
-                    self?.startActivityIndicator.accept(true)
-                    self?.card
-                        .value
-                        .moveToArchive()
-                        .subscribe(onNext: { (_) in
-                            self?.router.route(to: .dismiss)
-                            self?.startActivityIndicator.accept(false)
-                        }, onError: { (error) in
-                            self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
-                        })
-                        .disposed(by: self?.disposeBag ?? DisposeBag())
-                case .archive:
-                    self?.startActivityIndicator.accept(true)
-                    self?.card
-                        .value
-                        .moveFromArchive()
-                        .subscribe(onNext: { (_) in
-                            self?.router.route(to: .dismiss)
-                            self?.startActivityIndicator.accept(false)
-                        }, onError: { (error) in
-                            self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
-                        })
-                        .disposed(by: self?.disposeBag ?? DisposeBag())
-                }
-            })
-            .disposed(by: disposeBag)
- */
     }
 }

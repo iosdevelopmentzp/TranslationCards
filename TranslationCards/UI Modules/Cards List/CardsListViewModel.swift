@@ -34,7 +34,8 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 guard let indexPath = indexPath, let cards =  self?.cardsDataSource.value,
                     indexPath.row < cards.count, indexPath.row >= 0 else { return }
                 let card = cards[indexPath.row]
-                self?.router.route(to: .cardView(card: card))
+                guard let self = self else { return }
+                self.router.route(to: .cardView(card: card, user: self.user))
             })
             .disposed(by: disposeBag)
         

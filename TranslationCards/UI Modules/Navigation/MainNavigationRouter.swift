@@ -11,19 +11,19 @@ import UIKit
 class MainNavigationRouter: Router {
     
     enum Route {
-        case createCard(forUserId: String, language: LanguageBind)
+        case createCard(user: User, language: LanguageBind)
     }
     
     func route(to type: Route) {
         switch type {
-        case .createCard(let userId, let language):
-            openCreateCardView(forUserId: userId, language: language)
+        case .createCard(let user, let language):
+            openCreateCardView(user: user, language: language)
         }
     }
     
     // MARK: - Private
-    fileprivate func openCreateCardView(forUserId userId: String, language: LanguageBind) {
-        let vc = Screens.createCard(forUserId: userId, language: language)
+    fileprivate func openCreateCardView(user: User, language: LanguageBind) {
+        let vc = Screens.createCard(forUser: user, language: language)
         viewController?.present(vc, animated: true, completion: nil)
     }
 }

@@ -65,6 +65,18 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     func binding() {
         // default binding
         viewModel
+            .textFieldAlertModel
+            .observeOn(MainScheduler.instance)
+            .compactMap { $0 }
+            .subscribe(onNext: { (model) in
+                let alert = TextFieldAlertBuilder.buildTextFieldAlert(for: model)
+                DispatchQueue.main.async { [weak self] in
+                    self?.present(alert, animated: true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel
             .alertModel
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (alertModel) in

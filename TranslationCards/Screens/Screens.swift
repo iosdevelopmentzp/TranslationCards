@@ -11,12 +11,9 @@ import RxCocoa
 import RSSelectionMenu
 
 struct Screens {
-    static func playlistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) -> RSSelectionMenu<Playlist> {
-        return RSSelectionMenu<Playlist>.initWith(dataSource: dataSource, selected: selected)
-    }
     
-    static func viewCard(withCard card: TranslateCard) -> ViewCardViewController {
-        let vm = ViewCardViewModel(card: card)
+    static func viewCard(withCard card: TranslateCard, user: User) -> ViewCardViewController {
+        let vm = ViewCardViewModel(card: card, user: user)
         return ViewCardViewController(viewModel: vm)
     }
     
@@ -43,13 +40,13 @@ struct Screens {
         return CardsListViewController(viewModel: vm)
     }
     
-    static func editCard(forCard card: TranslateCard) -> CreateCardPopUpViewController {
-        let vm = CreateCardPopUpViewModel(withCard: card)
+    static func editCard(forCard card: TranslateCard, user: User) -> CreateCardPopUpViewController {
+        let vm = CreateCardPopUpViewModel(withCard: card, user: user)
         return CreateCardPopUpViewController(viewModel: vm)
     }
     
-    static func createCard(forUserId userId: String, language: LanguageBind) -> CreateCardPopUpViewController {
-        let vm = CreateCardPopUpViewModel(userId: userId, language: language)
+    static func createCard(forUser user: User, language: LanguageBind) -> CreateCardPopUpViewController {
+        let vm = CreateCardPopUpViewModel(user: user, language: language)
         return CreateCardPopUpViewController(viewModel: vm)
     }
     
@@ -71,5 +68,14 @@ struct Screens {
     static func signUp() -> SignUpViewController {
         let vm = SignUpViewModel()
         return SignUpViewController(viewModel: vm)
+    }
+    
+    // MARK: - Selection menu
+    static func playlistSingleSelectionMenu(dataSource: [Playlist], selectedEvent: BehaviorRelay<Playlist?>, createNewPlaylistAction: @escaping EmptyCallBack) -> RSSelectionMenu<Playlist> {
+        return RSSelectionMenu<Playlist>.initWithSingleChoiceAndCreateNewPlaylistAction(dataSource: dataSource, selectedEvent: selectedEvent, createNewPlaylistCallBack: createNewPlaylistAction)
+    }
+    
+    static func playlistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) -> RSSelectionMenu<Playlist> {
+        return RSSelectionMenu<Playlist>.initWith(dataSource: dataSource, selected: selected)
     }
 }

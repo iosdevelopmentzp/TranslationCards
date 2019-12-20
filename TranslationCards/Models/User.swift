@@ -207,6 +207,25 @@ extension User: ServicesAccessing {
         }
     }
     
+    func addNewPlaylist(playlist: Playlist) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            self?.services
+                .realTimeDatabase
+                .savePlaylist(playlist)
+                .subscribe(onNext: { [weak self] (_) in
+                    self?.fetchPlaylists(forLanguage: playlist.language)
+                        .subscribe(onNext: { (_) in})
+                        .disposed(by: self?.disposeBag ?? DisposeBag())
+                    observer.onNext(())
+                    observer.onCompleted()
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
+    }
+    
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
         card.updateOwnerUserId(newId: uid)
         return .create { [weak self] (observer) -> Disposable in

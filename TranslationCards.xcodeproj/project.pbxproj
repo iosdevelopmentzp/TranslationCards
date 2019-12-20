@@ -129,6 +129,9 @@
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
 		3BE63ED423AB99D7003B1EDC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9A23868E69009D62E8 /* User.swift */; };
 		3BE9992923ACE02D00816583 /* RSSelectionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992823ACE02D00816583 /* RSSelectionMenu.swift */; };
+		3BE9992B23AD062600816583 /* Base Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992A23AD062600816583 /* Base Typealias.swift */; };
+		3BE9992E23AD0A5D00816583 /* TextFieldAlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992D23AD0A5D00816583 /* TextFieldAlertModel.swift */; };
+		3BE9993023AD0A7E00816583 /* TextFieldAlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992F23AD0A7E00816583 /* TextFieldAlertBuilder.swift */; };
 		3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */; };
 		3BEE43CB2397D88A008F35AA /* CardSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */; };
 		3BEE43CC2397D88A008F35AA /* CardSlideShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */; };
@@ -267,6 +270,9 @@
 		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
 		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
 		3BE9992823ACE02D00816583 /* RSSelectionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSelectionMenu.swift; sourceTree = "<group>"; };
+		3BE9992A23AD062600816583 /* Base Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Base Typealias.swift"; sourceTree = "<group>"; };
+		3BE9992D23AD0A5D00816583 /* TextFieldAlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModel.swift; sourceTree = "<group>"; };
+		3BE9992F23AD0A7E00816583 /* TextFieldAlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertBuilder.swift; sourceTree = "<group>"; };
 		3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowRouter.swift; sourceTree = "<group>"; };
 		3BEE43C82397D88A008F35AA /* CardSlideShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewController.swift; sourceTree = "<group>"; };
 		3BEE43C92397D88A008F35AA /* CardSlideShowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowViewModel.swift; sourceTree = "<group>"; };
@@ -607,6 +613,7 @@
 		3B825BA923869AC7009D62E8 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				3BE9992A23AD062600816583 /* Base Typealias.swift */,
 				3B825B9423868AED009D62E8 /* Error */,
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
 				3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */,
@@ -727,10 +734,20 @@
 		3BC99CC62390272D00D0D869 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				3BE9992C23AD0A2100816583 /* TextField Alert */,
 				3B573AFC23953AEA006D5D5C /* Alert Making */,
 				3B88E93223913F2C0052DB7F /* Transition Animation */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		3BE9992C23AD0A2100816583 /* TextField Alert */ = {
+			isa = PBXGroup;
+			children = (
+				3BE9992D23AD0A5D00816583 /* TextFieldAlertModel.swift */,
+				3BE9992F23AD0A7E00816583 /* TextFieldAlertBuilder.swift */,
+			);
+			path = "TextField Alert";
 			sourceTree = "<group>";
 		};
 		3BEE43C62397D858008F35AA /* CardSlideShow */ = {
@@ -938,6 +955,7 @@
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
+				3BE9993023AD0A7E00816583 /* TextFieldAlertBuilder.swift in Sources */,
 				3B8503A023AA5F2000481989 /* NVActivityIndicatorView.swift in Sources */,
 				3B85039C23AA276B00481989 /* JJActionItem.swift in Sources */,
 				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
@@ -950,6 +968,7 @@
 				3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */,
 				3B031E13239BD92900946F8D /* LanguageCell.swift in Sources */,
 				3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */,
+				3BE9992E23AD0A5D00816583 /* TextFieldAlertModel.swift in Sources */,
 				3B85039A23AA150300481989 /* CAAnimationGroup.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
@@ -1011,6 +1030,7 @@
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
 				3BE63ED423AB99D7003B1EDC /* User.swift in Sources */,
 				3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */,
+				3BE9992B23AD062600816583 /* Base Typealias.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,

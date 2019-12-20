@@ -8,11 +8,13 @@
 
 import RxSwift
 import RxCocoa
+import RSSelectionMenu
 
 class CreateCardPopUpRouter: Router {
     
     enum Route {
         case languagePickerView(currentLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String)
+        case selectPlaylistView(dataSource: [Playlist], selectedEvent: BehaviorRelay<Playlist?>, createNewPlaylistCallBack: EmptyCallBack)
     }
     
     func dissmis() {
@@ -25,6 +27,10 @@ class CreateCardPopUpRouter: Router {
             presentLanguagePicker(currentLanguage: currentLanguage,
                                   languageList: languageList,
                                   title: title)
+        case .selectPlaylistView(let dataSource,let selectedEvent, let callBack):
+            guard let vc = viewController else { return }
+            let selectView = Screens.playlistSingleSelectionMenu(dataSource: dataSource, selectedEvent: selectedEvent, createNewPlaylistAction: callBack)
+            selectView.show(style: .present, from: vc)
         }
     }
     

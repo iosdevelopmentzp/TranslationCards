@@ -45,7 +45,7 @@ class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
             
             let sourceLanguage = user.currentLanguage ?? nativeLanguage.next()
             let languageBind = LanguageBind(source: nativeLanguage, target: sourceLanguage)
-            self?.router.route(to: .createCard(forUserId: user.uid, language: languageBind))
+            self?.router.route(to: .createCard(user: user, language: languageBind))
         })
         .disposed(by: disposeBag)
     }

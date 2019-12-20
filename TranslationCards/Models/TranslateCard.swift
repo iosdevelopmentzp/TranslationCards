@@ -19,11 +19,8 @@ class TranslateCard {
     fileprivate(set) var targetPhrase: String
     var id: String
     
-    // if card will save on server need to set this property
-    var playlistId: String = "Unknown"
-    
-    // set true and save, if you want send card to archive
-    var isArchived: Bool = false
+    // if card will save on server need to set this property, using playlist
+    var playlistId: String = "Common"
     
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
