@@ -116,10 +116,11 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                     return
                 }
                 
-                self.router.route(to: .selectPlaylistView(dataSource: self.userPlaylists.value,
-                                                          selectedEvent: self.selectedPlaylist,
-                                                          createNewPlaylistCallBack: { [weak self] in
-                    self?.textFieldAlertModel.accept(.createPlaylistModel(okAction: { [weak self] (newPlaylistName) in
+                self.router.route(to: .selectPlaylistView(dataSource: self.userPlaylists.value, selectedAction: { [weak self] (playlist) in
+                      self?.selectedPlaylist.accept(playlist)
+                }, firstRowTitle: "Create new playlist",
+                   createNewPlaylistCallBack: { [weak self] in
+                    let model: TextFieldAlertModel = .createPlaylistModel(okAction: { [weak self] (newPlaylistName) in
                         guard !newPlaylistName.isEmpty else {
                             self?.alertModel.accept(.warningAlert(message: "Playlist name must not be empty", handler: nil))
                             return
@@ -142,9 +143,9 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                                     self?.alertModel.accept(.warningAlert(message: "Failed create new playlist", handler: nil))
                             })
                             .disposed(by: self.disposeBag)
-                        }, cancelAction: { }))
-                    })
-                )
+                    }, cancelAction: { } )
+                    self?.textFieldAlertModel.accept(model)
+                }))
             })
             .disposed(by: disposeBag)
         

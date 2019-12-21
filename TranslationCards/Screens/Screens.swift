@@ -69,13 +69,4 @@ struct Screens {
         let vm = SignUpViewModel()
         return SignUpViewController(viewModel: vm)
     }
-    
-    // MARK: - Selection menu
-    static func playlistSingleSelectionMenu(dataSource: [Playlist], selectedEvent: BehaviorRelay<Playlist?>, createNewPlaylistAction: @escaping EmptyCallBack) -> RSSelectionMenu<Playlist> {
-        return RSSelectionMenu<Playlist>.initWithSingleChoiceAndCreateNewPlaylistAction(dataSource: dataSource, selectedEvent: selectedEvent, createNewPlaylistCallBack: createNewPlaylistAction)
-    }
-    
-    static func playlistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) -> RSSelectionMenu<Playlist> {
-        return RSSelectionMenu<Playlist>.initWith(dataSource: dataSource, selected: selected)
-    }
 }

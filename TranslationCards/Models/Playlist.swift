@@ -11,6 +11,7 @@ import Foundation
 final class Playlist: Equatable, Hashable {
     let name: String
     let dateCreated: Date
+    var dateUpdated: Date
     let numberOfCards: Int
     let userOwnerId: String
     let language: LanguageBind
@@ -21,6 +22,7 @@ final class Playlist: Equatable, Hashable {
     init(name: String, dateCreated: Date, userOwnerId: String, language: LanguageBind) {
         self.name = name
         self.dateCreated = dateCreated
+        self.dateUpdated = dateCreated
         self.userOwnerId = userOwnerId
         self.language = language
         self.numberOfCards = 0
@@ -30,6 +32,8 @@ final class Playlist: Equatable, Hashable {
         guard let name = data["name"] as? String,
             let dateCreatedString = data["dateCreated"] as? String,
             let date = Date.initWithString(dateCreatedString),
+            let dateUpdatedString = data["dateUpdated"] as? String,
+            let dateUpdated = Date.initWithString(dateUpdatedString),
             let numberOfCards = data["numberOfCards"] as? Int,
             let userOwnerId = data["userOwnerId"] as? String,
             let languageString = data["language"] as? String,
@@ -38,6 +42,7 @@ final class Playlist: Equatable, Hashable {
         }
         self.name = name
         self.dateCreated = date
+        self.dateUpdated = dateUpdated
         self.numberOfCards = numberOfCards
         self.userOwnerId = userOwnerId
         self.language = language
@@ -65,7 +70,8 @@ extension Playlist: DataRepresentation {
         return [
             "name": name,
             "userOwnerId": userOwnerId,
-            "dateCreated": dateCreated.asString,
+            "dateCreated": dateCreated.presentAsString,
+            "dateUpdated": dateUpdated.presentAsString,
             "numberOfCards": numberOfCards,
             "language": language.stringRepresentation
         ]

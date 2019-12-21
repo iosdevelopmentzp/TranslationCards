@@ -10,3 +10,4 @@ import Foundation
 
 typealias EmptyCallBack = ()->()
 typealias StringCallBack = (String)->()
+typealias PlaylistCallBack = (Playlist)->()

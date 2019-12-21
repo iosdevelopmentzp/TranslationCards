@@ -29,9 +29,7 @@ final class CardsListRouter: Router {
     
     // MARK: - Private
     fileprivate func presentSelectPlaylistMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
-        guard let sourceVC = viewController else { return }
-        let menu = Screens.playlistSelectionMenu(dataSource: dataSource, selected: selected)
-        menu.show(style: .present, from: sourceVC)
+        viewController?.presentPlaylistSelectionMenu(dataSource: dataSource, selected: selected)
     }
     
     fileprivate func pushCardView(forCard card: TranslateCard, user: User) {

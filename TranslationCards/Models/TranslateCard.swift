@@ -70,10 +70,10 @@ extension TranslateCard: DataRepresentation {
     var representation: [String : Any] {
         return [
             "userOwnerId" : userOwnerId,
-            "dateCreated" : dateCreated.asString,
+            "dateCreated" : dateCreated.presentAsString,
             "sourcePhrase" : sourcePhrase,
             "targetPhrase" : targetPhrase,
-            "dateUpdated" : dateUpdated.asString,
+            "dateUpdated" : dateUpdated.presentAsString,
             "language": language.stringRepresentation,
             "id": id
         ]

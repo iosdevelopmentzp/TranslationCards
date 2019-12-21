@@ -36,11 +36,32 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
                 self?.openEditCardController()
             })
             .disposed(by: disposeBag)
+        
+        moveCardToEvent
+            .subscribe(onNext: { [weak self] (_) in
+                self?.openMoveCardToController()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Private
     fileprivate func openMoveCardToController() {
+        guard let indexPath = getSelectedCellIndexPath?() else { return }
+        let card = cards.value[indexPath.row]
         
+        User.user(withId: card.userOwnerId).subscribe(onNext: { [weak self] (user) in
+            user.getPlaylists(forLanguage: card.language)
+                .subscribe(onNext: { [weak self] (playlists) in
+                    let selectedPlaylist = playlists.filter{ $0.id == card.playlistId}.first
+                    guard let selected = selectedPlaylist else { return }
+                    self?.router.route(to: .moveCardTo(dataSource: playlists, selected: selected, callback: { (selectedPlaylist) in
+                        guard selectedPlaylist != selected else { return }
+                        //user.moveCard(card, toPlaylist: selectedPlaylist)
+                    }))
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+        })
+        .disposed(by: disposeBag)
     }
     
     fileprivate func openEditCardController() {

@@ -168,10 +168,7 @@ extension User: ServicesAccessing {
                 .realTimeDatabase
                 .getPlaylistList(userId: self.uid, language: language)
                 .subscribe(onNext: { [weak self] (playlists) in
-                    guard let self = self else { return }
-                    var oldPlaylists = self.playlists.value ?? [:]
-                    oldPlaylists[language] = playlists
-                    self.playlists.accept(oldPlaylists)
+                    self?.fetchedNewPlaylist(playlist: playlists, forLanguage: language)
                     observer.onNext(())
                     observer.onCompleted()
                     }, onError: { (error) in
@@ -203,6 +200,22 @@ extension User: ServicesAccessing {
                         observer.onError(error)
                 })
                 .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    func getPlaylists(forLanguage language: LanguageBind) -> Observable<[Playlist]> {
+        let userId = uid
+        return Observable<[Playlist]>.create { [weak self] (observer) -> Disposable in
+            self?.services.realTimeDatabase.getPlaylistList(userId: userId, language: language)
+                .subscribe(onNext: { [weak self] (playlists) in
+                    self?.fetchedNewPlaylist(playlist: playlists, forLanguage: language)
+                    observer.onNext(playlists)
+                    observer.onCompleted()
+                    }, onError: { (error) in
+                        observer.onError(error)
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
             return Disposables.create()
         }
     }
@@ -324,6 +337,13 @@ extension User: ServicesAccessing {
                 debugPrint("Unsuccesfull synchronize user \(self?.uid ?? "Unknow id") with remote data. Error \(error)")
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Private
+    fileprivate func fetchedNewPlaylist(playlist: [Playlist], forLanguage language: LanguageBind) {
+        var oldPlaylists = self.playlists.value ?? [:]
+        oldPlaylists[language] = playlist
+        self.playlists.accept(oldPlaylists)
     }
 }
 

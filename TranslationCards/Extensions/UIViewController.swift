@@ -6,7 +6,9 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RSSelectionMenu
+import RxSwift
+import RxCocoa
 
 extension UIViewController {
     @discardableResult
@@ -36,5 +38,56 @@ extension UIViewController {
             return false
         }
         return topViewController === self
+    }
+}
+
+// Select menu view controller
+extension UIViewController {
+    func presentPlaylistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
+        let menu = RSSelectionMenu<Playlist>(selectionStyle: .multiple, dataSource: dataSource) { (cell, item, indexPath) in
+            cell.textLabel?.text = item.name
+        }
+        menu.dismissAutomatically = false
+        menu.cellSelectionStyle = .checkbox
+        menu.setSelectedItems(items: selected.value) { (_, _, _, _) in }
+        menu.uniquePropertyName = "name"
+        
+        menu.onDismiss = { [weak selected] selectedItems in
+            selected?.accept(selectedItems)
+        }
+        menu.show(style: .present, from: self)
+    }
+    
+    func presentSingleChoicePlaylist(dataSource: [Playlist],
+                                     selectedAction: @escaping PlaylistCallBack,
+                                     currentSelect: Playlist? = nil,
+                                     firstRowTitle: String? = nil,
+                                     firstRowCallBack: EmptyCallBack? = nil) {
+        let menu = RSSelectionMenu<Playlist>(selectionStyle: .single, dataSource: dataSource, cellType: .rightDetail) { (cell, item, indexPath) in
+            cell.textLabel?.text =  item.name
+            cell.detailTextLabel?.text = "\(item.dateUpdated.asString(dateFormat: "MM/dd/yyyy"))"
+            cell.textLabel?.numberOfLines = 0
+        }
+        menu.dismissAutomatically = true
+        menu.uniquePropertyName = "name"
+        menu.rightBarButtonTitle = ""
+        menu.title = "Choose a playlist"
+        menu.onDismiss = { (selectedItems) in
+            guard let playlist = selectedItems.first else { return }
+            selectedAction(playlist)
+        }
+        
+        if let selected = currentSelect {
+            menu.setSelectedItems(items: [selected]) { [weak menu] (playlist, index, isSelected, selectedPlaylist) in
+                menu?.tableView?.visibleCells.forEach{ $0.isSelected = false }
+            }
+        }
+        
+        if let firstRowTitle = firstRowTitle, let callBack = firstRowCallBack {
+            menu.addFirstRowAs(rowType: .custom(value: firstRowTitle), showSelected: false) { (value, isSelected) in
+                callBack()
+            }
+        }
+        menu.show(style: .present, from: self)
     }
 }
