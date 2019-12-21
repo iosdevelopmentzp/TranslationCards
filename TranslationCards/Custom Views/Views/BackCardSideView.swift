@@ -24,6 +24,7 @@ final class BackCardSideView: UIView {
     fileprivate let bottomSpeakButton = UIButton(type: .custom)
     
     fileprivate let stackView = UIStackView()
+    fileprivate let separator = UIView()
     
     fileprivate let disposeBag = DisposeBag()
     fileprivate let cornerRadius: CGFloat = 10.0
@@ -72,7 +73,17 @@ final class BackCardSideView: UIView {
             $0.edges.equalToSuperview()
         }
         stackView.addArrangedSubview(topContainerView)
+        stackView.addArrangedSubview(separator)
         stackView.addArrangedSubview(bottomContainerView)
+        
+        separator.snp.makeConstraints {
+            $0.height.equalTo(2.0)
+        }
+        
+        topContainerView.snp.makeConstraints {[weak self] in
+            guard let self = self else { return }
+            $0.height.equalTo(self.bottomContainerView)
+        }
         
         let topImageContainer = UIView()
         let bottomImageContainer = UIView()
@@ -90,34 +101,41 @@ final class BackCardSideView: UIView {
                 $0.edges.equalToSuperview()
             }
         }
-        
-        [topImageContainer, bottomImageContainer].forEach {
-            $0.snp.makeConstraints {
-                $0.top.left.equalToSuperview().offset(padding)
-                $0.width.height.equalTo(44.0)
-            }
+        topImageContainer.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(padding)
+            $0.bottom.equalToSuperview().inset(padding)
+            $0.width.height.equalTo(44.0)
         }
         
-        [topSpeakButton, bottomSpeakButton].forEach {
-            $0.snp.makeConstraints {
-                $0.width.height.equalTo(20.0)
-                $0.right.bottom.equalToSuperview().inset(padding)
-            }
+        bottomImageContainer.snp.makeConstraints {
+            $0.top.left.equalToSuperview().offset(padding)
+            $0.width.height.equalTo(44.0)
+        }
+        
+        let buttonSize = 20.0
+        topSpeakButton.snp.makeConstraints {
+            $0.width.height.equalTo(buttonSize)
+            $0.centerX.equalTo(topImageContainer)
+            $0.bottom.equalTo(topImageContainer.snp.top).offset(-padding)
+        }
+        
+        bottomSpeakButton.snp.makeConstraints {
+            $0.width.height.equalTo(buttonSize)
+            $0.top.equalTo(bottomImageContainer.snp.bottom).offset(padding)
+            $0.centerX.equalTo(bottomImageContainer)
         }
            
-        topTextLabel.snp.makeConstraints {[weak self] in
-            guard let self = self else { return }
-            $0.top.equalToSuperview().offset(padding)
-            $0.right.equalToSuperview().inset(padding)
-            $0.bottom.lessThanOrEqualTo(self.topSpeakButton.snp.top)
+        topTextLabel.snp.makeConstraints {
+            $0.top.greaterThanOrEqualToSuperview().offset(padding)
+            $0.right.equalToSuperview().offset(-padding)
+            $0.bottom.equalToSuperview().inset(padding)
             $0.left.equalTo(topImageContainer.snp.right).offset(padding)
         }
         
-        bottomTextLabel.snp.makeConstraints {[weak self] in
-            guard let self = self else { return }
+        bottomTextLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(padding)
-            $0.right.equalToSuperview().inset(padding)
-            $0.bottom.lessThanOrEqualTo(self.bottomSpeakButton.snp.top)
+            $0.right.equalToSuperview().offset(-padding)
+            $0.bottom.lessThanOrEqualToSuperview().inset(padding)
             $0.left.equalTo(bottomImageContainer.snp.right).offset(padding)
         }
     }
@@ -134,7 +152,7 @@ final class BackCardSideView: UIView {
         bottomImageView.contentMode = .scaleAspectFit
         
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         
         let speakerImage = UIImage.image(withType: .speaker, renderringMode: .alwaysTemplate)
         [topSpeakButton, bottomSpeakButton].forEach {
@@ -147,6 +165,8 @@ final class BackCardSideView: UIView {
             $0.textColor = .white
             $0.font = .font(type: .roboto, weight: .bold, size: 20)
         }
+        
+        separator.backgroundColor = .white
     }
     
     fileprivate func bind() {
