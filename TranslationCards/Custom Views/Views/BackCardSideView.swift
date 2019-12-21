@@ -101,9 +101,10 @@ final class BackCardSideView: UIView {
                 $0.edges.equalToSuperview()
             }
         }
-        topImageContainer.snp.makeConstraints {
+        topImageContainer.snp.makeConstraints {[weak self] in
+            guard let self = self else { return }
             $0.left.equalToSuperview().offset(padding)
-            $0.bottom.equalToSuperview().inset(padding)
+            $0.bottom.equalTo(self.topSpeakButton.snp.top).offset(-padding)
             $0.width.height.equalTo(44.0)
         }
         
@@ -116,7 +117,7 @@ final class BackCardSideView: UIView {
         topSpeakButton.snp.makeConstraints {
             $0.width.height.equalTo(buttonSize)
             $0.centerX.equalTo(topImageContainer)
-            $0.bottom.equalTo(topImageContainer.snp.top).offset(-padding)
+            $0.bottom.equalToSuperview().offset(-padding)
         }
         
         bottomSpeakButton.snp.makeConstraints {
