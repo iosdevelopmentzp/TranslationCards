@@ -28,8 +28,8 @@ final class BackCardSideView: UIView {
     
     fileprivate let disposeBag = DisposeBag()
     fileprivate let cornerRadius: CGFloat = 10.0
-    fileprivate var topLanguage: Language?
-    fileprivate var bottomLanguage: Language?
+    fileprivate var topLanguage: BehaviorRelay<Language?> = .init(value: nil)
+    fileprivate var bottomLanguage: BehaviorRelay<Language?> = .init(value: nil)
     
     fileprivate var gradientLayer: CAGradientLayer?
     
@@ -52,11 +52,11 @@ final class BackCardSideView: UIView {
     func configure(withCard card: TranslateCard) {
         topImageView.image = card.language.sourceLanguage.flagIcon
         topTextLabel.text = card.sourcePhrase
-        topLanguage = card.language.sourceLanguage
+        topLanguage.accept(card.language.sourceLanguage)
        
         bottomImageView.image = card.language.targetLanguage.flagIcon
         bottomTextLabel.text = card.targetPhrase
-        bottomLanguage = card.language.targetLanguage
+        bottomLanguage.accept(card.language.targetLanguage)
         
         gradientLayer?.removeFromSuperlayer()
         let topColor = card.language.sourceLanguage.associativeColor
@@ -171,12 +171,22 @@ final class BackCardSideView: UIView {
     }
     
     fileprivate func bind() {
+        topLanguage
+            .compactMap{ $0?.flagIcon}
+            .bind(to: topImageView.rx.image)
+            .disposed(by: disposeBag)
+        
+        bottomLanguage
+            .compactMap{ $0?.flagIcon}
+            .bind(to: bottomImageView.rx.image)
+            .disposed(by: disposeBag)
+        
         topSpeakButton
             .rx
             .tap
             .subscribe(onNext: { [weak self] (_) in
                 guard let text = self?.topTextLabel.text,
-                    let language = self?.topLanguage else {
+                    let language = self?.topLanguage.value else {
                         self?.speakData.accept(nil)
                         return
                 }
@@ -189,7 +199,7 @@ final class BackCardSideView: UIView {
             .tap
             .subscribe(onNext: { [weak self] (_) in
                 guard let text = self?.bottomTextLabel.text,
-                    let language = self?.bottomLanguage else {
+                    let language = self?.bottomLanguage.value else {
                         self?.speakData.accept(nil)
                         return
                 }

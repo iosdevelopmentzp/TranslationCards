@@ -119,6 +119,7 @@
 		3BA679DC23AE2E36003D2B40 /* ZoomInOutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679D423AE2E35003D2B40 /* ZoomInOutAttributesAnimator.swift */; };
 		3BA679DD23AE2E36003D2B40 /* LinearCardAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679D523AE2E35003D2B40 /* LinearCardAttributesAnimator.swift */; };
 		3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */; };
+		3BA679E123AE4FC1003D2B40 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679E023AE4FC1003D2B40 /* UICollectionView.swift */; };
 		3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA5FB123AB6379002ED2FB /* Playlist.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
 		3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CustomOperators.swift */; };
@@ -272,6 +273,7 @@
 		3BA679D423AE2E35003D2B40 /* ZoomInOutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomInOutAttributesAnimator.swift; sourceTree = "<group>"; };
 		3BA679D523AE2E35003D2B40 /* LinearCardAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearCardAttributesAnimator.swift; sourceTree = "<group>"; };
 		3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSlideShowFlowLayout.swift; sourceTree = "<group>"; };
+		3BA679E023AE4FC1003D2B40 /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		3BAA5FB123AB6379002ED2FB /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
 		3BC0414823A3CE2300C20EFA /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				3B85039B23AA276B00481989 /* JJActionItem.swift */,
 				3B85039F23AA5F2000481989 /* NVActivityIndicatorView.swift */,
 				3BE9992823ACE02D00816583 /* RSSelectionMenu.swift */,
+				3BA679E023AE4FC1003D2B40 /* UICollectionView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1006,6 +1009,7 @@
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
+				3BA679E123AE4FC1003D2B40 /* UICollectionView.swift in Sources */,
 				3BE9993023AD0A7E00816583 /* TextFieldAlertBuilder.swift in Sources */,
 				3B8503A023AA5F2000481989 /* NVActivityIndicatorView.swift in Sources */,
 				3B85039C23AA276B00481989 /* JJActionItem.swift in Sources */,

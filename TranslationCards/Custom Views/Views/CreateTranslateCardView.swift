@@ -16,19 +16,24 @@ class CreateTranslateCardView: UIView {
     
     let targetHeaderLabel = UILabel()
     let targetTextField = UITextView()
+    let targetSelectLanguageButton = UIButton(type: .custom)
     let saveButton = UIButton()
     let cancelButton = UIButton()
-    let buttonStackView = UIStackView()
-    let verticalButtonStackView = UIStackView()
     let removeButton = UIButton()
-    let targetSelectLanguageButton = UIButton(type: .custom)
     
+    fileprivate let buttonStackView = UIStackView()
+    fileprivate let verticalButtonStackView = UIStackView()
+    
+    
+    fileprivate let currentCard: BehaviorRelay<TranslateCard?> = .init(value: nil)
     fileprivate let diposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
         setupView()
+        bind()
+        localizable()
     }
     
     required init?(coder: NSCoder) {
@@ -36,8 +41,7 @@ class CreateTranslateCardView: UIView {
     }
     
     func configure(withCard card: TranslateCard) {
-        sourceTextField.text = card.sourcePhrase
-        targetTextField.text = card.targetPhrase
+        currentCard.accept(card)
     }
     
     // MARK: - Private
@@ -147,5 +151,39 @@ class CreateTranslateCardView: UIView {
         
         verticalButtonStackView.axis = .vertical
         verticalButtonStackView.spacing = 10.0
+    }
+    
+    fileprivate func bind () {
+        currentCard
+            .compactMap{$0?.sourcePhrase}
+            .observeOn(MainScheduler.instance)
+            .bind(to: sourceTextField.rx.text)
+            .disposed(by: diposeBag)
+        
+        currentCard
+            .compactMap{$0?.targetPhrase}
+            .observeOn(MainScheduler.instance)
+            .bind(to: targetTextField.rx.text)
+            .disposed(by: diposeBag)
+        
+        currentCard
+            .compactMap{$0?.language.sourceLanguage.flagIcon}
+            .observeOn(MainScheduler.instance)
+            .bind(to: sourceSelectLanguageButton.rx.backgroundImage())
+            .disposed(by: diposeBag)
+        
+        currentCard
+            .compactMap{$0?.language.targetLanguage.flagIcon}
+            .observeOn(MainScheduler.instance)
+            .bind(to: targetSelectLanguageButton.rx.backgroundImage())
+            .disposed(by: diposeBag)
+    }
+    
+    fileprivate func localizable() {
+        sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase in the native language")
+        targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
+        saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
+        cancelButton.setAttributedTitle(.defaultText(withText: "Cancel"), for: .normal)
+        removeButton.setAttributedTitle(.defaultText(withText: "Remove"), for: .normal)
     }
 }

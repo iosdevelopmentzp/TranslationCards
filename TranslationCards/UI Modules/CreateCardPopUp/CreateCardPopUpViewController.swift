@@ -57,15 +57,6 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
             })
             .disposed(by: disposeBag)
     }
-    
-    override func localizable() {
-        super.localizable()
-        createTranslateCardView.sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase in the native language")
-         createTranslateCardView.targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
-        createTranslateCardView.saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)
-        createTranslateCardView.cancelButton.setAttributedTitle(.defaultText(withText: "Cancel"), for: .normal)
-        createTranslateCardView.removeButton.setAttributedTitle(.defaultText(withText: "Remove"), for: .normal)
-    }
 }
 
 extension CreateCardPopUpViewController: TransitionAnimatorMaker {

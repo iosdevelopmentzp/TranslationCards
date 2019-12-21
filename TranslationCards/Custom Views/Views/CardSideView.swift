@@ -17,7 +17,7 @@ class CardSideView: UIView {
     fileprivate let textLabel = UILabel()
     fileprivate let iconImageView = UIImageView()
     
-    fileprivate var language: Language?
+    fileprivate var language: BehaviorRelay<Language?> = .init(value: nil)
     fileprivate var gradientLayer: CAGradientLayer?
     fileprivate let disposeBag = DisposeBag()
     
@@ -34,8 +34,7 @@ class CardSideView: UIView {
 
     func configure(withCard card: TranslateCard) {
         textLabel.text = "\(card.sourcePhrase)"
-        iconImageView.image = card.language.sourceLanguage.flagIcon
-        language = card.language.sourceLanguage
+        language.accept(card.language.sourceLanguage)
         
         gradientLayer?.removeFromSuperlayer()
         let topColor = card.language.sourceLanguage.associativeColor
@@ -100,6 +99,11 @@ class CardSideView: UIView {
     }
     
     fileprivate func bind() {
+        language
+            .compactMap{ $0?.flagIcon }
+            .bind(to: iconImageView.rx.image)
+            .disposed(by: disposeBag)
+        
         speakButton
             .rx
             .tap
@@ -108,7 +112,7 @@ class CardSideView: UIView {
                     let text = self?.textLabel.text else {
                     return nil
                 }
-                return  (text: text, language: language) }
+                return  (text: text, language: language.value) }
             .subscribe(onNext: { [weak self] (inputData) in
                 self?.speakData.accept(inputData)
             })

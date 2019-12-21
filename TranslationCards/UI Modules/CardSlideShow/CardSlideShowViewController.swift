@@ -9,11 +9,15 @@
 import RxSwift
 import RxCocoa
 import RxDataSources
+import JJFloatingActionButton
 
 final class CardSlideShowViewController: ViewController<CardSlideShowRouter, CardSlideShowViewModel> {
     
     fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     fileprivate let flowLayout = CardSlideShowFlowLayout()
+    
+    fileprivate let editCardButton = JJActionItem()
+    fileprivate let moveCardToButton = JJActionItem()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -30,28 +34,47 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         super.binding()
         collectionView.register(CardCell.self, forCellWithReuseIdentifier: CardCell.typeName)
         
-        disposeBag.insert([
-            viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
-                guard let self = self else { return }
-                cell.configure(withCard: card)
-                cell
-                    .speakData
-                    .skip(1)
-                    .compactMap{ $0 }
-                    .bind(to: self.viewModel.cellSpeechData)
-                    .disposed(by: cell.rx.reuseBag)
-            }
-        ])
+        viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
+            guard let self = self else { return }
+            cell.configure(withCard: card)
+            cell
+                .speakData
+                .skip(1)
+                .compactMap{ $0 }
+                .bind(to: self.viewModel.cellSpeechData)
+                .disposed(by: cell.rx.reuseBag)
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap,
+                                        moveCardToEvent: moveCardToButton.rx.tap)
+        
+        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
     }
     
     override func setupView() {
         super.setupView()
         collectionView.backgroundColor = .clear
         collectionView.decelerationRate = .fast
+        
+        editCardButton.buttonImage = .image(withType: .edit)
+        moveCardToButton.buttonImage = .image(withType: .move)
+    }
+    
+    override func localizable() {
+        super.localizable()
+        editCardButton.titleLabel.text = "Edit card"
+        moveCardToButton.titleLabel.text = "Move card to"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewModel.viewDisappeared()
+    }
+}
+
+extension CardSlideShowViewController: ActionButtonDataSource {
+    func getActionButtons() -> [JJActionItem] {
+        return [editCardButton, moveCardToButton]
     }
 }
