@@ -11,6 +11,7 @@ import Foundation
 final class ViewCardRouter: Router {
     enum Route {
         case editCard(card: TranslateCard, user: User)
+        case moveCardTo(dataSource: [Playlist], selected: Playlist, callback: PlaylistCallBack)
         case dismiss
     }
     
@@ -18,6 +19,8 @@ final class ViewCardRouter: Router {
         switch type {
         case .editCard(let card, let user):
             presentEditCard(card, user: user)
+        case .moveCardTo(let dataSource, let selected, let callback):
+            viewController?.presentSingleChoicePlaylist(dataSource: dataSource, selectedAction: callback, currentSelect: selected)
         case .dismiss:
             viewController?.navigationController?.popViewController(animated: true)
         }

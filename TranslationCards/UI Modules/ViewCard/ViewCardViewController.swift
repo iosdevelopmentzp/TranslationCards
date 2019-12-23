@@ -39,13 +39,14 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
     
     override func binding() {
         super.binding()
-        viewModel.bind(editEvent: editButton.rx.tap)
+        viewModel.bind(editEvent: editButton.rx.tap, moveCardToEvent: moveCardToButton.rx.tap)
         viewModel.bind(speakData: cardView.speakData)
     }
     
     override func localizable() {
         super.localizable()
         editButton.titleLabel.text =  "Edit card"
+        moveCardToButton.titleLabel.text = "Move card to"
         viewModel
             .title
             .bind(to: navigationItem.rx.title)
