@@ -22,6 +22,13 @@ extension JJActionItem {
         item.layer.shadowOpacity = Float(0.4)
         item.layer.shadowRadius = CGFloat(2)
     }
+    
+    static func initWith(imageType: ImageType) -> JJActionItem {
+        let item = JJActionItem()
+        let image = UIImage.image(withType: imageType)
+        item.buttonImage = image
+        return item
+    }
 }
 
 extension Reactive where Base: JJActionItem {

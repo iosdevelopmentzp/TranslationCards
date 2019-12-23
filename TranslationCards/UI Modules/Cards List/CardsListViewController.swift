@@ -11,7 +11,7 @@ import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
-    fileprivate let startCardSlideShowButton = JJActionItem()
+    fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
     
     override func setupConstraints() {
@@ -58,8 +58,6 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     
     override func setupView() {
         super.setupView()
-        // startCardSlideShowButton
-        startCardSlideShowButton.imageView.image = .image(withType: .playButton, renderringMode: .alwaysTemplate)
         // choise button
         choicePlaylistButton.backgroundColor = .red
         // table view

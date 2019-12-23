@@ -12,7 +12,7 @@ import JJFloatingActionButton
 class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
     
     fileprivate let actionButton = JJFloatingActionButton()
-    fileprivate lazy var addCardButton = actionButton.addItem()
+    fileprivate lazy var addCardButton = JJActionItem.initWith(imageType: .plus)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -30,10 +30,10 @@ class MainNavigationViewController: NavigationViewController<MainNavigationRoute
         actionButton.configureDefaultItem { (item) in
             JJActionItem.setupAppearance(forItem: item)
         }
+        actionButton.addItem(addCardButton)
         
         // AddCardButton settings.
         addCardButton.titleLabel.text = "New card"
-        addCardButton.imageView.image = .image(withType: .plus, renderringMode: .alwaysTemplate)
     }
     
     override func binding() {

@@ -105,9 +105,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     fileprivate func fetchCardsForSelectedPlaylists(_ playlists: [Playlist]) {
         playlists.forEach { [weak self] in
             self?.user.fetchCards(forPlaylist: $0)
-                .subscribe(onNext: { (_) in
-                    debugPrint("succesfull load cards")
-                }, onError: { [weak self] (error) in
+                .subscribe(onError: { [weak self] (error) in
                     debugPrint("unsuccesfull load cards")
                     self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load cards with Error \(error)", handler: nil))
                 })
@@ -117,11 +115,9 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     
     fileprivate func fetchPlaylists() {
         self.user.fetchPlaylists(forLanguage: language)
-            .subscribe(onNext: { [weak self] (_) in
-                debugPrint("succesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
-                }, onError: { [weak self] (error) in
-                    debugPrint("unsuccesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
-                    self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load playlist with Error \(error)", handler: nil))
+            .subscribe(onError: { [weak self] (error) in
+                debugPrint("unsuccesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
+                self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load playlist with Error \(error)", handler: nil))
             })
             .disposed(by: disposeBag)
     }

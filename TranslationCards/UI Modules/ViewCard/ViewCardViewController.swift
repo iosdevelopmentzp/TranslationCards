@@ -11,7 +11,8 @@ import JJFloatingActionButton
 
 final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewModel> {
     fileprivate let cardView = CardView()
-    fileprivate lazy var editButton = JJActionItem()
+    fileprivate lazy var editButton = JJActionItem.initWith(imageType: .edit)
+    fileprivate lazy var moveCardToButton = JJActionItem.initWith(imageType: .move)
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -34,8 +35,6 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
     override func setupView() {
         super.setupView()
         cardView.configureWithCard(viewModel.card.value)
-        
-        editButton.imageView.image = .image(withType: .edit, renderringMode: .alwaysTemplate)
     }
     
     override func binding() {
@@ -56,6 +55,6 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
 
 extension ViewCardViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [editButton]
+        return [editButton, moveCardToButton]
     }
 }

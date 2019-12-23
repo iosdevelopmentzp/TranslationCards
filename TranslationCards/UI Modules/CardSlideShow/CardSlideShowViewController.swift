@@ -16,8 +16,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     fileprivate let flowLayout = CardSlideShowFlowLayout()
     
-    fileprivate let editCardButton = JJActionItem()
-    fileprivate let moveCardToButton = JJActionItem()
+    fileprivate let editCardButton = JJActionItem.initWith(imageType: .edit)
+    fileprivate let moveCardToButton = JJActionItem.initWith(imageType: .move)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -56,9 +56,6 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         super.setupView()
         collectionView.backgroundColor = .clear
         collectionView.decelerationRate = .fast
-        
-        editCardButton.buttonImage = .image(withType: .edit)
-        moveCardToButton.buttonImage = .image(withType: .move)
     }
     
     override func localizable() {
