@@ -32,14 +32,14 @@ extension UINavigationController {
             navBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             navBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             UINavigationBar.appearance().standardAppearance = navBarAppearace
-            UINavigationBar.appearance().prefersLargeTitles = true
+           // UINavigationBar.appearance().prefersLargeTitles = true
         } else {
             navigationBarAppearace.barTintColor = .mainBackgroundColor
             navigationBarAppearace.tintColor = .white
             navigationBarAppearace.isTranslucent = false
             navigationBarAppearace.titleTextAttributes = NSAttributedString.navigationBarTitleAttribute
             navigationBarAppearace.largeTitleTextAttributes = NSAttributedString.navigationBarTitleAttribute
-            navigationBarAppearace.prefersLargeTitles = true
+            //navigationBarAppearace.prefersLargeTitles = true
         }
     }
 }
