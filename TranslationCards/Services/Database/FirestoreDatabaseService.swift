@@ -183,6 +183,30 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
         }
     }
     
+    func movePlaylist(forCard card: TranslateCard, playlistForMoveId: String) -> Observable<Void> {
+        let oldCardReferance = cardDocumentReference(forCard: card)
+        card.playlistId = playlistForMoveId
+        let newCardReferance = cardDocumentReference(forCard: card)
+        
+        return .create { [weak self] (obsever) -> Disposable in
+            self?.database.runTransaction({ (transaction, errorPoiner) -> Any? in
+                transaction.deleteDocument(oldCardReferance)
+                transaction.setData(card.representation, forDocument: newCardReferance)
+                return nil
+            }) { (_, error) in
+                guard let error = error else {
+                    obsever.onNext(())
+                    obsever.onCompleted()
+                    return
+                }
+                obsever.onError(error)
+            }
+            return Disposables.create()
+        }
+        
+        
+    }
+    
     // MARK: - Private
     fileprivate func saveCard(_ card: TranslateCard) -> Observable<Void> {
         cardDocumentReference(forCard: card).rx
@@ -237,6 +261,14 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             .document(playlist.language.id)
             .collection(.databasePlaylistsCollection)
             .document(playlist.id)
+    }
+    
+    fileprivate func playlistDocumentReferance(userId: String, language: LanguageBind, playlistId: String) -> DocumentReference {
+            userDocumentReference(forUserId: userId)
+            .collection(.databaseLanguagesCollection)
+            .document(language.id)
+            .collection(.databasePlaylistsCollection)
+            .document(playlistId)
     }
     
     fileprivate func cardDocumentReference(forCard card: TranslateCard) -> DocumentReference {

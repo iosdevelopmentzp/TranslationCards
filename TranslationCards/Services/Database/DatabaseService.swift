@@ -27,4 +27,5 @@ protocol DatabaseService: Service {
     func getPlaylistList(userId: String, language: LanguageBind) -> Observable<[Playlist]>
     func savePlaylist(_ playlist: Playlist) -> Observable<Void>
     func removePlaylist(_ playlist: Playlist) -> Observable<Void>
+    func movePlaylist(forCard card: TranslateCard, playlistForMoveId: String) -> Observable<Void>
 }

@@ -135,6 +135,8 @@ enum UserWorkWithDatabaseErrors: Error {
 
 // MARK: - Services access
 extension User: ServicesAccessing {
+    
+    // Languages
     func fetchLanguages() -> Observable<Void> {
         return .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
@@ -157,6 +159,48 @@ extension User: ServicesAccessing {
         }
     }
     
+    func updateNativeLanguage(newLanguage: Language) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self, !(newLanguage ==? self.nativeLanguage) else {
+                observer.onNext(())
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.nativeLanguage = newLanguage
+            self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
+                .subscribe(onNext: { (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                }, onError: { [weak self] (error) in
+                    self?.nativeLanguage = newLanguage
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    
+    // Playlists
+    func moveCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            self?.services.realTimeDatabase.movePlaylist(forCard: card, playlistForMoveId: newPlaylistId)
+                .subscribe(onNext: { (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    self?.playlists.value?[card.language]?.forEach {
+                        if $0.id == card.playlistId, $0.id == newPlaylistId {
+                            self?.updateCards(forPlaylist: $0)
+                        }
+                    }
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
+    }
+    
     func fetchPlaylists(forLanguage language: LanguageBind) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
@@ -169,31 +213,6 @@ extension User: ServicesAccessing {
                 .getPlaylistList(userId: self.uid, language: language)
                 .subscribe(onNext: { [weak self] (playlists) in
                     self?.fetchedNewPlaylist(playlist: playlists, forLanguage: language)
-                    observer.onNext(())
-                    observer.onCompleted()
-                    }, onError: { (error) in
-                        observer.onError(error)
-                })
-                .disposed(by: self.disposeBag)
-            return Disposables.create()
-        }
-    }
-    
-    func fetchCards(forPlaylist playlist: Playlist) -> Observable<Void> {
-        .create { [weak self] (observer) -> Disposable in
-            guard let self = self else {
-                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
-                return Disposables.create()
-            }
-            
-            self.services
-                .realTimeDatabase
-                .getCards(withPlaylist: playlist)
-                .subscribe(onNext: { [weak self] (cards) in
-                    guard let self = self else { return }
-                    var oldCards = self.cardsList.value ?? [:]
-                    oldCards[playlist] = cards
-                    self.cardsList.accept(oldCards)
                     observer.onNext(())
                     observer.onCompleted()
                     }, onError: { (error) in
@@ -235,6 +254,32 @@ extension User: ServicesAccessing {
                     observer.onError(error)
                 })
                 .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
+    }
+    
+    // Cards
+    func fetchCards(forPlaylist playlist: Playlist) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()
+            }
+            
+            self.services
+                .realTimeDatabase
+                .getCards(withPlaylist: playlist)
+                .subscribe(onNext: { [weak self] (cards) in
+                    guard let self = self else { return }
+                    var oldCards = self.cardsList.value ?? [:]
+                    oldCards[playlist] = cards
+                    self.cardsList.accept(oldCards)
+                    observer.onNext(())
+                    observer.onCompleted()
+                    }, onError: { (error) in
+                        observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
@@ -306,27 +351,7 @@ extension User: ServicesAccessing {
         }
     }
     
-    func updateNativeLanguage(newLanguage: Language) -> Observable<Void> {
-        return .create { [weak self] (observer) -> Disposable in
-            guard let self = self, !(newLanguage ==? self.nativeLanguage) else {
-                observer.onNext(())
-                observer.onCompleted()
-                return Disposables.create()
-            }
-            self.nativeLanguage = newLanguage
-            self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
-                .subscribe(onNext: { (_) in
-                    observer.onNext(())
-                    observer.onCompleted()
-                }, onError: { [weak self] (error) in
-                    self?.nativeLanguage = newLanguage
-                    observer.onError(error)
-                })
-                .disposed(by: self.disposeBag)
-            return Disposables.create()
-        }
-    }
-    
+    // Common
     func synchronizeWithRemote() {
         services
             .realTimeDatabase

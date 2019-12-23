@@ -50,7 +50,6 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         localizable()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupActionButtons()
