@@ -22,6 +22,7 @@ protocol DatabaseService: Service {
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]>
     func getCards(withLanguage language: LanguageBind, playlistName: String,  userId: String) -> Observable<[TranslateCard]>
     func getCards(withPlaylist playlist: Playlist) -> Observable<[TranslateCard]>
+    func getCards(forPlaylists playlists: [Playlist]) -> Observable<[TranslateCard]>
     
     // MARK: - Playlists
     func getPlaylistList(userId: String, language: LanguageBind) -> Observable<[Playlist]>

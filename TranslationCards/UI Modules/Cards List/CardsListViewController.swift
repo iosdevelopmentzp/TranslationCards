@@ -11,6 +11,7 @@ import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     fileprivate let tableView = UITableView()
+    fileprivate lazy var refreshHandler = RefreshHandler(view: tableView)
     fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
     
@@ -28,32 +29,31 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.setupTable()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
- 
-        disposeBag.insert([
-            
-            tableView
-                .rx
-                .setDelegate(self),
-            
-            tableView.rx.itemSelected.subscribe(onNext: { [weak self] (indexPath) in
-                self?.tableView.deselectRow(at: indexPath, animated: true)
-            }),
-            
-            viewModel
-                .cardsDataSource
-                .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) {
-                    (row, element, cell) in
-                    cell.imageView?.image = element.language.sourceLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0))
-                    cell.textLabel?.text = element.sourcePhrase
-                    cell.textLabel?.numberOfLines = 0
-                    cell.textLabel?.textColor = .white
-                    cell.backgroundColor = .clear },
-            
-            tableView
-                .rx
-                .itemSelected
-                .bind(to: viewModel.didSelectedItemEvent)
-        ])
+        
+        tableView
+            .rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected.subscribe(onNext: { [weak self] (indexPath) in
+            self?.tableView.deselectRow(at: indexPath, animated: true) })
+            .disposed(by: disposeBag)
+        
+        viewModel
+            .cardsDataSource
+            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) {
+                (row, element, cell) in
+                cell.imageView?.image = element.language.sourceLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0))
+                cell.textLabel?.text = element.sourcePhrase
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.textColor = .white
+                cell.backgroundColor = .clear }
+            .disposed(by: disposeBag)
+        
+        tableView.rx
+            .itemSelected
+            .bind(to: viewModel.didSelectedItemEvent)
+            .disposed(by: disposeBag)
     }
     
     override func setupView() {
@@ -82,9 +82,21 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     
     override func binding() {
         super.binding()
-        
         viewModel.bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
         viewModel.bindWith(playlistsSelectionEvent: choicePlaylistButton.rx.tap)
+        
+        refreshHandler.refresh
+            .subscribe(onNext: { [weak self] (_) in
+                self?.viewModel.fetchData.accept(()) })
+            .disposed(by: disposeBag)
+        
+        viewModel
+            .isFetchInProgress
+            .subscribe(onNext: {[weak self] (isInProgress) in
+                isInProgress ? self?.refreshHandler.begin() : self?.refreshHandler.end()
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 

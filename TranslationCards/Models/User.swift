@@ -184,12 +184,13 @@ extension User: ServicesAccessing {
     // Playlists
     func moveCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
+            let oldPlaylistId = card.playlistId
             self?.services.realTimeDatabase.movePlaylist(forCard: card, playlistForMoveId: newPlaylistId)
                 .subscribe(onNext: { (_) in
                     observer.onNext(())
                     observer.onCompleted()
                     self?.playlists.value?[card.language]?.forEach {
-                        if $0.id == card.playlistId, $0.id == newPlaylistId {
+                        if $0.id == oldPlaylistId || $0.id == newPlaylistId {
                             self?.updateCards(forPlaylist: $0)
                         }
                     }
@@ -259,6 +260,29 @@ extension User: ServicesAccessing {
     }
     
     // Cards
+    func fetchCards(forPlaylists playlists: [Playlist]) -> Observable<Void> {
+        .create { [weak self] (observer) -> Disposable in
+            
+            self?.services.realTimeDatabase.getCards(forPlaylists: playlists)
+                .subscribe(onNext: { [weak self] (cards) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    guard let self = self else { return }
+                    var oldCardsDictionary = self.cardsList.value ?? [:]
+                    playlists.forEach { currentPlaylist in
+                        let currentPlaylistCards = cards.filter{ $0.playlistId == currentPlaylist.id}
+                        oldCardsDictionary[currentPlaylist] = currentPlaylistCards
+                    }
+                    self.cardsList.accept(oldCardsDictionary)
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            
+            return Disposables.create()
+        }
+    }
+    
     func fetchCards(forPlaylist playlist: Playlist) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
@@ -270,12 +294,12 @@ extension User: ServicesAccessing {
                 .realTimeDatabase
                 .getCards(withPlaylist: playlist)
                 .subscribe(onNext: { [weak self] (cards) in
+                    observer.onNext(())
+                    observer.onCompleted()
                     guard let self = self else { return }
                     var oldCards = self.cardsList.value ?? [:]
                     oldCards[playlist] = cards
                     self.cardsList.accept(oldCards)
-                    observer.onNext(())
-                    observer.onCompleted()
                     }, onError: { (error) in
                         observer.onError(error)
                 })

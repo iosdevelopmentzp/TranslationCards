@@ -12,13 +12,15 @@ import RxCocoa
 import RSSelectionMenu
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
-    var cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
-    var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
-    var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
-    var didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
-    
+    let cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
+    let didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
     lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
+    let fetchData: BehaviorRelay<Void> = .init(value: ())
+    let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
     
+    
+    fileprivate var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
+    fileprivate var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
     fileprivate let language: LanguageBind
     fileprivate let user: User
     
@@ -27,8 +29,10 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         self.user = user
         super.init()
         
+        // title of view
         self.titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
         
+        // selected item event
         didSelectedItemEvent
             .subscribe(onNext: { [weak self] (indexPath) in
                 guard let indexPath = indexPath, let cards =  self?.cardsDataSource.value,
@@ -39,7 +43,20 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             })
             .disposed(by: disposeBag)
         
-        fetchPlaylists()
+        fetchData
+            .subscribe(onNext: { [weak self] (_) in
+                self?.isFetchInProgress.accept(true)
+                self?.fetch()
+                    .subscribe(onNext: { [weak self] (_) in
+                        self?.isFetchInProgress.accept(false)
+                    }, onError: { [weak self] (error) in
+                        self?.isFetchInProgress.accept(false)
+                        let description = "Failed fetch data \(error.localizedDescription)"
+                        self?.alertModel.accept(.warningAlert(message: description, handler: nil))
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
+            })
+            .disposed(by: disposeBag)
         
         self.user
             .cardsList
@@ -102,6 +119,12 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     }
     
     // MARK: - Private
+    fileprivate func fetch() -> Observable<Void> {
+        let playlistObservable = user.fetchPlaylists(forLanguage: language)
+        let cardsObservable = user.fetchCards(forPlaylists: selectedPlaylist.value)
+        return Observable.combineLatest(playlistObservable, cardsObservable).map{ _,_ in ()}
+    }
+    
     fileprivate func fetchCardsForSelectedPlaylists(_ playlists: [Playlist]) {
         playlists.forEach { [weak self] in
             self?.user.fetchCards(forPlaylist: $0)
@@ -111,14 +134,5 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 })
                 .disposed(by: disposeBag)
         }
-    }
-    
-    fileprivate func fetchPlaylists() {
-        self.user.fetchPlaylists(forLanguage: language)
-            .subscribe(onError: { [weak self] (error) in
-                debugPrint("unsuccesfull load playlist for user \(self?.user.uid ?? "Unknow ID"), language \(self?.language.description ?? "")")
-                self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load playlist with Error \(error)", handler: nil))
-            })
-            .disposed(by: disposeBag)
     }
 }

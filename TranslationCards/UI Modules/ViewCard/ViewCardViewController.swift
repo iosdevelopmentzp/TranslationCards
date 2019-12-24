@@ -32,15 +32,14 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
         }
     }
     
-    override func setupView() {
-        super.setupView()
-        cardView.configureWithCard(viewModel.card.value)
-    }
-    
     override func binding() {
         super.binding()
         viewModel.bind(editEvent: editButton.rx.tap, moveCardToEvent: moveCardToButton.rx.tap)
         viewModel.bind(speakData: cardView.speakData)
+        
+        viewModel.card.subscribe(onNext: { [weak self] (card) in
+            self?.cardView.configureWithCard(card) })
+        .disposed(by: disposeBag)
     }
     
     override func localizable() {

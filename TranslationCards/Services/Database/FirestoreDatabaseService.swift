@@ -155,6 +155,66 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
         }
     }
     
+    func getCards(forPlaylists playlists: [Playlist]) -> Observable<[TranslateCard]> {
+        var cards: [TranslateCard] = []
+        var oneOfError: Error? = nil
+        return .create { (observer) -> Disposable in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let downloadGroup = DispatchGroup()
+                
+                
+                playlists.forEach { [weak self] in
+                    downloadGroup.enter()
+                    self?.getCards(withPlaylist: $0).subscribe(onNext: { (newCards) in
+                        cards += newCards
+                        downloadGroup.leave()
+                    }, onError: { (error) in
+                        oneOfError = error
+                        downloadGroup.leave()
+                    })
+                        .disposed(by: self?.disposeBag ?? DisposeBag())
+                }
+                
+                downloadGroup.wait()
+                if let error = oneOfError {
+                    observer.onError(error)
+                } else {
+                    observer.onNext(cards)
+                    observer.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+        
+        
+        
+//        return .create { [weak self] (observer) -> Disposable in
+//
+//            self?.dispatchGroup.enter()
+//
+//            playlists.forEach { [weak self] in
+//                self?.getCards(withPlaylist: $0)
+//                    .subscribe(onNext: { (newCards) in
+//                        cards += newCards
+//                    }, onError: { (error) in
+//                        observer.onError(error)
+//                        withMistake = true
+//                        self?.dispatchGroup.leave()
+//                    })
+//                    .disposed(by: self?.disposeBag ?? DisposeBag())
+//            }
+//
+//            self?.dispatchGroup.notify(queue: .global(qos: .background), execute: {
+//                if (!withMistake) {
+//                    observer.onNext(cards)
+//                    observer.onCompleted()
+//                }
+//            })
+//
+//            return Disposables.create()
+//        }
+    }
+    
     // MARK: - Playlists
     func savePlaylist(_ playlist: Playlist) -> Observable<Void> {
         playlistDocumentReferance(forPlaylist: playlist).rx

@@ -16,12 +16,6 @@ fileprivate enum CreateCardMode {
 
 final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
-    enum EditFinishStatus {
-        case changedPrases
-        case removed
-        case noChanges
-    }
-    
     var isRemoveButtonHidden: BehaviorRelay<Bool>
     
     fileprivate let mode: BehaviorRelay<CreateCardMode>
@@ -29,7 +23,6 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     // Edit mode
     fileprivate var card: TranslateCard?
-    fileprivate var cardEditFinishStatus: BehaviorRelay<EditFinishStatus>
     
     // Create new card mode
     fileprivate lazy var userPlaylists: BehaviorRelay<[Playlist]> = .init(value: [])
@@ -39,15 +32,12 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
     fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
     
-    init(withCard card: TranslateCard, user: User, cardEditFinishStatus: (BehaviorRelay<EditFinishStatus>)? = nil) {
+    init(withCard card: TranslateCard, user: User) {
         mode = .init(value: .edit)
         self.user = user
         self.language = .init(value: card.language)
         self.card = card
         self.isRemoveButtonHidden = .init(value: false)
-        if let cardEditFinishStatus = cardEditFinishStatus {
-            self.cardEditFinishStatus = cardEditFinishStatus
-        } else { self.cardEditFinishStatus = .init(value: .noChanges)}
         super.init()
     }
     
@@ -56,7 +46,6 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
         self.user = user
         self.language = .init(value: language)
         self.isRemoveButtonHidden = .init(value: true)
-        self.cardEditFinishStatus = .init(value: .noChanges)
         super.init()
         
         self.language
@@ -149,7 +138,6 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
         cancelButtonPressed
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.dissmis()
-                self?.cardEditFinishStatus.accept(.noChanges)
             })
             .disposed(by: disposeBag)
         
@@ -235,7 +223,6 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                     .subscribe(onNext: { [weak self] (_) in
                         self?.router.dissmis()
                         self?.startActivityIndicator.accept(false)
-                        self?.cardEditFinishStatus.accept(.changedPrases)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
                             self?.alertModel.accept(.warningAlert(message: "Failed update card. \(error.localizedDescription)", handler: nil))
@@ -257,7 +244,6 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                     .subscribe(onNext: { [weak self] (_) in
                         self?.router.dissmis()
                         self?.startActivityIndicator.accept(false)
-                        self?.cardEditFinishStatus.accept(.removed)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
                             self?.alertModel.accept(.warningAlert(message: "Failed get remove card with error \(error.localizedDescription)", handler: nil))
