@@ -93,35 +93,6 @@ final class User {
         }
     }
     
-    fileprivate func updatePlaylists(forLanguage language: LanguageBind) {
-        fetchPlaylists(forLanguage: language)
-            .subscribe(onNext: { [weak self] (_) in
-                debugPrint("Succesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language)")
-                }, onError: { [weak self] (error) in
-                    debugPrint("Unsuccesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language) with error \(error)")
-            })
-        .disposed(by: disposeBag)
-    }
-    
-    fileprivate func updateLanguages() {
-        fetchLanguages()
-            .subscribe(onNext: { [weak self] (_) in
-                debugPrint("Succesfull update languages for user with id \(self?.uid ?? "Unknown ID")")
-            }, onError: { [weak self] (error) in
-                debugPrint("Unsuccesfull update languages for user with id \(self?.uid ?? "Unknown ID") with error \(error)")
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    fileprivate func updateCards(forPlaylist playlist: Playlist) {
-        fetchCards(forPlaylist: playlist)
-            .subscribe(onNext: { (_) in
-                debugPrint("Succesfull update cards for playlist \(playlist.description)")
-            }, onError: { (error) in
-                debugPrint("Unsuccesfull update cards for playlist \(playlist.description) with error \(error)")
-            })
-            .disposed(by: disposeBag)
-    }
     
     enum UserModelError: Error {
         case suchLanguageAlreadyExists
@@ -393,6 +364,36 @@ extension User: ServicesAccessing {
         var oldPlaylists = self.playlists.value ?? [:]
         oldPlaylists[language] = playlist
         self.playlists.accept(oldPlaylists)
+    }
+    
+    fileprivate func updatePlaylists(forLanguage language: LanguageBind) {
+        fetchPlaylists(forLanguage: language)
+            .subscribe(onNext: { [weak self] (_) in
+                debugPrint("Succesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language)")
+                }, onError: { [weak self] (error) in
+                    debugPrint("Unsuccesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language) with error \(error)")
+            })
+        .disposed(by: disposeBag)
+    }
+    
+    fileprivate func updateLanguages() {
+        fetchLanguages()
+            .subscribe(onNext: { [weak self] (_) in
+                debugPrint("Succesfull update languages for user with id \(self?.uid ?? "Unknown ID")")
+            }, onError: { [weak self] (error) in
+                debugPrint("Unsuccesfull update languages for user with id \(self?.uid ?? "Unknown ID") with error \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func updateCards(forPlaylist playlist: Playlist) {
+        fetchCards(forPlaylist: playlist)
+            .subscribe(onNext: { (_) in
+                debugPrint("Succesfull update cards for playlist \(playlist.description)")
+            }, onError: { (error) in
+                debugPrint("Unsuccesfull update cards for playlist \(playlist.description) with error \(error)")
+            })
+            .disposed(by: disposeBag)
     }
 }
 
