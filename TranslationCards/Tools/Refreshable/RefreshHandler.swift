@@ -14,9 +14,24 @@ class RefreshHandler: NSObject {
     let refreshControl = UIRefreshControl()
     init(view: UIScrollView) {
         super.init()
-        view.addSubview(refreshControl)
+        addRefreshController(refreshControl, toScrollView: view)
         refreshControl.addTarget(self, action: #selector(refreshControlDidRefresh(_: )), for: .valueChanged)
     }
+    
+    // MARK: - Private
+    private func addRefreshController(_ refreshControl: UIRefreshControl, toScrollView scrollView: UIScrollView) {
+        guard let tableView = scrollView as? UITableView else {
+            scrollView.addSubview(refreshControl)
+            return
+        }
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        }
+        else {
+            tableView.backgroundView = refreshControl
+        }
+    }
+    
     // MARK: - Action
     @objc func refreshControlDidRefresh(_ control: UIRefreshControl) {
         refresh.onNext(())
