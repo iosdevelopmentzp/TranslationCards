@@ -68,7 +68,7 @@ extension UIViewController {
             cell.detailTextLabel?.text = "\(item.dateUpdated.asString(dateFormat: "MM/dd/yyyy"))"
             cell.textLabel?.numberOfLines = 0
         }
-        menu.dismissAutomatically = true
+        menu.dismissAutomatically = false
         menu.uniquePropertyName = "name"
         menu.rightBarButtonTitle = ""
         menu.title = "Choose a playlist"
@@ -85,7 +85,9 @@ extension UIViewController {
         
         if let firstRowTitle = firstRowTitle, let callBack = firstRowCallBack {
             menu.addFirstRowAs(rowType: .custom(value: firstRowTitle), showSelected: false) { (value, isSelected) in
-                callBack()
+                menu.dismiss(animated: true) {
+                    callBack()
+                }
             }
         }
         menu.show(style: .present, from: self)

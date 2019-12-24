@@ -17,6 +17,7 @@ fileprivate enum CreateCardMode {
 final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     var isRemoveButtonHidden: BehaviorRelay<Bool>
+    let isInputValide = BehaviorRelay.init(value: false)
     
     fileprivate let mode: BehaviorRelay<CreateCardMode>
     fileprivate let user: User
@@ -84,7 +85,27 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
               cancelButtonPressed: ControlEvent<Void>,
               removeButtonPressed: ControlEvent<Void>) {
 
+        
         let inputData = Observable.combineLatest(newPhrase, translation)
+        
+        // Validate
+        inputData
+            .skip(1)
+            .map { [weak self] (sourcePrase, targetPhrase) -> Bool in
+                guard let self = self else { return false }
+                guard !sourcePrase.isEmpty && !targetPhrase.isEmpty else { return false }
+                switch self.mode.value {
+                case .create: return true
+                case .edit:
+                    if let card = self.card {
+                        return (card.sourcePhrase != sourcePrase) || (card.targetPhrase != targetPhrase)
+                    }
+                }
+                return false }
+            .bind(to: isInputValide)
+            .disposed(by: disposeBag)
+        
+        // SAVE pressed
         saveButtonPressed
             .withLatestFrom(inputData)
             .subscribe(onNext: { [weak self] (sourcePhrase, targetPhrase) in
@@ -135,12 +156,14 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             })
             .disposed(by: disposeBag)
         
+        // CANCEL pressed
         cancelButtonPressed
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.dissmis()
             })
             .disposed(by: disposeBag)
         
+        // REMOVE button pressef (only in edit mode)
         removeButtonPressed
             .withLatestFrom(mode)
             .filter { (mode) -> Bool in
@@ -154,6 +177,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             })
             .disposed(by: disposeBag)
         
+        // configure dependens of self.mode
         switch mode.value {
         case .edit:
             if let card = card {

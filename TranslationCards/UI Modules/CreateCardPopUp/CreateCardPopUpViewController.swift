@@ -28,15 +28,24 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         super.setupView()
         view.addGestureRecognizer(tapGesture)
         view.backgroundColor = .clear
+    }
+    
+    override func binding() {
+        super.binding()
+        viewModel
+            .isInputValide
+            .subscribe(onNext: { (isValide) in
+                UIView.animate(withDuration: 0.2) { [weak self] in
+                    self?.createTranslateCardView.saveButton.backgroundColor = isValide ? .validateAccentColor : .notValidateButton
+                }
+            })
+            .disposed(by: disposeBag)
         
         viewModel
             .isRemoveButtonHidden
             .bind(to: createTranslateCardView.removeButton.rx.isHidden)
             .disposed(by: disposeBag)
-    }
-    
-    override func binding() {
-        super.binding()
+        
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
@@ -49,9 +58,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         viewModel.bind(sourceButtonImage: createTranslateCardView.sourceSelectLanguageButton.rx.backgroundImage(),
                        targetButtonImage: createTranslateCardView.targetSelectLanguageButton.rx.backgroundImage())
         
-        tapGesture
-            .rx
-            .event
+        tapGesture.rx.event
             .subscribe(onNext: { [weak self] (gesture) in
                 self?.view.endEditing(true)
             })
