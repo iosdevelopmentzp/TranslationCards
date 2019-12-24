@@ -19,6 +19,19 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         self.card = .init(value: card)
         self.user = user
         super.init()
+        
+        card.runtimeEvents
+            .skip(1)
+            .subscribe(onNext: { [weak self] (event) in
+                switch event {
+                case .removed:
+                    self?.router.route(to: .dismiss)
+                case .changed:
+                    self?.updated()
+                case .movedToAnotherPlaylist, .nothing:
+                    break
+                }})
+            .disposed(by: disposeBag)
     }
     
     func stopSpeach() {

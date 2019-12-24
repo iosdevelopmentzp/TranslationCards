@@ -38,7 +38,8 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
         viewModel.bind(speakData: cardView.speakData)
         
         viewModel.card.subscribe(onNext: { [weak self] (card) in
-            self?.cardView.configureWithCard(card) })
+            self?.cardView.configureWithCard(card)
+        })
         .disposed(by: disposeBag)
     }
     
@@ -50,6 +51,14 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
             .title
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
+    }
+    
+    override func onModelUpdates() {
+        super.onModelUpdates()
+        DispatchQueue.main.async { [weak self] in
+            guard let card = self?.viewModel.card.value else { return }
+            self?.cardView.configureWithCard(card)
+        }
     }
 }
 

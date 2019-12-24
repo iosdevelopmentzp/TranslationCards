@@ -11,6 +11,14 @@ import RxSwift
 import RxRelay
 
 class TranslateCard {
+    
+    enum Event {
+        case nothing
+        case removed
+        case changed
+        case movedToAnotherPlaylist
+    }
+    
     let language: LanguageBind
     fileprivate(set) var userOwnerId: String
     let dateCreated: Date
@@ -18,9 +26,15 @@ class TranslateCard {
     fileprivate(set) var sourcePhrase: String
     fileprivate(set) var targetPhrase: String
     var id: String
-    
     // if card will save on server need to set this property, using playlist
-    var playlistId: String = "Common"
+    var playlistId: String = "Common" {
+        didSet {
+            runtimeEvents.accept(.movedToAnotherPlaylist)
+        }
+    }
+    
+    // Property for observ change of card in real time.
+    let runtimeEvents: BehaviorRelay<Event> = .init(value: .nothing)
     
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
@@ -59,10 +73,12 @@ class TranslateCard {
     func update(sourcePhrase: String, targetPhrase: String) {
         self.sourcePhrase = sourcePhrase
         self.targetPhrase = targetPhrase
+        runtimeEvents.accept(.changed)
     }
     
     func updateOwnerUserId(newId: String) {
         userOwnerId = newId
+        runtimeEvents.accept(.changed)
     }
 }
 

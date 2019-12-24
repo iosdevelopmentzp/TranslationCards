@@ -329,6 +329,7 @@ extension User: ServicesAccessing {
                 .subscribe(onNext: { [weak self] (_) in
                     observer.onNext(())
                     observer.onCompleted()
+                    card.runtimeEvents.accept(.removed)
                     guard let playlists = self?.playlists.value?[card.language] else {
                         return
                     }
