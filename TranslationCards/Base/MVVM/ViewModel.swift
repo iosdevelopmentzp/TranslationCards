@@ -32,4 +32,11 @@ class ViewModel<R: Router>: NSObject, ServicesAccessing {
     }
     
     func bindWithServices() {}
+    func errorHandler(description: String, error: Error, withAlert: Bool, handler: ((UIAlertAction)->())? = nil) {
+        let description = description + "With error - \(error.localizedDescription)"
+        debugPrint(description)
+        if withAlert {
+            alertModel.accept(.warningAlert(message: description, handler: handler))
+        }
+    }
 }

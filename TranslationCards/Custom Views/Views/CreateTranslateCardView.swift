@@ -20,6 +20,7 @@ class CreateTranslateCardView: UIView {
     let saveButton = UIButton()
     let cancelButton = UIButton()
     let removeButton = UIButton()
+    let translateRealtimeButton = UIButton()
     
     fileprivate let buttonStackView = UIStackView()
     fileprivate let verticalButtonStackView = UIStackView()
@@ -76,6 +77,13 @@ class CreateTranslateCardView: UIView {
             $0.top.equalTo(self.targetHeaderLabel.snp.bottom)
             $0.left.equalToSuperview().offset(padding)
             $0.height.equalTo(self.sourceTextField.snp.height)
+        }
+        
+        addSubview(translateRealtimeButton)
+        translateRealtimeButton.snp.makeConstraints {[weak self] in
+            guard let self = self else { return }
+            $0.width.height.equalTo(30.0)
+            $0.right.bottom.equalTo(self.targetTextField).inset(5.0)
         }
         
         addSubview(sourceSelectLanguageButton)
@@ -151,6 +159,8 @@ class CreateTranslateCardView: UIView {
         
         verticalButtonStackView.axis = .vertical
         verticalButtonStackView.spacing = 10.0
+        
+        translateRealtimeButton.setImage(.image(withType: .translate), for: .normal)
     }
     
     fileprivate func bind () {

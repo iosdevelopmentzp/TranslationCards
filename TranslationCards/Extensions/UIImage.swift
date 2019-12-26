@@ -18,6 +18,7 @@ enum ImageType: String {
     case `switch`
     case archived
     case move
+    case translate
 }
 
 extension UIImage {

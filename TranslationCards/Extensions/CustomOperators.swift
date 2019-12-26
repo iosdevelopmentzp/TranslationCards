@@ -6,7 +6,8 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import Foundation
+import RxSwift
+import RxCocoa
 
 
 // MARK: - Compare optional objects
@@ -34,4 +35,20 @@ func ==? <T: Equatable>(lhs: T?, rhs: T?) -> Bool {
     } else {
         return lhs == nil && rhs == nil
     }
+}
+
+// MARK: - Reverse observable
+
+infix operator <-> : DefaultPrecedence
+
+func <-><T: Any> (property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disposable {
+    let bindToUIDisposable = relay.bind(to: property)
+    let bindToRelay = property
+        .subscribe(onNext: { n in
+            relay.accept(n)
+        }, onCompleted:  {
+            bindToUIDisposable.dispose()
+        })
+
+    return Disposables.create(bindToUIDisposable, bindToRelay)
 }

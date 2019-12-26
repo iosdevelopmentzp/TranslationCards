@@ -17,7 +17,9 @@ fileprivate enum CreateCardMode {
 final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     
     var isRemoveButtonHidden: BehaviorRelay<Bool>
+    var isAutoTranslateButtonHidden: BehaviorRelay<Bool> = .init(value: false)
     let isInputValide = BehaviorRelay.init(value: false)
+    var targetPhraseReverse: BehaviorRelay<String?> = .init(value: nil)
     
     fileprivate let mode: BehaviorRelay<CreateCardMode>
     fileprivate let user: User
@@ -32,6 +34,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     fileprivate var language: BehaviorRelay<LanguageBind>
     fileprivate lazy var sourceLanguage = BehaviorRelay<Language>.init(value: language.value.sourceLanguage)
     fileprivate lazy var targetLanguage = BehaviorRelay<Language>.init(value: language.value.targetLanguage)
+    fileprivate var currentPhraseThatHasBeenTranslated: String? = nil
     
     init(withCard card: TranslateCard, user: User) {
         mode = .init(value: .edit)
@@ -229,6 +232,27 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
         targetLanguage
             .map { $0.flagIcon }
             .bind(to: targetButtonImage)
+            .disposed(by: disposeBag)
+    }
+    
+    func bind(translateInRealTimeButtonEvent translateEvent: ControlEvent<Void>, sourcePhraseProperty: ControlProperty<String?>, targetPhraseProperty: ControlProperty<String?>) {
+        let inputData = Observable.combineLatest(sourcePhraseProperty, targetPhraseProperty)
+        translateEvent
+            .withLatestFrom(inputData)
+            .subscribe(onNext: { [weak self] (sourcePhrase, targetPhrase) in
+                guard let sourcePhrase = sourcePhrase, !sourcePhrase.isEmpty, let self = self else { return }
+                self.currentPhraseThatHasBeenTranslated = sourcePhrase
+                self.services
+                    .translateService
+                    .translateText(sourcePhrase,fromLanguage: self.sourceLanguage.value, toLanguage: self.targetLanguage.value)
+                    .subscribe(onNext: { [weak self] (translate) in
+                        self?.targetPhraseReverse.accept(translate)
+                    }, onError: { [weak self] error in
+                        self?.errorHandler(description: "Failed translate phrase with real time service.", error: error, withAlert: true)
+                        self?.currentPhraseThatHasBeenTranslated = nil
+                    })
+                    .disposed(by: self.disposeBag)
+            })
             .disposed(by: disposeBag)
     }
 

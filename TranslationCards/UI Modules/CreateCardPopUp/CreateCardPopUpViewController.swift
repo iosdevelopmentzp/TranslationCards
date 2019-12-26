@@ -46,6 +46,17 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
             .bind(to: createTranslateCardView.removeButton.rx.isHidden)
             .disposed(by: disposeBag)
         
+        viewModel
+            .isAutoTranslateButtonHidden
+            .bind(to: createTranslateCardView.translateRealtimeButton.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.bind(translateInRealTimeButtonEvent: createTranslateCardView.translateRealtimeButton.rx.tap,
+                       sourcePhraseProperty: createTranslateCardView.sourceTextField.rx.text,
+                       targetPhraseProperty: createTranslateCardView.targetTextField.rx.text)
+        
+        (createTranslateCardView.targetTextField.rx.text <-> viewModel.targetPhraseReverse).disposed(by: disposeBag)
+        
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
                        saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
