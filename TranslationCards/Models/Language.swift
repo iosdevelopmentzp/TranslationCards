@@ -49,3 +49,18 @@ enum Language: String, CustomStringConvertible, CaseIterable, Decodable {
         }
     }
 }
+
+extension Language: AzureLanguageReprezantation {
+    var azureLanguageRepresantation: String {
+        switch self {
+        case .deu:
+            return "de"
+        case .rus:
+            return "ru"
+        case .eng:
+            return "en"
+        case .spa:
+            return "es"
+        }
+    }
+}

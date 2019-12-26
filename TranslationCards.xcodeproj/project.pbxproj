@@ -98,6 +98,9 @@
 		3B85039E23AA2F3200481989 /* ActionButtonDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */; };
 		3B8503A023AA5F2000481989 /* NVActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B85039F23AA5F2000481989 /* NVActivityIndicatorView.swift */; };
 		3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8503A123AA843D00481989 /* MyWordsData.swift */; };
+		3B8BC90F23B4E6C7008E5834 /* TranslateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */; };
+		3B8BC91123B4E797008E5834 /* MicrosoftAzureTranslateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */; };
+		3B8BC91723B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */; };
 		3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */; };
 		3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */; };
 		3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */; };
@@ -126,6 +129,7 @@
 		3BC0414923A3CE2300C20EFA /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CustomOperators.swift */; };
 		3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference.swift */; };
 		3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414C23A3DA9400C20EFA /* AppRouter.swift */; };
+		3BC1938223B4FB440053E3D1 /* TranslateJsonModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField.swift */; };
 		3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C30238FD816006FB7F8 /* MainRouter.swift */; };
 		3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C31238FD816006FB7F8 /* MainViewController.swift */; };
@@ -253,6 +257,9 @@
 		3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonDataSource.swift; sourceTree = "<group>"; };
 		3B85039F23AA5F2000481989 /* NVActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NVActivityIndicatorView.swift; sourceTree = "<group>"; };
 		3B8503A123AA843D00481989 /* MyWordsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWordsData.swift; sourceTree = "<group>"; };
+		3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateService.swift; sourceTree = "<group>"; };
+		3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAzureTranslateService.swift; sourceTree = "<group>"; };
+		3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SupportedMicrosoftAzureLanguages.json; sourceTree = "<group>"; };
 		3B8CF25123A7D2A400C2249A /* CABasicAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CABasicAnimation.swift; sourceTree = "<group>"; };
 		3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardRouter.swift; sourceTree = "<group>"; };
 		3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewController.swift; sourceTree = "<group>"; };
@@ -280,6 +287,7 @@
 		3BC0414823A3CE2300C20EFA /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
 		3BC0414A23A3D16200C20EFA /* DocumentReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
 		3BC0414C23A3DA9400C20EFA /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateJsonModels.swift; sourceTree = "<group>"; };
 		3BC52C2C238FC466006FB7F8 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3BC52C30238FD816006FB7F8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		3BC52C31238FD816006FB7F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -573,6 +581,7 @@
 				3B825B9D238692CE009D62E8 /* Database */,
 				3B242F6F239FFF5800B90C41 /* Listener */,
 				3B9550B023A4E66B00BC9E8E /* UserDefaults */,
+				3B8BC90D23B4E689008E5834 /* Translate Service */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -682,6 +691,17 @@
 				3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */,
 			);
 			path = "Transition Animation";
+			sourceTree = "<group>";
+		};
+		3B8BC90D23B4E689008E5834 /* Translate Service */ = {
+			isa = PBXGroup;
+			children = (
+				3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */,
+				3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */,
+				3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */,
+				3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */,
+			);
+			path = "Translate Service";
 			sourceTree = "<group>";
 		};
 		3B8CF25323A8E74000C2249A /* ViewCard */ = {
@@ -921,6 +941,7 @@
 				3B319F5923856CF70038A7AC /* Roboto-Black.ttf in Resources */,
 				3B319F5523856CF70038A7AC /* RobotoCondensed-Light.ttf in Resources */,
 				3B319F5823856CF70038A7AC /* Roboto-Bold.ttf in Resources */,
+				3B8BC91723B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json in Resources */,
 				3B319F5423856CF70038A7AC /* Roboto-LightItalic.ttf in Resources */,
 				3B319F5723856CF70038A7AC /* Roboto-BlackItalic.ttf in Resources */,
 				3B319F5223856CF70038A7AC /* Roboto-ThinItalic.ttf in Resources */,
@@ -1034,6 +1055,7 @@
 				3B031E13239BD92900946F8D /* LanguageCell.swift in Sources */,
 				3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */,
 				3BE9992E23AD0A5D00816583 /* TextFieldAlertModel.swift in Sources */,
+				3B8BC91123B4E797008E5834 /* MicrosoftAzureTranslateService.swift in Sources */,
 				3B85039A23AA150300481989 /* CAAnimationGroup.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3BA679CA23AE2E18003D2B40 /* LayoutAttributesAnimator.swift in Sources */,
@@ -1071,6 +1093,7 @@
 				3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */,
 				3BC0414B23A3D16200C20EFA /* DocumentReference.swift in Sources */,
 				3B8CF25223A7D2A400C2249A /* CABasicAnimation.swift in Sources */,
+				3BC1938223B4FB440053E3D1 /* TranslateJsonModels.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3BA679DD23AE2E36003D2B40 /* LinearCardAttributesAnimator.swift in Sources */,
 				3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */,
@@ -1106,6 +1129,7 @@
 				3BC52C35238FD816006FB7F8 /* MainViewModel.swift in Sources */,
 				3BA679DA23AE2E36003D2B40 /* PageAttributesAnimator.swift in Sources */,
 				3B031E19239C048A00946F8D /* BackCardSideView.swift in Sources */,
+				3B8BC90F23B4E6C7008E5834 /* TranslateService.swift in Sources */,
 				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
 				3BA679DC23AE2E36003D2B40 /* ZoomInOutAttributesAnimator.swift in Sources */,

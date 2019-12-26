@@ -233,8 +233,6 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
             }
             return Disposables.create()
         }
-        
-        
     }
     
     // MARK: - Private

@@ -17,6 +17,7 @@ target 'TranslationCards' do
   pod 'RxFirebase/Functions'
   pod 'RxDataSources'
   pod 'RxKeyboard'
+  pod 'RxAlamofire'
   
   # Firebase
   pod 'Firebase/Analytics'
