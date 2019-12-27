@@ -34,8 +34,8 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         super.binding()
         viewModel
             .isInputValide
-            .subscribe(onNext: { (isValide) in
-                UIView.animate(withDuration: 0.2) { [weak self] in
+            .subscribe(onNext: { [weak self] (isValide) in
+                UIView.animate(withDuration: 0.2) {
                     self?.createTranslateCardView.saveButton.backgroundColor = isValide ? .validateAccentColor : .notValidateButton
                 }
             })
@@ -54,8 +54,6 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
         viewModel.bind(translateInRealTimeButtonEvent: createTranslateCardView.translateRealtimeButton.rx.tap,
                        sourcePhraseProperty: createTranslateCardView.sourceTextField.rx.text,
                        targetPhraseProperty: createTranslateCardView.targetTextField.rx.text)
-        
-        (createTranslateCardView.targetTextField.rx.text <-> viewModel.targetPhraseReverse).disposed(by: disposeBag)
         
         viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
                        translation: createTranslateCardView.targetTextField.rx.text.orEmpty,

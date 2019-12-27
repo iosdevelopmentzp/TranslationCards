@@ -71,11 +71,13 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             })
             .disposed(by: disposeBag)
 
-        callBackTargetLanguage
-            .compactMap{ $0 }
-            .subscribe(onNext: { [weak self] (language) in
-                guard let self = self else { return }
-                self.targetLanguage.accept(language)
+        Observable.combineLatest(callBackTargetLanguage, targetLanguage)
+            .filter{ callBackLanguage, targetLanguage in
+                guard let callBackLanguage = callBackLanguage else { return false }
+                return callBackLanguage != targetLanguage }
+            .subscribe(onNext: { [weak self] (callBackLanguage, targetLanguage) in
+                guard let callBackLanguage = callBackLanguage, let self = self else { return }
+                self.targetLanguage.accept(callBackLanguage)
                 let newLangBind = LanguageBind(source: self.sourceLanguage.value, target: self.targetLanguage.value)
                 self.language.accept(newLangBind)
             })
@@ -205,6 +207,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                 })
                 .disposed(by: disposeBag)
         }
+ 
     }
     
     func bind(withSourceSelectLanguageButton sourceLanguageButton: ControlEvent<Void>,
@@ -236,6 +239,20 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
     }
     
     func bind(translateInRealTimeButtonEvent translateEvent: ControlEvent<Void>, sourcePhraseProperty: ControlProperty<String?>, targetPhraseProperty: ControlProperty<String?>) {
+        
+        (targetPhraseProperty <-> targetPhraseReverse).disposed(by: disposeBag)
+
+        callBackTargetLanguage.subscribe(onNext: { (language) in
+            debugPrint(language?.description ?? "")
+            }).disposed(by: disposeBag)
+
+        targetLanguage
+            .skip(1)
+            .subscribe(onNext: { [weak self] (language) in
+                self?.targetPhraseReverse.accept("")
+            })
+            .disposed(by: disposeBag)
+
         let inputData = Observable.combineLatest(sourcePhraseProperty, targetPhraseProperty)
         translateEvent
             .withLatestFrom(inputData)
