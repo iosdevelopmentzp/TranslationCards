@@ -143,7 +143,7 @@ class CreateTranslateCardView: UIView {
             $0.backgroundColor = .white
             $0.font = .font(type: .roboto, size: 20.0)
             $0.autocorrectionType = .no
-            $0.autocapitalizationType = .none
+            $0.autocapitalizationType = .sentences
             $0.textColor = .black
         }
         

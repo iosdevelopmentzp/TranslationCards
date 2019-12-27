@@ -16,13 +16,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     var getSelectedCellIndexPath: (() -> IndexPath?)? = nil
     
     init(cards: [TranslateCard], withReverse reverse: Bool = false) {
-        let isShuffle = arc4random() % 2 == 0 ? true : false
-        if isShuffle {
-            let shuffleArray = cards.shuffled()
-            self.cards.accept(shuffleArray)
-        } else {
-            self.cards.accept(cards)
-        }
+        self.cards.accept(cards)
         reverseMode = .init(value: reverse)
         super.init()
         binding()

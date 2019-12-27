@@ -15,6 +15,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
     fileprivate var reverseButton = UIButton(type: .custom)
+    fileprivate var shuffleButton = UIButton(type: .custom)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -67,11 +68,16 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         // table view
         tableView.backgroundColor = .clear
         
-        let image = UIImage.image(withType: .reverse).scaledToSize(.init(width: 25.0, height: 25.0))
-        reverseButton.setImage(image, for: .normal)
-        reverseButton.setImage(image, for: .selected)
+        let reverseImage = UIImage.image(withType: .reverse).scaledToSize(.init(width: 25.0, height: 25.0))
+        reverseButton.setImage(reverseImage, for: .normal)
         reverseButton.isSelected = false
-        reverseButton.tintColor = self.reverseButton.isSelected ? .white : .innactiveButtonTitleColor
+        
+        
+        let shaffleImage = UIImage.image(withType: .shuffle).scaledToSize(.init(width: 25.0, height: 25.0))
+        shuffleButton.setImage(shaffleImage, for: .normal)
+        shuffleButton.isSelected = false
+        
+        updateNavigationButtonsTintColor()
     }
     
     override func setupNavigationBar() {
@@ -80,7 +86,9 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         
         let reverseButtonItem = UIBarButtonItem(image: nil, style: .plain, target: nil, action: nil)
         reverseButtonItem.customView = self.reverseButton
-        navigationItem.rightBarButtonItem = reverseButtonItem
+        let shuffleButtonItem = UIBarButtonItem(image: nil, style: .plain, target: nil, action: nil)
+        shuffleButtonItem.customView = shuffleButton
+        navigationItem.rightBarButtonItems = [reverseButtonItem, shuffleButtonItem]
     }
     
     override func localizable() {
@@ -111,15 +119,29 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             })
             .disposed(by: disposeBag)
         
-        viewModel.bindWith(changeReverseState: reverseButton.rx.tap)
+        viewModel.bindWith(changeReverseState: reverseButton.rx.tap, changeShuffleState: shuffleButton.rx.tap)
         
         viewModel
             .reverseMode
             .subscribe(onNext: { [weak self] (isReverse) in
                 self?.reverseButton.isSelected = isReverse
-                self?.reverseButton.tintColor = isReverse ? .white : .innactiveButtonTitleColor
+                self?.updateNavigationButtonsTintColor()
             })
             .disposed(by: disposeBag)
+        
+        viewModel
+            .shuffleMode
+            .subscribe(onNext: { [weak self] (isShuffle) in
+                self?.shuffleButton.isSelected = isShuffle
+                self?.updateNavigationButtonsTintColor()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Private
+    fileprivate func updateNavigationButtonsTintColor() {
+        reverseButton.tintColor = self.reverseButton.isSelected ? .white : .innactiveButtonTitleColor
+        shuffleButton.tintColor = self.shuffleButton.isSelected ? .white : .innactiveButtonTitleColor
     }
 }
 

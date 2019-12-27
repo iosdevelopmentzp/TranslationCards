@@ -39,8 +39,8 @@ class TranslateCard {
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
         self.language = language
-        self.sourcePhrase = sourcePhrase
-        self.targetPhrase = targetPhrase
+        self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
+        self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
         // Default Initialization
         let currentDate = Date()
         self.dateCreated = currentDate
@@ -71,8 +71,8 @@ class TranslateCard {
     }
     
     func update(sourcePhrase: String, targetPhrase: String) {
-        self.sourcePhrase = sourcePhrase
-        self.targetPhrase = targetPhrase
+        self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
+        self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
         runtimeEvents.accept(.changed)
     }
     

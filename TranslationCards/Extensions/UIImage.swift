@@ -21,6 +21,7 @@ enum ImageType: String {
     case translate
     case copy
     case reverse
+    case shuffle
 }
 
 extension UIImage {

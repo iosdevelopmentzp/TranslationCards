@@ -18,6 +18,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     let fetchData: BehaviorRelay<Void> = .init(value: ())
     let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
     let reverseMode = BehaviorRelay.init(value: false)
+    let shuffleMode = BehaviorRelay.init(value: false)
     
     fileprivate var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
     fileprivate var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
@@ -67,7 +68,9 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                     guard let newCards = potentialCards else { return }
                     cards += newCards
                 }
-                self?.cardsDataSource.accept(cards)
+                guard let self = self else { return }
+                cards = self.sortCards(cards)
+                self.cardsDataSource.accept(cards)
             })
             .disposed(by: disposeBag)
         
@@ -100,8 +103,16 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         
         reverseMode.skip(1).subscribe(onNext: { [weak self] (_) in
             guard let self = self else { return }
-            self.cardsDataSource.accept(self.cardsDataSource.value)
-        })
+            self.cardsDataSource.accept(self.cardsDataSource.value) })
+            .disposed(by: disposeBag)
+        
+        shuffleMode
+            .skip(1)
+            .subscribe(onNext: { [weak self] (shuffleMode) in
+                guard let self = self else { return }
+                let cards = shuffleMode ? self.cardsDataSource.value.shuffled() : self.sortCards(self.cardsDataSource.value)
+                self.cardsDataSource.accept(cards)
+            })
         .disposed(by: disposeBag)
     }
     
@@ -123,15 +134,39 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             .disposed(by: disposeBag)
     }
     
-    func bindWith(changeReverseState: ControlEvent<Void>) {
+    func bindWith(changeReverseState: ControlEvent<Void>, changeShuffleState: ControlEvent<Void>) {
         changeReverseState
             .withLatestFrom(reverseMode)
             .subscribe(onNext: { [weak self] (currentMode) in
                 self?.reverseMode.accept(!currentMode) })
             .disposed(by: disposeBag)
+        
+        changeShuffleState
+            .withLatestFrom(shuffleMode)
+            .subscribe(onNext: { [weak self] (shuffleMode) in
+                self?.shuffleMode.accept(!shuffleMode)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Private
+    fileprivate func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
+        var sortedCards: Array<TranslateCard> = []
+        let isReverse = reverseMode.value
+        #if DEBUG
+        sortedCards = cards.sorted(by: {
+            if !isReverse {
+                return $0.sourcePhrase.trimmingCharacters(in: .whitespaces) < $1.sourcePhrase.trimmingCharacters(in: .whitespaces)
+            } else {
+                return $0.targetPhrase.trimmingCharacters(in: .whitespaces) < $1.targetPhrase.trimmingCharacters(in: .whitespaces)
+            }
+        })
+        #else
+        sortedCards = cards.sorted(by: { $0.dateCreated.timeIntervalSince1970 < $1.dateCreated.timeIntervalSince1970 })
+        #endif
+        return sortedCards
+    }
+    
     fileprivate func fetch() -> Observable<Void> {
         let playlistObservable = user.fetchPlaylists(forLanguage: language)
         let cardsObservable = user.fetchCards(forPlaylists: selectedPlaylist.value)
