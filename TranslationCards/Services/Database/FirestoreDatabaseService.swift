@@ -235,6 +235,12 @@ class FirestoreDatabaseService: NSObject, DatabaseService {
         }
     }
     
+    func copyCard(_ card: TranslateCard, toAnotherPlaylistWithId newPlaylistId: String) -> Observable<Void> {
+        let newCard = TranslateCard(userId: card.userOwnerId, language: card.language, sourcePhrase: card.sourcePhrase, targetPhrase: card.targetPhrase)
+        newCard.playlistId = newPlaylistId
+        return cardDocumentReference(forCard: newCard).rx.setData(newCard.representation)
+    }
+    
     // MARK: - Private
     fileprivate func saveCard(_ card: TranslateCard) -> Observable<Void> {
         cardDocumentReference(forCard: card).rx

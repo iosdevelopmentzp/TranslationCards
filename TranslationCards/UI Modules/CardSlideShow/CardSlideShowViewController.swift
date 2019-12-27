@@ -18,6 +18,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     
     fileprivate let editCardButton = JJActionItem.initWith(imageType: .edit)
     fileprivate let moveCardToButton = JJActionItem.initWith(imageType: .move)
+    fileprivate let copyCardToButton = JJActionItem.initWith(imageType: .copy)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -47,7 +48,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         .disposed(by: disposeBag)
         
         viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap,
-                                        moveCardToEvent: moveCardToButton.rx.tap)
+                                        moveCardToEvent: moveCardToButton.rx.tap,
+                                        copyCardToEvent: copyCardToButton.rx.tap)
         
         viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
     }
@@ -62,6 +64,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         super.localizable()
         editCardButton.titleLabel.text = "Edit card"
         moveCardToButton.titleLabel.text = "Move card to"
+        copyCardToButton.titleLabel.text = "Copy card to"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,6 +75,6 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
 
 extension CardSlideShowViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [editCardButton, moveCardToButton]
+        return [editCardButton, moveCardToButton, copyCardToButton]
     }
 }

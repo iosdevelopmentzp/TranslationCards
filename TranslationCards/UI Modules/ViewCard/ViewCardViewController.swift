@@ -11,8 +11,9 @@ import JJFloatingActionButton
 
 final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewModel> {
     fileprivate let cardView = CardView()
-    fileprivate lazy var editButton = JJActionItem.initWith(imageType: .edit)
-    fileprivate lazy var moveCardToButton = JJActionItem.initWith(imageType: .move)
+    fileprivate var editButton = JJActionItem.initWith(imageType: .edit)
+    fileprivate var moveCardToButton = JJActionItem.initWith(imageType: .move)
+    fileprivate var copyCardToButton = JJActionItem.initWith(imageType: .copy)
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -34,7 +35,9 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
     
     override func binding() {
         super.binding()
-        viewModel.bind(editEvent: editButton.rx.tap, moveCardToEvent: moveCardToButton.rx.tap)
+        viewModel.bind(editEvent: editButton.rx.tap,
+                       moveCardToEvent: moveCardToButton.rx.tap,
+                       copyCardToEvent: copyCardToButton.rx.tap)
         viewModel.bind(speakData: cardView.speakData)
         
         viewModel.card.subscribe(onNext: { [weak self] (card) in
@@ -47,6 +50,7 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
         super.localizable()
         editButton.titleLabel.text =  "Edit card"
         moveCardToButton.titleLabel.text = "Move card to"
+        copyCardToButton.titleLabel.text = "Copy card to"
         viewModel
             .title
             .bind(to: navigationItem.rx.title)
@@ -64,6 +68,6 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
 
 extension ViewCardViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [editButton, moveCardToButton]
+        return [editButton, moveCardToButton, copyCardToButton]
     }
 }

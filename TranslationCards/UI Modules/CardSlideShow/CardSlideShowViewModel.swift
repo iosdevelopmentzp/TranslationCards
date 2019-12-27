@@ -30,7 +30,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         services.speechService.stopSpeaking()
     }
     
-    func bindWIthActionButtons(editCardEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>) {
+    func bindWIthActionButtons(editCardEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>, copyCardToEvent: ControlEvent<Void>) {
         editCardEvent
             .subscribe(onNext: { [weak self] (_) in
                 self?.openEditCardController()
@@ -42,9 +42,43 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
                 self?.openMoveCardToController()
             })
             .disposed(by: disposeBag)
+        
+        copyCardToEvent
+            .subscribe(onNext: { [weak self] (_) in
+                self?.openCopyCardToAnotherPlaylist()
+            })
+        .disposed(by: disposeBag)
     }
     
     // MARK: - Private
+    fileprivate func openCopyCardToAnotherPlaylist() {
+        guard let indexPath = getSelectedCellIndexPath?() else { return }
+        let card = cards.value[indexPath.row]
+        
+        User.user(withId: card.userOwnerId).subscribe(onNext: { [weak self] (user) in
+            user.getPlaylists(forLanguage: card.language)
+                .subscribe(onNext: { [weak self] (playlists) in
+                    let selectedPlaylist = playlists.filter{ $0.id == card.playlistId}.first
+                    guard let selected = selectedPlaylist else { return }
+                    let action: PlaylistCallBack = {[weak self] (selectedPlaylist) in
+                        guard selectedPlaylist != selected else { return }
+                        self?.needCopyCardToPlaylist(user: user, card: card, newPlaylist: selectedPlaylist)
+                    }
+                    self?.router.route(to: .moveCardTo(dataSource: playlists, selected: selected, callback: action))
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    fileprivate func needCopyCardToPlaylist(user: User, card: TranslateCard, newPlaylist: Playlist) {
+        user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+            .subscribe(onError: { [weak self] (error) in
+                self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     fileprivate func openMoveCardToController() {
         guard let indexPath = getSelectedCellIndexPath?() else { return }
         let card = cards.value[indexPath.row]

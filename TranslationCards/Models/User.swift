@@ -151,8 +151,29 @@ extension User: ServicesAccessing {
         }
     }
     
-    
     // Playlists
+    func copyCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            self?.services
+                .realTimeDatabase
+                .copyCard(card, toAnotherPlaylistWithId: newPlaylistId)
+                .subscribe(onNext: { [weak self] (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    // refresh cards for playlists
+                    self?.playlists.value?[card.language]?.forEach {
+                        if $0.id == newPlaylistId {
+                            self?.updateCards(forPlaylist: $0)
+                        }
+                    }
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
+    }
+    
     func moveCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
             let oldPlaylistId = card.playlistId

@@ -47,7 +47,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         .disposed(by: disposeBag)
     }
     
-    func bind(editEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>) {
+    func bind(editEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>, copyCardToEvent: ControlEvent<Void>) {
         editEvent
             .subscribe(onNext: { [weak self] (_) in
                 self?.stopSpeach()
@@ -63,9 +63,32 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
                 self?.openMoveCardToAnotherPlaylistView(card: card)
             })
             .disposed(by: disposeBag)
+        
+        copyCardToEvent
+            .subscribe(onNext: { [weak self] (_) in
+                self?.stopSpeach()
+                guard let card = self?.card.value else { return }
+                self?.openCopyCardToAnotherPlaylist(card: card)
+            })
+        .disposed(by: disposeBag)
     }
     
     // MARK: - Private
+    fileprivate func openCopyCardToAnotherPlaylist(card: TranslateCard) {
+        user.getPlaylists(forLanguage: card.language)
+        .subscribe(onNext: { [weak self] (playlists) in
+            let potentialCurrentPlaylist = playlists.first{ $0.id == card.playlistId}
+            guard let currentPlaylist = potentialCurrentPlaylist else { return }
+            let callBack: PlaylistCallBack = { [weak self] (playlist) in
+                self?.needCopyCardToPlaylist(card: card, newPlaylist: playlist)
+            }
+            self?.router.route(to: .moveCardTo(dataSource: playlists, selected: currentPlaylist, callback: callBack))
+        }, onError:  { [weak self] (error) in
+            self?.errorHandler(description: "Failed get user playlists", error: error, withAlert: true)
+        })
+        .disposed(by: disposeBag)
+    }
+    
     fileprivate func openMoveCardToAnotherPlaylistView(card: TranslateCard) {
         user.getPlaylists(forLanguage: card.language)
             .subscribe(onNext: { [weak self] (playlists) in
@@ -75,10 +98,8 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
                     self?.needUpdateCardPlaylist(card: card, newPlaylist: playlist)
                 }
                 self?.router.route(to: .moveCardTo(dataSource: playlists, selected: currentPlaylist, callback: callBack))
-            }, onError:  { [weak self] (errro) in
-                let description = "Failed get user playlists with error \(errro)"
-                debugPrint(description)
-                self?.alertModel.accept(.warningAlert(message: description, handler: nil))
+            }, onError:  { [weak self] (error) in
+                self?.errorHandler(description: "Failed get user playlists", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }
@@ -87,6 +108,14 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         user.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed update card playlist", error: error, withAlert: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func needCopyCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
+        user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+            .subscribe(onError: { [weak self] (error) in
+                self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }
