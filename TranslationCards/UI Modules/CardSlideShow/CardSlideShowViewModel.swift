@@ -11,10 +11,11 @@ import RxCocoa
 
 final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     var cards = BehaviorRelay<[TranslateCard]>.init(value: [])
+    let reverseMode: BehaviorRelay<Bool>
     let cellSpeechData = BehaviorRelay<SpeechData?>.init(value: nil)
     var getSelectedCellIndexPath: (() -> IndexPath?)? = nil
     
-    init(cards: [TranslateCard]) {
+    init(cards: [TranslateCard], withReverse reverse: Bool = false) {
         let isShuffle = arc4random() % 2 == 0 ? true : false
         if isShuffle {
             let shuffleArray = cards.shuffled()
@@ -22,6 +23,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         } else {
             self.cards.accept(cards)
         }
+        reverseMode = .init(value: reverse)
         super.init()
         binding()
     }

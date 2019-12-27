@@ -38,9 +38,9 @@ class CardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureWithCard(_ card: TranslateCard, isShowFace: Bool = true) {
-        faceSideView.configure(withCard: card)
-        backSideView.configure(withCard: card)
+    func configureWithCard(_ card: TranslateCard, isShowFace: Bool = true, withReverse: Bool = false) {
+        faceSideView.configure(withCard: card, withReverse: withReverse)
+        backSideView.configure(withCard: card, withReverse: withReverse)
         showFaceSide(isShowFace: isShowFace, withAnimation: false)
     }
     

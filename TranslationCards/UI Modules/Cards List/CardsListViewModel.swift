@@ -17,7 +17,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
     let fetchData: BehaviorRelay<Void> = .init(value: ())
     let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
-    
+    let reverseMode = BehaviorRelay.init(value: false)
     
     fileprivate var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
     fileprivate var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
@@ -97,13 +97,19 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 self?.fetchCardsForSelectedPlaylists(playlists)
             })
             .disposed(by: disposeBag)
+        
+        reverseMode.skip(1).subscribe(onNext: { [weak self] (_) in
+            guard let self = self else { return }
+            self.cardsDataSource.accept(self.cardsDataSource.value)
+        })
+        .disposed(by: disposeBag)
     }
     
     func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
         startShowPressed
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self else { return }
-                self.router.route(to: .slideShow(cards: self.cardsDataSource.value)) })
+                self.router.route(to: .slideShow(cards: self.cardsDataSource.value, withReverse: self.reverseMode.value)) })
             .disposed(by: disposeBag)
     }
     
@@ -114,6 +120,14 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 
                 self.router.route(to: .selectPlaylist(dataSource: self.playlists.value, selected: self.selectedPlaylist))
             })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindWith(changeReverseState: ControlEvent<Void>) {
+        changeReverseState
+            .withLatestFrom(reverseMode)
+            .subscribe(onNext: { [weak self] (currentMode) in
+                self?.reverseMode.accept(!currentMode) })
             .disposed(by: disposeBag)
     }
     

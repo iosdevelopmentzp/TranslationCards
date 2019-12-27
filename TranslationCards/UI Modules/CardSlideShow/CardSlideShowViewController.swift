@@ -37,9 +37,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         
         viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
             guard let self = self else { return }
-            cell.configure(withCard: card)
-            cell
-                .speakData
+            cell.configure(withCard: card, withReverse: self.viewModel.reverseMode.value)
+            cell.speakData
                 .skip(1)
                 .compactMap{ $0 }
                 .bind(to: self.viewModel.cellSpeechData)

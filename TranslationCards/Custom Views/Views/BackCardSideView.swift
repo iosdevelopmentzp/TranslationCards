@@ -49,18 +49,25 @@ final class BackCardSideView: UIView {
         gradientLayer?.frame = bounds
     }
     
-    func configure(withCard card: TranslateCard) {
-        topImageView.image = card.language.sourceLanguage.flagIcon
-        topTextLabel.text = card.sourcePhrase
-        topLanguage.accept(card.language.sourceLanguage)
+    func configure(withCard card: TranslateCard, withReverse: Bool) {
+        
+        let topLanguage = withReverse ? card.language.targetLanguage : card.language.sourceLanguage
+        let topPhrase = withReverse ? card.targetPhrase : card.sourcePhrase
+        
+        let bottomLanguage = !withReverse ? card.language.targetLanguage : card.language.sourceLanguage
+        let bottomPhrase = !withReverse ? card.targetPhrase : card.sourcePhrase
+        
+        topImageView.image = topLanguage.flagIcon
+        topTextLabel.text = topPhrase
+        self.topLanguage.accept(topLanguage)
        
-        bottomImageView.image = card.language.targetLanguage.flagIcon
-        bottomTextLabel.text = card.targetPhrase
-        bottomLanguage.accept(card.language.targetLanguage)
+        bottomImageView.image = bottomLanguage.flagIcon
+        bottomTextLabel.text = bottomPhrase
+        self.bottomLanguage.accept(bottomLanguage)
         
         gradientLayer?.removeFromSuperlayer()
-        let topColor = card.language.sourceLanguage.associativeColor
-        let bottomColor = card.language.targetLanguage.associativeColor
+        let topColor = topLanguage.associativeColor
+        let bottomColor = bottomLanguage.associativeColor
         gradientLayer = setGradient(colorTop: topColor, colorBottom: bottomColor)
     }
     

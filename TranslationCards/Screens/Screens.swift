@@ -30,8 +30,8 @@ struct Screens {
         return vc
     }
     
-    static func cardSlideShow(cards: [TranslateCard]) -> CardSlideShowViewController {
-        let vm = CardSlideShowViewModel(cards: cards)
+    static func cardSlideShow(cards: [TranslateCard], withReverse: Bool = false) -> CardSlideShowViewController {
+        let vm = CardSlideShowViewModel(cards: cards, withReverse: withReverse)
         return CardSlideShowViewController(viewModel: vm)
     }
     

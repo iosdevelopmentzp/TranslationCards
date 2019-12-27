@@ -14,6 +14,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     fileprivate lazy var refreshHandler = RefreshHandler(view: tableView)
     fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
+    fileprivate var reverseButton = UIButton(type: .custom)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -41,10 +42,13 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         
         viewModel
             .cardsDataSource
-            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) {
+            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) { [weak self]
                 (row, element, cell) in
-                cell.imageView?.image = element.language.sourceLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0))
-                cell.textLabel?.text = element.sourcePhrase
+                guard let self = self else { return }
+                let isReverseMode = self.viewModel.reverseMode.value
+                let currentLanguage = isReverseMode ? element.language.targetLanguage : element.language.sourceLanguage
+                cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)
+                cell.textLabel?.text = isReverseMode == true ? element.targetPhrase : element.sourcePhrase
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.textColor = .white
                 cell.backgroundColor = .clear }
@@ -62,11 +66,21 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         choicePlaylistButton.backgroundColor = .red
         // table view
         tableView.backgroundColor = .clear
+        
+        let image = UIImage.image(withType: .reverse).scaledToSize(.init(width: 25.0, height: 25.0))
+        reverseButton.setImage(image, for: .normal)
+        reverseButton.setImage(image, for: .selected)
+        reverseButton.isSelected = false
+        reverseButton.tintColor = self.reverseButton.isSelected ? .white : .innactiveButtonTitleColor
     }
     
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationController?.navigationBar.tintColor = .white
+        
+        let reverseButtonItem = UIBarButtonItem(image: nil, style: .plain, target: nil, action: nil)
+        reverseButtonItem.customView = self.reverseButton
+        navigationItem.rightBarButtonItem = reverseButtonItem
     }
     
     override func localizable() {
@@ -97,6 +111,15 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             })
             .disposed(by: disposeBag)
         
+        viewModel.bindWith(changeReverseState: reverseButton.rx.tap)
+        
+        viewModel
+            .reverseMode
+            .subscribe(onNext: { [weak self] (isReverse) in
+                self?.reverseButton.isSelected = isReverse
+                self?.reverseButton.tintColor = isReverse ? .white : .innactiveButtonTitleColor
+            })
+            .disposed(by: disposeBag)
     }
 }
 

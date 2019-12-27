@@ -26,8 +26,8 @@ class CardCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(withCard card: TranslateCard) {
-        cardView.configureWithCard(card, isShowFace: true)
+    func configure(withCard card: TranslateCard, withReverse: Bool = false) {
+        cardView.configureWithCard(card, isShowFace: true, withReverse: withReverse)
     }
     
     // MARK: - Private

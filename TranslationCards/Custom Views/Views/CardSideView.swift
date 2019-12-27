@@ -32,12 +32,14 @@ class CardSideView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(withCard card: TranslateCard) {
-        textLabel.text = "\(card.sourcePhrase)"
-        language.accept(card.language.sourceLanguage)
+    func configure(withCard card: TranslateCard, withReverse: Bool = false) {
+        let currentLanguage = withReverse ? card.language.targetLanguage : card.language.sourceLanguage
+        let phrase = withReverse ? card.targetPhrase : card.sourcePhrase
+        textLabel.text = "\(phrase)"
+        language.accept(currentLanguage)
         
         gradientLayer?.removeFromSuperlayer()
-        let topColor = card.language.sourceLanguage.associativeColor
+        let topColor = currentLanguage.associativeColor
         if let lighterColor = topColor.lighter() {
             gradientLayer = setGradient(colorTop: lighterColor,
                                         colorBottom: topColor)
