@@ -41,6 +41,7 @@ func ==? <T: Equatable>(lhs: T?, rhs: T?) -> Bool {
 
 infix operator <-> : DefaultPrecedence
 
+/// Two way binding operator between control property and relay, that's all it takes.
 func <-><T: Any> (property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disposable {
     let bindToUIDisposable = relay.bind(to: property)
     let bindToRelay = property

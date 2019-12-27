@@ -58,7 +58,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
                         guard selectedPlaylist != selected else { return }
                         user.moveCardToAnotherPlaylist(card: card, newPlaylistId: selectedPlaylist.id)
                             .subscribe(onError: { (error) in
-                                self?.alertModel.accept(.warningAlert(message: "Failed move card - \(error.localizedDescription)", handler: nil))
+                                self?.errorHandler(description: "Failed move card", error: error, withAlert: true)
                             })
                             .disposed(by: self?.disposeBag ?? DisposeBag())
                     }))

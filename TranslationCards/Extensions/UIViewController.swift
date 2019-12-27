@@ -68,7 +68,7 @@ extension UIViewController {
             cell.detailTextLabel?.text = "\(item.dateUpdated.asString(dateFormat: "MM/dd/yyyy"))"
             cell.textLabel?.numberOfLines = 0
         }
-        menu.dismissAutomatically = false
+        menu.dismissAutomatically = firstRowCallBack == nil
         menu.uniquePropertyName = "name"
         menu.rightBarButtonTitle = ""
         menu.title = "Choose a playlist"

@@ -152,7 +152,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                                 self?.selectedPlaylist.accept(newPlaylist)
                                 }, onError: { [weak self] (error) in
                                     self?.startActivityIndicator.accept(false)
-                                    self?.alertModel.accept(.warningAlert(message: "Failed create new playlist", handler: nil))
+                                    self?.errorHandler(description: "Failed create new playlist", error: error, withAlert: true)
                             })
                             .disposed(by: self.disposeBag)
                     }, cancelAction: { } )
@@ -290,12 +290,12 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                         self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: "Failed update card. \(error.localizedDescription)", handler: nil))
+                            self?.errorHandler(description: "Failed update card.", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
                 }, onError: { [weak self] (error) in
                     self?.startActivityIndicator.accept(false)
-                    self?.alertModel.accept(.warningAlert(message: "Failed get user with id \(card.userOwnerId) with error \(error)", handler: nil))
+                    self?.errorHandler(description: "Failed get user with id \(card.userOwnerId)", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }
@@ -311,12 +311,12 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                         self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: "Failed get remove card with error \(error.localizedDescription)", handler: nil))
+                            self?.errorHandler(description: "Failed get remove card.", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
                 }, onError: { [weak self] (error) in
                     self?.startActivityIndicator.accept(false)
-                    self?.alertModel.accept(.warningAlert(message: "Failed get user with error \(error.localizedDescription)", handler: nil))
+                    self?.errorHandler(description: "Failed get user.", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }
@@ -333,13 +333,13 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
                         self?.startActivityIndicator.accept(false)
                         }, onError: { (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: "Failed save card with error \(error.localizedDescription)", handler: nil))
+                            self?.errorHandler(description: "Failed save card", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
                 
             }, onError: { [weak self] (error) in
                 self?.startActivityIndicator.accept(false)
-                self?.alertModel.accept(.warningAlert(message: "Failed get user with error \(error.localizedDescription)", handler: nil))
+                self?.errorHandler(description: "Failed get user", error: error, withAlert: true)
                 }
         )
         .disposed(by: disposeBag)

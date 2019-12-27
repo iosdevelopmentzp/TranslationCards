@@ -24,5 +24,4 @@ final class CardSlideShowRouter: Router {
             viewController?.presentSingleChoicePlaylist(dataSource: dataSource, selectedAction: callback, currentSelect: selected)
         }
     }
-    
 }

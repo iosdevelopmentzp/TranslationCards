@@ -51,8 +51,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                         self?.isFetchInProgress.accept(false)
                     }, onError: { [weak self] (error) in
                         self?.isFetchInProgress.accept(false)
-                        let description = "Failed fetch data \(error.localizedDescription)"
-                        self?.alertModel.accept(.warningAlert(message: description, handler: nil))
+                        self?.errorHandler(description: "Failed fetch data", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })
@@ -129,8 +128,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         playlists.forEach { [weak self] in
             self?.user.fetchCards(forPlaylist: $0)
                 .subscribe(onError: { [weak self] (error) in
-                    debugPrint("unsuccesfull load cards")
-                    self?.alertModel.accept(.warningAlert(message: "Unsuccesfull load cards with Error \(error)", handler: nil))
+                    self?.errorHandler(description: "Unsuccesfull load cards", error: error, withAlert: true)
                 })
                 .disposed(by: disposeBag)
         }

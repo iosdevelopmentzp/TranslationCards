@@ -86,9 +86,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     fileprivate func needUpdateCardPlaylist(card: TranslateCard, newPlaylist: Playlist) {
         user.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
-                let description = "Failed update card playlist with error \(error)"
-                debugPrint(description)
-                self?.alertModel.accept(.warningAlert(message: description, handler: nil))
+                self?.errorHandler(description: "Failed update card playlist", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }

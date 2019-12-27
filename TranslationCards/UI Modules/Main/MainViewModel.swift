@@ -27,7 +27,7 @@ final class MainViewModel: ViewModel<MainRouter> {
                 self?.startActivityIndicator.accept(false)
             }, onError: { [weak self] (error) in
                 self?.startActivityIndicator.accept(false)
-                self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil))
+                self?.errorHandler(description: "Failed get languages", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
         
@@ -54,7 +54,7 @@ final class MainViewModel: ViewModel<MainRouter> {
                         self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: "Failed attempt to sign out. Error \(error)", handler: nil))
+                            self?.errorHandler(description: "Failed attempt to sign out.", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })

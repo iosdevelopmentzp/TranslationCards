@@ -53,7 +53,7 @@ class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
                             self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
                             self?.startActivityIndicator.accept(false)
-                            self?.alertModel.accept(.warningAlert(message: error.localizedDescription, handler: nil)) })
+                            self?.errorHandler(description: "Failed update native language", error: error, withAlert: true) })
                     .disposed(by: self?.disposeBag ?? DisposeBag())
             })
             .disposed(by: disposeBag)
