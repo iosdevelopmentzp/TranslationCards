@@ -12,12 +12,16 @@ import RxCocoa
 final class CardsListRouter: Router {
     enum Route {
         case slideShow(cards: [TranslateCard], withReverse: Bool)
+        case writeSlideShow(cards: [TranslateCard], withReverse: Bool)
         case cardView(card: TranslateCard, user: User)
         case selectPlaylist(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>)
     }
     
     func route(to type: Route) {
         switch type {
+        case .writeSlideShow(let cards, let withReverse):
+            let vc = Screens.writePhraseSlideShow(withCards: cards, withReverse: withReverse)
+            viewController?.navigationController?.pushViewController(vc, animated: true)
         case .slideShow(let cards, let withReverse):
             pushSlideShow(cards: cards, withReverse: withReverse)
         case .cardView(let card, let user):

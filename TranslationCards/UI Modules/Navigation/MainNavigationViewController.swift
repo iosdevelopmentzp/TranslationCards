@@ -11,7 +11,7 @@ import JJFloatingActionButton
 
 class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
     
-    fileprivate let actionButton = JJFloatingActionButton()
+    fileprivate let actionButton = JJFloatingActionButton.tunedButton
     fileprivate lazy var addCardButton = JJActionItem.initWith(imageType: .plus)
     
     override func setupConstraints() {
@@ -22,17 +22,11 @@ class MainNavigationViewController: NavigationViewController<MainNavigationRoute
     override func setupView() {
         super.setupView()
         hideSeparator()
-        
-        // Action button appereance settings.
-        actionButton.handleSingleActionDirectly = false
-        actionButton.buttonColor = .accentColor
-        actionButton.itemAnimationConfiguration = .popUp()
-        actionButton.configureDefaultItem { (item) in
-            JJActionItem.setupAppearance(forItem: item)
-        }
         actionButton.addItem(addCardButton)
-        
-        // AddCardButton settings.
+    }
+    
+    override func localizable() {
+        super.localizable()
         addCardButton.titleLabel.text = "New card"
     }
     

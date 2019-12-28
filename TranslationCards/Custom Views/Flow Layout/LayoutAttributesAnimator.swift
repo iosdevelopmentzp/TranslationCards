@@ -1,13 +1,13 @@
 //
 //  LayoutAttributesAnimator.swift
-//  AnimatedCollectionViewLayout
+//  TranslationCards
 //
-//  Created by Jin Wang on 8/2/17.
-//  Copyright © 2017 Uthoft. All rights reserved.
+//  Created by Dmytro Vorko on 28.12.2019.
+//  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
 import UIKit
 
-public protocol LayoutAttributesAnimator {
+protocol LayoutAttributesAnimator {
     func animate(collectionView: UICollectionView, attributes: AnimatedCollectionViewLayoutAttributes)
 }

@@ -34,9 +34,10 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
         setupConstraints()
         setupView()
         binding()
+        localizable()
     }
     
-    // MARK: - Private
+    func localizable() {}
     func setupView() { }
     func setupConstraints() {}
     func binding() {

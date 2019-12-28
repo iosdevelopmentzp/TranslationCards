@@ -46,7 +46,8 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         setupView()
         setupNavigationBar()
         binding()
-        setupTable()
+        setupTableView()
+        setupCollectionView()
         localizable()
     }
     
@@ -58,7 +59,8 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     func onModelUpdates() {}
     func setupConstraints() {}
     func setupView() {}
-    func setupTable() {}
+    func setupTableView() {}
+    func setupCollectionView() {}
     func setupNavigationBar() {}
     func localizable() {}
     func binding() {

@@ -12,6 +12,11 @@ import RSSelectionMenu
 
 struct Screens {
     
+    static func writePhraseSlideShow(withCards cards: [TranslateCard],  withReverse: Bool) -> WritePhraseSlideShowViewController {
+        let vm = WritePhraseSlideShowViewModel(cards: cards,withReverse: withReverse)
+        return WritePhraseSlideShowViewController(viewModel: vm)
+    }
+    
     static func viewCard(withCard card: TranslateCard, user: User) -> ViewCardViewController {
         let vm = ViewCardViewModel(card: card, user: user)
         return ViewCardViewController(viewModel: vm)

@@ -31,8 +31,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         }
     }
     
-    override func binding() {
-        super.binding()
+    override func setupCollectionView() {
+        super.setupCollectionView()
         collectionView.register(CardCell.self, forCellWithReuseIdentifier: CardCell.typeName)
         
         viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
@@ -46,11 +46,14 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         }
         .disposed(by: disposeBag)
         
+        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
+    }
+    
+    override func binding() {
+        super.binding()
         viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap,
                                         moveCardToEvent: moveCardToButton.rx.tap,
                                         copyCardToEvent: copyCardToButton.rx.tap)
-        
-        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
     }
     
     override func setupView() {

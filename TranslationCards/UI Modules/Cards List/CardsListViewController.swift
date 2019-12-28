@@ -13,6 +13,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     fileprivate let tableView = UITableView()
     fileprivate lazy var refreshHandler = RefreshHandler(view: tableView)
     fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
+    fileprivate let startWritePhraseSlideShowButton = JJActionItem.initWith(imageType: .write)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
     fileprivate var reverseButton = UIButton(type: .custom)
     fileprivate var shuffleButton = UIButton(type: .custom)
@@ -27,8 +28,8 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         }
     }
     
-    override func setupTable() {
-        super.setupTable()
+    override func setupTableView() {
+        super.setupTableView()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
@@ -99,6 +100,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .disposed(by: disposeBag)
         
         startCardSlideShowButton.titleLabel.text = "Start slide show"
+        startWritePhraseSlideShowButton.titleLabel.text = "Start write slide show"
         choicePlaylistButton.setTitle("Choose playlist", for: .normal)
     }
     
@@ -106,6 +108,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.binding()
         viewModel.bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
         viewModel.bindWith(playlistsSelectionEvent: choicePlaylistButton.rx.tap)
+        viewModel.bindWith(writePhraseSlideShowPressed: startWritePhraseSlideShowButton.rx.tap)
         
         refreshHandler.refresh
             .subscribe(onNext: { [weak self] (_) in
@@ -154,6 +157,6 @@ extension CardsListViewController: UITableViewDelegate {
 
 extension CardsListViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [startCardSlideShowButton]
+        return [startCardSlideShowButton, startWritePhraseSlideShowButton]
     }
 }

@@ -118,19 +118,30 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     
     func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
         startShowPressed
-            .subscribe(onNext: { [weak self] (_) in
-                guard let self = self else { return }
-                self.router.route(to: .slideShow(cards: self.cardsDataSource.value, withReverse: self.reverseMode.value)) })
-            .disposed(by: disposeBag)
+            .withLatestFrom(cardsDataSource)
+            .filter { $0.count > 0 }
+            .subscribe(onNext: { [weak self] (cards) in
+                self?.router.route(to: .slideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
+            })
+        .disposed(by: disposeBag)
     }
     
     func bindWith(playlistsSelectionEvent: ControlEvent<Void>) {
         playlistsSelectionEvent
             .subscribe(onNext: { [weak self] (_) in
                 guard let self = self, self.playlists.value.count > 1 else { return }
-                
                 self.router.route(to: .selectPlaylist(dataSource: self.playlists.value, selected: self.selectedPlaylist))
             })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindWith(writePhraseSlideShowPressed: ControlEvent<Void>) {
+        writePhraseSlideShowPressed
+            .withLatestFrom(cardsDataSource)
+            .filter{ $0.count > 0}
+            .subscribe(onNext: { [weak self] (cards) in
+                guard let self = self else { return }
+                self.router.route(to: .writeSlideShow(cards: cards, withReverse: self.reverseMode.value)) })
             .disposed(by: disposeBag)
     }
     

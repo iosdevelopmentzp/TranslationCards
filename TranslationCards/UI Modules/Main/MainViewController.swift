@@ -27,8 +27,8 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         }
     }
     
-    override func setupTable() {
-        super.setupTable()
+    override func setupTableView() {
+        super.setupTableView()
         
         tableView.register(LanguageCell.self, forCellReuseIdentifier: LanguageCell.typeName)
         
