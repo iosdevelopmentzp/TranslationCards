@@ -151,7 +151,6 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
             }
         }
         
-        
         let verticalAnimation1 = CABasicAnimation.animation(withKeyType: .translationY,
                                                             duration: duration * 0.5,
                                                             fromValue: screenSize.height,
@@ -159,11 +158,12 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         createTranslateCardView.sourceTextField.layer.add(verticalAnimation1, forKey: "translationYTextFieldSource")
         
         let verticalAnimation2 = CABasicAnimation.animation(withKeyType: .translationY,
-                                                            duration: verticalAnimation1.duration,
+                                                            duration: verticalAnimation1.duration * 1.2,
                                                             fromValue: screenSize.height,
                                                             toValue: 0,
-                                                            delay: verticalAnimation1.duration * 0.2)
+                                                            delay: 0)
         createTranslateCardView.targetTextField.layer.add(verticalAnimation2, forKey: "translationYTextFieldTarget")
+        createTranslateCardView.translateRealtimeButton.layer.add(verticalAnimation2, forKey: "translationYTranslateButton")
 
         // Text labels
         let labelShiftX = max(createTranslateCardView.targetHeaderLabel.bounds.width, createTranslateCardView.sourceHeaderLabel.bounds.width)
