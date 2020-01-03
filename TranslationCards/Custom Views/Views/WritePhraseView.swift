@@ -33,13 +33,13 @@ class WritePhraseView: UIView {
     let bottomTextFieldOffset: BehaviorRelay<CGFloat> = .init(value: 0)
     
     // MARK: - Private
-    fileprivate weak var card: TranslateCard?
+    fileprivate let card: BehaviorRelay<TranslateCard?> = .init(value: nil)
     fileprivate let headerLabel = UILabel()
     fileprivate let oneMoreWordButton = UIButton()
     fileprivate var bottomTextFieldConstraint: Constraint?
     fileprivate let textView = TextView()
-    let textViewHeaderLabel = UILabel()
-    fileprivate var currentShownTranslate: String?
+    fileprivate let textViewHeaderLabel = UILabel()
+    fileprivate var currentShownTranslate: BehaviorRelay<String?> = .init(value: nil)
     
     // MARK: - Rx
     fileprivate let disposeBag = DisposeBag()
@@ -57,13 +57,7 @@ class WritePhraseView: UIView {
     }
     
     func configureWithCard(_ card: TranslateCard) {
-        headerLabel.text = card.sourcePhrase
-        textView.text = ""
-        bottomTextFieldOffset.accept(0)
-        parentViewController?.view.endEditing(true)
-        self.card = card
-        localizable(withCard: card)
-        textViewHeaderLabel.alpha = 1.0
+        self.card.accept(card)
     }
     
     // MARK: - Private methods
@@ -103,8 +97,9 @@ class WritePhraseView: UIView {
     
     fileprivate func setupView() {
         // self
-        layer.cornerRadius = 5.0
-        layer.masksToBounds = true
+        layer.cornerRadius = 10.0
+        setShadow()
+        backgroundColor = .writePhraseCardBackground
         
         // header label
         headerLabel.textAlignment = .center
@@ -116,11 +111,11 @@ class WritePhraseView: UIView {
         textView.tintColor = .white
         textView.font = .font(type: .roboto, weight: .regular, size: 17.0)
         textView.backgroundColor = .gray
-        textView.setBorder(withColor: .white, borderWidth: 1.0, cornerRadius: 5.0)
+        textView.setBorder(withColor: .white, borderWidth: 1.0, cornerRadius: 10.0)
         textView.autocorrectionType = .no
         
         // oneMoreWordButton
-        oneMoreWordButton.setImage(.image(withType: .plus1, renderringMode: .alwaysOriginal), for: .normal)
+        oneMoreWordButton.setImage(.image(withType: .dotArrow), for: .normal)
         
         // textViewHeaderLabel
         textViewHeaderLabel.textColor = .placeholderLightColor
@@ -128,6 +123,19 @@ class WritePhraseView: UIView {
     }
     
     fileprivate func binding() {
+        
+        card.compactMap{ $0 }
+            .subscribe(onNext: { [weak self] (card) in
+                self?.headerLabel.attributedText = NSAttributedString(string: card.sourcePhrase,
+                                                                      attributes: NSAttributedString.writeSlideShowNativeText)
+                self?.textView.text = ""
+                self?.bottomTextFieldOffset.accept(0)
+                self?.parentViewController?.view.endEditing(true)
+                self?.localizable(withCard: card)
+                self?.textViewHeaderLabel.setAlpha(1.0)
+            })
+            .disposed(by: disposeBag)
+        
         bottomTextFieldOffset
             .skip(1)
             .subscribe(onNext: { [weak self] (offset) in
@@ -150,8 +158,11 @@ class WritePhraseView: UIView {
             .text
             .compactMap { $0 }
             .map { [weak self] in
+                if !$0.isEmpty {
+                    self?.textViewHeaderLabel.setAlpha(0.0)
+                }
                 self?.updateHeaderTextIfNeed(potentialTranslateText: $0)
-                return self?.checkValidText(correctText: self?.card?.targetPhrase ?? "", checkText: $0) ?? .invalidate }
+                return self?.checkValidText(correctText: self?.card.value?.targetPhrase ?? "", checkText: $0) ?? .invalidate }
             .distinctUntilChanged()
             .bind(to: textState)
             .disposed(by: disposeBag)
@@ -172,6 +183,23 @@ class WritePhraseView: UIView {
             })
             .disposed(by: disposeBag)
         
+        currentShownTranslate
+            .map { [weak self] text -> UIColor in
+                guard let text = text else {
+                    return .writePhraseOneMoreWordActive
+                }
+                guard let card = self?.card.value else { return .writePhraseOneMoreWordActive}
+                
+                let countOfTargetWords = card.targetPhrase.lowercased().words.count
+                let countOfCurrentWords = text.lowercased().words.count
+                return countOfTargetWords == countOfCurrentWords ? .gray : .writePhraseOneMoreWordActive }
+            .subscribe(onNext: { [weak self] (color) in
+                UIView.animate(withDuration: 0.2) { [weak self] in
+                    self?.oneMoreWordButton.tintColor = color
+                }
+            })
+            .disposed(by: disposeBag)
+        
         textView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
@@ -180,8 +208,8 @@ class WritePhraseView: UIView {
     }
     
     fileprivate func appendNewWorldIfNeed() {
-        guard let card = card else { return }
-        var currentOpenWords = (self.currentShownTranslate ?? "").lowercased().words
+        guard let card = card.value else { return }
+        var currentOpenWords = (self.currentShownTranslate.value ?? "").lowercased().words
         let realTranslationsWords = card.targetPhrase.lowercased().words
         
         guard currentOpenWords.count < realTranslationsWords.count, realTranslationsWords.count > 0  else { return }
@@ -201,8 +229,8 @@ class WritePhraseView: UIView {
     }
     
     fileprivate func updateHeaderTextIfNeed(potentialTranslateText: String) {
-        let newAttribute = self.makeAttributeText(sourceText: card?.sourcePhrase ?? "",
-                                                  translateText: card?.targetPhrase ?? "",
+        let newAttribute = self.makeAttributeText(sourceText: card.value?.sourcePhrase ?? "",
+                                                  translateText: card.value?.targetPhrase ?? "",
                                                   potentialTranslate: potentialTranslateText)
         let headerText = headerLabel.text ?? ""
         if newAttribute.string != headerText,  !newAttribute.string.isEmpty {
@@ -230,12 +258,12 @@ class WritePhraseView: UIView {
         }
         
         let finishTranslateText = rightTranslations.joined(separator: " ").capitalizingFirstLetter()
-        self.currentShownTranslate = finishTranslateText.isEmpty ? nil : finishTranslateText
+        self.currentShownTranslate.accept(finishTranslateText.isEmpty ? nil : finishTranslateText)
         let finishText = finishTranslateText.isEmpty ? sourceText : sourceText + "\n" + finishTranslateText
         let attrStr = NSMutableAttributedString(string: finishText)
         
         let sourceTextRange = (finishText as NSString).range(of: sourceText)
-        attrStr.setAttributes(NSAttributedString.writeSlideShowTargetText, range: sourceTextRange)
+        attrStr.setAttributes(NSAttributedString.writeSlideShowNativeText, range: sourceTextRange)
         let translationTextRange = (finishText as NSString).range(of: finishTranslateText)
         attrStr.setAttributes(NSAttributedString.writeSlideShowTranslateText, range: translationTextRange)
         
@@ -276,16 +304,10 @@ extension WritePhraseView: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        guard textViewHeaderLabel.alpha != 0.0 else { return }
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.textViewHeaderLabel.alpha = 0.0
-        }
+        textViewHeaderLabel.setAlpha(0.0)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        guard textViewHeaderLabel.alpha != 1.0 && textView.text.isEmpty else { return }
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.textViewHeaderLabel.alpha = 1.0
-        }
+        textViewHeaderLabel.setAlpha(1.0)
     }
 }

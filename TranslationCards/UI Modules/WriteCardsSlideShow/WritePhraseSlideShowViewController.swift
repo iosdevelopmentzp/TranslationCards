@@ -55,6 +55,7 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
     override func localizable() {
         super.localizable()
         editCardButton.titleLabel.text = "Edit card"
+        title = "Write Phrase"
     }
 }
 

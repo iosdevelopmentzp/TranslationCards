@@ -43,9 +43,6 @@ final class WritePhraseCell: UICollectionViewCell {
     }
     
     fileprivate func setupView() {
-        #if DEBUG
-        writeView.backgroundColor = .black
-        #endif
         addGestureRecognizer(tapGesture)
     }
     

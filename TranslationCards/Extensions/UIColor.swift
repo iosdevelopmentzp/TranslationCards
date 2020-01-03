@@ -38,6 +38,11 @@ extension UIColor {
     static var pickerViewColor: UIColor { UIColor(hexString: "D2D5DB")! }
     static var pickerViewToolsPanelColor: UIColor { UIColor(hexString: "F8F8F8")! }
     static var pickerViewButtonTitleColor: UIColor { UIColor(hexString: "007BFF")! }
+    
+    // write phrase view
+    static var writePhraseCardBackground: UIColor { UIColor(hexString: "8BA397")!}
+    static var writePhraseOneMoreWordActive: UIColor { UIColor(hexString: "473198")!}
+    static var writePhraseOneMoreWordInactive: UIColor { .notValidateButton }
 }
 
 extension UIColor {

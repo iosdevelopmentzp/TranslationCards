@@ -52,15 +52,15 @@ extension NSAttributedString {
         ]
     }
     
-    static var writeSlideShowTargetText: [NSAttributedString.Key : Any] {
+    static var writeSlideShowNativeText: [NSAttributedString.Key : Any] {
         [.foregroundColor: UIColor.white,
-         .font: UIFont.font(type: .roboto, weight: .regular, withItalic: false, size: 15.0)
+         .font: UIFont.font(type: .roboto, weight: .bold, withItalic: false, size: 17.0)
         ]
     }
     
     static var writeSlideShowTranslateText: [NSAttributedString.Key : Any] {
         [.foregroundColor: UIColor.green,
-         .font: UIFont.font(type: .roboto, weight: .regular, withItalic: true, size: 15.0)
+         .font: UIFont.font(type: .roboto, weight: .bold, withItalic: true, size: 17.0)
         ]
     }
 }

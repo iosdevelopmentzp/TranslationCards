@@ -62,6 +62,25 @@ extension UIView {
 }
 
 extension UIView {
+    func setAlpha(_ alpha: CGFloat, withAnimation: Bool = true, duration: TimeInterval = 0.2) {
+        guard self.alpha != alpha else { return }
+        
+        let action = { [weak self] in
+            self?.alpha = alpha
+        }
+        
+        guard withAnimation else {
+            action()
+            return
+        }
+        
+        UIView.animate(withDuration: duration) {
+            action()
+        }
+    }
+}
+
+extension UIView {
     func getHeightConstraint() -> NSLayoutConstraint? {
         var constraint: NSLayoutConstraint?
         constraints.forEach {
