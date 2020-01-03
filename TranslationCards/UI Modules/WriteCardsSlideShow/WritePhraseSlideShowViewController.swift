@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import JJFloatingActionButton
 
 final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideShowRouter, WritePhraseSlideShowViewModel> {
     fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     fileprivate let flowLayout = AnimatedCollectionViewLayout()
     fileprivate let animator = PageAttributesAnimator(scaleRate: 0.2)
+    fileprivate let editCardButton = JJActionItem.initWith(imageType: .edit)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -42,6 +44,18 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
         flowLayout.animator = animator
         flowLayout.scrollDirection = .horizontal
     }
+    
+    override func binding() {
+        super.binding()
+        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
+        
+        viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap)
+    }
+    
+    override func localizable() {
+        super.localizable()
+        editCardButton.titleLabel.text = "Edit card"
+    }
 }
 
 extension WritePhraseSlideShowViewController: UICollectionViewDelegateFlowLayout {
@@ -59,5 +73,11 @@ extension WritePhraseSlideShowViewController: UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
+    }
+}
+
+extension WritePhraseSlideShowViewController: ActionButtonDataSource {
+    func getActionButtons() -> [JJActionItem] {
+        return [editCardButton]
     }
 }

@@ -38,6 +38,7 @@ class WritePhraseView: UIView {
     fileprivate let oneMoreWordButton = UIButton()
     fileprivate var bottomTextFieldConstraint: Constraint?
     fileprivate let textView = TextView()
+    let textViewHeaderLabel = UILabel()
     fileprivate var currentShownTranslate: String?
     
     // MARK: - Rx
@@ -49,6 +50,7 @@ class WritePhraseView: UIView {
         setupConstraints()
         setupView()
         binding()
+        localizable()
     }
     
     required init?(coder: NSCoder) {
@@ -68,11 +70,19 @@ class WritePhraseView: UIView {
         let padding: CGFloat = 16.0
         addSubview(textView)
         addSubview(headerLabel)
+        addSubview(textViewHeaderLabel)
         textView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
             $0.right.left.equalToSuperview()
             self.bottomTextFieldConstraint = $0.bottom.equalToSuperview().constraint
             $0.top.lessThanOrEqualTo(self.headerLabel.snp.bottom)
+        }
+        
+        textViewHeaderLabel.snp.makeConstraints {[weak self] in
+            guard let self = self else { return }
+            $0.leading.equalTo(self.textView.snp.leading).offset(padding/2)
+            $0.trailing.equalTo(self.textView.snp.trailing).offset(-padding/2)
+            $0.bottom.equalTo(self.textView.snp.top).offset(-padding/4)
         }
 
         headerLabel.snp.makeConstraints {[weak self] in
@@ -110,6 +120,10 @@ class WritePhraseView: UIView {
         
         // oneMoreWordButton
         oneMoreWordButton.setImage(.image(withType: .plus1, renderringMode: .alwaysOriginal), for: .normal)
+        
+        // textViewHeaderLabel
+        textViewHeaderLabel.textColor = .placeholderLightColor
+        textViewHeaderLabel.font = .font(type: .roboto, weight: .light, size: 12.0)
     }
     
     fileprivate func binding() {
@@ -158,6 +172,10 @@ class WritePhraseView: UIView {
             .disposed(by: disposeBag)
         
         textView.rx.setDelegate(self).disposed(by: disposeBag)
+    }
+    
+    fileprivate func localizable() {
+        textViewHeaderLabel.text = "Try to write a translation"
     }
     
     fileprivate func appendNewWorldIfNeed() {
@@ -254,5 +272,19 @@ class WritePhraseView: UIView {
 extension WritePhraseView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return text.count <= 1 && range.length <= 1 && text != "\n"
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        guard textViewHeaderLabel.alpha != 0.0 else { return }
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.textViewHeaderLabel.alpha = 0.0
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        guard textViewHeaderLabel.alpha != 1.0 && textView.text.isEmpty else { return }
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.textViewHeaderLabel.alpha = 1.0
+        }
     }
 }
