@@ -50,7 +50,6 @@ class WritePhraseView: UIView {
         setupConstraints()
         setupView()
         binding()
-        localizable()
     }
     
     required init?(coder: NSCoder) {
@@ -63,6 +62,8 @@ class WritePhraseView: UIView {
         bottomTextFieldOffset.accept(0)
         parentViewController?.view.endEditing(true)
         self.card = card
+        localizable(withCard: card)
+        textViewHeaderLabel.alpha = 1.0
     }
     
     // MARK: - Private methods
@@ -174,8 +175,8 @@ class WritePhraseView: UIView {
         textView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
-    fileprivate func localizable() {
-        textViewHeaderLabel.text = "Try to write a translation"
+    fileprivate func localizable(withCard card: TranslateCard) {
+        textViewHeaderLabel.text = "Try to write a translation into \(card.language.targetLanguage)"
     }
     
     fileprivate func appendNewWorldIfNeed() {
