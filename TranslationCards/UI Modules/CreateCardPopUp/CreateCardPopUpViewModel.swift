@@ -63,10 +63,11 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             .disposed(by: disposeBag)
 
         user.playlists
-            .subscribe(onNext: { [weak self] (playlistDictionary) in
-                guard let language = self?.language.value, let playlistDictionary = playlistDictionary else { return }
-                guard let playlists = playlistDictionary[language] else { return }
-                self?.userPlaylists.accept(playlists)
+            .map{ [weak self] playlists in
+                guard let language = self?.language.value else { return nil }
+                return playlists?.filter{ $0.language == language } }
+            .subscribe(onNext: { [weak self] (playlists) in
+                self?.userPlaylists.accept(playlists ?? [])
             })
             .disposed(by: disposeBag)
 

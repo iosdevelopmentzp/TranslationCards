@@ -76,18 +76,23 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         
         self.user
             .playlists
-            .subscribe(onNext: { [weak self] (playlisctsDictionary) in
-                guard let playlisctsDictionary = playlisctsDictionary else { return }
-                guard let language = self?.language else { return }
-                let playlists = playlisctsDictionary.filter{ $0.key == language}.first?.value
-                guard let newPlaylists = playlists else { return }
-                self?.playlists.accept(newPlaylists)
-                
-                // set selectedPlaylist first playlist, if selectedPlaylist count == 0
-                guard let firstPlaylist = playlists?.first,
-                    let self = self,
-                    self.selectedPlaylist.value.count == 0 else { return }
-                self.selectedPlaylist.accept([firstPlaylist])
+            .map { [weak self] playlists -> [Playlist]? in
+                guard let language = self?.language else { return nil }
+                return playlists?.filter{ $0.language == language } }
+            .subscribe(onNext: { [weak self] (newPlaylists) in
+                self?.playlists.accept(newPlaylists ?? [])
+            })
+            .disposed(by: disposeBag)
+        
+        playlists
+            .subscribe(onNext: { [weak self] (newPlaylists) in
+                guard let self = self else { return }
+                var oldSelectedPlaylists = self.selectedPlaylist.value
+                oldSelectedPlaylists = oldSelectedPlaylists.filter{ newPlaylists.contains($0) }
+                if oldSelectedPlaylists.count <= 0, let randomPlaylist = newPlaylists.randomElement() {
+                    oldSelectedPlaylists.append(randomPlaylist)
+                }
+                self.selectedPlaylist.accept(oldSelectedPlaylists)
             })
             .disposed(by: disposeBag)
         

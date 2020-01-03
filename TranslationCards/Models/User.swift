@@ -24,7 +24,7 @@ final class User {
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     fileprivate(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
     /// playlists stored using LanguageBind key value.
-    fileprivate(set) var playlists: BehaviorRelay<[LanguageBind: [Playlist]]?> = .init(value: nil)
+    fileprivate(set) var playlists: BehaviorRelay< Set<Playlist>?> = .init(value: nil)
     /// cardsList stored using Playlist  key value.
     fileprivate(set) var cardsList: BehaviorRelay<[Playlist: [TranslateCard]]?> = .init(value: nil)
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
@@ -152,6 +152,29 @@ extension User: ServicesAccessing {
     }
     
     // Playlists
+    func removePlaylist(playlist: Playlist) -> Observable<Void> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let self = self else {
+                observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
+                return Disposables.create()}
+            self.services
+                .realTimeDatabase
+                .removePlaylist(playlist)
+                .subscribe(onNext: { [weak self] (_) in
+                    observer.onNext(())
+                    observer.onCompleted()
+                    guard var oldPlaylists = self?.playlists.value else { return }
+                    oldPlaylists.remove(playlist)
+                    self?.playlists.accept(oldPlaylists)
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+        
+    }
+    
     func copyCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
         return .create { [weak self] (observer) -> Disposable in
             self?.services
@@ -161,8 +184,8 @@ extension User: ServicesAccessing {
                     observer.onNext(())
                     observer.onCompleted()
                     // refresh cards for playlists
-                    self?.playlists.value?[card.language]?.forEach {
-                        if $0.id == newPlaylistId {
+                    self?.playlists.value?.filter{ $0.language == card.language }.forEach {
+                        if $0.language == card.language && $0.id == newPlaylistId {
                             self?.updateCards(forPlaylist: $0)
                         }
                     }
@@ -181,7 +204,7 @@ extension User: ServicesAccessing {
                 .subscribe(onNext: { (_) in
                     observer.onNext(())
                     observer.onCompleted()
-                    self?.playlists.value?[card.language]?.forEach {
+                    self?.playlists.value?.filter{ $0.language == card.language}.forEach {
                         if $0.id == oldPlaylistId || $0.id == newPlaylistId {
                             self?.updateCards(forPlaylist: $0)
                         }
@@ -285,13 +308,18 @@ extension User: ServicesAccessing {
             self.services
                 .realTimeDatabase
                 .getCards(withPlaylist: playlist)
-                .subscribe(onNext: { [weak self] (cards) in
+                .subscribe(onNext: { [weak self, weak playlist] (cards) in
                     observer.onNext(())
                     observer.onCompleted()
-                    guard let self = self else { return }
+                    guard let self = self, let playlist = playlist else { return }
                     var oldCards = self.cardsList.value ?? [:]
                     oldCards[playlist] = cards
                     self.cardsList.accept(oldCards)
+                    if cards.count <= 0 {
+                        self.removePlaylist(playlist: playlist)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
                     }, onError: { (error) in
                         observer.onError(error)
                 })
@@ -315,10 +343,10 @@ extension User: ServicesAccessing {
                     observer.onCompleted()
                     self?.updateLanguages()
                     self?.updatePlaylists(forLanguage: card.language)
-                    guard let playlists = self?.playlists.value?[card.language] else {
+                    guard let playlists = self?.playlists.value else {
                         return
                     }
-                    let playlist = playlists.filter{ $0.id == card.playlistId}.first
+                    let playlist = playlists.filter{ $0.language == card.language}.filter{ $0.id == card.playlistId}.first
                     guard let playlistForReload = playlist else {
                         return
                     }
@@ -351,10 +379,10 @@ extension User: ServicesAccessing {
                     observer.onNext(())
                     observer.onCompleted()
                     card.runtimeEvents.accept(.removed)
-                    guard let playlists = self?.playlists.value?[card.language] else {
+                    guard let playlists = self?.playlists.value else {
                         return
                     }
-                    let playlist = playlists.filter{ $0.id == card.playlistId}.first
+                    let playlist = playlists.filter{ $0.language == card.language}.filter{ $0.id == card.playlistId}.first
                     guard let playlistForReload = playlist else {
                         return
                     }
@@ -383,8 +411,8 @@ extension User: ServicesAccessing {
     
     // MARK: - Private
     fileprivate func fetchedNewPlaylist(playlist: [Playlist], forLanguage language: LanguageBind) {
-        var oldPlaylists = self.playlists.value ?? [:]
-        oldPlaylists[language] = playlist
+        var oldPlaylists = self.playlists.value ?? []
+        playlist.forEach{ oldPlaylists.insert($0)}
         self.playlists.accept(oldPlaylists)
     }
     
