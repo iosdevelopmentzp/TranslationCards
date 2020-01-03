@@ -160,8 +160,7 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         let verticalAnimation2 = CABasicAnimation.animation(withKeyType: .translationY,
                                                             duration: verticalAnimation1.duration * 1.2,
                                                             fromValue: screenSize.height,
-                                                            toValue: 0,
-                                                            delay: 0)
+                                                            toValue: 0)
         createTranslateCardView.targetTextField.layer.add(verticalAnimation2, forKey: "translationYTextFieldTarget")
         createTranslateCardView.translateRealtimeButton.layer.add(verticalAnimation2, forKey: "translationYTranslateButton")
 

@@ -9,12 +9,12 @@
 import UIKit
 
 extension CAAnimationGroup {
-    static func animation(withAnimations animations: [CABasicAnimation], duration: TimeInterval, delay: TimeInterval) -> CAAnimationGroup {
+    static func animation(withAnimations animations: [CABasicAnimation], duration: TimeInterval) -> CAAnimationGroup {
         let group = CAAnimationGroup()
         group.animations = animations
-        group.timingFunction = CAMediaTimingFunction(name: .linear)
         group.fillMode = .forwards
         group.isRemovedOnCompletion = false
+        group.duration = duration
         return group
     }
 }

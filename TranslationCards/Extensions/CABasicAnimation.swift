@@ -14,6 +14,7 @@ enum AnimationKeyType: String {
     case opacity = "opacity"
     case positionX = "position.x"
     case positionY = "position.y"
+    case backgroundColor = "backgroundColor"
 }
 
 extension CABasicAnimation {
@@ -22,17 +23,18 @@ extension CABasicAnimation {
     /// timingFunction = CAMediaTimingFunction(name: .linear) 
     /// fillMode = .forwards
     /// isRemovedOnCompletion = false
-    static func animation(withKeyType key: AnimationKeyType, duration: TimeInterval, fromValue: Any?, toValue: Any?, delay: TimeInterval = 0) -> CABasicAnimation {
+    static func animation(withKeyType key: AnimationKeyType, duration: TimeInterval, fromValue: Any?, toValue: Any?, beginTime: TimeInterval? = nil) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: key.rawValue)
         animation.duration = duration
-        animation.beginTime = CACurrentMediaTime() + delay
+        if let beginTime = beginTime {
+            animation.beginTime = beginTime
+        }
         if let fromValue = fromValue {
             animation.fromValue = fromValue
         }
         if let toValue = toValue {
             animation.toValue = toValue
         }
-        animation.timingFunction = CAMediaTimingFunction(name: .linear)
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         return animation

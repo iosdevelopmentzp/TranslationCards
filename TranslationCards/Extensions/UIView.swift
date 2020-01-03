@@ -60,3 +60,23 @@ extension UIView {
         layer.mask = mask
     }
 }
+
+extension UIView {
+    func getHeightConstraint() -> NSLayoutConstraint? {
+        var constraint: NSLayoutConstraint?
+        constraints.forEach {
+            guard $0.firstAttribute == .height else { return }
+            constraint = $0
+        }
+        return constraint
+    }
+    
+    func getWidthConstraint() -> NSLayoutConstraint? {
+        var constraint: NSLayoutConstraint?
+        constraints.forEach {
+            guard $0.firstAttribute == .width else { return }
+            constraint = $0
+        }
+        return constraint
+    }
+}

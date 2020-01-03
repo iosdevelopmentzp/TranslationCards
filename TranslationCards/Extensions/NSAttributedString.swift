@@ -51,4 +51,16 @@ extension NSAttributedString {
             .font: UIFont.font(type: .roboto, weight: .regular, size: 23)
         ]
     }
+    
+    static var writeSlideShowTargetText: [NSAttributedString.Key : Any] {
+        [.foregroundColor: UIColor.white,
+         .font: UIFont.font(type: .roboto, weight: .regular, withItalic: false, size: 15.0)
+        ]
+    }
+    
+    static var writeSlideShowTranslateText: [NSAttributedString.Key : Any] {
+        [.foregroundColor: UIColor.green,
+         .font: UIFont.font(type: .roboto, weight: .regular, withItalic: true, size: 15.0)
+        ]
+    }
 }

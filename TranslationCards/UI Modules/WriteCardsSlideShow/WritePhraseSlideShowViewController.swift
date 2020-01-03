@@ -29,10 +29,10 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
             .disposed(by: disposeBag)
         collectionView.register(WritePhraseCell.self, forCellWithReuseIdentifier: WritePhraseCell.typeName)
         
-        viewModel.cardsDataSource.bind(to: collectionView.rx.items(cellIdentifier: WritePhraseCell.typeName, cellType: WritePhraseCell.self)) {
-            [weak self] row, card, cell in
-            // TODO - configure cell
+        viewModel.cardsDataSource.bind(to: collectionView.rx.items(cellIdentifier: WritePhraseCell.typeName, cellType: WritePhraseCell.self)) { row, card, cell in
+            cell.configureWithCard(card)
         }
+        .disposed(by: disposeBag)
     }
     
     override func setupView() {

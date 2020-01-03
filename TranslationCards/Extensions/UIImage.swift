@@ -13,6 +13,7 @@ enum ImageType: String {
     case to
     case speaker
     case plus
+    case plus1
     case edit
     case leftArrow
     case `switch`
