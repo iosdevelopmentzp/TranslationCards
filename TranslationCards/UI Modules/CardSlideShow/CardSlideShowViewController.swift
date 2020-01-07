@@ -40,7 +40,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
             cell.configure(withCard: card, withReverse: self.viewModel.reverseMode.value)
             cell.speakData
                 .skip(1)
-                .compactMap{ $0 }
+                .unwrap()
                 .bind(to: self.viewModel.cellSpeechData)
                 .disposed(by: cell.rx.reuseBag)
         }

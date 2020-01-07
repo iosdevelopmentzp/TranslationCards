@@ -68,7 +68,7 @@ class CardView: UIView {
             .disposed(by: disposeBag)
         
         Observable.merge(faceSideView.speakData.asObservable(), backSideView.speakData.asObservable())
-            .compactMap{ $0 }
+            .unwrap()
             .subscribe(onNext: { [weak self] (dataSpeak) in
                 self?.speakData.accept(dataSpeak)
             })

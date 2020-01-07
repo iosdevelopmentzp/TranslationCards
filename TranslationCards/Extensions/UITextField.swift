@@ -13,7 +13,7 @@ import RxCocoa
 extension UITextField {
     func preventSpaces(disposeBag: DisposeBag) {
         rx.text
-            .compactMap { $0 }
+            .unwrap()
             .map { $0.components(separatedBy: .whitespaces).joined() }
             .bind(to: rx.text)
             .disposed(by: disposeBag)

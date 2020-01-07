@@ -45,7 +45,7 @@ class CardCell: UICollectionViewCell {
         
         Observable<SpeechData?>
             .merge(cardView.faceSideView.speakData.asObservable(), cardView.backSideView.speakData.asObservable())
-            .compactMap{$0}
+            .unwrap()
             .subscribe(onNext: { [weak self] (speakData) in
                 self?.speakData.accept(speakData)
             })

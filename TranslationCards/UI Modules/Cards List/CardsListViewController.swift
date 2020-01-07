@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxDataSources
 import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
@@ -14,6 +15,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     fileprivate lazy var refreshHandler = RefreshHandler(view: tableView)
     fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
     fileprivate let startWritePhraseSlideShowButton = JJActionItem.initWith(imageType: .write)
+    fileprivate let switchEditModeButton = JJActionItem.initWith(imageType: .xButton, renderringMode: .alwaysOriginal)
     fileprivate let choicePlaylistButton = UIButton(type: .custom)
     fileprivate var reverseButton = UIButton(type: .custom)
     fileprivate var shuffleButton = UIButton(type: .custom)
@@ -28,37 +30,44 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         }
     }
     
+    fileprivate lazy var dataSource: RxTableViewSectionedReloadDataSource<CardsListViewModel.Section> = {
+        let dataSource = RxTableViewSectionedReloadDataSource<CardsListViewModel.Section>(configureCell: {
+            [weak self] (_, tableView, indexPath, cellModel) -> UITableViewCell in
+            guard let self = self else { return UITableViewCell() }
+            let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.typeName, for: indexPath)
+            self.configureCell(cell, withCellModel: cellModel, isReverse: self.viewModel.reverseMode.value)
+            return cell
+        })
+        dataSource.canEditRowAtIndexPath = { [weak self] dataSource, indexPath in
+            return self?.viewModel.isEditMode.value ?? false
+        }
+        return dataSource
+    }()
+    
     override func setupTableView() {
         super.setupTableView()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
-        tableView
-            .rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        tableView.rx.itemSelected.subscribe(onNext: { [weak self] (indexPath) in
-            self?.tableView.deselectRow(at: indexPath, animated: true) })
-            .disposed(by: disposeBag)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.typeName)
         
         viewModel
-            .cardsDataSource
-            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) { [weak self]
-                (row, element, cell) in
-                guard let self = self else { return }
-                let isReverseMode = self.viewModel.reverseMode.value
-                let currentLanguage = isReverseMode ? element.language.targetLanguage : element.language.sourceLanguage
-                cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)
-                cell.textLabel?.text = isReverseMode == true ? element.targetPhrase : element.sourcePhrase
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.textColor = .white
-                cell.backgroundColor = .clear }
+            .sections
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
+        tableView.rx
+            .itemSelected
+            .execute({ [weak self] (indexPath) in
+                self?.tableView.deselectRow(at: indexPath, animated: true)
+            })
+            .bind(to: viewModel.didSelectedItemEvent)
             .disposed(by: disposeBag)
         
         tableView.rx
-            .itemSelected
-            .bind(to: viewModel.didSelectedItemEvent)
+            .itemDeleted
+            .asObservable()
+            .bind(to: viewModel.deleteIndexPath)
             .disposed(by: disposeBag)
     }
     
@@ -101,6 +110,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         
         startCardSlideShowButton.titleLabel.text = "Start slide show"
         startWritePhraseSlideShowButton.titleLabel.text = "Start write slide show"
+        switchEditModeButton.titleLabel.text = "Switch edit mode"
         choicePlaylistButton.setTitle("Choose playlist", for: .normal)
     }
     
@@ -109,6 +119,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         viewModel.bindWith(startSlideShowButtonPressed: startCardSlideShowButton.rx.tap)
         viewModel.bindWith(playlistsSelectionEvent: choicePlaylistButton.rx.tap)
         viewModel.bindWith(writePhraseSlideShowPressed: startWritePhraseSlideShowButton.rx.tap)
+        viewModel.bindWith(switchEditModePressed: switchEditModeButton.rx.tap)
         
         refreshHandler.refresh
             .subscribe(onNext: { [weak self] (_) in
@@ -139,9 +150,25 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
                 self?.updateNavigationButtonsTintColor()
             })
             .disposed(by: disposeBag)
+        
+        viewModel
+            .isEditMode
+            .subscribe(onNext: { [weak self] (isEditMode) in
+                self?.tableView.setEditing(isEditMode, animated: true)
+            })
+        .disposed(by: disposeBag)
     }
     
     // MARK: - Private
+    fileprivate func configureCell(_ cell: UITableViewCell, withCellModel cellModel: CardsListViewModel.Cell, isReverse: Bool) {
+        let currentLanguage = isReverse ? cellModel.item.language.targetLanguage : cellModel.item.language.sourceLanguage
+        cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)
+        cell.textLabel?.text = isReverse == true ? cellModel.item.targetPhrase : cellModel.item.sourcePhrase
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.textColor = .white
+        cell.backgroundColor = .clear
+    }
+    
     fileprivate func updateNavigationButtonsTintColor() {
         reverseButton.tintColor = self.reverseButton.isSelected ? .white : .innactiveButtonTitleColor
         shuffleButton.tintColor = self.shuffleButton.isSelected ? .white : .innactiveButtonTitleColor
@@ -157,6 +184,6 @@ extension CardsListViewController: UITableViewDelegate {
 
 extension CardsListViewController: ActionButtonDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [startCardSlideShowButton, startWritePhraseSlideShowButton]
+        return [startCardSlideShowButton, startWritePhraseSlideShowButton, switchEditModeButton]
     }
 }

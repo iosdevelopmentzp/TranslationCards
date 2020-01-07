@@ -23,9 +23,9 @@ extension JJActionItem {
         item.layer.shadowRadius = CGFloat(2)
     }
     
-    static func initWith(imageType: ImageType) -> JJActionItem {
+    static func initWith(imageType: ImageType, renderringMode: UIImage.RenderingMode = .alwaysTemplate) -> JJActionItem {
         let item = JJActionItem()
-        let image = UIImage.image(withType: imageType)
+        let image = UIImage.image(withType: imageType, renderringMode: renderringMode)
         item.buttonImage = image
         return item
     }

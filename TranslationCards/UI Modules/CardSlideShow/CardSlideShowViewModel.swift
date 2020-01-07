@@ -110,7 +110,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     
     fileprivate func binding() {
         cellSpeechData
-            .compactMap{$0}
+            .unwrap()
             .subscribe(onNext: { [weak self]  (speechData) in
                 self?.services.speechService.speakText(speechData)
             })

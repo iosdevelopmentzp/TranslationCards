@@ -12,14 +12,19 @@ import RxCocoa
 import RSSelectionMenu
 
 final class CardsListViewModel: ViewModel<CardsListRouter> {
-    let cardsDataSource = BehaviorRelay<[TranslateCard]>.init(value: [])
-    let didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
-    lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
-    let fetchData: BehaviorRelay<Void> = .init(value: ())
-    let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
+    // output
+    let sections: BehaviorRelay<[Section]> = BehaviorRelay(value: [])
+    let isEditMode = BehaviorRelay.init(value: false)
     let reverseMode = BehaviorRelay.init(value: false)
     let shuffleMode = BehaviorRelay.init(value: false)
+    let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
+    lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
     
+    // input
+    let didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
+    let fetchData: BehaviorRelay<Void> = .init(value: ())
+    let deleteIndexPath: BehaviorRelay<IndexPath?> = .init(value: nil)
+
     fileprivate var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
     fileprivate var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
     fileprivate let language: LanguageBind
@@ -36,11 +41,29 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         // selected item event
         didSelectedItemEvent
             .subscribe(onNext: { [weak self] (indexPath) in
-                guard let indexPath = indexPath, let cards =  self?.cardsDataSource.value,
+                guard let indexPath = indexPath, let cards =  self?.sections.value.first?.mapToCards,
                     indexPath.row < cards.count, indexPath.row >= 0 else { return }
                 let card = cards[indexPath.row]
                 guard let self = self else { return }
                 self.router.route(to: .cardView(card: card, user: self.user))
+            })
+            .disposed(by: disposeBag)
+        
+        // delete event
+        deleteIndexPath
+            .unwrap()
+            .subscribe(onNext: { [weak self] (indexPath) in
+                guard let cards = self?.sections.value.first?.mapToCards else { return }
+                let card = cards[indexPath.row]
+                self?.startActivityIndicator.accept(true)
+                self?.user
+                    .removeCard(card)
+                    .subscribe(onNext: { [weak self] (_) in
+                        self?.startActivityIndicator.accept(false)
+                        }, onError: { (error) in
+                            self?.errorHandler(description: "Failed delete card", error: error, withAlert: true)
+                    })
+                    .disposed(by: self?.disposeBag ?? DisposeBag())
             })
             .disposed(by: disposeBag)
         
@@ -70,7 +93,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 }
                 guard let self = self else { return }
                 cards = self.sortCards(cards)
-                self.cardsDataSource.accept(cards)
+                self.updateSectionWithCards(cards)
             })
             .disposed(by: disposeBag)
         
@@ -99,7 +122,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         selectedPlaylist
             .subscribe(onNext: { [weak self] (playlists) in
                 guard playlists.count > 0 else {
-                    self?.cardsDataSource.accept([])
+                    self?.sections.accept([Section(items: [])])
                     return
                 }
                 self?.fetchCardsForSelectedPlaylists(playlists)
@@ -108,24 +131,27 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         
         reverseMode.skip(1).subscribe(onNext: { [weak self] (_) in
             guard let self = self else { return }
-            self.cardsDataSource.accept(self.cardsDataSource.value) })
+            self.reloadData() })
             .disposed(by: disposeBag)
         
         shuffleMode
             .skip(1)
             .subscribe(onNext: { [weak self] (shuffleMode) in
                 guard let self = self else { return }
-                let cards = shuffleMode ? self.cardsDataSource.value.shuffled() : self.sortCards(self.cardsDataSource.value)
-                self.cardsDataSource.accept(cards)
+                let oldCars = self.sections.value.first?.mapToCards ?? []
+                let newCards = shuffleMode ? oldCars.shuffled() : self.sortCards(oldCars)
+                self.updateSectionWithCards(newCards)
             })
         .disposed(by: disposeBag)
     }
     
     func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
         startShowPressed
-            .withLatestFrom(cardsDataSource)
+            .withLatestFrom(sections)
+            .compactMap{ $0.first?.mapToCards }
             .filter { $0.count > 0 }
-            .subscribe(onNext: { [weak self] (cards) in
+            .subscribe(onNext: { [weak self] (sections) in
+                let cards = sections
                 self?.router.route(to: .slideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
             })
         .disposed(by: disposeBag)
@@ -142,7 +168,8 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     
     func bindWith(writePhraseSlideShowPressed: ControlEvent<Void>) {
         writePhraseSlideShowPressed
-            .withLatestFrom(cardsDataSource)
+            .withLatestFrom(sections)
+            .compactMap{ $0.first?.mapToCards }
             .filter{ $0.count > 0}
             .subscribe(onNext: { [weak self] (cards) in
                 guard let self = self else { return }
@@ -165,7 +192,25 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             .disposed(by: disposeBag)
     }
     
+    func bindWith(switchEditModePressed: ControlEvent<Void>) {
+        switchEditModePressed
+            .compactMap{ [weak self] (_) -> Bool in
+                guard let self = self else { return false}
+                return !self.isEditMode.value }
+            .bind(to: isEditMode)
+            .disposed(by: disposeBag)
+    }
+    
     // MARK: - Private
+    fileprivate func reloadData() {
+        sections.accept(sections.value)
+    }
+    
+    fileprivate func updateSectionWithCards(_ cards: [TranslateCard]) {
+        let items = cards.map{ Cell.init(item: $0)}
+        sections.accept([Section(items: items)])
+    }
+    
     fileprivate func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
         var sortedCards: Array<TranslateCard> = []
         let isReverse = reverseMode.value

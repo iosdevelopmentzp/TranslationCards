@@ -69,7 +69,7 @@ class TextFieldWithTopPlaceholder: UIView {
         textField
             .rx
             .text
-            .compactMap { $0 }
+            .unwrap()
             .bind(to: inputText)
             .disposed(by: disposeBag)
     }

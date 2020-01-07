@@ -68,7 +68,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         viewModel
             .textFieldAlertModel
             .observeOn(MainScheduler.instance)
-            .compactMap { $0 }
+            .unwrap()
             .subscribe(onNext: { [weak self] (model) in
                 let alert = TextFieldAlertBuilder.buildTextFieldAlert(for: model)
                 self?.present(alert, animated: true, completion: nil)

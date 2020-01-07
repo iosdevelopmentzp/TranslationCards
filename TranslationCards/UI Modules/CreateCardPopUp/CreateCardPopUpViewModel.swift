@@ -191,7 +191,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter> {
             }
         case .create:
             selectedPlaylist
-                .compactMap { $0 }
+                .unwrap()
                 .withLatestFrom(inputData)
                 .subscribe(onNext: { [weak self] (sourcePhrase, targetPhrase) in
                     guard !sourcePhrase.isEmpty, !targetPhrase.isEmpty else {

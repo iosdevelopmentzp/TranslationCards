@@ -124,7 +124,7 @@ class WritePhraseView: UIView {
     
     fileprivate func binding() {
         
-        card.compactMap{ $0 }
+        card.unwrap()
             .subscribe(onNext: { [weak self] (card) in
                 self?.headerLabel.attributedText = NSAttributedString(string: card.sourcePhrase,
                                                                       attributes: NSAttributedString.writeSlideShowNativeText)
@@ -156,7 +156,7 @@ class WritePhraseView: UIView {
         
         textView.rx
             .text
-            .compactMap { $0 }
+            .unwrap()
             .map { [weak self] in
                 if !$0.isEmpty {
                     self?.textViewHeaderLabel.setAlpha(0.0)

@@ -40,7 +40,7 @@ final class PickerViewModel: ViewModel<PickerRouter> {
             .disposed(by: disposeBag)
         
         finishLanguage
-            .compactMap { $0 }
+            .unwrap()
             .subscribe(onNext: { [weak callBackLanguage] (language) in
                 callBackLanguage?.accept(language)
             })

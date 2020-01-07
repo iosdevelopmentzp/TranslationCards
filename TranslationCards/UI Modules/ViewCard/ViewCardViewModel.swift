@@ -40,7 +40,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     
     func bind(speakData: BehaviorRelay<SpeechData?>) {
         speakData
-            .compactMap{ $0 }
+            .unwrap()
             .subscribe(onNext: { [weak self] (speakData) in
             self?.services.speechService.speakText(speakData)
         })

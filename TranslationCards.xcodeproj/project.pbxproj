@@ -77,6 +77,8 @@
 		3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */; };
 		3B6CF09F239E5CFA007CDA17 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF09E239E5CFA007CDA17 /* Reusable.swift */; };
 		3B6CF0A4239E7D4C007CDA17 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */; };
+		3B6F025323C4B7E50065AEF6 /* CardsListViewModelс+Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F025223C4B7E50065AEF6 /* CardsListViewModelс+Section.swift */; };
+		3B6F025523C4F0300065AEF6 /* ObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F025423C4F0300065AEF6 /* ObservableType.swift */; };
 		3B825B8B2386885B009D62E8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B892386885B009D62E8 /* Services.swift */; };
 		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
 		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
@@ -239,6 +241,8 @@
 		3B6CF09C239E33CC007CDA17 /* SpeechLanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechLanguageType.swift; sourceTree = "<group>"; };
 		3B6CF09E239E5CFA007CDA17 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		3B6F025223C4B7E50065AEF6 /* CardsListViewModelс+Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CardsListViewModelс+Section.swift"; sourceTree = "<group>"; };
+		3B6F025423C4F0300065AEF6 /* ObservableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableType.swift; sourceTree = "<group>"; };
 		3B825B892386885B009D62E8 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -436,6 +440,7 @@
 				3B6CF0A3239E7D4C007CDA17 /* UIViewController.swift */,
 				3B25821723B64E6000B52BEA /* UIViewController+PresentSelectMenuController.swift */,
 				3B94F6CD23BE2EE700303968 /* UIWindow.swift */,
+				3B6F025423C4F0300065AEF6 /* ObservableType.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -551,6 +556,7 @@
 			children = (
 				3B5A3BB92396A345009110A7 /* CardsListViewController.swift */,
 				3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */,
+				3B6F025223C4B7E50065AEF6 /* CardsListViewModelс+Section.swift */,
 				3B5A3BB82396A345009110A7 /* CardsListRouter.swift */,
 			);
 			path = "Cards List";
@@ -1112,6 +1118,7 @@
 				3B031E11239BBE5E00946F8D /* CGFloat.swift in Sources */,
 				3B6CF09F239E5CFA007CDA17 /* Reusable.swift in Sources */,
 				3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */,
+				3B6F025523C4F0300065AEF6 /* ObservableType.swift in Sources */,
 				3BEE43D02397DB0A008F35AA /* UIImage.swift in Sources */,
 				3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */,
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
@@ -1134,6 +1141,7 @@
 				3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */,
 				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
 				3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */,
+				3B6F025323C4B7E50065AEF6 /* CardsListViewModelс+Section.swift in Sources */,
 				3BC52C3E238FF952006FB7F8 /* CreateCardPopUpRouter.swift in Sources */,
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,

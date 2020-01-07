@@ -25,6 +25,7 @@ enum ImageType: String {
     case shuffle
     case write
     case dotArrow
+    case xButton
 }
 
 extension UIImage {
