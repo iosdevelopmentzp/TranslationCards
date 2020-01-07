@@ -30,14 +30,17 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         }
     }
     
-    fileprivate lazy var dataSource: RxTableViewSectionedReloadDataSource<CardsListViewModel.Section> = {
-        let dataSource = RxTableViewSectionedReloadDataSource<CardsListViewModel.Section>(configureCell: {
-            [weak self] (_, tableView, indexPath, cellModel) -> UITableViewCell in
+    fileprivate lazy var dataSource: RxTableViewSectionedAnimatedDataSource<CardsListViewModel.Section> = {
+        let animationConfiguration = AnimationConfiguration(insertAnimation: .right, reloadAnimation: .fade, deleteAnimation: .left)
+        let dataSource = RxTableViewSectionedAnimatedDataSource<CardsListViewModel.Section>(animationConfiguration: animationConfiguration, decideViewTransition: { [weak self] (_, tableView, changeSet) -> ViewTransition in
+            return self?.transition(forChangeSet: changeSet) ?? .reload
+        },  configureCell: { [weak self] (_, tableView, indexPath, cellModel) -> UITableViewCell in
             guard let self = self else { return UITableViewCell() }
             let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.typeName, for: indexPath)
             self.configureCell(cell, withCellModel: cellModel, isReverse: self.viewModel.reverseMode.value)
             return cell
         })
+        
         dataSource.canEditRowAtIndexPath = { [weak self] dataSource, indexPath in
             return self?.viewModel.isEditMode.value ?? false
         }
@@ -160,6 +163,15 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     }
     
     // MARK: - Private
+    fileprivate func transition(forChangeSet set: [Changeset<CardsListViewModel.Section>]) -> ViewTransition {
+        var isAnimate: ViewTransition = .animated
+        let sectionWhereChangeItemsMoreThenOne = set.first{ $0.insertedItems.count > 1 || $0.deletedItems.count > 1 || $0.updatedItems.count > 1 }
+        if sectionWhereChangeItemsMoreThenOne != nil {
+            isAnimate = .reload
+        }
+        return isAnimate
+    }
+    
     fileprivate func configureCell(_ cell: UITableViewCell, withCellModel cellModel: CardsListViewModel.Cell, isReverse: Bool) {
         let currentLanguage = isReverse ? cellModel.item.language.targetLanguage : cellModel.item.language.sourceLanguage
         cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)

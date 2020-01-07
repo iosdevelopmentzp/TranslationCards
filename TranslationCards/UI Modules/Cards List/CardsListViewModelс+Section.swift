@@ -31,21 +31,20 @@ extension CardsListViewModel {
             return lhs.item.id == rhs.item.id
         }
     }
-
-    struct Section: SectionModelType {
-
+    
+    struct Section {
+        var header: String
         var items: [Cell]
-        var mapToCards: [TranslateCard] {
-            return items.map{ $0.item }
-        }
+    }
+}
 
-        init(items: [Cell]) {
-            self.items = items
-        }
-
-        init(original: Section, items: [Cell]) {
-            self = original
-            self.items = items
-        }
+extension CardsListViewModel.Section: AnimatableSectionModelType {
+    var identity: String {
+        return header
+    }
+    
+    init(original: CardsListViewModel.Section, items: [CardsListViewModel.Cell]) {
+        self = original
+        self.items = items
     }
 }

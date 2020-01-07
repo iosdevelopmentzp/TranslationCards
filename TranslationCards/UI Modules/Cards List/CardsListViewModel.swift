@@ -41,9 +41,9 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         // selected item event
         didSelectedItemEvent
             .subscribe(onNext: { [weak self] (indexPath) in
-                guard let indexPath = indexPath, let cards =  self?.sections.value.first?.mapToCards,
-                    indexPath.row < cards.count, indexPath.row >= 0 else { return }
-                let card = cards[indexPath.row]
+                guard let indexPath = indexPath,
+                    let card =  self?.sections.value.first?.items[indexPath.row].item
+                    else { return }
                 guard let self = self else { return }
                 self.router.route(to: .cardView(card: card, user: self.user))
             })
@@ -53,8 +53,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         deleteIndexPath
             .unwrap()
             .subscribe(onNext: { [weak self] (indexPath) in
-                guard let cards = self?.sections.value.first?.mapToCards else { return }
-                let card = cards[indexPath.row]
+                guard let card = self?.sections.value.first?.items[indexPath.row].item else { return }
                 self?.startActivityIndicator.accept(true)
                 self?.user
                     .removeCard(card)
@@ -122,7 +121,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         selectedPlaylist
             .subscribe(onNext: { [weak self] (playlists) in
                 guard playlists.count > 0 else {
-                    self?.sections.accept([Section(items: [])])
+                    self?.updateSectionWithCards([])
                     return
                 }
                 self?.fetchCardsForSelectedPlaylists(playlists)
@@ -138,8 +137,8 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             .skip(1)
             .subscribe(onNext: { [weak self] (shuffleMode) in
                 guard let self = self else { return }
-                let oldCars = self.sections.value.first?.mapToCards ?? []
-                let newCards = shuffleMode ? oldCars.shuffled() : self.sortCards(oldCars)
+                let oldCards = self.sections.value.first?.items.map{ $0.item } ?? []
+                let newCards = shuffleMode ? oldCards.shuffled() : self.sortCards(oldCards)
                 self.updateSectionWithCards(newCards)
             })
         .disposed(by: disposeBag)
@@ -148,7 +147,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
         startShowPressed
             .withLatestFrom(sections)
-            .compactMap{ $0.first?.mapToCards }
+            .compactMap{ $0.first?.items.map{ $0.item } }
             .filter { $0.count > 0 }
             .subscribe(onNext: { [weak self] (sections) in
                 let cards = sections
@@ -169,7 +168,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     func bindWith(writePhraseSlideShowPressed: ControlEvent<Void>) {
         writePhraseSlideShowPressed
             .withLatestFrom(sections)
-            .compactMap{ $0.first?.mapToCards }
+            .compactMap{ $0.first?.items.map{ $0.item }  }
             .filter{ $0.count > 0}
             .subscribe(onNext: { [weak self] (cards) in
                 guard let self = self else { return }
@@ -207,8 +206,10 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
     }
     
     fileprivate func updateSectionWithCards(_ cards: [TranslateCard]) {
+        let section = sections.value.first ?? Section(header: "Cards", items: [])
         let items = cards.map{ Cell.init(item: $0)}
-        sections.accept([Section(items: items)])
+        let newSection = Section(original: section, items: items)
+        sections.accept([newSection])
     }
     
     fileprivate func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
