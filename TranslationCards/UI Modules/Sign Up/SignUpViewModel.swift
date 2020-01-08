@@ -26,13 +26,13 @@ final class SignUpViewModel: ViewModel<SignUpRouter> {
                     .bind(to: loginName)
                     .disposed(by: disposeBag)
                 $1.textField
-                    .preventSpaces(disposeBag: disposeBag)
+                    .rx.preventSpaces().disposed(by: disposeBag)
             case .password:
                 $1.inputText
                     .bind(to: password)
                     .disposed(by: disposeBag)
                 $1.textField
-                    .preventSpaces(disposeBag: disposeBag)
+                    .rx.preventSpaces().disposed(by: disposeBag)
             case .displayName:
                 $1.inputText
                     .bind(to: displayName)
@@ -59,7 +59,8 @@ final class SignUpViewModel: ViewModel<SignUpRouter> {
                     .subscribe(onNext: {
                         self?.router.route(to: .choiseLanguage)
                         self?.startActivityIndicator.accept(false)
-                    }, onError: { (error) in
+                    }, onError: { [weak self] (error) in
+                        self?.errorHandler(description: "Failed attempt to sign up user", error: error, withAlert: true)
                         self?.startActivityIndicator.accept(false)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())

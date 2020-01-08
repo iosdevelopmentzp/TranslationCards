@@ -41,16 +41,20 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Private
-    fileprivate func fetchRemoteUser(withId userId: String) {
+    
+    func fetchRemoteUser(withId userId: String) -> Observable<Void> {
         database
             .fetchUser(withUserId: userId)
-            .subscribe(onNext: { [weak self] (user) in
+            .execute({ [weak self] (user) in
                 self?.user.accept(user)
-                }, onError: { [weak self] (error) in
-                    debugPrint("Failed fetch remote user, with error \(error)")
-                    self?.user.accept(nil)
             })
-            .disposed(by: disposeBag)
+            .flatMap({ (_) -> Observable<Void> in
+                return .just(())
+            })
+            .catchError({ [weak self] (error) -> Observable<Void> in
+                debugPrint("Failed fetch remote user, with error \(error)")
+                self?.user.accept(nil)
+                return .error(error)
+            })
     }
 }

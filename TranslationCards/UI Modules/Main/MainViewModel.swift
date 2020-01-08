@@ -45,15 +45,12 @@ final class MainViewModel: ViewModel<MainRouter> {
     func bind(logoutEvent: ControlEvent<Void>) {
         logoutEvent
             .subscribe(onNext: {[weak self] _ in
-                self?.startActivityIndicator.accept(true)
                 self?.services
                     .auth
                     .signOut()
                     .subscribe(onNext: { [weak self] _ in
                         self?.user = nil
-                        self?.startActivityIndicator.accept(false)
                         }, onError: { [weak self] (error) in
-                            self?.startActivityIndicator.accept(false)
                             self?.errorHandler(description: "Failed attempt to sign out.", error: error, withAlert: true)
                     })
                     .disposed(by: self?.disposeBag ?? DisposeBag())

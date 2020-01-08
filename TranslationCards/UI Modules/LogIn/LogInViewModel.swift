@@ -10,63 +10,59 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class LogInViewModel: ViewModel<LogInRouter> {
+protocol LogInViewModelInput {
+    var logInText: PublishSubject<String> { get set}
+    var passwordText: PublishSubject<String> { get set }
+    var logInAction: PublishSubject<Void> { get set }
+    var signUpAction: PublishSubject<Void> { get set}
+}
+protocol LogInViewModelOutput {
+    var isValidetText: BehaviorRelay<Bool> { get set}
+}
+protocol LogInViewModelType: LogInViewModelInput & LogInViewModelOutput {
+    var input: LogInViewModelInput { get }
+    var output: LogInViewModelOutput { get }
+}
+
+extension LogInViewModelType {
+    var input: LogInViewModelInput { return self}
+    var output: LogInViewModelOutput { return self}
+}
+
+final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelInput, LogInViewModelOutput, LogInViewModelType {
     
-    var isValideText = BehaviorRelay.init(value: false)
+    var logInAction = PublishSubject<Void>()
+    var logInText = PublishSubject<String>()
+    var passwordText = PublishSubject<String>()
+    var signUpAction = PublishSubject<Void>()
+    var isValidetText = BehaviorRelay<Bool>.init(value: false)
     
-    // MARK: - Public methods
-    func bind(withLogin login: ControlProperty<String?>,
-              withPassword password: ControlProperty<String?>,
-              didPressButton: ControlEvent<Void>) {
+    private var inputData: Observable<(String, String)> {
+        return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver())
+    }
+
+    override init() {
+        super.init()
         
-        #if DEBUG
-        login.onNext("dima@gmail.com")
-        password.onNext("testtest")
-        #endif
-        
-        // prevent spaces
-        [login, password].forEach {
-            $0.orEmpty
-                .map { $0.components(separatedBy: .whitespaces).joined() }
-                .bind(to: $0)
-                .disposed(by: disposeBag)
-        }
-        
-        // sig in action
-        let userInputs = Observable.combineLatest(login.orEmpty, password.orEmpty)
-        didPressButton
-            .withLatestFrom(userInputs)
+        logInAction
+            .withLatestFrom(inputData)
             .subscribe(onNext: { [weak self] (login, password) in
-                self?.startActivityIndicator.accept(true)
-                self?.services.auth.signIn(withEmail: login, password: password)
-                    .subscribe(onNext: { (_) in
-                        self?.startActivityIndicator.accept(false)
-                    }, onError: { (error) in
-                        self?.startActivityIndicator.accept(false)
-                    })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
+                self?.tryToSignIn(login: login, password: password)
             })
             .disposed(by: disposeBag)
-        
-        // validate input
-        userInputs
+ 
+        inputData
             .map { (login, password) -> Bool in
                 return (login.isEmail && (password.count >= 7))}
-            .bind(to: isValideText)
+            .bind(to: isValidetText)
             .disposed(by: disposeBag)
-    }
-    
-    func bind(didPressSignUpButton: ControlEvent<Void>) {
-        didPressSignUpButton
-            .subscribe(onNext: { [weak self] in
+        
+        signUpAction
+            .subscribe(onNext: { [weak self] (_) in
                 self?.router.route(to: .signUp)
             })
-        .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Override
-    override func bindWithServices() {
-        super.bindWithServices()
+            .disposed(by: disposeBag)
+        
         services
             .credentials
             .user
@@ -77,6 +73,20 @@ final class LogInViewModel: ViewModel<LogInRouter> {
                     return
                 }
                 self?.router.route(to: .mainView) })
+            .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Private
+    fileprivate func tryToSignIn(login: String, password: String) {
+        self.startActivityIndicator.accept(true)
+        self.services
+            .auth
+            .signIn(withEmail: login, password: password)
+            .catchError { [weak self] (error) -> Observable<()> in
+                self?.errorHandler(description: "Failed attempt to Sign In", error: error, withAlert: true)
+                return .just(()) }
+            .map{ false }
+            .bind(to: self.startActivityIndicator)
             .disposed(by: disposeBag)
     }
 }

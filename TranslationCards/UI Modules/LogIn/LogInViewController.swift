@@ -42,17 +42,18 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     override func setupView() {
         super.setupView()
         view.backgroundColor = .mainBackgroundColor
-        
         stackView.axis = .vertical
         stackView.spacing = 25.0
-        
-        logInButton.backgroundColor = viewModel.isValideText.value ? UIColor.accentColor : UIColor.gray
-
         [passwordTextField, loginTextField].forEach {
             $0.borderWidth = 2.0
             $0.borderColor = .secondaryUiColor
             $0.autocapitalizationType = .none
         }
+        
+        #if DEBUG
+        loginTextField.text = "dima@gmail.com"
+        passwordTextField.text = "testtest"
+        #endif
     }
     
     override func localizable() {
@@ -66,28 +67,55 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     override func binding() {
         super.binding()
-        viewModel
-            .isValideText
+        
+        let input = viewModel.input
+        let output = viewModel.output
+        
+        loginTextField.rx.preventSpaces().disposed(by: disposeBag)
+        passwordTextField.rx.preventSpaces().disposed(by: disposeBag)
+        view.rx.addHideKeyboardTapGesture().disposed(by: disposeBag)
+        
+        loginTextField.rx
+            .text
+            .unwrap()
+            .subscribe(input.logInText)
+            .disposed(by: disposeBag)
+        
+        passwordTextField.rx
+            .text
+            .unwrap()
+            .subscribe(input.passwordText)
+            .disposed(by: disposeBag)
+        
+        logInButton.rx
+            .tap
+            .subscribe(input.logInAction)
+            .disposed(by: disposeBag)
+        
+        signUpButton.rx
+            .tap
+            .subscribe(input.signUpAction)
+            .disposed(by: disposeBag)
+        
+        output
+            .isValidetText
             .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
             .bind(to: logInButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
-        viewModel
-            .isValideText
+        output
+            .isValidetText
             .distinctUntilChanged()
-            .skip(1)
-            .subscribe(onNext: { [weak self] (isValide) in
+            .observeOn(MainScheduler.instance)
+            .map { $0 ? UIColor.accentColor : UIColor.notValidateButton }
+            .subscribe(onNext: { [weak self] (newColor) in
+                guard let currentColor = self?.logInButton.backgroundColor,
+                currentColor != newColor else { return }
                 UIView.animate(withDuration: 0.3) {
-                    self?.logInButton.backgroundColor = isValide ? UIColor.accentColor : UIColor.notValidateButton
+                    self?.logInButton.backgroundColor = newColor
                 }})
             .disposed(by: disposeBag)
-        
-        viewModel
-            .bind(didPressSignUpButton: signUpButton.rx.tap)
-        
-        viewModel.bind(withLogin: loginTextField.rx.text,
-                       withPassword: passwordTextField.rx.text,
-                       didPressButton: logInButton.rx.tap)
     }
 }
 
@@ -127,8 +155,7 @@ extension LogInViewController: TransitionAnimatorMaker {
             action()
             return
         }
-        Timer.scheduledTimer(withTimeInterval: delay,
-                             repeats: false) { (_) in
+        Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { (_) in
             action()
         }
     }

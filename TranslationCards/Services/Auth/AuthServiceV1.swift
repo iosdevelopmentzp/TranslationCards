@@ -22,61 +22,48 @@ final class AuthServiceV1: NSObject, AuthService {
     }
     
     func signIn(withEmail email: String, password: String) -> Observable<Void> {
-        Observable<Void>.create { [weak self] (observer) -> Disposable in
-            self?.auth
-                .rx
-                .signIn(withEmail: email, password: password)
-                .subscribe(onNext: { [weak self] (result) in
-                    
-                    self?.database
-                        .fetchUser(withUserId: result.user.uid)
-                        .subscribe(onNext: { (user) in
-                            self?.credentials.user.accept(user)
-                            observer.onNext(())
-                            observer.onCompleted()
-                        }, onError: { (error) in
-                            observer.onError(error)
-                        })
-                        .disposed(by: self?.disposeBag ?? DisposeBag())
-                    
-                    observer.onNext(())
-                    }, onError: { (error) in
-                        debugPrint(error.localizedDescription)
-                        observer.onError(error)
-                }).disposed(by: self?.disposeBag ?? DisposeBag())
-            return Disposables.create()
-        }
+        return auth.rx
+            .signIn(withEmail: email, password: password)
+            .flatMap { [weak self] (result) -> Observable<Void> in
+                return self?.credentials.fetchRemoteUser(withId: result.user.uid) ?? .just(()) }
     }
     
     func signUp(withEmail email: String, password: String, displayName: String) -> Observable<Void> {
-        Observable<Void>.create { [weak self] (observer) -> Disposable in
-            self?.auth
-                .rx
-                .createUser(withEmail: email, password: password)
-                .subscribe(onNext: { [weak self] (result) in
-                    let user = User(uid: result.user.uid,
-                                    email: result.user.email,
-                                    username: displayName,
-                                    avatarUrl: result.user.photoURL?.absoluteString)
-                    self?.database.createUser(user)
-                        .subscribe(onNext: {
-                            self?.credentials.user.accept(user)
-                            observer.onNext(())
-                        }, onError: { (error) in
+        var userId: String?
+        return auth.rx
+            .createUser(withEmail: email, password: password)
+            .map{ User(uid: $0.user.uid,
+                       email: $0.user.email,
+                       username: displayName,
+                       avatarUrl: $0.user.photoURL?.absoluteString) }
+            .flatMap { [weak self] user -> Observable<User> in
+                userId = user.uid
+                let createUserObserver = self?.database.createUser(user).map{ user }
+                return createUserObserver ?? .just(user) }
+            .flatMap{ [weak self] user -> Observable<Void> in
+                return self?.credentials.fetchRemoteUser(withId: user.uid) ?? .just(()) }
+            .catchError { [weak self] (errorSignUpUser) -> Observable<()> in
+                guard let userId = userId, let user = self?.auth.currentUser, userId == user.uid else {
+                    return .error(errorSignUpUser)
+                }
+                return .create { [weak self] (observer) -> Disposable in
+                    guard let self = self else {
+                        observer.onNext(())
+                        observer.onCompleted()
+                        return Disposables.create() }
+                    self.auth.currentUser?.delete(completion: { (errorDeleteUser) in
+                        if let error = errorDeleteUser {
                             observer.onError(error)
-                        })
-                        .disposed(by: self?.disposeBag ?? DisposeBag())
-                    }, onError: { (error) in
-                        debugPrint(error.localizedDescription)
-                        observer.onError(error)
-                }).disposed(by: self?.disposeBag ?? DisposeBag() )
-            
-            return Disposables.create()
+                        } else {
+                            observer.onError(errorSignUpUser)
+                        }
+                    })
+                    return Disposables.create()
+                }
         }
     }
     
     func signOut() -> Observable<Void> {
-        
         return .create { [weak self] (observer) -> Disposable in
             do {
                 try self?.auth.signOut()
@@ -88,9 +75,5 @@ final class AuthServiceV1: NSObject, AuthService {
             }
             return Disposables.create()
         }
-    }
-    
-    enum AuthServiceError: Error {
-        case failedFetchUserFromDataBase
     }
 }

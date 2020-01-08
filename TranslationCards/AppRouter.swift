@@ -19,8 +19,9 @@ class AppRouter: NSObject {
         super.init()
         
         services
-        .credentials
-        .user
+            .credentials
+            .user
+            .skip(1)
             .subscribe(onNext: { [weak self] (user) in
                 self?.didChangeUser(user)
             })

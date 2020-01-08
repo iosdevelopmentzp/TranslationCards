@@ -10,12 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-extension UITextField {
-    func preventSpaces(disposeBag: DisposeBag) {
-        rx.text
-            .unwrap()
+extension Reactive where Base: UITextField {
+    func preventSpaces() -> Disposable {
+        return text.orEmpty
             .map { $0.components(separatedBy: .whitespaces).joined() }
-            .bind(to: rx.text)
-            .disposed(by: disposeBag)
+            .bind(to: text)
     }
 }

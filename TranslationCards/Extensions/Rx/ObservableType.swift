@@ -23,4 +23,9 @@ extension ObservableType {
     func unwrap<T>() -> Observable<T> where Element == T? {
         return compactMap { $0 }
     }
+    
+    func merge(with other: Observable<Element>) -> Observable<Element> {
+        return Observable.merge(self.asObservable(), other)
+    }
+    
 }

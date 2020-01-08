@@ -6,9 +6,7 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import RxSwift
-import RxCocoa
-
+import Foundation
 
 // MARK: - Compare optional objects
 infix operator ==? : ComparisonPrecedence
@@ -37,19 +35,3 @@ func ==? <T: Equatable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-// MARK: - Reverse observable
-
-infix operator <-> : DefaultPrecedence
-
-/// Two way binding operator between control property and relay, that's all it takes.
-func <-><T: Any> (property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disposable {
-    let bindToUIDisposable = relay.bind(to: property)
-    let bindToRelay = property
-        .subscribe(onNext: { n in
-            relay.accept(n)
-        }, onCompleted:  {
-            bindToUIDisposable.dispose()
-        })
-
-    return Disposables.create(bindToUIDisposable, bindToRelay)
-}
