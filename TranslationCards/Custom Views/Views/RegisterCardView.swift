@@ -11,34 +11,16 @@ import RxSwift
 import RxCocoa
 
 class RegisterCardView: UIView {
-    
-    private(set) var textFields: [(FieldType, TextFieldWithTopPlaceholder)] = []
-    
-    enum FieldType: Int, CaseIterable {
-        case email
-        case password
-        case displayName
-        
-        func placeholderText() -> String {
-            switch self {
-            case .email:
-                return "Set your email"
-            case .password:
-                return "Password"
-            case .displayName:
-                return "Set your display name"
-            }
-        }
-    }
+    let loginTextField = TextFieldWithTopPlaceholder()
+    let passwordTextField = TextFieldWithTopPlaceholder()
+    let displayNameTextField = TextFieldWithTopPlaceholder()
     
     fileprivate let stackView = UIStackView()
-    fileprivate static let kPadding: CGFloat = 16.0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
         setupView()
-        localizable()
     }
     
     required init?(coder: NSCoder) {
@@ -57,35 +39,28 @@ class RegisterCardView: UIView {
     }
     
     fileprivate func setupConstraints() {
+        let padding: CGFloat = 16.0
         addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.center.equalToSuperview().priority(999)
-            $0.left.equalToSuperview().offset(RegisterCardView.kPadding)
-            $0.right.equalToSuperview().inset(RegisterCardView.kPadding)
-            $0.bottom.equalToSuperview().inset(RegisterCardView.kPadding * 2)
-            $0.top.equalToSuperview().offset(RegisterCardView.kPadding)
+            $0.left.equalToSuperview().offset(padding)
+            $0.right.equalToSuperview().inset(padding)
+            $0.bottom.equalToSuperview().inset(padding * 2)
+            $0.top.equalToSuperview().offset(padding)
         }
         
-        FieldType.allCases.forEach { [weak self] (fieldType) in
-            let textField = TextFieldWithTopPlaceholder()
-            self?.stackView.addArrangedSubview(textField)
-            self?.textFields.append((fieldType, textField))
+        let textFields = [loginTextField, passwordTextField, displayNameTextField]
+        textFields.forEach { [weak self] in
+            self?.stackView.addArrangedSubview($0)
         }
         
-        if let firstTextField = textFields.first?.1 {
-            textFields.forEach { (_, textField) in
+        if let firstTextField = textFields.first {
+            textFields.forEach { (textField) in
                 if textField !== firstTextField {
                     textField.snp.makeConstraints {
                         $0.height.equalTo(firstTextField.snp.height).priority(999) }
                 }
             }
-        }
-    }
-    
-    fileprivate func localizable() {
-        FieldType.allCases.forEach { [weak self] (fieldType) in
-            guard let field = self?.textFields[fieldType.rawValue].1 else { return }
-            field.topPlaceholder.onNext(fieldType.placeholderText())
         }
     }
 }

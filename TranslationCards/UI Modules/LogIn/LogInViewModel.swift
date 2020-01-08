@@ -11,13 +11,13 @@ import RxSwift
 import RxCocoa
 
 protocol LogInViewModelInput {
-    var logInText: PublishSubject<String> { get set}
-    var passwordText: PublishSubject<String> { get set }
-    var logInAction: PublishSubject<Void> { get set }
-    var signUpAction: PublishSubject<Void> { get set}
+    var logInText: PublishSubject<String> { get}
+    var passwordText: PublishSubject<String> { get }
+    var logInAction: PublishSubject<Void> { get }
+    var signUpAction: PublishSubject<Void> { get }
 }
 protocol LogInViewModelOutput {
-    var isValidetText: BehaviorRelay<Bool> { get set}
+    var isValidetText: BehaviorRelay<Bool> { get }
 }
 protocol LogInViewModelType: LogInViewModelInput & LogInViewModelOutput {
     var input: LogInViewModelInput { get }
@@ -31,11 +31,11 @@ extension LogInViewModelType {
 
 final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelInput, LogInViewModelOutput, LogInViewModelType {
     
-    var logInAction = PublishSubject<Void>()
-    var logInText = PublishSubject<String>()
-    var passwordText = PublishSubject<String>()
-    var signUpAction = PublishSubject<Void>()
-    var isValidetText = BehaviorRelay<Bool>.init(value: false)
+    let logInAction = PublishSubject<Void>()
+    let logInText = PublishSubject<String>()
+    let passwordText = PublishSubject<String>()
+    let signUpAction = PublishSubject<Void>()
+    let isValidetText = BehaviorRelay<Bool>.init(value: false)
     
     private var inputData: Observable<(String, String)> {
         return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver())
@@ -79,7 +79,7 @@ final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelInput, LogInVi
     // MARK: - Private
     fileprivate func tryToSignIn(login: String, password: String) {
         self.startActivityIndicator.accept(true)
-        self.services
+        services
             .auth
             .signIn(withEmail: login, password: password)
             .catchError { [weak self] (error) -> Observable<()> in

@@ -6,13 +6,15 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RxSwift
+import RxCocoa
 
 final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> {
     
     fileprivate let bottomBackgroundView = UIView()
     fileprivate let registerCardView = RegisterCardView()
     fileprivate let signUpButton = RoundedButton()
+    fileprivate let backToSignInBurButton = UIBarButtonItem()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -53,35 +55,91 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationItem.hidesBackButton = true
-        let rightItem = UIBarButtonItem(title: "Log In", style: .plain, target: self, action: #selector(self.logInButtonPressed(sender:)))
-        navigationItem.rightBarButtonItem = rightItem
-        rightItem.tintColor = .white
+        navigationItem.rightBarButtonItem = backToSignInBurButton
+        backToSignInBurButton.tintColor = .white
     }
     
     override func binding() {
         super.binding()
-        viewModel.bind(withTextFields: registerCardView.textFields, signUpPressedEvent: signUpButton.rx.tap)
         
-        viewModel
-            .isValided
-            .skip(1)
-            .subscribe(onNext: { (isValide) in
-                UIView.animate(withDuration: 0.3) { [weak self] in
-                    self?.signUpButton.backgroundColor = isValide ? .mainBackgroundColor : .notValidateButton
-                }
-            })
+        let input = viewModel.input
+        let output = viewModel.output
+        
+        registerCardView
+            .loginTextField
+            .textField.rx
+            .text
+            .unwrap()
+            .subscribe(input.logInText)
             .disposed(by: disposeBag)
+        
+        registerCardView
+            .passwordTextField
+            .textField.rx
+            .text
+            .unwrap()
+            .subscribe(input.passwordText)
+            .disposed(by: disposeBag)
+        
+        registerCardView
+            .displayNameTextField
+            .textField.rx
+            .text
+            .unwrap()
+            .subscribe(input.displayNameText)
+            .disposed(by: disposeBag)
+        
+        signUpButton.rx
+            .tap
+            .subscribe(input.signUpAction)
+            .disposed(by: disposeBag)
+        
+        backToSignInBurButton.rx
+            .tap
+            .subscribe(input.backToLogInAction)
+            .disposed(by: disposeBag)
+        
+        output
+            .isValided
+            .bind(to: signUpButton.rx.isUserInteractionEnabled)
+            .disposed(by: disposeBag)
+        
+        output
+            .isValided
+            .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
+            .map { $0 ? UIColor.mainBackgroundColor : UIColor.notValidateButton }
+            .subscribe(onNext: { [weak self] (newColor) in
+                guard let currentColor = self?.signUpButton.backgroundColor,
+                currentColor != newColor else { return }
+                UIView.animate(withDuration: 0.3) {
+                    self?.signUpButton.backgroundColor = newColor
+                }})
+            .disposed(by: disposeBag)
+        
+        registerCardView
+            .loginTextField
+            .textField.rx
+            .preventSpaces()
+            .disposed(by: disposeBag)
+        
+        registerCardView
+            .passwordTextField
+            .textField.rx
+            .preventSpaces()
+            .disposed(by: disposeBag)
+        
+        view.rx.addHideKeyboardTapGesture().disposed(by: disposeBag)
     }
     
     override func localizable() {
         super.localizable()
         navigationItem.title = "Register"
         signUpButton.setAttributedTitle(.defaultText(withText: "Register"), for: .normal)
-    }
-    
-    // MARK: - User Interaction
-    @objc fileprivate func logInButtonPressed(sender: UIBarButtonItem) {
-        viewModel.pressedLogInButton()
+        registerCardView.loginTextField.topLabel.text = "Set your email"
+        registerCardView.passwordTextField.topLabel.text = "Password"
+        registerCardView.displayNameTextField.topLabel.text = "Set your display name"
+        backToSignInBurButton.title = "Log in"
     }
 }
 

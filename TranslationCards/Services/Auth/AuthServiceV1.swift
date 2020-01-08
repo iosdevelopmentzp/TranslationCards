@@ -11,7 +11,6 @@ import RxFirebase
 import Firebase
 
 final class AuthServiceV1: NSObject, AuthService {
-    private let disposeBag = DisposeBag()
     private var credentials: CredentialsService
     private var database: DatabaseService
     private let auth = Auth.auth()

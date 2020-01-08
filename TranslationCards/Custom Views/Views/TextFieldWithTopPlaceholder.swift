@@ -13,13 +13,10 @@ import RxCocoa
 class TextFieldWithTopPlaceholder: UIView {
 
     // MARK: - Public
-    var topPlaceholder = BehaviorSubject<String>.init(value: "")
-    var inputText = BehaviorSubject<String>.init(value: "")
+    let topLabel = UILabel()
     let textField = UITextField()
     
     // MARK: - Private
-    fileprivate let disposeBag = DisposeBag()
-    fileprivate let topLabel = UILabel()
     fileprivate let separator = UIView()
     fileprivate let stackView = UIStackView()
     
@@ -27,7 +24,6 @@ class TextFieldWithTopPlaceholder: UIView {
         super.init(frame: frame)
         setupConstraints()
         setupView()
-        setupRx()
     }
     
     required init?(coder: NSCoder) {
@@ -46,7 +42,6 @@ class TextFieldWithTopPlaceholder: UIView {
     }
     
     fileprivate func setupConstraints() {
-        
         addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -59,18 +54,5 @@ class TextFieldWithTopPlaceholder: UIView {
         separator.snp.makeConstraints {
             $0.height.equalTo(2.0).priority(999)
         }
-    }
-    
-    fileprivate func setupRx() {
-        topPlaceholder
-            .bind(to: topLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        textField
-            .rx
-            .text
-            .unwrap()
-            .bind(to: inputText)
-            .disposed(by: disposeBag)
     }
 }
