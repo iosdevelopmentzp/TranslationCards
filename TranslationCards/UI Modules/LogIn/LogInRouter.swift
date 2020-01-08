@@ -13,7 +13,7 @@ final class LogInRouter: Router {
     enum Route {
         case mainView
         case signUp
-        case choiceLanguage
+        case choiceLanguage(user: User)
     }
     
     func route(to type: Route) {
@@ -22,17 +22,17 @@ final class LogInRouter: Router {
             routeToMainView()
         case .signUp:
             routeToSignUp()
-        case .choiceLanguage:
-            pushChoiceLanguage()
+        case .choiceLanguage(let user):
+            pushChoiceLanguage(user: user)
         }
     }
     
     // MARK: - Private
-    private func pushChoiceLanguage() {
+    private func pushChoiceLanguage(user: User) {
         guard let viewController = viewController, viewController.isTopOfNavigationStack  else {
                 return
         }
-        let vc = Screens.nativeLanguageChoise()
+        let vc = Screens.nativeLanguageChoise(user: user)
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -41,12 +41,10 @@ final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, L
     
     override func setupView() {
         super.setupView()
-        
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = .font(type: .roboto, weight: .bold, size: 33.0)
         label.textColor = .white
-        
         choiseLanguageButton.setTitleColor(.innactiveButtonTitleColor, for: .normal)
         choiseLanguageButton.imageView?.contentMode = .scaleAspectFill
         choiseLanguageButton.imageEdgeInsets = .init(top: -10.0, left: -10.0, bottom: -10.0, right: -10.0)
@@ -60,23 +58,44 @@ final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, L
     override func binding() {
         super.binding()
         
-        viewModel.bind(choiseLanguageButtonEvent: choiseLanguageButton.rx.tap, nextButtonEvent: nextButton.rx.tap)
+        let input = viewModel.input
+        let output = viewModel.output
         
-        viewModel
+        nextButton.rx
+            .tap
+            .subscribe(input.nextButtonEvent)
+            .disposed(by: disposeBag)
+        
+        choiseLanguageButton.rx
+            .tap
+            .subscribe(input.choiceLanguageAction)
+            .disposed(by: disposeBag)
+        
+        let isLanguageSelected = output
             .selectedLanguage
-            .map{ $0 != nil}
-            .subscribe(onNext: { [weak self] (isValidate) in
-                self?.nextButton.backgroundColor = isValidate ? UIColor.accentColor : UIColor.notValidateButton
-                self?.nextButton.isUserInteractionEnabled = isValidate
-            })
+            .map{ $0 != nil }
+        
+        isLanguageSelected
+            .bind(to: nextButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
-        viewModel
+        isLanguageSelected
+            .map{ $0 ? UIColor.accentColor : UIColor.notValidateButton}
+            .subscribe(onNext: { [weak self] (newColor) in
+                guard let currentColor = self?.nextButton.backgroundColor,
+                    currentColor != newColor else { return }
+                UIView.animate(withDuration: 0.3) {
+                    self?.nextButton.backgroundColor = newColor
+                }})
+            .disposed(by: disposeBag)
+        
+        output
             .languageImage
-            .bind(to: choiseLanguageButton.rx.image(for: .normal))
+            .map{ $0?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)}
+            .bind(to: nextButton.rx.image(for: .normal))
             .disposed(by: disposeBag)
         
-        viewModel
+        output
             .languageTitle
             .bind(to: choiseLanguageButton.rx.title())
             .disposed(by: disposeBag)

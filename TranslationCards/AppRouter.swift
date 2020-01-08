@@ -39,7 +39,7 @@ class AppRouter: NSObject {
         }
         
         guard user.nativeLanguage != nil else {
-            let choiceLangVC = Screens.nativeLanguageChoise()
+            let choiceLangVC = Screens.nativeLanguageChoise(user: user)
             startViewControllers.append(choiceLangVC)
             navigationController.setViewControllers(startViewControllers, animated: false)
             return navigationController

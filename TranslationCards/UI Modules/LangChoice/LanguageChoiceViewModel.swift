@@ -9,52 +9,77 @@
 import RxSwift
 import RxCocoa
 
-final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
+protocol LanguageChoiceViewModelInput {
+    var choiceLanguageAction: PublishSubject<Void> { get }
+    var nextButtonEvent: PublishSubject<Void> { get }
+}
+
+protocol LanguageChoiceViewModelOutput {
+    var languageImage: BehaviorRelay<UIImage?> { get }
+    var languageTitle: BehaviorRelay<String> { get }
+    var selectedLanguage: BehaviorRelay<Language?> { get }
+}
+
+protocol LanguageChoiceViewModelType: LanguageChoiceViewModelInput & LanguageChoiceViewModelOutput {
+    var input: LanguageChoiceViewModelInput { get }
+    var output: LanguageChoiceViewModelOutput { get }
+}
+
+extension LanguageChoiceViewModelType {
+    var input: LanguageChoiceViewModelInput { return self }
+    var output: LanguageChoiceViewModelOutput { return self }
+}
+
+final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelInput, LanguageChoiceViewModelOutput, LanguageChoiceViewModelType {
     
+    let choiceLanguageAction = PublishSubject<Void>()
+    let nextButtonEvent = PublishSubject<Void>()
     let selectedLanguage: BehaviorRelay<Language?> = .init(value: nil)
     let languageImage: BehaviorRelay<UIImage?> = .init(value: nil)
     let languageTitle: BehaviorRelay<String> = .init(value: "Select")
     
-    override init() {
+    private let user: User
+    
+    init(user: User) {
+        self.user = user
         super.init()
         
         selectedLanguage
+            .map{ $0?.flagIcon }
+            .bind(to: languageImage)
+            .disposed(by: disposeBag)
+        
+        selectedLanguage
+            .map{ $0?.description ?? "Select"}
+            .bind(to: languageTitle)
+            .disposed(by: disposeBag)
+            
+        choiceLanguageAction
+            .subscribe(onNext: { [weak self] (_) in
+                guard let self = self else { return }
+                self.router.route(to: .languagePicker(callBackLanguage: self.selectedLanguage,
+                                                      titel: "Choose native language"))
+            })
+            .disposed(by: disposeBag)
+        
+        nextButtonEvent
+            .withLatestFrom(selectedLanguage)
+            .unwrap()
             .subscribe(onNext: { [weak self] (language) in
-                let nextImage = language?.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0))
-                let nextTitle = language?.description ?? "Select"
-                self?.languageImage.accept(nextImage)
-                self?.languageTitle.accept(nextTitle)
+                self?.tryUpdateNativeLanguage(language)
             })
             .disposed(by: disposeBag)
     }
     
-    func bind(choiseLanguageButtonEvent: ControlEvent<Void>, nextButtonEvent: ControlEvent<Void>) {
-        choiseLanguageButtonEvent
+    // MARK: - Private
+    fileprivate func tryUpdateNativeLanguage(_ language: Language) {
+        startActivityIndicator.accept(true)
+        user.updateNativeLanguage(newLanguage: language)
             .subscribe(onNext: { [weak self] (_) in
-                guard let self = self else { return }
-                self.router.route(to: .languagePicker(callBackLanguage: self.selectedLanguage,
-                                                      titel: "Choose native language")) })
-            .disposed(by: disposeBag)
-        
-        nextButtonEvent
-            .subscribe(onNext: { [weak self] (_) in
-                guard let language = self?.selectedLanguage.value else {
-                    self?.alertModel.accept(.warningAlert(message: "No language selected", handler: nil))
-                    return
-                }
-                guard let user = self?.services.credentials.user.value else {
-                    self?.alertModel.accept(.warningAlert(message: "User was not found", handler: nil))
-                    return
-                }
-                self?.startActivityIndicator.accept(true)
-                user.updateNativeLanguage(newLanguage: language)
-                    .subscribe(onNext: { [weak self] (_) in
-                            self?.router.route(to: .mainView)
-                            self?.startActivityIndicator.accept(false)
-                        }, onError: { [weak self] (error) in
-                            self?.startActivityIndicator.accept(false)
-                            self?.errorHandler(description: "Failed update native language", error: error, withAlert: true) })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
+                self?.router.route(to: .mainView)
+                }, onError: { [weak self] (error) in
+                    self?.startActivityIndicator.accept(false)
+                    self?.errorHandler(description: "Failed attempt to update native language", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }

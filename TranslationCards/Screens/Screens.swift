@@ -22,8 +22,8 @@ struct Screens {
         return ViewCardViewController(viewModel: vm)
     }
     
-    static func nativeLanguageChoise() -> LanguageChoiceViewController {
-        let vm = LanguageChoiceViewModel()
+    static func nativeLanguageChoise(user: User) -> LanguageChoiceViewController {
+        let vm = LanguageChoiceViewModel(user: user)
         return LanguageChoiceViewController(viewModel: vm)
     }
     

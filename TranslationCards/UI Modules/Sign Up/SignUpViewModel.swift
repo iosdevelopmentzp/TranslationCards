@@ -72,7 +72,7 @@ final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignU
             .subscribe(onNext: { [weak self] (user) in
                 guard let user = user else { return}
                 guard user.nativeLanguage != nil else {
-                    self?.router.route(to: .choiceLanguage)
+                    self?.router.route(to: .choiceLanguage(user: user))
                     return
                 }
                 self?.router.route(to: .mainView) })
