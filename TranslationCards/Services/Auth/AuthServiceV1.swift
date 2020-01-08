@@ -10,7 +10,7 @@ import RxSwift
 import RxFirebase
 import Firebase
 
-class AuthServiceV1: NSObject, AuthService {
+final class AuthServiceV1: NSObject, AuthService {
     private let disposeBag = DisposeBag()
     private var credentials: CredentialsService
     private var database: DatabaseService

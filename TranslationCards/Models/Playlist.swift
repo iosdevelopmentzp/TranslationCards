@@ -17,8 +17,6 @@ final class Playlist: Equatable, Hashable {
     let language: LanguageBind
     var id: String { return name }
     
-    // MARK: - Buffer properties
-    
     init(name: String, dateCreated: Date, userOwnerId: String, language: LanguageBind) {
         self.name = name
         self.dateCreated = dateCreated

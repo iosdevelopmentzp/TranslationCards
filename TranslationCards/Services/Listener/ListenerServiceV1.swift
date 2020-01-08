@@ -11,7 +11,7 @@ import RxCocoa
 import FirebaseFirestore
 import RxFirebaseFirestore
 
-class ListenerServiceV1: NSObject, ListenerService {
+final class ListenerServiceV1: NSObject, ListenerService {
     fileprivate let database = Firestore.firestore()
     fileprivate let disposeBag = DisposeBag()
     
@@ -38,7 +38,6 @@ class ListenerServiceV1: NSObject, ListenerService {
         }
     }
 }
-
 
 class ChangedDocuments<Element: DataRepresentation> {
     let type: DocumentChangeType
@@ -69,6 +68,6 @@ class ChangedDocuments<Element: DataRepresentation> {
     }
 }
 
-extension DocumentChangeType {
+fileprivate extension DocumentChangeType {
     static var allCases: [DocumentChangeType] = [.added, .removed, .modified]
 }

@@ -66,6 +66,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             })
             .disposed(by: disposeBag)
         
+        // fetch data
         fetchData
             .subscribe(onNext: { [weak self] (_) in
                 self?.isFetchInProgress.accept(true)
@@ -80,6 +81,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             })
             .disposed(by: disposeBag)
         
+        // subscribe to card list change event
         self.user
             .cardsList
             .subscribe(onNext: { [weak self] (cardsDictionary) in
@@ -96,6 +98,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
             })
             .disposed(by: disposeBag)
         
+        // subscribe to playlists change event
         self.user
             .playlists
             .map { [weak self] playlists -> [Playlist]? in
@@ -126,11 +129,6 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
                 }
                 self?.fetchCardsForSelectedPlaylists(playlists)
             })
-            .disposed(by: disposeBag)
-        
-        reverseMode.skip(1).subscribe(onNext: { [weak self] (_) in
-            guard let self = self else { return }
-            self.reloadData() })
             .disposed(by: disposeBag)
         
         shuffleMode

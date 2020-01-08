@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class SpeechServiceV1: SpeechService {
+final class SpeechServiceV1: SpeechService {
     
     fileprivate let speechSynthesizer = AVSpeechSynthesizer()
     
@@ -34,7 +34,7 @@ class SpeechServiceV1: SpeechService {
     fileprivate func speakText(_ text: String, languageIdentifier: String) {
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
             print("audioSession properties weren't set because of an error \(error).")

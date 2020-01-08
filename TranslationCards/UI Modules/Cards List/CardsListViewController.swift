@@ -22,7 +22,6 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     
     override func setupConstraints() {
         super.setupConstraints()
-        
         view.addSubview(tableView)
         tableView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
@@ -78,18 +77,21 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         super.setupView()
         // choise button
         choicePlaylistButton.backgroundColor = .red
+        
         // table view
         tableView.backgroundColor = .clear
         
+        // reverse button
         let reverseImage = UIImage.image(withType: .reverse).scaledToSize(.init(width: 25.0, height: 25.0))
         reverseButton.setImage(reverseImage, for: .normal)
         reverseButton.isSelected = false
         
-        
+        // shuffle button
         let shaffleImage = UIImage.image(withType: .shuffle).scaledToSize(.init(width: 25.0, height: 25.0))
         shuffleButton.setImage(shaffleImage, for: .normal)
         shuffleButton.isSelected = false
         
+        // nav buttons tint color
         updateNavigationButtonsTintColor()
     }
     
@@ -143,6 +145,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .subscribe(onNext: { [weak self] (isReverse) in
                 self?.reverseButton.isSelected = isReverse
                 self?.updateNavigationButtonsTintColor()
+                self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         

@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RSSelectionMenu
 
-class CreateCardPopUpRouter: Router {
+final class CreateCardPopUpRouter: Router {
     
     enum Route {
         case languagePickerView(currentLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String)

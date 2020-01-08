@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-class LanguageChoiceRouter: Router {
+final class LanguageChoiceRouter: Router {
     enum Route {
         case languagePicker(callBackLanguage: BehaviorRelay<Language?>, titel: String)
         case mainView

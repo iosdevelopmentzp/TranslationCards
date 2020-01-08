@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainNavigationRouter: Router {
+final class MainNavigationRouter: Router {
     
     enum Route {
         case createCard(user: User, language: LanguageBind)

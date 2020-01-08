@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
+final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     
     let transitionAnimator = TransitionAnimator()
     

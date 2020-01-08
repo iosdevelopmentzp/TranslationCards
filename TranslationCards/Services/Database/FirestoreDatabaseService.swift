@@ -10,7 +10,7 @@ import RxSwift
 import FirebaseFirestore
 import RxFirebaseFirestore
 
-class FirestoreDatabaseService: NSObject, DatabaseService {
+final class FirestoreDatabaseService: NSObject, DatabaseService {
     
     fileprivate let database = Firestore.firestore()
     fileprivate let disposeBag = DisposeBag()

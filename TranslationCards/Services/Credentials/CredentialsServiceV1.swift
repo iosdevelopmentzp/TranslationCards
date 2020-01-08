@@ -9,7 +9,7 @@
 import RxSwift
 import RxRelay
 
-class CredentialsServiceV1: NSObject, CredentialsService {
+final class CredentialsServiceV1: NSObject, CredentialsService {
     
     var user: BehaviorRelay<User?>
     private var database: DatabaseService

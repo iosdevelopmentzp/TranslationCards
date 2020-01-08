@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class TranslateCard {
+final class TranslateCard {
     
     enum Event {
         case nothing

@@ -22,7 +22,7 @@ class MicrosoftAzureTranslateService: TranslateService {
         static var translate: URL { return main.appendingPathComponent("translate") }
     }
     
-    // Public
+    // MARK: - Public
     func translateText(_ sourceText: String, fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation) -> Observable<String?> {
         
         let request = TypeRequest.translate(sourceText: sourceText, fromLanguage: fromLanguage, toLanguage: toLanguage).request
@@ -40,7 +40,7 @@ class MicrosoftAzureTranslateService: TranslateService {
             })
     }
     
-    // Private
+    // MARK: - Private
     fileprivate enum TypeRequest {
         case translate(sourceText: String, fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation)
         

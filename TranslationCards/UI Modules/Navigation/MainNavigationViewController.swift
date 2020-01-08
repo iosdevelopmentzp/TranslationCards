@@ -9,7 +9,7 @@
 import UIKit
 import JJFloatingActionButton
 
-class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
+final class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
     
     fileprivate let actionButton = JJFloatingActionButton.tunedButton
     fileprivate lazy var addCardButton = JJActionItem.initWith(imageType: .plus)

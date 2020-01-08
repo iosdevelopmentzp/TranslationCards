@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
+final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter> {
     
     let selectedLanguage: BehaviorRelay<Language?> = .init(value: nil)
     let languageImage: BehaviorRelay<UIImage?> = .init(value: nil)

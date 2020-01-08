@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, LanguageChoiceViewModel> {
+final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, LanguageChoiceViewModel> {
     let label = UILabel()
     let choiseLanguageButton = UIButton(type: .custom)
     let nextButton = RoundedButton()
