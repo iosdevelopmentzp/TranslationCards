@@ -186,6 +186,34 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Playlists
+    func removePlaylistIfThereAreNoCards(_ playlist: Playlist) -> Observable<Void> {
+        let source = Observable<Void>.create { [weak self] (observer) -> Disposable in
+            self?.cardsCollectionReferance(forPlaylist: playlist)
+                .rx.getDocuments()
+                .catchError({ (error) -> Observable<QuerySnapshot> in
+                    observer.onError(error)
+                    return .never()
+                })
+                .map{ $0.documentChanges.count == 0 }
+                .execute { (isPlaylistEmpty) in
+                    if !isPlaylistEmpty {
+                        observer.onNext(())
+                        observer.onCompleted() } }
+                .flatMap({ [weak self] (isPlaylistEmpty) -> Observable<Void> in
+                    guard isPlaylistEmpty else {
+                        observer.onNext(())
+                        observer.onCompleted()
+                        return .never()
+                    }
+                    return self?.removePlaylist(playlist) ?? .just(())
+                })
+                .bind(to: observer)
+                .disposed(by: self?.disposeBag ?? DisposeBag())
+            return Disposables.create()
+        }
+        return source
+    }
+    
     func savePlaylist(_ playlist: Playlist) -> Observable<Void> {
         playlistDocumentReferance(forPlaylist: playlist).rx
             .setData(playlist.representation)

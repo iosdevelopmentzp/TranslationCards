@@ -152,14 +152,14 @@ extension User: ServicesAccessing {
     }
     
     // Playlists
-    func removePlaylist(playlist: Playlist) -> Observable<Void> {
+    func removePlaylistIfThereNoCards(playlist: Playlist) -> Observable<Void> {
         return .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
                 observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
                 return Disposables.create()}
             self.services
                 .realTimeDatabase
-                .removePlaylist(playlist)
+                .removePlaylistIfThereAreNoCards(playlist)
                 .subscribe(onNext: { [weak self] (_) in
                     observer.onNext(())
                     observer.onCompleted()
@@ -316,7 +316,7 @@ extension User: ServicesAccessing {
                     oldCards[playlist] = cards
                     self.cardsList.accept(oldCards)
                     if cards.count <= 0 {
-                        self.removePlaylist(playlist: playlist)
+                        self.removePlaylistIfThereNoCards(playlist: playlist)
                             .subscribe()
                             .disposed(by: self.disposeBag)
                     }
