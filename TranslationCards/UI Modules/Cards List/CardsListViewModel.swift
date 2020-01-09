@@ -79,7 +79,6 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelTy
         }
     }
     
-    
     init(language: LanguageBind, user: User) {
         self.user = user
         self.language = .init(value: language)
@@ -88,11 +87,9 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelTy
         titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
         
         isRefreshing
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] (isRefreshing) in
-                if isRefreshing {
-                    self?.fetchCards()
-                }
+            .filter{ $0 == true}
+            .subscribe(onNext: { [weak self] (_) in
+                self?.fetchCards()
             })
             .disposed(by: disposeBag)
         

@@ -6,7 +6,8 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RxSwift
+import RxCocoa
 import RxDataSources
 import JJFloatingActionButton
 
@@ -54,6 +55,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.typeName)
         
         viewModel
+            .output
             .sections
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -152,8 +154,10 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .map { [weak self] (_) -> Bool in
                 guard let self = self else { return false}
                 self.reverseButton.isSelected = !self.reverseButton.isSelected
-                self.updateNavigationButtonsTintColor()
                 return self.reverseButton.isSelected }
+            .execute({ (_) in
+                self.updateNavigationButtonsTintColor()
+            })
             .bind(to: input.reverseMode)
             .disposed(by: disposeBag)
         
@@ -168,6 +172,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .disposed(by: disposeBag)
         
         input.reverseMode
+            .observeOn(MainScheduler.instance)
             .merge(with: input.shuffleMode.asObservable())
             .skip(2)
             .ignoreAll()
