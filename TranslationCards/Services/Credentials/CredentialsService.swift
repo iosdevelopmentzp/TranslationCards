@@ -11,5 +11,6 @@ import RxRelay
 
 protocol CredentialsService: Service {
     var user: BehaviorRelay<User?> { get }
+    func acceptUser()
     func fetchRemoteUser(withId userId: String) -> Observable<Void>
 }

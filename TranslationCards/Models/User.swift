@@ -132,18 +132,24 @@ extension User: ServicesAccessing {
     
     func updateNativeLanguage(newLanguage: Language) -> Observable<Void> {
         return .create { [weak self] (observer) -> Disposable in
-            guard let self = self, !(newLanguage ==? self.nativeLanguage) else {
+            guard let self = self else {
+                observer.onNext(())
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            guard !(newLanguage ==? self.nativeLanguage) else {
+                self.services.credentials.acceptUser()
                 observer.onNext(())
                 observer.onCompleted()
                 return Disposables.create()
             }
             self.nativeLanguage = newLanguage
             self.services.realTimeDatabase.updateUser(withUserId: self.uid, withData: ["nativeLanguage": newLanguage.rawValue])
-                .subscribe(onNext: { (_) in
+                .subscribe(onNext: { [weak self] (_) in
+                    self?.services.credentials.acceptUser()
                     observer.onNext(())
                     observer.onCompleted()
-                }, onError: { [weak self] (error) in
-                    self?.nativeLanguage = newLanguage
+                }, onError: { (error) in
                     observer.onError(error)
                 })
                 .disposed(by: self.disposeBag)

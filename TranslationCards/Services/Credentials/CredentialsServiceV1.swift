@@ -41,6 +41,9 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
             .disposed(by: disposeBag)
     }
     
+    func acceptUser() {
+        user.accept(user.value)
+    }
     
     func fetchRemoteUser(withId userId: String) -> Observable<Void> {
         database
