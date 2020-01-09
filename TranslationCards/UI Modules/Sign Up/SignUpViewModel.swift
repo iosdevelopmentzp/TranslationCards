@@ -32,7 +32,7 @@ extension SignUpViewModelType {
     var output: SignUpViewModelOutput { return self }
 }
 
-final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignUpViewModelInput, SignUpViewModelOutput {
+final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType {
     let logInText = PublishSubject<String>()
     let passwordText = PublishSubject<String>()
     let displayNameText = PublishSubject<String>()

@@ -29,7 +29,7 @@ extension LogInViewModelType {
     var output: LogInViewModelOutput { return self}
 }
 
-final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelInput, LogInViewModelOutput, LogInViewModelType {
+final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType {
     
     let logInAction = PublishSubject<Void>()
     let logInText = PublishSubject<String>()

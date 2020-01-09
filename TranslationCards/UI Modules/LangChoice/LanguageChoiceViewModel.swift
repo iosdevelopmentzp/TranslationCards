@@ -30,7 +30,7 @@ extension LanguageChoiceViewModelType {
     var output: LanguageChoiceViewModelOutput { return self }
 }
 
-final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelInput, LanguageChoiceViewModelOutput, LanguageChoiceViewModelType {
+final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelType {
     
     let choiceLanguageAction = PublishSubject<Void>()
     let nextButtonEvent = PublishSubject<Void>()
