@@ -22,6 +22,7 @@
 		3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F70239FFF8500B90C41 /* ListenerService.swift */; };
 		3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */; };
 		3B25821823B64E6000B52BEA /* UIViewController+PresentSelectMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B25821723B64E6000B52BEA /* UIViewController+PresentSelectMenuController.swift */; };
+		3B30CC4723C7283200D2B576 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30CC4623C7283200D2B576 /* TableView.swift */; };
 		3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2023855F4A0038A7AC /* ViewController.swift */; };
 		3B319F2423855F4B0038A7AC /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2123855F4A0038A7AC /* Router.swift */; };
 		3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2223855F4B0038A7AC /* ViewModel.swift */; };
@@ -58,7 +59,7 @@
 		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
 		3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFD23953B03006D5D5C /* AlertModel.swift */; };
 		3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */; };
-		3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB323965F75009110A7 /* MainViewModel+Sections.swift */; };
+		3B5A3BB423965F75009110A7 /* MainViewModelSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */; };
 		3B5A3BB623968D56009110A7 /* ServicesAccessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB523968D56009110A7 /* ServicesAccessing.swift */; };
 		3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB82396A345009110A7 /* CardsListRouter.swift */; };
 		3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB92396A345009110A7 /* CardsListViewController.swift */; };
@@ -187,6 +188,7 @@
 		3B242F70239FFF8500B90C41 /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
 		3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerServiceV1.swift; sourceTree = "<group>"; };
 		3B25821723B64E6000B52BEA /* UIViewController+PresentSelectMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PresentSelectMenuController.swift"; sourceTree = "<group>"; };
+		3B30CC4623C7283200D2B576 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		3B319F2023855F4A0038A7AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3B319F2123855F4A0038A7AC /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		3B319F2223855F4B0038A7AC /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -225,7 +227,7 @@
 		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B573AFD23953B03006D5D5C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
-		3B5A3BB323965F75009110A7 /* MainViewModel+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewModel+Sections.swift"; sourceTree = "<group>"; };
+		3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelSection.swift; sourceTree = "<group>"; };
 		3B5A3BB523968D56009110A7 /* ServicesAccessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAccessing.swift; sourceTree = "<group>"; };
 		3B5A3BB82396A345009110A7 /* CardsListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListRouter.swift; sourceTree = "<group>"; };
 		3B5A3BB92396A345009110A7 /* CardsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +383,14 @@
 			path = Listener;
 			sourceTree = "<group>";
 		};
+		3B30CC4523C7280C00D2B576 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				3B30CC4623C7283200D2B576 /* TableView.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
 		3B319F1F238559F30038A7AC /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -484,6 +494,7 @@
 		3B319F5F238571660038A7AC /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B30CC4523C7280C00D2B576 /* TableView */,
 				3B94F6C823BE1E2D00303968 /* TextView */,
 				3BA376A2239FA4E200665A8B /* Buttons */,
 				3BA376A1239FA4D500665A8B /* RoundedTextField */,
@@ -818,7 +829,7 @@
 			children = (
 				3BC52C31238FD816006FB7F8 /* MainViewController.swift */,
 				3BC52C32238FD816006FB7F8 /* MainViewModel.swift */,
-				3B5A3BB323965F75009110A7 /* MainViewModel+Sections.swift */,
+				3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */,
 				3BC52C30238FD816006FB7F8 /* MainRouter.swift */,
 			);
 			path = Main;
@@ -1107,6 +1118,7 @@
 				3BE9992E23AD0A5D00816583 /* TextFieldAlertModel.swift in Sources */,
 				3B8BC91123B4E797008E5834 /* MicrosoftAzureTranslateService.swift in Sources */,
 				3B85039A23AA150300481989 /* CAAnimationGroup.swift in Sources */,
+				3B30CC4723C7283200D2B576 /* TableView.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
 				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
@@ -1156,7 +1168,7 @@
 				3BEE43D523980055008F35AA /* NSObject.swift in Sources */,
 				3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString.swift in Sources */,
-				3B5A3BB423965F75009110A7 /* MainViewModel+Sections.swift in Sources */,
+				3B5A3BB423965F75009110A7 /* MainViewModelSection.swift in Sources */,
 				3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */,
 				3B6CF09B239E2E9A007CDA17 /* SpeechServiceV1.swift in Sources */,
 				3B9550B423A4E92000BC9E8E /* UserDefaultsService.swift in Sources */,

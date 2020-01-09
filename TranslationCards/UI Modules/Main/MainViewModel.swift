@@ -10,61 +10,93 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class MainViewModel: ViewModel<MainRouter> {
+protocol MainViewModelInput {
+    var signOutAction: PublishSubject<Void> { get }
+    var selectedAction: PublishSubject<IndexPath> { get }
+}
+
+protocol MainViewModelOutput {
+    var sections: BehaviorRelay<[MainViewModelSection]> { get }
+    var isRefreshing: BehaviorRelay<Bool> { get }
+}
+
+protocol MaintViewModelType: MainViewModelInput & MainViewModelOutput {
+    var input: MainViewModelInput { get }
+    var output: MainViewModelOutput { get }
+}
+
+extension MaintViewModelType {
+    var input: MainViewModelInput { return self }
+    var output: MainViewModelOutput { return self }
+}
+
+final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
     
-    var sections = BehaviorRelay<[Section]>.init(value: [])
+    let signOutAction = PublishSubject<Void>()
+    var selectedAction = PublishSubject<IndexPath>()
+    let sections = BehaviorRelay<[MainViewModelSection]>.init(value: [])
+    let isRefreshing: BehaviorRelay<Bool> = .init(value: true)
+    
     fileprivate var user: User?
     
     override init() {
         super.init()
+        user = User.currentUser.value
         
-        self.user = User.currentUser.value
-        
-        self.startActivityIndicator.accept(true)
-        self.user?
-            .fetchLanguages()
-            .subscribe(onNext: { [weak self](_) in
-                self?.startActivityIndicator.accept(false)
-            }, onError: { [weak self] (error) in
-                self?.startActivityIndicator.accept(false)
-                self?.errorHandler(description: "Failed get languages", error: error, withAlert: true)
+        isRefreshing
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] (isRefreshing) in
+                if isRefreshing {
+                    self?.fetchLanguages()
+                }
             })
             .disposed(by: disposeBag)
         
-        
-        self.user?
+        user?
             .languages
-            .subscribe(onNext: { [weak self] (languages) in
-                guard let languages = languages else { return }
-                let section = Section(items: languages)
-                self?.sections.accept([section])
-            })
+            .map {
+                let languages = $0 ?? []
+                let section = MainViewModelSection(items: languages)
+                return [section] }
+            .bind(to: sections)
             .disposed(by: disposeBag)
-    }
-    
-    func bind(logoutEvent: ControlEvent<Void>) {
-        logoutEvent
-            .subscribe(onNext: {[weak self] _ in
+        
+        signOutAction
+            .subscribe(onNext: { [weak self] (_) in
                 self?.services
                     .auth
                     .signOut()
-                    .subscribe(onNext: { [weak self] _ in
-                        self?.user = nil
-                        }, onError: { [weak self] (error) in
-                            self?.errorHandler(description: "Failed attempt to sign out.", error: error, withAlert: true)
+                    .catchError({ [weak self] (error) -> Observable<()> in
+                        self?.errorHandler(description: "Failed sign out action", error: error, withAlert: true)
+                    return .error(error)
                     })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
+                    .subscribe().disposed(by: self?.disposeBag ?? DisposeBag())
+            })
+            .disposed(by: disposeBag)
+        
+        selectedAction
+            .map{ [weak self] in return self?.sections.value[$0.section].items[$0.row] }
+            .unwrap()
+            .subscribe(onNext: { [weak self] (language) in
+                guard let user = self?.user else { return }
+                self?.router.route(to: .cardList(language: language, user: user))
             })
             .disposed(by: disposeBag)
     }
     
-    func bindSelectesItemEvent(_ selectedEvent: ControlEvent<IndexPath>) {
-        selectedEvent
-            .subscribe(onNext: {[weak self] (indexPath) in
-                guard let language = self?.sections.value[indexPath.section].items[indexPath.row],
-                    let user = self?.user else { return }
-                self?.router.route(to: .cardList(language: language, user: user))
+    // MARK: - Private
+    fileprivate func fetchLanguages() {
+        if isRefreshing.value == false {
+            isRefreshing.accept(true)
+        }
+        self.user?
+            .fetchLanguages()
+            .catchError({ [weak self] (error) -> Observable<()> in
+                self?.errorHandler(description: "Failed to attempt update langugae list", error: error, withAlert: true)
+                return .just(())
             })
+            .map { false }
+            .bind(to: isRefreshing)
             .disposed(by: disposeBag)
     }
 }
