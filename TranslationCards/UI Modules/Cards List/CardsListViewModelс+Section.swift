@@ -8,42 +8,34 @@
 
 import RxDataSources
 
-extension CardsListViewModel {
+class CardsListViewModelCell: Equatable, IdentifiableType {
 
-    enum CellType {
-        case `default`
+    var identity: String {
+        return item.id
     }
 
-    class Cell: Equatable, IdentifiableType {
+    var item: TranslateCard
 
-        var identity: String {
-            return item.id
-        }
-
-        var item: TranslateCard
-        private (set) var type: CellType = .default
-
-        init(item: TranslateCard) {
-            self.item = item
-        }
-
-        static func == (lhs: CardsListViewModel.Cell, rhs: CardsListViewModel.Cell) -> Bool {
-            return lhs.item.id == rhs.item.id
-        }
+    init(item: TranslateCard) {
+        self.item = item
     }
-    
-    struct Section {
-        var header: String
-        var items: [Cell]
+
+    static func == (lhs: CardsListViewModelCell, rhs: CardsListViewModelCell) -> Bool {
+        return lhs.item.id == rhs.item.id
     }
 }
 
-extension CardsListViewModel.Section: AnimatableSectionModelType {
+struct CardsListViewModelSection {
+    var header: String
+    var items: [CardsListViewModelCell]
+}
+
+extension CardsListViewModelSection: AnimatableSectionModelType {
     var identity: String {
         return header
     }
     
-    init(original: CardsListViewModel.Section, items: [CardsListViewModel.Cell]) {
+    init(original: CardsListViewModelSection, items: [CardsListViewModelCell]) {
         self = original
         self.items = items
     }

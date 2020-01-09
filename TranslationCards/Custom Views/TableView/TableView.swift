@@ -21,7 +21,6 @@ class TableView: UITableView {
             .filter{ !$0 }
             .observeOn(MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] (_) in
-                debugPrint("Refresh ended")
                 self?.refresh.endRefreshing()
             })
         return Disposables.create([refreshingBindDispose, refreshDisposable])

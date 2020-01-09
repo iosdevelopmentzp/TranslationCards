@@ -9,208 +9,193 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import RSSelectionMenu
 
-final class CardsListViewModel: ViewModel<CardsListRouter> {
-    // output
-    let sections: BehaviorRelay<[Section]> = BehaviorRelay(value: [])
-    let isEditMode = BehaviorRelay.init(value: false)
-    let reverseMode = BehaviorRelay.init(value: false)
-    let shuffleMode = BehaviorRelay.init(value: false)
-    let isFetchInProgress: BehaviorRelay<Bool> = .init(value: false)
-    lazy var titleText: BehaviorRelay<String?> = .init(value: nil)
+protocol CardsListViewModelInput {
+    var didSelectItem: PublishSubject<IndexPath> { get }
+    var needDeleteItem: PublishSubject<IndexPath> { get }
+    var shuffleMode: BehaviorRelay<Bool> { get }
+    var reverseMode: BehaviorRelay<Bool> { get }
+    var startSlideShow: PublishSubject<Void> { get }
+    var startWhritePhraseSlideShow: PublishSubject<Void> { get }
+    var openPlaylistsChoice: PublishSubject<Void> { get }
+    var setEditMode: PublishSubject<Bool> { get }
+}
+
+protocol CardsListViewModelOutput {
+    var sections: BehaviorRelay<[CardsListViewModelSection]> { get }
+    var isRefreshing: BehaviorRelay<Bool> { get }
+    var titleText: BehaviorRelay<String> { get }
+    var isEditMode: BehaviorRelay<Bool> { get }
+}
+
+protocol CardsListViewModelType: CardsListViewModelInput & CardsListViewModelOutput {
+    var input: CardsListViewModelInput { get }
+    var output: CardsListViewModelOutput { get }
+}
+
+extension CardsListViewModelType {
+    var input: CardsListViewModelInput { self }
+    var output: CardsListViewModelOutput { self }
+}
+
+final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelType {
+    let didSelectItem = PublishSubject<IndexPath>()
+    let needDeleteItem = PublishSubject<IndexPath>()
+    let shuffleMode = BehaviorRelay<Bool>.init(value: false)
+    let reverseMode = BehaviorRelay<Bool>.init(value: false)
+    let startSlideShow = PublishSubject<Void>()
+    let startWhritePhraseSlideShow = PublishSubject<Void>()
+    let openPlaylistsChoice = PublishSubject<Void>()
+    var setEditMode = PublishSubject<Bool>()
     
-    // input
-    let didSelectedItemEvent: BehaviorRelay<IndexPath?> = .init(value: nil)
-    let fetchData: BehaviorRelay<Void> = .init(value: ())
-    let deleteIndexPath: BehaviorRelay<IndexPath?> = .init(value: nil)
-
-    fileprivate var playlists: BehaviorRelay<[Playlist]> = .init(value: [])
-    fileprivate var selectedPlaylist: BehaviorRelay<[Playlist]> = .init(value: [])
-    fileprivate let language: LanguageBind
+    let isRefreshing = BehaviorRelay<Bool>.init(value: true)
+    let sections: BehaviorRelay<[CardsListViewModelSection]> = BehaviorRelay(value: [])
+    let titleText = BehaviorRelay<String>.init(value: "")
+    let isEditMode = BehaviorRelay<Bool>.init(value: false)
+    
     fileprivate let user: User
+    fileprivate let language: BehaviorRelay<LanguageBind>
+    fileprivate let playlists: BehaviorRelay<[Playlist]> = .init(value: [])
+    fileprivate let selectedPlaylists: BehaviorRelay<[Playlist]> = .init(value: [])
+    
+    // Custom observables
+    fileprivate var playlistsInput: Observable<[Playlist]?> {
+        return Observable.combineLatest(self.user.playlists.asObservable(), self.language.asObservable()) {
+            guard let playlists = $0 else { return nil }
+            let language = $1
+            let newPlaylists = playlists.filter{ $0.language == language}
+            return (Array(newPlaylists))
+        }
+    }
+    
+    fileprivate var cardsInput: Observable<[TranslateCard]?> {
+        return Observable.combineLatest(self.user.cardsList, self.selectedPlaylists) {
+            guard let cards = $0 else { return nil }
+            let selectedPlaylists = $1
+            let needCards = cards.filter { (keyPlaylist, valueCards) -> Bool in
+                selectedPlaylists.contains(keyPlaylist)
+            }
+            return Array(needCards.values).joined().map{ $0 }
+        }
+    }
+    
     
     init(language: LanguageBind, user: User) {
-        self.language = language
         self.user = user
+        self.language = .init(value: language)
         super.init()
         
-        // title of view
-        self.titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
+        titleText.accept("\(language.sourceLanguage) to \(language.targetLanguage)")
         
-        // selected item event
-        didSelectedItemEvent
-            .subscribe(onNext: { [weak self] (indexPath) in
-                guard let indexPath = indexPath,
-                    let card =  self?.sections.value.first?.items[indexPath.row].item
-                    else { return }
+        isRefreshing
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] (isRefreshing) in
+                if isRefreshing {
+                    self?.fetchCards()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        cardsInput
+            .unwrap()
+            .subscribe(onNext: { [weak self] (newCards) in
+                self?.updateSectionWithCards(newCards)
+            })
+            .disposed(by: disposeBag)
+        
+        playlistsInput
+            .unwrap()
+            .filter { [weak self] (newPlaylists) -> Bool in
+                guard let self = self else { return false }
+                return newPlaylists != self.selectedPlaylists.value }
+            .bind(to: playlists)
+            .disposed(by: disposeBag)
+        
+        playlists
+            .withLatestFrom(selectedPlaylists)
+            .filter{ $0.count == 0}
+            .withLatestFrom(playlists)
+            .map{ $0.randomElement()}
+            .unwrap()
+            .map{ [$0] }
+            .bind(to: selectedPlaylists)
+            .disposed(by: disposeBag)
+        
+        selectedPlaylists
+            .filter{ $0.count > 0 }
+            .subscribe(onNext: { [weak self] (playlists) in
+                self?.fetchCards()
+            })
+            .disposed(by: disposeBag)
+            
+        didSelectItem
+            .map{ [weak self] in
+                self?.sections.value[$0.section].items[$0.row].item }
+            .unwrap()
+            .subscribe(onNext: { [weak self] (card) in
                 guard let self = self else { return }
                 self.router.route(to: .cardView(card: card, user: self.user))
             })
             .disposed(by: disposeBag)
         
-        // delete event
-        deleteIndexPath
+        needDeleteItem
+            .map{ [weak self] in
+                self?.sections.value[$0.section].items[$0.row].item }
             .unwrap()
-            .subscribe(onNext: { [weak self] (indexPath) in
-                guard let card = self?.sections.value.first?.items[indexPath.row].item else { return }
-                self?.startActivityIndicator.accept(true)
-                self?.user
-                    .removeCard(card)
-                    .subscribe(onNext: { [weak self] (_) in
-                        self?.startActivityIndicator.accept(false)
-                        }, onError: { (error) in
-                            self?.errorHandler(description: "Failed delete card", error: error, withAlert: true)
-                    })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
-            })
-            .disposed(by: disposeBag)
-        
-        // fetch data
-        fetchData
-            .subscribe(onNext: { [weak self] (_) in
-                self?.isFetchInProgress.accept(true)
-                self?.fetch()
-                    .subscribe(onNext: { [weak self] (_) in
-                        self?.isFetchInProgress.accept(false)
-                    }, onError: { [weak self] (error) in
-                        self?.isFetchInProgress.accept(false)
-                        self?.errorHandler(description: "Failed fetch data", error: error, withAlert: true)
-                    })
-                    .disposed(by: self?.disposeBag ?? DisposeBag())
-            })
-            .disposed(by: disposeBag)
-        
-        // subscribe to card list change event
-        self.user
-            .cardsList
-            .subscribe(onNext: { [weak self] (cardsDictionary) in
-                guard let currentPlaylist = self?.selectedPlaylist.value else { return }
-                var cards: [TranslateCard] = []
-                currentPlaylist.forEach { (playlist) in
-                    let potentialCards = cardsDictionary?.filter{ $0.key == playlist}.first?.value
-                    guard let newCards = potentialCards else { return }
-                    cards += newCards
-                }
-                guard let self = self else { return }
-                cards = self.sortCards(cards)
-                self.updateSectionWithCards(cards)
-            })
-            .disposed(by: disposeBag)
-        
-        // subscribe to playlists change event
-        self.user
-            .playlists
-            .map { [weak self] playlists -> [Playlist]? in
-                guard let language = self?.language else { return nil }
-                return playlists?.filter{ $0.language == language } }
-            .subscribe(onNext: { [weak self] (newPlaylists) in
-                self?.playlists.accept(newPlaylists ?? [])
-            })
-            .disposed(by: disposeBag)
-        
-        playlists
-            .subscribe(onNext: { [weak self] (newPlaylists) in
-                guard let self = self else { return }
-                var oldSelectedPlaylists = self.selectedPlaylist.value
-                oldSelectedPlaylists = oldSelectedPlaylists.filter{ newPlaylists.contains($0) }
-                if oldSelectedPlaylists.count <= 0, let randomPlaylist = newPlaylists.randomElement() {
-                    oldSelectedPlaylists.append(randomPlaylist)
-                }
-                self.selectedPlaylist.accept(oldSelectedPlaylists)
-            })
-            .disposed(by: disposeBag)
-        
-        selectedPlaylist
-            .subscribe(onNext: { [weak self] (playlists) in
-                guard playlists.count > 0 else {
-                    self?.updateSectionWithCards([])
-                    return
-                }
-                self?.fetchCardsForSelectedPlaylists(playlists)
+            .subscribe(onNext: { [weak self] (card) in
+                self?.needDeleteCard(card)
             })
             .disposed(by: disposeBag)
         
         shuffleMode
+            .distinctUntilChanged()
             .skip(1)
-            .subscribe(onNext: { [weak self] (shuffleMode) in
-                guard let self = self else { return }
-                let oldCards = self.sections.value.first?.items.map{ $0.item } ?? []
-                let newCards = shuffleMode ? oldCards.shuffled() : self.sortCards(oldCards)
-                self.updateSectionWithCards(newCards)
+            .withLatestFrom(sections)
+            .compactMap{
+                $0.first?.items.map{ $0.item } }
+            .subscribe(onNext: { [weak self] (cards) in
+                self?.updateSectionWithCards(cards)
             })
-        .disposed(by: disposeBag)
-    }
-    
-    func bindWith(startSlideShowButtonPressed startShowPressed: ControlEvent<Void>) {
-        startShowPressed
+            .disposed(by: disposeBag)
+            
+        startSlideShow
             .withLatestFrom(sections)
             .compactMap{ $0.first?.items.map{ $0.item } }
-            .filter { $0.count > 0 }
-            .subscribe(onNext: { [weak self] (sections) in
-                let cards = sections
-                self?.router.route(to: .slideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
-            })
-        .disposed(by: disposeBag)
-    }
-    
-    func bindWith(playlistsSelectionEvent: ControlEvent<Void>) {
-        playlistsSelectionEvent
-            .subscribe(onNext: { [weak self] (_) in
-                guard let self = self, self.playlists.value.count > 1 else { return }
-                self.router.route(to: .selectPlaylist(dataSource: self.playlists.value, selected: self.selectedPlaylist))
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func bindWith(writePhraseSlideShowPressed: ControlEvent<Void>) {
-        writePhraseSlideShowPressed
-            .withLatestFrom(sections)
-            .compactMap{ $0.first?.items.map{ $0.item }  }
             .filter{ $0.count > 0}
             .subscribe(onNext: { [weak self] (cards) in
-                guard let self = self else { return }
-                self.router.route(to: .writeSlideShow(cards: cards, withReverse: self.reverseMode.value)) })
-            .disposed(by: disposeBag)
-    }
-    
-    func bindWith(changeReverseState: ControlEvent<Void>, changeShuffleState: ControlEvent<Void>) {
-        changeReverseState
-            .withLatestFrom(reverseMode)
-            .subscribe(onNext: { [weak self] (currentMode) in
-                self?.reverseMode.accept(!currentMode) })
-            .disposed(by: disposeBag)
-        
-        changeShuffleState
-            .withLatestFrom(shuffleMode)
-            .subscribe(onNext: { [weak self] (shuffleMode) in
-                self?.shuffleMode.accept(!shuffleMode)
+                self?.router.route(to: .slideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
             })
             .disposed(by: disposeBag)
-    }
-    
-    func bindWith(switchEditModePressed: ControlEvent<Void>) {
-        switchEditModePressed
-            .compactMap{ [weak self] (_) -> Bool in
-                guard let self = self else { return false}
-                return !self.isEditMode.value }
+        
+        startWhritePhraseSlideShow
+            .withLatestFrom(sections)
+            .compactMap{ $0.first?.items.map{ $0.item } }
+            .filter{ $0.count > 0}
+            .subscribe(onNext: { [weak self] (cards) in
+                self?.router.route(to: .writeSlideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
+            })
+            .disposed(by: disposeBag)
+        
+        openPlaylistsChoice
+            .withLatestFrom(playlists)
+            .filter{ $0.count > 0 }
+            .subscribe(onNext: { [weak self] (playlists) in
+                guard let self = self else { return }
+                self.router.route(to: .selectPlaylist(dataSource: playlists,
+                                                      selected: self.selectedPlaylists))
+            })
+            .disposed(by: disposeBag)
+        
+        setEditMode
             .bind(to: isEditMode)
             .disposed(by: disposeBag)
     }
     
     // MARK: - Private
-    fileprivate func reloadData() {
-        sections.accept(sections.value)
-    }
-    
-    fileprivate func updateSectionWithCards(_ cards: [TranslateCard]) {
-        let section = sections.value.first ?? Section(header: "Cards", items: [])
-        let items = cards.map{ Cell.init(item: $0)}
-        let newSection = Section(original: section, items: items)
-        sections.accept([newSection])
-    }
-    
     fileprivate func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
+        guard shuffleMode.value == false else {
+            return cards.shuffled()
+        }
         var sortedCards: Array<TranslateCard> = []
         let isReverse = reverseMode.value
         #if DEBUG
@@ -227,19 +212,42 @@ final class CardsListViewModel: ViewModel<CardsListRouter> {
         return sortedCards
     }
     
-    fileprivate func fetch() -> Observable<Void> {
-        let playlistObservable = user.fetchPlaylists(forLanguage: language)
-        let cardsObservable = user.fetchCards(forPlaylists: selectedPlaylist.value)
-        return Observable.combineLatest(playlistObservable, cardsObservable).map{ _,_ in ()}
+    fileprivate func updateSectionWithCards(_ cards: [TranslateCard]) {
+        let sortedCards = sortCards(cards)
+        let section = sections.value.first ?? CardsListViewModelSection(header: "Cards", items: [])
+        let items = sortedCards.map{ CardsListViewModelCell.init(item: $0)}
+        let newSection = CardsListViewModelSection(original: section, items: items)
+        sections.accept([newSection])
     }
     
-    fileprivate func fetchCardsForSelectedPlaylists(_ playlists: [Playlist]) {
-        playlists.forEach { [weak self] in
-            self?.user.fetchCards(forPlaylist: $0)
-                .subscribe(onError: { [weak self] (error) in
-                    self?.errorHandler(description: "Unsuccesfull load cards", error: error, withAlert: true)
-                })
-                .disposed(by: disposeBag)
+    fileprivate func needDeleteCard(_ card: TranslateCard) {
+        startActivityIndicator.accept(true)
+        
+        user.removeCard(card)
+            .catchError { [weak self] (error) -> Observable<()> in
+                self?.errorHandler(description: "Failed delete card \(card.sourcePhrase)", error: error, withAlert: true)
+                return .just(()) }
+            .map{ false }
+            .bind(to: startActivityIndicator)
+            .disposed(by: disposeBag)
+    }
+    
+    fileprivate func fetchCards() {
+        
+        if isRefreshing.value != true {
+            isRefreshing.accept(true)
         }
+        
+        Observable.combineLatest(
+            user.fetchCards(forPlaylists: selectedPlaylists.value),
+            user.fetchPlaylists(forLanguage: language.value)
+        )
+            .ignoreAll()
+            .catchError { [weak self] (error) -> Observable<Void> in
+                self?.errorHandler(description: "Failed update data", error: error, withAlert: true)
+                return .just(()) }
+            .map{ false }
+            .bind(to: isRefreshing)
+        .disposed(by: disposeBag)
     }
 }

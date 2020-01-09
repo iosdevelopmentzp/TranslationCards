@@ -28,4 +28,7 @@ extension ObservableType {
         return Observable.merge(self.asObservable(), other)
     }
     
+    func ignoreAll() -> Observable<Void> {
+        return map { _ in }
+    }
 }
