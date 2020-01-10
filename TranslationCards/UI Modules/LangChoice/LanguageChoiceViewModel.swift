@@ -25,12 +25,12 @@ protocol LanguageChoiceViewModelType: LanguageChoiceViewModelInput & LanguageCho
     var output: LanguageChoiceViewModelOutput { get }
 }
 
-extension LanguageChoiceViewModelType {
+extension LanguageChoiceViewModelType where Self: LanguageChoiceViewModelInput & LanguageChoiceViewModelOutput {
     var input: LanguageChoiceViewModelInput { return self }
     var output: LanguageChoiceViewModelOutput { return self }
 }
 
-final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelType {
+final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelType, LanguageChoiceViewModelInput, LanguageChoiceViewModelOutput {
     
     let choiceLanguageAction = PublishSubject<Void>()
     let nextButtonEvent = PublishSubject<Void>()

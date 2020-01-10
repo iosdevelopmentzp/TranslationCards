@@ -28,17 +28,17 @@ protocol CardsListViewModelOutput {
     var isEditMode: BehaviorRelay<Bool> { get }
 }
 
-protocol CardsListViewModelType: CardsListViewModelInput & CardsListViewModelOutput {
+protocol CardsListViewModelType {
     var input: CardsListViewModelInput { get }
     var output: CardsListViewModelOutput { get }
 }
 
-extension CardsListViewModelType {
+extension CardsListViewModelType where Self: CardsListViewModelInput & CardsListViewModelOutput {
     var input: CardsListViewModelInput { self }
     var output: CardsListViewModelOutput { self }
 }
 
-final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelType {
+final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelInput, CardsListViewModelOutput, CardsListViewModelType {
     let didSelectItem = PublishSubject<IndexPath>()
     let needDeleteItem = PublishSubject<IndexPath>()
     let shuffleMode = BehaviorRelay<Bool>.init(value: false)

@@ -24,12 +24,12 @@ protocol LogInViewModelType: LogInViewModelInput & LogInViewModelOutput {
     var output: LogInViewModelOutput { get }
 }
 
-extension LogInViewModelType {
+extension LogInViewModelType where Self: LogInViewModelOutput & LogInViewModelInput {
     var input: LogInViewModelInput { return self}
     var output: LogInViewModelOutput { return self}
 }
 
-final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType {
+final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInViewModelOutput, LogInViewModelInput  {
     
     let logInAction = PublishSubject<Void>()
     let logInText = PublishSubject<String>()

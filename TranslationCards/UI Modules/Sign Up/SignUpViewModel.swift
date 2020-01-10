@@ -27,12 +27,12 @@ protocol SignUpViewModelType: SignUpViewModelInput & SignUpViewModelOutput {
     var output: SignUpViewModelOutput { get }
 }
 
-extension SignUpViewModelType {
+extension SignUpViewModelType where Self: SignUpViewModelInput & SignUpViewModelOutput {
     var input: SignUpViewModelInput { return self }
     var output: SignUpViewModelOutput { return self }
 }
 
-final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType {
+final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignUpViewModelInput, SignUpViewModelOutput {
     let logInText = PublishSubject<String>()
     let passwordText = PublishSubject<String>()
     let displayNameText = PublishSubject<String>()
