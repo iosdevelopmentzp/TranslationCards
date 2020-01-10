@@ -94,7 +94,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         
         signUpButton.rx
             .tap
-            .subscribe(input.signUpAction)
+            .bind(to: viewModel.input.signUpAction)
             .disposed(by: disposeBag)
         
         output

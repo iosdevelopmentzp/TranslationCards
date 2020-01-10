@@ -134,7 +134,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
                 snapshot.documents.forEach{
                     guard let card = TranslateCard(withData: $0.data()) else { return }
                     card.id = $0.reference.documentID
-                    card.playlistId = playlistName
+                    card.updatePlaylistID(playlistName)
                     cards.append(card)
                 }
                 return cards }
@@ -148,7 +148,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
                 snapshot.documents.forEach{
                     guard let card = TranslateCard(withData: $0.data()) else { return }
                     card.id = $0.reference.documentID
-                    card.playlistId = playlist.id
+                    card.updatePlaylistID(playlist.id)
                     cards.append(card)
                 }
                 return cards
@@ -243,7 +243,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     
     func movePlaylist(forCard card: TranslateCard, playlistForMoveId: String) -> Observable<Void> {
         let oldCardReferance = cardDocumentReference(forCard: card)
-        card.playlistId = playlistForMoveId
+        card.updatePlaylistID(playlistForMoveId) 
         let newCardReferance = cardDocumentReference(forCard: card)
         
         return .create { [weak self] (obsever) -> Disposable in
@@ -265,7 +265,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     
     func copyCard(_ card: TranslateCard, toAnotherPlaylistWithId newPlaylistId: String) -> Observable<Void> {
         let newCard = TranslateCard(userId: card.userOwnerId, language: card.language, sourcePhrase: card.sourcePhrase, targetPhrase: card.targetPhrase)
-        newCard.playlistId = newPlaylistId
+        newCard.updatePlaylistID(newPlaylistId)
         return cardDocumentReference(forCard: newCard).rx.setData(newCard.representation)
     }
     

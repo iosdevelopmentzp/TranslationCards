@@ -19,7 +19,7 @@ final class TranslateCard {
         case movedToAnotherPlaylist
     }
     
-    let language: LanguageBind
+    fileprivate(set) var language: LanguageBind
     fileprivate(set) var userOwnerId: String
     let dateCreated: Date
     var dateUpdated: Date
@@ -27,11 +27,7 @@ final class TranslateCard {
     fileprivate(set) var targetPhrase: String
     var id: String
     // if card will save on server need to set this property, using playlist
-    var playlistId: String = "Common" {
-        didSet {
-            runtimeEvents.accept(.movedToAnotherPlaylist)
-        }
-    }
+    fileprivate(set) var playlistId: String = "Common"
     
     // Property for observ change of card in real time.
     let runtimeEvents: BehaviorRelay<Event> = .init(value: .nothing)
@@ -70,15 +66,38 @@ final class TranslateCard {
         self.id = id
     }
     
-    func update(sourcePhrase: String, targetPhrase: String) {
-        self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
-        self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
+    func update(sourcePhrase: String? = nil, targetPhrase: String? = nil) {
+        var havePhrasesChanged = false
+        if let sourcePhrase = sourcePhrase, sourcePhrase != self.sourcePhrase {
+            self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
+            havePhrasesChanged = true
+        }
+        
+        if let targetPhrase = targetPhrase, targetPhrase != self.targetPhrase {
+            self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
+            havePhrasesChanged = true
+        }
+        if havePhrasesChanged {
+            runtimeEvents.accept(.changed)
+        }
+    }
+    
+    func updateLanguage(_ newLangugae: LanguageBind) {
+        guard newLangugae != self.language else { return }
+        self.language = newLangugae
         runtimeEvents.accept(.changed)
     }
     
     func updateOwnerUserId(newId: String) {
+        guard newId != userOwnerId else { return }
         userOwnerId = newId
         runtimeEvents.accept(.changed)
+    }
+    
+    func updatePlaylistID(_ newPlaylistID: String) {
+        guard newPlaylistID != playlistId else { return }
+        playlistId = newPlaylistID
+        runtimeEvents.accept(.movedToAnotherPlaylist)
     }
 }
 

@@ -223,7 +223,7 @@ extension User: ServicesAccessing {
         }
     }
     
-    func fetchPlaylists(forLanguage language: LanguageBind) -> Observable<Void> {
+    func fetchPlaylists(forLanguage language: LanguageBind) -> Observable<[Playlist]> {
         .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
                 observer.onError(UserWorkWithDatabaseErrors.userObjectDeallocated)
@@ -235,7 +235,7 @@ extension User: ServicesAccessing {
                 .getPlaylistList(userId: self.uid, language: language)
                 .subscribe(onNext: { [weak self] (playlists) in
                     self?.fetchedNewPlaylist(playlist: playlists, forLanguage: language)
-                    observer.onNext(())
+                    observer.onNext(playlists)
                     observer.onCompleted()
                     }, onError: { (error) in
                         observer.onError(error)

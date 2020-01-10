@@ -11,7 +11,6 @@ import RxCocoa
 
 final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter, CreateCardPopUpViewModel> {
     fileprivate let createTranslateCardView = CreateTranslateCardView()
-    fileprivate let tapGesture = UITapGestureRecognizer()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -26,51 +25,83 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     
     override func setupView() {
         super.setupView()
-        view.addGestureRecognizer(tapGesture)
         view.backgroundColor = .clear
     }
     
     override func binding() {
         super.binding()
-        viewModel
-            .isInputValide
-            .subscribe(onNext: { [weak self] (isValide) in
-                UIView.animate(withDuration: 0.2) {
-                    self?.createTranslateCardView.saveButton.backgroundColor = isValide ? .validateAccentColor : .notValidateButton
-                }
-            })
+        let input = viewModel.input
+        let output = viewModel.output
+        let cardView = createTranslateCardView
+        
+        output
+            .card
+            .bind(to: cardView.currentCard)
             .disposed(by: disposeBag)
         
-        viewModel
-            .isRemoveButtonHidden
-            .bind(to: createTranslateCardView.removeButton.rx.isHidden)
+        output
+            .isInputValid
+            .map{ $0 ? UIColor.validateAccentColor : UIColor.notValidateButton}
+            .bind(to: cardView.saveButton.rx.backgroundColor)
             .disposed(by: disposeBag)
         
-        viewModel
-            .isAutoTranslateButtonHidden
-            .bind(to: createTranslateCardView.translateRealtimeButton.rx.isHidden)
+        output
+            .isInputValid
+            .bind(to: cardView.saveButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
-        viewModel.bind(translateInRealTimeButtonEvent: createTranslateCardView.translateRealtimeButton.rx.tap,
-                       sourcePhraseProperty: createTranslateCardView.sourceTextField.rx.text,
-                       targetPhraseProperty: createTranslateCardView.targetTextField.rx.text)
-        
-        viewModel.bind(withNewPhrase: createTranslateCardView.sourceTextField.rx.text.orEmpty,
-                       translation: createTranslateCardView.targetTextField.rx.text.orEmpty,
-                       saveButtonPressed: createTranslateCardView.saveButton.rx.tap,
-                       cancelButtonPressed: createTranslateCardView.cancelButton.rx.tap,
-                       removeButtonPressed: createTranslateCardView.removeButton.rx.tap)
-        
-        viewModel.bind(withSourceSelectLanguageButton: createTranslateCardView.sourceSelectLanguageButton.rx.tap,
-                       targetSelectLanguageButton: createTranslateCardView.targetSelectLanguageButton.rx.tap)
+        output
+            .mode
+            .map{ $0 == .create }
+            .bind(to: cardView.removeButton.rx.isHidden)
+            .disposed(by: disposeBag)
 
-        viewModel.bind(sourceButtonImage: createTranslateCardView.sourceSelectLanguageButton.rx.backgroundImage(),
-                       targetButtonImage: createTranslateCardView.targetSelectLanguageButton.rx.backgroundImage())
+        cardView
+            .translateRealtimeButton
+            .rx.tap
+            .bind(to: input.translateButtonTap)
+            .disposed(by: disposeBag)
         
-        tapGesture.rx.event
-            .subscribe(onNext: { [weak self] (gesture) in
-                self?.view.endEditing(true)
-            })
+        cardView
+            .sourceTextField
+            .rx.text
+            .unwrap()
+            .bind(to: input.sourcePhraseText)
+            .disposed(by: disposeBag)
+        
+        cardView
+            .targetTextField
+            .rx.text
+            .unwrap()
+            .bind(to: input.targetPhraseText)
+            .disposed(by: disposeBag)
+        
+        cardView
+            .cancelButton
+            .rx.tap
+            .bind(to: input.cancelButtonTap)
+            .disposed(by: disposeBag)
+        
+        cardView
+            .saveButton
+            .rx.tap
+            .bind(to: input.saveButtonTap)
+            .disposed(by: disposeBag)
+        
+        cardView
+            .removeButton
+            .rx.tap
+            .bind(to: input.removeButtonTap)
+            .disposed(by: disposeBag)
+        
+        cardView
+            .targetSelectLanguageButton
+            .rx.tap
+            .bind(to: input.targetLanguageTap)
+            .disposed(by: disposeBag)
+    
+        view.rx
+            .addHideKeyboardTapGesture()
             .disposed(by: disposeBag)
     }
 }

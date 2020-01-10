@@ -10,10 +10,13 @@ import RxSwift
 import RxCocoa
 
 class CreateTranslateCardView: UIView {
+    /// main configure property
+    let currentCard: BehaviorRelay<TranslateCard?> = .init(value: nil)
+    
+    // UI properies
     let sourceTextField = UITextView()
     let sourceHeaderLabel = UILabel()
     let sourceSelectLanguageButton = UIButton(type: .custom)
-    
     let targetHeaderLabel = UILabel()
     let targetTextField = UITextView()
     let targetSelectLanguageButton = UIButton(type: .custom)
@@ -26,7 +29,7 @@ class CreateTranslateCardView: UIView {
     fileprivate let verticalButtonStackView = UIStackView()
     
     
-    fileprivate let currentCard: BehaviorRelay<TranslateCard?> = .init(value: nil)
+    
     fileprivate let diposeBag = DisposeBag()
     
     override init(frame: CGRect) {
@@ -39,10 +42,6 @@ class CreateTranslateCardView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(withCard card: TranslateCard) {
-        currentCard.accept(card)
     }
     
     // MARK: - Private
