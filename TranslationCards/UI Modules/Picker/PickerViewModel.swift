@@ -52,7 +52,7 @@ final class PickerViewModel: ViewModel<PickerRouter> {
     func bind(cancelAction: ControlEvent<Void>, doneAction: ControlEvent<Void>) {
         cancelAction
             .subscribe(onNext: { [weak self] (_) in
-                self?.router.route(to: .dissmis)
+                self?.router.comeBack()
             })
             .disposed(by: disposeBag)
         
@@ -62,7 +62,7 @@ final class PickerViewModel: ViewModel<PickerRouter> {
                     return
                 }
                 self?.finishLanguage.accept(currentLanguage)
-                self?.router.route(to: .dissmis) })
+                self?.router.comeBack() })
             .disposed(by: disposeBag)
     }
 }

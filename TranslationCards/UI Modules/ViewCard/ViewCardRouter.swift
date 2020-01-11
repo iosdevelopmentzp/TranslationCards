@@ -12,7 +12,6 @@ final class ViewCardRouter: Router {
     enum Route {
         case editCard(card: TranslateCard, user: User)
         case moveCardTo(dataSource: [Playlist], selected: Playlist, callback: PlaylistCallBack)
-        case dismiss
     }
     
     func route(to type: Route) {
@@ -21,8 +20,6 @@ final class ViewCardRouter: Router {
             presentEditCard(card, user: user)
         case .moveCardTo(let dataSource, let selected, let callback):
             viewController?.presentSingleChoicePlaylist(dataSource: dataSource, selectedAction: callback, currentSelect: selected)
-        case .dismiss:
-            viewController?.navigationController?.popViewController(animated: true)
         }
     }
     

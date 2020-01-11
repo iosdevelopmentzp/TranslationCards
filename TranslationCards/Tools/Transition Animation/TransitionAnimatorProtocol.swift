@@ -10,16 +10,16 @@ import UIKit
 
 protocol TransitionAnimatorProtocol: UIViewControllerAnimatedTransitioning {
     /// Check, if view controllers can make animate transition
-    func isValidatedViewControllers(fromVC: UIViewController, toVC: UIViewController) -> Bool
+    func сanPerformCorrectAnimation(fromVC: UIViewController, toVC: UIViewController) -> Bool
     
     /// method for triger of navigation operation type before transition
-    func animator(withType type: NavigationOperationType) -> UIViewControllerAnimatedTransitioning?
+    func animator(withType type: ViewControllerTransitionType) -> UIViewControllerAnimatedTransitioning?
 }
 
 extension TransitionAnimatorProtocol {
-    func isValidatedViewControllers(fromVC: UIViewController, toVC: UIViewController) -> Bool {
-        guard  fromVC is TransitionAnimatorMaker,
-               toVC  is TransitionAnimatorMaker else {
+    func сanPerformCorrectAnimation(fromVC: UIViewController, toVC: UIViewController) -> Bool {
+        guard  fromVC is TransitionAnimationMaker,
+               toVC  is TransitionAnimationMaker else {
             return false
         }
         return true

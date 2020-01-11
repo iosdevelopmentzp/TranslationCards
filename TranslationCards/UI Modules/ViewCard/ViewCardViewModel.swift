@@ -26,7 +26,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
             .subscribe(onNext: { [weak self] (event, card) in
                 switch event {
                 case .removed:
-                    self?.router.route(to: .dismiss)
+                    self?.router.comeBack()
                 case .changed:
                     self?.card.accept(card)
                 case .movedToAnotherPlaylist, .nothing:

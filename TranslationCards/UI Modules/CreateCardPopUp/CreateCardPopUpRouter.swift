@@ -17,7 +17,7 @@ final class CreateCardPopUpRouter: Router {
         case selectPlaylistView(dataSource: [Playlist], selectedAction: PlaylistCallBack, firstRowTitle: String, createNewPlaylistCallBack: EmptyCallBack)
     }
     
-    func dissmis() {
+    override func comeBack() {
         viewController?.dismiss(animated: true, completion: nil)
     }
     

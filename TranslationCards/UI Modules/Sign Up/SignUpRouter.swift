@@ -10,15 +10,12 @@ import Foundation
 
 final class SignUpRouter: Router {
     enum Router {
-        case back
         case mainView
         case choiceLanguage(user: User)
     }
     
     func route(to type: Router) {
         switch type {
-        case .back:
-            viewController?.navigationController?.popViewController(animated: true)
         case .mainView:
             pushMainView()
         case .choiceLanguage(let user):

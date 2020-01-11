@@ -119,8 +119,8 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     }
 }
 
-extension LogInViewController: TransitionAnimatorMaker {
-    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+extension LogInViewController: TransitionAnimationMaker {
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         
         let action = { [weak self] in
             UIView.animate(withDuration: duration, animations: {
@@ -142,7 +142,7 @@ extension LogInViewController: TransitionAnimatorMaker {
         }
     }
     
-    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         let action = { [weak self] in
             UIView.animate(withDuration: duration) {
                 [self?.logInButton, self?.passwordTextField, self?.loginTextField].forEach {

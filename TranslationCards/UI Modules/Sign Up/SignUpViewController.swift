@@ -143,8 +143,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     }
 }
 
-extension SignUpViewController: TransitionAnimatorMaker {
-    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+extension SignUpViewController: TransitionAnimationMaker {
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         guard let secondViewController = secondViewController else { return }
         containerView.insertSubview(secondViewController.view, belowSubview: view)
         
@@ -173,7 +173,7 @@ extension SignUpViewController: TransitionAnimatorMaker {
         }
     }
     
-    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         containerView.addSubview(view)
         view.alpha = 0.0
         

@@ -12,11 +12,11 @@ protocol ModalTransitionAnimatorProtocol: UIViewControllerAnimatedTransitioning 
     // Check, if view controllers can make animate transition
     func isValidatedPresentedViewController(_ presentedVC: UIViewController) -> Bool
     
-    func animator(withType type: NavigationOperationType) -> UIViewControllerAnimatedTransitioning?
+    func animator(withType type: ViewControllerTransitionType) -> UIViewControllerAnimatedTransitioning?
 }
 
 extension ModalTransitionAnimatorProtocol {
     func isValidatedPresentedViewController(_ presentedVC: UIViewController) -> Bool {
-        return presentedVC is TransitionAnimatorMaker
+        return presentedVC is TransitionAnimationMaker
     }
 }

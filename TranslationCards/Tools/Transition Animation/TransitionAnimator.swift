@@ -9,21 +9,21 @@
 import UIKit
 
 final class TransitionAnimator:  NSObject, TransitionAnimatorProtocol {
-    var type: NavigationOperationType = .push
+    var type: ViewControllerTransitionType = .push
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimatorMaker,
-            let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimatorMaker
+        guard let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimationMaker,
+            let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimationMaker
             else {
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 return
         }
         
-        guard fromVC.typesWhichSupportedAnimation().contains(type) && toVC.typesWhichSupportedAnimation().contains(type) else {
+        guard fromVC.supportedTransitionTypes().contains(type) && toVC.supportedTransitionTypes().contains(type) else {
             fatalError("Attempt navigation operation with unsupported type \(type) for fromVC \(fromVC.description) toVc \(toVC.description)")
         }
         
@@ -36,7 +36,7 @@ final class TransitionAnimator:  NSObject, TransitionAnimatorProtocol {
         }
     }
     
-    func animator(withType type: NavigationOperationType) -> UIViewControllerAnimatedTransitioning? {
+    func animator(withType type: ViewControllerTransitionType) -> UIViewControllerAnimatedTransitioning? {
         switch type {
         case .push, .pop:
             self.type = type

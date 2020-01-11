@@ -22,43 +22,35 @@ class AppRouter: NSObject {
             .credentials
             .user
             .skip(1)
+            .filter{ $0 == nil }
             .subscribe(onNext: { [weak self] (user) in
-                self?.didChangeUser(user)
+                self?.openLoginScreenIfNeed()
             })
             .disposed(by: disposeBag)
     }
     
     func buildStartView() -> UIViewController {
-        var startViewControllers:[UIViewController] = []
-
-        guard let user = services.credentials.user.value else  {
+        var viewControllersStack:[UIViewController] = []
+        
+        let user = services.credentials.user.value
+        
+        switch user {
+        case .none:
             let loginVc = Screens.logIn()
-            startViewControllers.append(loginVc)
-            navigationController.setViewControllers(startViewControllers, animated: false)
-            return navigationController
+            viewControllersStack.append(loginVc)
+        case .some(let user) where user.nativeLanguage == nil:
+            let selectLangVC = Screens.nativeLanguageChoise(user: user)
+            viewControllersStack.append(selectLangVC)
+        default:
+            let mainVC = Screens.main()
+            viewControllersStack.append(mainVC)
         }
-        
-        guard user.nativeLanguage != nil else {
-            let choiceLangVC = Screens.nativeLanguageChoise(user: user)
-            startViewControllers.append(choiceLangVC)
-            navigationController.setViewControllers(startViewControllers, animated: false)
-            return navigationController
-        }
-        
-        let mainVC = Screens.main()
-        startViewControllers.append(mainVC)
-        navigationController.setViewControllers(startViewControllers, animated: false)
+        navigationController.setViewControllers(viewControllersStack, animated: false)
         return navigationController
     }
     
     // MARK: - Private
-    private func didChangeUser(_ user: User?) {
-        if user == nil {
-            openLoginViewIfNeed()
-        }
-    }
-    
-    private func openLoginViewIfNeed() {
+    private func openLoginScreenIfNeed() {
         if let topViewController = navigationController.viewControllers.last,
             topViewController is LogInViewController {
             return

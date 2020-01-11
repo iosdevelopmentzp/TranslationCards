@@ -106,9 +106,9 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
     }
 }
 
-extension CreateCardPopUpViewController: TransitionAnimatorMaker {
+extension CreateCardPopUpViewController: TransitionAnimationMaker {
     
-    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+    func startAnimationBeforeDisappear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         
         let blurEffectView = secondViewController?.getBlurEffect()
         
@@ -158,7 +158,7 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         }
     }
     
-    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: NavigationOperationType) {
+    func startAnimationBeforeAppear(withDelay delay: TimeInterval, duration: TimeInterval, secondViewController: UIViewController?, containerView: UIView, transitionType: ViewControllerTransitionType) {
         
         let blurView = secondViewController?.appendBlurEffect(style: .dark)
         blurView?.alpha = 0.0
@@ -234,7 +234,7 @@ extension CreateCardPopUpViewController: TransitionAnimatorMaker {
         })
     }
     
-    func typesWhichSupportedAnimation() -> [NavigationOperationType] {
+    func supportedTransitionTypes() -> [ViewControllerTransitionType] {
         return [.present, .dismiss]
     }
 }

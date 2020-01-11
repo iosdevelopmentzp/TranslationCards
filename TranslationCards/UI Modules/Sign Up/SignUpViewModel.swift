@@ -62,7 +62,7 @@ final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignU
         
         backToLogInAction
             .subscribe(onNext: { [weak self] (_) in
-                self?.router.route(to: .back)
+                self?.router.comeBack()
             })
             .disposed(by: disposeBag)
         

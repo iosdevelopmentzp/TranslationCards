@@ -10,10 +10,11 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class ViewModel<R: Router>: NSObject, ServicesAccessing {
+class ViewModel<R: Router>: NSObject {
     
     let disposeBag = DisposeBag()
     let router: R
+    let services = Services.shared
     let alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
     let textFieldAlertModel = BehaviorRelay<TextFieldAlertModel?>.init(value: nil)
     let startActivityIndicator: BehaviorRelay<Bool> = .init(value: false)

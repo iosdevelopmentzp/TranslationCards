@@ -9,10 +9,11 @@
 import RxSwift
 import RxCocoa
 
-class NavigationViewModel<R: Router>: NSObject, ServicesAccessing {
+class NavigationViewModel<R: Router>: NSObject {
     
     let disposeBag = DisposeBag()
     let router: R
+    let services = Services.shared
     var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
     
     var modalTransitionAnimatorDelegate: ModalTransitionDelegate?

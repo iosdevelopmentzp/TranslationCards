@@ -10,7 +10,7 @@ import UIKit
 
 class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
     
-    private var type: NavigationOperationType = .present
+    private var type: ViewControllerTransitionType = .present
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         0.5
@@ -23,8 +23,8 @@ class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
         case .push, .pop:
             fatalError("Attempt modal presentation with \(type) type.")
         case .present:
-            guard let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimatorMaker,
-            toVC.typesWhichSupportedAnimation().contains(type) else {
+            guard let toVC = transitionContext.viewController(forKey: .to) as? TransitionAnimationMaker,
+            toVC.supportedTransitionTypes().contains(type) else {
                 fatalError("Failed when get TransitionAnimatorMaker from transitionContext")
             }
             toVC.startAnimationBeforeAppear(withDelay: 0,
@@ -34,11 +34,11 @@ class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
                                             transitionType: .present)
         case .dismiss:
             guard let toVC = transitionContext.viewController(forKey: .to),
-                let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimatorMaker else {
+                let fromVC = transitionContext.viewController(forKey: .from) as? TransitionAnimationMaker else {
                 fatalError("Failed when get TransitionAnimatorMaker from transitionContext")
             }
             
-            guard fromVC.typesWhichSupportedAnimation().contains(type) else {
+            guard fromVC.supportedTransitionTypes().contains(type) else {
                 fatalError("From view controller \(fromVC) not support navigation operation \(type)")
             }
             
@@ -54,7 +54,7 @@ class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
         }
     }
     
-    func animator(withType type: NavigationOperationType) -> UIViewControllerAnimatedTransitioning? {
+    func animator(withType type: ViewControllerTransitionType) -> UIViewControllerAnimatedTransitioning? {
         switch type {
         case .push, .pop:
             return nil

@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import JJFloatingActionButton
 import NVActivityIndicatorView
 
@@ -83,32 +84,19 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         
         viewModel
             .startActivityIndicator
-            .subscribe(onNext: { isActive in
-                let indicator =  NVActivityIndicatorPresenter.sharedInstance
-                guard isActive != indicator.isAnimating else {
-                    return
-                }
-                guard isActive else {
-                    indicator.stopAnimating()
-                    return
-                }
-                let activityData = ActivityData()
-                indicator.startAnimating(activityData)
-            })
+            .observeOn(MainScheduler.instance)
+            .bind(to: NVActivityIndicatorPresenter.sharedInstance.rx_isAnimating)
             .disposed(by: disposeBag)
     }
     
+    //MARK: - Private
     private func setupActionButtons() {
         guard let mainNavigation = navigationController as? MainNavigationViewController else {
             return
         }
-        
-        guard let buttonDataSource = self as? ActionButtonDataSource else {
-            mainNavigation.configureActionButtons([])
-            return
-        }
-        
-        let buttons = buttonDataSource.getActionButtons()
+        let buttons = (self as? ActionButtonDataSource)?.getActionButtons() ?? []
         mainNavigation.configureActionButtons(buttons)
     }
 }
+
+

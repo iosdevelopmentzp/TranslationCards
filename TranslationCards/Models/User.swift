@@ -100,12 +100,27 @@ final class User {
     }
 }
 
+extension User: DataRepresentation {
+    var representation: [String : Any] {
+        var data: [String : Any] = [:]
+        data["uid"] = uid
+        if let nativeLanguage = nativeLanguage { data["nativeLanguage"] = nativeLanguage.rawValue}
+        if let currentLanguage = currentLanguage { data["currentLanguage"] = currentLanguage.rawValue}
+        if let email = email { data["email"] = email }
+        if let username = displayName { data["displayName"] = username }
+        if let avatarUrl = avatarUrl { data["avatarUrl"] = avatarUrl }
+        return data
+    }
+}
+
 enum UserWorkWithDatabaseErrors: Error {
     case userObjectDeallocated
 }
 
 // MARK: - Services access
-extension User: ServicesAccessing {
+extension User {
+    
+    var services: Services { Services.shared }
     
     // Languages
     func fetchLanguages() -> Observable<Void> {
@@ -450,18 +465,5 @@ extension User: ServicesAccessing {
                 debugPrint("Unsuccesfull update cards for playlist \(playlist.description) with error \(error)")
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension User: DataRepresentation {
-    var representation: [String : Any] {
-        var data: [String : Any] = [:]
-        data["uid"] = uid
-        if let nativeLanguage = nativeLanguage { data["nativeLanguage"] = nativeLanguage.rawValue}
-        if let currentLanguage = currentLanguage { data["currentLanguage"] = currentLanguage.rawValue}
-        if let email = email { data["email"] = email }
-        if let username = displayName { data["displayName"] = username }
-        if let avatarUrl = avatarUrl { data["avatarUrl"] = avatarUrl }
-        return data
     }
 }

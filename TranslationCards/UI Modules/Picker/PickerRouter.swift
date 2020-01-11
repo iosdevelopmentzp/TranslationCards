@@ -9,14 +9,7 @@
 import Foundation
 
 class PickerRouter: Router {
-    enum Route {
-        case dissmis
-    }
-    
-    func route(to type: Route) {
-        switch type {
-        case .dissmis:
-            viewController?.dismiss(animated: true, completion: nil)
-        }
+    override func comeBack() {
+        viewController?.dismiss(animated: true, completion: nil)
     }
 }

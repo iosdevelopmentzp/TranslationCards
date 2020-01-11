@@ -130,7 +130,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         cancelButtonTap
             .subscribe(onNext: { [weak self] (_) in
-                self?.router.dissmis()
+                self?.router.comeBack()
             })
             .disposed(by: disposeBag)
         
@@ -183,7 +183,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .withLatestFrom(self.card)
             .subscribe(onNext: { [weak self] (_) in
                 card.update(sourcePhrase: initialSourceText, targetPhrase: initialTargetText)
-                self?.router.dissmis()
+                self?.router.comeBack()
             })
             .disposed(by: disposeBag)
     }
@@ -265,7 +265,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
                 self?.startActivityIndicator.accept(false)
             })
             .subscribe(onNext: { [weak self] (_) in
-                self?.router.dissmis()
+                self?.router.comeBack()
                 }, onError: { [weak self] (error) in
                     self?.errorHandler(description: "Failed attempt to save card", error: error, withAlert: true)
             })
@@ -278,7 +278,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .execute { [weak self] (_) in
                 self?.startActivityIndicator.accept(false) }
             .subscribe(onNext: { [weak self] (_) in
-                self?.router.dissmis()
+                self?.router.comeBack()
                 }, onError: { [weak self] (error) in
                     self?.errorHandler(description: "Failed attempt to remove card", error: error, withAlert: true)
             })

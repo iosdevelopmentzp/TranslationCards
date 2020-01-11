@@ -21,7 +21,7 @@ final class NavigationControllerDelegate: NSObject, UINavigationControllerDelega
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         guard let transitionAnimator = transitionAnimator,
-            transitionAnimator.isValidatedViewControllers(fromVC: fromVC, toVC: toVC) else {
+            transitionAnimator.сanPerformCorrectAnimation(fromVC: fromVC, toVC: toVC) else {
             return nil
         }
         

@@ -11,6 +11,10 @@ import UIKit
 class Router: NSObject {
     weak var viewController: UIViewController?
     
+    func comeBack() {
+        viewController?.navigationController?.popViewController(animated: true)
+    }
+    
     required override init() {
         super.init()
     }

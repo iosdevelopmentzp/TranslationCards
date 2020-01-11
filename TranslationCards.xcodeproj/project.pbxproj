@@ -60,7 +60,6 @@
 		3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFD23953B03006D5D5C /* AlertModel.swift */; };
 		3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */; };
 		3B5A3BB423965F75009110A7 /* MainViewModelSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */; };
-		3B5A3BB623968D56009110A7 /* ServicesAccessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB523968D56009110A7 /* ServicesAccessing.swift */; };
 		3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB82396A345009110A7 /* CardsListRouter.swift */; };
 		3B5A3BBC2396A345009110A7 /* CardsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB92396A345009110A7 /* CardsListViewController.swift */; };
 		3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */; };
@@ -84,8 +83,6 @@
 		3B825B8E2386886F009D62E8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B8D2386886F009D62E8 /* Service.swift */; };
 		3B825B9123868912009D62E8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9023868912009D62E8 /* AuthService.swift */; };
 		3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */; };
-		3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9523868AFB009D62E8 /* ServiceError.swift */; };
-		3B825B9823868B27009D62E8 /* BaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9723868B27009D62E8 /* BaseError.swift */; };
 		3B825B9F238692F6009D62E8 /* CredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9E238692F6009D62E8 /* CredentialsService.swift */; };
 		3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */; };
 		3B825BA4238695DA009D62E8 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825BA3238695DA009D62E8 /* DatabaseService.swift */; };
@@ -134,10 +131,11 @@
 		3BA21F8823C9F3A900CE161E /* UINavigationController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8723C9F3A900CE161E /* UINavigationController+Utils.swift */; };
 		3BA21F8A23C9F53300CE161E /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8923C9F53200CE161E /* UIView+Utils.swift */; };
 		3BA21F8C23C9F74300CE161E /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8B23C9F74300CE161E /* UIViewController+Utils.swift */; };
+		3BA21F8F23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */; };
 		3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */; };
 		3BA679E123AE4FC1003D2B40 /* UICollectionView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679E023AE4FC1003D2B40 /* UICollectionView+Utils.swift */; };
 		3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA5FB123AB6379002ED2FB /* Playlist.swift */; };
-		3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */; };
+		3BAC2824238C784B009950B4 /* TransitionAnimationMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */; };
 		3BC0414923A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift */; };
 		3BC0414B23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift */; };
 		3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414C23A3DA9400C20EFA /* AppRouter.swift */; };
@@ -161,7 +159,7 @@
 		3BDCDBEC23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */; };
 		3BDCDBF123C60A5000EF8C15 /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */; };
 		3BE63ED423AB99D7003B1EDC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B825B9A23868E69009D62E8 /* User.swift */; };
-		3BE9992B23AD062600816583 /* Base Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992A23AD062600816583 /* Base Typealias.swift */; };
+		3BE9992B23AD062600816583 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992A23AD062600816583 /* Typealiases.swift */; };
 		3BE9992E23AD0A5D00816583 /* TextFieldAlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992D23AD0A5D00816583 /* TextFieldAlertModel.swift */; };
 		3BE9993023AD0A7E00816583 /* TextFieldAlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9992F23AD0A7E00816583 /* TextFieldAlertBuilder.swift */; };
 		3BEE43CA2397D88A008F35AA /* CardSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */; };
@@ -233,7 +231,6 @@
 		3B573AFD23953B03006D5D5C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelSection.swift; sourceTree = "<group>"; };
-		3B5A3BB523968D56009110A7 /* ServicesAccessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAccessing.swift; sourceTree = "<group>"; };
 		3B5A3BB82396A345009110A7 /* CardsListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListRouter.swift; sourceTree = "<group>"; };
 		3B5A3BB92396A345009110A7 /* CardsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListViewController.swift; sourceTree = "<group>"; };
 		3B5A3BBA2396A345009110A7 /* CardsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsListViewModel.swift; sourceTree = "<group>"; };
@@ -257,8 +254,6 @@
 		3B825B8D2386886F009D62E8 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3B825B9023868912009D62E8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		3B825B9223868A2E009D62E8 /* AuthServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServiceV1.swift; sourceTree = "<group>"; };
-		3B825B9523868AFB009D62E8 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
-		3B825B9723868B27009D62E8 /* BaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseError.swift; sourceTree = "<group>"; };
 		3B825B9A23868E69009D62E8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3B825B9E238692F6009D62E8 /* CredentialsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsService.swift; sourceTree = "<group>"; };
 		3B825BA02386946B009D62E8 /* CredentialsServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsServiceV1.swift; sourceTree = "<group>"; };
@@ -307,10 +302,11 @@
 		3BA21F8723C9F3A900CE161E /* UINavigationController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Utils.swift"; sourceTree = "<group>"; };
 		3BA21F8923C9F53200CE161E /* UIView+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
 		3BA21F8B23C9F74300CE161E /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
+		3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NVActivityIndicatorPresenter+Rx.swift"; sourceTree = "<group>"; };
 		3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSlideShowFlowLayout.swift; sourceTree = "<group>"; };
 		3BA679E023AE4FC1003D2B40 /* UICollectionView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Utils.swift"; sourceTree = "<group>"; };
 		3BAA5FB123AB6379002ED2FB /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
-		3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimatorMaker.swift; sourceTree = "<group>"; };
+		3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimationMaker.swift; sourceTree = "<group>"; };
 		3BC0414823A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareOptionalObjectsOperator.swift; sourceTree = "<group>"; };
 		3BC0414A23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+CheckDocumentExistence.swift"; sourceTree = "<group>"; };
 		3BC0414C23A3DA9400C20EFA /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -333,7 +329,7 @@
 		3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JJActionItem+Rx.swift"; sourceTree = "<group>"; };
 		3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ReverseObservable.swift"; sourceTree = "<group>"; };
 		3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rx.swift"; sourceTree = "<group>"; };
-		3BE9992A23AD062600816583 /* Base Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Base Typealias.swift"; sourceTree = "<group>"; };
+		3BE9992A23AD062600816583 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
 		3BE9992D23AD0A5D00816583 /* TextFieldAlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModel.swift; sourceTree = "<group>"; };
 		3BE9992F23AD0A7E00816583 /* TextFieldAlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertBuilder.swift; sourceTree = "<group>"; };
 		3BEE43C72397D88A008F35AA /* CardSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlideShowRouter.swift; sourceTree = "<group>"; };
@@ -451,6 +447,7 @@
 				3BFCBD402391B4E100C9AA48 /* Date+Utils.swift */,
 				3BEE43D423980055008F35AA /* NSObject+Utils.swift */,
 				3B825BAD2386CD81009D62E8 /* String+Utils.swift */,
+				3BE9992A23AD062600816583 /* Typealiases.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -636,15 +633,6 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		3B825B9423868AED009D62E8 /* Error */ = {
-			isa = PBXGroup;
-			children = (
-				3B825B9723868B27009D62E8 /* BaseError.swift */,
-				3B825B9523868AFB009D62E8 /* ServiceError.swift */,
-			);
-			path = Error;
-			sourceTree = "<group>";
-		};
 		3B825B9923868E4E009D62E8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -679,11 +667,8 @@
 		3B825BA923869AC7009D62E8 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				3BE9992A23AD062600816583 /* Base Typealias.swift */,
-				3B825B9423868AED009D62E8 /* Error */,
 				3B825BAB23869AF9009D62E8 /* DataRepresentation.swift */,
 				3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */,
-				3B5A3BB523968D56009110A7 /* ServicesAccessing.swift */,
 				3B85039D23AA2F3200481989 /* ActionButtonDataSource.swift */,
 			);
 			path = Protocols;
@@ -718,7 +703,7 @@
 				3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */,
 				3B5D51312388301200DCB5FB /* TransitionAnimator.swift */,
 				3BC99CC823902A9500D0D869 /* NavigationControllerDelegate.swift */,
-				3BAC2823238C784B009950B4 /* TransitionAnimatorMaker.swift */,
+				3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */,
 				3BC52C38238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift */,
 				3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */,
 				3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */,
@@ -787,6 +772,7 @@
 			isa = PBXGroup;
 			children = (
 				3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */,
+				3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */,
 				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
 				3BC52C2C238FC466006FB7F8 /* UITextField+Rx.swift */,
 				3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */,
@@ -1124,7 +1110,7 @@
 				3BFCBD412391B4E100C9AA48 /* Date+Utils.swift in Sources */,
 				3BC52C2D238FC466006FB7F8 /* UITextField+Rx.swift in Sources */,
 				3BC52C3F238FF952006FB7F8 /* CreateCardPopUpViewController.swift in Sources */,
-				3BAC2824238C784B009950B4 /* TransitionAnimatorMaker.swift in Sources */,
+				3BAC2824238C784B009950B4 /* TransitionAnimationMaker.swift in Sources */,
 				3B94F6CE23BE2EE700303968 /* UIWindow+Utils.swift in Sources */,
 				3B5D511B2387E56700DCB5FB /* NavigationViewModel.swift in Sources */,
 				3B94BF5523B74756008A2691 /* WritePhraseSlideShowViewController.swift in Sources */,
@@ -1138,7 +1124,6 @@
 				3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */,
 				3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */,
 				3B94BF5623B74756008A2691 /* WritePhraseSlideShowViewModel.swift in Sources */,
-				3B5A3BB623968D56009110A7 /* ServicesAccessing.swift in Sources */,
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3B94F6CA23BE1E4700303968 /* TextView.swift in Sources */,
@@ -1152,7 +1137,6 @@
 				3B8503A023AA5F2000481989 /* NVActivityIndicatorView+Appearance.swift in Sources */,
 				3B85039C23AA276B00481989 /* JJActionItem+Appearance.swift in Sources */,
 				3B94BF6623B7773C008A2691 /* JJFloatingActionButton+Utils.swift in Sources */,
-				3B825B9823868B27009D62E8 /* BaseError.swift in Sources */,
 				3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */,
 				3B6CF0A4239E7D4C007CDA17 /* UIViewController+BlurEffect.swift in Sources */,
 				3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */,
@@ -1169,7 +1153,6 @@
 				3B30CC4723C7283200D2B576 /* TableView.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
 				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
-				3B825B9623868AFB009D62E8 /* ServiceError.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
 				3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */,
@@ -1208,6 +1191,7 @@
 				3BA21F8423C9F26E00CE161E /* UIColor+Custom.swift in Sources */,
 				3BC0414B23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift in Sources */,
 				3B8CF25223A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift in Sources */,
+				3BA21F8F23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift in Sources */,
 				3BC1938223B4FB440053E3D1 /* TranslateJsonModels.swift in Sources */,
 				3B825BB52386DFEC009D62E8 /* SignUpViewModel.swift in Sources */,
 				3BA0E15F239AC45300F4830D /* CardSideView.swift in Sources */,
@@ -1239,7 +1223,7 @@
 				3BE63ED423AB99D7003B1EDC /* User.swift in Sources */,
 				3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */,
 				3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */,
-				3BE9992B23AD062600816583 /* Base Typealias.swift in Sources */,
+				3BE9992B23AD062600816583 /* Typealiases.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController+Appearance.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3BA21F8623C9F32300CE161E /* UIImage+Utils.swift in Sources */,
