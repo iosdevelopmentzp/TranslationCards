@@ -46,7 +46,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         }
         .disposed(by: disposeBag)
         
-        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
+        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
     }
     
     override func binding() {

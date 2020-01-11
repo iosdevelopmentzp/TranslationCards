@@ -10,13 +10,6 @@ import UIKit
 import NVActivityIndicatorView
 
 extension UIView {
-    static func setupAllViewsAppereance() {
-        NVActivityIndicatorView.setupAppereance()
-        UINavigationController.setupAppeareance()
-    }
-}
-
-extension UIView {
     func setShadow(withColor color: UIColor = .shadowColorDark,
                    opacity: CGFloat = 0.7,
                    radius: CGFloat = 4.0,
@@ -27,9 +20,7 @@ extension UIView {
         layer.shadowOffset = offset
     }
     
-    func setBorder(withColor color: UIColor = .borderColotDak,
-                   borderWidth: CGFloat = 1.0,
-                   cornerRadius: CGFloat? = nil) {
+    func setBorder(withColor color: UIColor = .borderColotDak, borderWidth: CGFloat = 1.0, cornerRadius: CGFloat? = nil) {
         layer.borderColor = color.cgColor
         layer.borderWidth = borderWidth
         if let cornerRadius = cornerRadius {
@@ -50,38 +41,26 @@ extension UIView {
         layer.insertSublayer(gradientLayer, at:0)
         return gradientLayer
     }
-}
-
-extension UIView {
-   func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+    
+    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         layer.mask = mask
     }
-}
-
-extension UIView {
+    
     func setAlpha(_ alpha: CGFloat, withAnimation: Bool = true, duration: TimeInterval = 0.2) {
         guard self.alpha != alpha else { return }
         
-        let action = { [weak self] in
-            self?.alpha = alpha
-        }
-        
+        let action = { [weak self] in self?.alpha = alpha }
         guard withAnimation else {
             action()
             return
         }
-        
-        UIView.animate(withDuration: duration) {
-            action()
-        }
+        UIView.animate(withDuration: duration) { action() }
     }
-}
-
-extension UIView {
-    func getHeightConstraint() -> NSLayoutConstraint? {
+    
+    func getHeightLayoutConstraint() -> NSLayoutConstraint? {
         var constraint: NSLayoutConstraint?
         constraints.forEach {
             guard $0.firstAttribute == .height else { return }
@@ -90,7 +69,7 @@ extension UIView {
         return constraint
     }
     
-    func getWidthConstraint() -> NSLayoutConstraint? {
+    func getWidthLayoutConstraint() -> NSLayoutConstraint? {
         var constraint: NSLayoutConstraint?
         constraints.forEach {
             guard $0.firstAttribute == .width else { return }

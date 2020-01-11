@@ -101,7 +101,7 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
             .disposed(by: disposeBag)
     
         view.rx
-            .addHideKeyboardTapGesture()
+            .addTapGestureToHideKeyboard()
             .disposed(by: disposeBag)
     }
 }

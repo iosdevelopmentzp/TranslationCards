@@ -47,7 +47,7 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
     
     override func binding() {
         super.binding()
-        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.centerCellIndexPath()}
+        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
         
         viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap)
     }

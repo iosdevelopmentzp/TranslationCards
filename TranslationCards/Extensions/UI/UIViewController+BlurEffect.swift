@@ -6,9 +6,7 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import RSSelectionMenu
-import RxSwift
-import RxCocoa
+import UIKit
 
 extension UIViewController {
     @discardableResult
@@ -16,7 +14,6 @@ extension UIViewController {
         guard !UIAccessibility.isReduceTransparencyEnabled else {
             return nil
         }
-        
         let blurEffect = UIBlurEffect(style: .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
@@ -24,19 +21,10 @@ extension UIViewController {
         
         view.addSubview(blurEffectView)
         return blurEffectView
-        
     }
     
     func getBlurEffect() -> UIVisualEffectView? {
         let blurView = view.subviews.first { $0 is UIVisualEffectView }
         return blurView as? UIVisualEffectView
-    }
-    
-    var isTopOfNavigationStack: Bool {
-        guard let naviagation = navigationController,
-            let topViewController = naviagation.viewControllers.last else {
-            return false
-        }
-        return topViewController === self
     }
 }

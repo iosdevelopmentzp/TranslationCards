@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var appRouter = AppRouter()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UIView.setupAllViewsAppereance()
+        UIView.setupAppearance()
         FirebaseApp.configure()
         setupView()
         return true

@@ -10,11 +10,11 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: UIView {
-    func addHideKeyboardTapGesture() -> Disposable {
+    /// Add a gesture to the view, so that after touching the keyboard hides if necessary
+    func addTapGestureToHideKeyboard() -> Disposable {
         let tapGesture = UITapGestureRecognizer(target: nil, action: nil)
         base.addGestureRecognizer(tapGesture)
-        return tapGesture
-            .rx
+        return tapGesture.rx
             .event
             .subscribe(onNext: { [weak base] (_) in
                 base?.endEditing(true)

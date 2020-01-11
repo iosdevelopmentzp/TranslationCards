@@ -12,7 +12,7 @@ import RxCocoa
 // MARK: - Reverse observable
 infix operator <-> : DefaultPrecedence
 
-/// Two way binding operator between control property and relay, that's all it takes.
+/// Two way binding operator between control property and relay.
 func <-><T: Any> (property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disposable {
     let bindToUIDisposable = relay.bind(to: property)
     let bindToRelay = property
@@ -25,8 +25,7 @@ func <-><T: Any> (property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disp
     return Disposables.create(bindToUIDisposable, bindToRelay)
 }
 
-
-
+/// Two way binding operator between BehaviorRelay and BehaviorRelay with the same equatable generic type.
 func <-> <T: Equatable>(lhs: BehaviorRelay<T>, rhs: BehaviorRelay<T>) -> Disposable {
     typealias ItemType = (current: T, previous: T)
     

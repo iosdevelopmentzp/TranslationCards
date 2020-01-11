@@ -40,7 +40,7 @@ class TextView: UITextView {
         
         let newHeight = contentSize.height * 1.15
         
-        guard let heightConstrint = getHeightConstraint() else {
+        guard let heightConstrint = getHeightLayoutConstraint() else {
             snp.makeConstraints {
                 $0.height.equalTo(newHeight).priority(900)
             }

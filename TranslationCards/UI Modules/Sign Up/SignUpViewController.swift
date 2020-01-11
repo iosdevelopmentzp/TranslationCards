@@ -120,16 +120,16 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         registerCardView
             .loginTextField
             .textField.rx
-            .preventSpaces()
+            .preventSpaceCharacters()
             .disposed(by: disposeBag)
         
         registerCardView
             .passwordTextField
             .textField.rx
-            .preventSpaces()
+            .preventSpaceCharacters()
             .disposed(by: disposeBag)
         
-        view.rx.addHideKeyboardTapGesture().disposed(by: disposeBag)
+        view.rx.addTapGestureToHideKeyboard().disposed(by: disposeBag)
     }
     
     override func localizable() {

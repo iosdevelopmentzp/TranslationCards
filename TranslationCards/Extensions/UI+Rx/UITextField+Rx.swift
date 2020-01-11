@@ -11,7 +11,8 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: UITextField {
-    func preventSpaces() -> Disposable {
+    /// Prevent space characters
+    func preventSpaceCharacters() -> Disposable {
         return text.orEmpty
             .map { $0.components(separatedBy: .whitespaces).joined() }
             .bind(to: text)

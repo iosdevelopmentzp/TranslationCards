@@ -71,9 +71,9 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         let input = viewModel.input
         let output = viewModel.output
         
-        loginTextField.rx.preventSpaces().disposed(by: disposeBag)
-        passwordTextField.rx.preventSpaces().disposed(by: disposeBag)
-        view.rx.addHideKeyboardTapGesture().disposed(by: disposeBag)
+        loginTextField.rx.preventSpaceCharacters().disposed(by: disposeBag)
+        passwordTextField.rx.preventSpaceCharacters().disposed(by: disposeBag)
+        view.rx.addTapGestureToHideKeyboard().disposed(by: disposeBag)
         
         loginTextField.rx
             .text

@@ -9,12 +9,11 @@
 import UIKit
 
 extension UICollectionView {
-    
     var currentCenterPoint: CGPoint {
         return CGPoint.init(x: center.x + contentOffset.x, y: center.y + contentOffset.y)
     }
     
-    func centerCellIndexPath() -> IndexPath? {
+    func indexPathOfCellWichInTheCenter() -> IndexPath? {
         return indexPathForItem(at: currentCenterPoint)
     }
 }

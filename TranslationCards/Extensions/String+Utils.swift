@@ -16,6 +16,12 @@ extension String {
        return testEmail.evaluate(with: self)
     }
     
+    /// Divides a string into words
+    var words: [SubSequence] {
+        return split{ !$0.isLetter }
+    }
+    
+    /// Returns the dominant language for the current string if successfully found
     func detectLanguage() -> String? {
         if #available(iOS 12.0, *) {
             let recognizer = NLLanguageRecognizer()
@@ -31,16 +37,19 @@ extension String {
             return detectedLangauge
         }
     }
-}
-
-extension StringProtocol {
-    var words: [SubSequence] {
-        return split{ !$0.isLetter }
+    
+    /// Returns a string in which the first letter is capitalized
+    func capitalizingFirstLetter() -> String {
+      return prefix(1).uppercased() + self.lowercased().dropFirst()
+    }
+    
+    /// Converts itself to a string with the first capital letter
+    mutating func capitalizeFirstLetter() {
+      self = self.capitalizingFirstLetter()
     }
 }
 
 extension String {
-
   var length: Int {
     return count
   }
@@ -64,15 +73,4 @@ extension String {
     let end = index(start, offsetBy: range.upperBound - range.lowerBound)
     return String(self[start ..< end])
   }
-
-}
-
-extension String {
-    func capitalizingFirstLetter() -> String {
-      return prefix(1).uppercased() + self.lowercased().dropFirst()
-    }
-
-    mutating func capitalizeFirstLetter() {
-      self = self.capitalizingFirstLetter()
-    }
 }

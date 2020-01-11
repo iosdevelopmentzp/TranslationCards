@@ -32,7 +32,6 @@ enum FontWeight: String {
 }
 
 extension UIFont {
-    
     static func font(type: FontType, weight: FontWeight = .regular, withItalic: Bool = false, size: CGFloat = 17.0) -> UIFont {
         let weightName = withItalic ? weight.withItalic() : weight.rawValue
         let fontName = type.rawValue + "-" + weightName
