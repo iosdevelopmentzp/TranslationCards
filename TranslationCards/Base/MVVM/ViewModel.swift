@@ -14,10 +14,9 @@ class ViewModel<R: Router>: NSObject, ServicesAccessing {
     
     let disposeBag = DisposeBag()
     let router: R
-    var updated = {}
-    var alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
-    var textFieldAlertModel = BehaviorRelay<TextFieldAlertModel?>.init(value: nil)
-    var startActivityIndicator: BehaviorRelay<Bool> = .init(value: false)
+    let alertModel = BehaviorRelay<AlertModel?>.init(value: nil)
+    let textFieldAlertModel = BehaviorRelay<TextFieldAlertModel?>.init(value: nil)
+    let startActivityIndicator: BehaviorRelay<Bool> = .init(value: false)
     
     #if DEBUG
        deinit {
@@ -28,10 +27,8 @@ class ViewModel<R: Router>: NSObject, ServicesAccessing {
     override init() {
         router = R()
         super.init()
-        bindWithServices()
     }
     
-    func bindWithServices() {}
     func errorHandler(description: String, error: Error, withAlert: Bool, handler: ((UIAlertAction)->())? = nil) {
         let description = description + "With error - \(error.localizedDescription)"
         debugPrint(description)

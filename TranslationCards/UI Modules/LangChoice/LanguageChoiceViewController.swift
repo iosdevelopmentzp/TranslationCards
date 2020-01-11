@@ -101,8 +101,8 @@ final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, L
             .disposed(by: disposeBag)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         label.text = "Choose your native language"
         nextButton.setTitle("Next", for: .normal)
     }

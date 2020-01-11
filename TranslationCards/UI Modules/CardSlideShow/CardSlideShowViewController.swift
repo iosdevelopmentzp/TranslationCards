@@ -62,8 +62,8 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
         collectionView.decelerationRate = .fast
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         editCardButton.titleLabel.text = "Edit card"
         moveCardToButton.titleLabel.text = "Move card to"
         copyCardToButton.titleLabel.text = "Copy card to"

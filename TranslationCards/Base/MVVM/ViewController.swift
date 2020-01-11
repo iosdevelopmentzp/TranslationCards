@@ -20,9 +20,6 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.router.viewController = self
-        self.viewModel.updated = { [weak self] in
-            self?.onModelUpdates()
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -35,20 +32,15 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
     }
     #endif
     
-    override func loadView() {
-        super.loadView()
-        view.backgroundColor = .mainBackgroundColor
-        setupConstraints()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupConstraints()
         setupView()
         setupNavigationBar()
-        binding()
         setupTableView()
         setupCollectionView()
-        localizable()
+        binding()
+        localize()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,15 +48,20 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         setupActionButtons()
     }
     
-    func onModelUpdates() {}
     func setupConstraints() {}
-    func setupView() {}
+    func setupView() {
+        view.backgroundColor = .mainBackgroundColor
+    }
     func setupTableView() {}
     func setupCollectionView() {}
     func setupNavigationBar() {}
-    func localizable() {}
+    func localize() {}
     func binding() {
-        // default binding
+        defaultBinding()
+    }
+    
+    // MARK: - Private
+    private func defaultBinding() {
         viewModel
             .textFieldAlertModel
             .observeOn(MainScheduler.instance)
@@ -101,8 +98,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Private
-    fileprivate func setupActionButtons() {
+    private func setupActionButtons() {
         guard let mainNavigation = navigationController as? MainNavigationViewController else {
             return
         }

@@ -56,8 +56,8 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         #endif
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         loginTextField.placeholderText = "Your Email"
         passwordTextField.placeholderText = "Password"
         logInButton.setAttributedTitle(.defaultText(withText: "login".uppercased()), for: .normal)

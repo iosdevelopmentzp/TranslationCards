@@ -11,7 +11,7 @@ import RxCocoa
 
 final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     
-    let transitionAnimator = TransitionAnimator()
+    private let transitionAnimator = TransitionAnimator()
     
     override init() {
         super.init()
@@ -25,8 +25,7 @@ final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
         }
 
         if let modalAnimator = modalTransitionAnimatorDelegate,
-            modalAnimator.animator.isValidatedPresentedViewController(viewControllerToPresent)
-        {
+            modalAnimator.animator.isValidatedPresentedViewController(viewControllerToPresent) {
             viewControllerToPresent.modalPresentationStyle = .custom
             viewControllerToPresent.transitioningDelegate = modalAnimator
         }
@@ -35,11 +34,11 @@ final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
     func bind(addCardPressed plusPressed: ControlEvent<Void>) {
         plusPressed.subscribe(onNext: { [weak self] _ in
             guard let user = self?.services.credentials.user.value else {
-                self?.alertModel.accept(.warningAlert(message: "Failed get user", handler: nil))
+                self?.alertModel.accept(.warningAlert(message: "Failed to get current user", handler: nil))
                 return
             }
             guard let nativeLanguage = user.nativeLanguage else {
-                self?.alertModel.accept(.warningAlert(message: "User does not have native language", handler: nil))
+                self?.alertModel.accept(.warningAlert(message: "User does't have a native language", handler: nil))
                 return
             }
             

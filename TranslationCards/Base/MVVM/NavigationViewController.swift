@@ -11,10 +11,6 @@ import JJFloatingActionButton
 
 class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigationController {
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     let disposeBag = DisposeBag()
     let viewModel: VM
 
@@ -41,8 +37,12 @@ class NavigationViewController<R: Router, VM: NavigationViewModel<R>>: UINavigat
     func setupView() { }
     func setupConstraints() {}
     func binding() {
+        defaultBinding()
+    }
+    
+    // MARK: - Private
+    private func defaultBinding() {
         delegate = viewModel.navigationControllerDelegate
-        
         viewModel
             .alertModel
             .observeOn(MainScheduler.instance)

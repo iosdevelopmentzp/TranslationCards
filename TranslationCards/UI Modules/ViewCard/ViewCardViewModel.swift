@@ -22,12 +22,13 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         
         card.runtimeEvents
             .skip(1)
-            .subscribe(onNext: { [weak self] (event) in
+            .withLatestFrom(self.card) { ($0, $1) }
+            .subscribe(onNext: { [weak self] (event, card) in
                 switch event {
                 case .removed:
                     self?.router.route(to: .dismiss)
                 case .changed:
-                    self?.updated()
+                    self?.card.accept(card)
                 case .movedToAnotherPlaylist, .nothing:
                     break
                 }})

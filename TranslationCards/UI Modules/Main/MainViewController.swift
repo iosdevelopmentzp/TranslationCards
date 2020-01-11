@@ -76,8 +76,8 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
             .disposed(by: disposeBag)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         navigationItem.title = "My Cards"
     }
 }

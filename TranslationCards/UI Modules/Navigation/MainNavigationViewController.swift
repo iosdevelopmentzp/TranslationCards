@@ -35,13 +35,16 @@ final class MainNavigationViewController: NavigationViewController<MainNavigatio
         viewModel.bind(addCardPressed: addCardButton.rx.tap)
     }
     
-    public func configureActionButtons(_ buttons: [JJActionItem]) {
+    func configureActionButtons(_ buttons: [JJActionItem]) {
         var newButtons = buttons
         newButtons.insert(addCardButton, at: 0)
         actionButton.items = newButtons
     }
     
     // MARK: - Override
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         viewModel.willPresentViewController(viewControllerToPresent, isAnimated: flag)

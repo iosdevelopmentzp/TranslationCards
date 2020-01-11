@@ -119,8 +119,8 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
             .disposed(by: disposeBag)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         cancelButton.setTitle("  Cancel", for: .normal)
         doneButton.setTitle("Done  ", for: .normal)
         

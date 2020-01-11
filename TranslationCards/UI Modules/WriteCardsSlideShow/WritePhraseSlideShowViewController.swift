@@ -52,8 +52,8 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
         viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         editCardButton.titleLabel.text = "Edit card"
         title = "Write Phrase"
     }

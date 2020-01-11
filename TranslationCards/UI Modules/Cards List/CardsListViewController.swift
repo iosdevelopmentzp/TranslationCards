@@ -106,8 +106,8 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         navigationItem.rightBarButtonItems = [reverseButtonItem, shuffleButtonItem]
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         viewModel.output
             .titleText
             .bind(to: navigationItem.rx.title)

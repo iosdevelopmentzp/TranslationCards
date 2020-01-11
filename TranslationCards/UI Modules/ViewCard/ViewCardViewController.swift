@@ -46,8 +46,8 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
         .disposed(by: disposeBag)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         editButton.titleLabel.text =  "Edit card"
         moveCardToButton.titleLabel.text = "Move card to"
         copyCardToButton.titleLabel.text = "Copy card to"
@@ -55,14 +55,6 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
             .title
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
-    }
-    
-    override func onModelUpdates() {
-        super.onModelUpdates()
-        DispatchQueue.main.async { [weak self] in
-            guard let card = self?.viewModel.card.value else { return }
-            self?.cardView.configureWithCard(card)
-        }
     }
 }
 

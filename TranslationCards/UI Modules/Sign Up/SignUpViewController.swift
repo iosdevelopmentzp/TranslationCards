@@ -132,8 +132,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         view.rx.addTapGestureToHideKeyboard().disposed(by: disposeBag)
     }
     
-    override func localizable() {
-        super.localizable()
+    override func localize() {
+        super.localize()
         navigationItem.title = "Register"
         signUpButton.setAttributedTitle(.defaultText(withText: "Register"), for: .normal)
         registerCardView.loginTextField.topLabel.text = "Set your email"
