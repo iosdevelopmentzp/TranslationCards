@@ -198,9 +198,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .disposed(by: disposeBag)
         
         translateButtonTap
-            .withLatestFrom(inputPhrases)
-            .filter{ !$0.sourcePharse.isEmpty }
-            .withLatestFrom(card)
+            .withLatestFrom(self.card)
+            .filter{ !$0.sourcePhrase.isEmpty }
             .subscribe(onNext: { [weak self] card in
                 self?.translateSourceText(forCard: card)
             })
