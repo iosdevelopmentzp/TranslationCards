@@ -80,7 +80,7 @@ final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignU
     }
     
     // MARK: - Private
-    fileprivate func trySignUp(withEmail email: String, password: String, displayName: String) {
+    private func trySignUp(withEmail email: String, password: String, displayName: String) {
         startActivityIndicator.accept(true)
         services
             .auth

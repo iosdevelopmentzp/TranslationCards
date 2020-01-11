@@ -30,7 +30,7 @@ final class WritePhraseSlideShowViewModel: ViewModel<WritePhraseSlideShowRouter>
     }
     
     // MARK: - Private
-    fileprivate func openEditCardController() {
+    private func openEditCardController() {
         guard let indexPath = getSelectedCellIndexPath?() else { return }
         let card = cardsDataSource.value[indexPath.row]
         User.user(withId: card.userOwnerId)

@@ -37,7 +37,7 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
     let sections = BehaviorRelay<[MainViewModelSection]>.init(value: [])
     let isRefreshing: BehaviorRelay<Bool> = .init(value: true)
     
-    fileprivate var user: User?
+    private var user: User?
     
     override init() {
         super.init()
@@ -85,7 +85,7 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
     }
     
     // MARK: - Private
-    fileprivate func fetchLanguages() {
+    private func fetchLanguages() {
         if isRefreshing.value == false {
             isRefreshing.accept(true)
         }

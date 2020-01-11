@@ -13,12 +13,12 @@ import JJFloatingActionButton
 
 final class CardSlideShowViewController: ViewController<CardSlideShowRouter, CardSlideShowViewModel> {
     
-    fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    fileprivate let flowLayout = CardSlideShowFlowLayout()
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    private let flowLayout = CardSlideShowFlowLayout()
     
-    fileprivate let editCardButton = JJActionItem.initWith(imageType: .edit)
-    fileprivate let moveCardToButton = JJActionItem.initWith(imageType: .move)
-    fileprivate let copyCardToButton = JJActionItem.initWith(imageType: .copy)
+    private let editCardButton = JJActionItem.initWith(imageType: .edit)
+    private let moveCardToButton = JJActionItem.initWith(imageType: .move)
+    private let copyCardToButton = JJActionItem.initWith(imageType: .copy)
     
     override func setupConstraints() {
         super.setupConstraints()

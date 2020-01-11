@@ -10,7 +10,7 @@ import UIKit
 
 class PlusButton: UIButton {
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let scalePlus: CGFloat = 0.7
         static let plusLineWidthScale: CGFloat = 0.05
     }
@@ -56,7 +56,7 @@ class PlusButton: UIButton {
         plusPath.stroke()
     }
 
-    fileprivate func setupView() {
+    private func setupView() {
         backgroundColor = .clear
     }
 }

@@ -11,7 +11,7 @@ import RxCocoa
 
 class TextView: UITextView {
     
-    fileprivate let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -28,14 +28,14 @@ class TextView: UITextView {
     }
     
     // MARK: - Private
-    fileprivate func startAutoResizeHeightBinding() {
+    private func startAutoResizeHeightBinding() {
         rx.text.subscribe(onNext: { [weak self] (_) in
             self?.updateHeigth()
         })
         .disposed(by: disposeBag)
     }
     
-    fileprivate func updateHeigth() {
+    private func updateHeigth() {
         guard !translatesAutoresizingMaskIntoConstraints else { return }
         
         let newHeight = contentSize.height * 1.15

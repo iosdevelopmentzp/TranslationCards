@@ -15,7 +15,7 @@ class RegisterCardView: UIView {
     let passwordTextField = TextFieldWithTopPlaceholder()
     let displayNameTextField = TextFieldWithTopPlaceholder()
     
-    fileprivate let stackView = UIStackView()
+    private let stackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,7 +27,7 @@ class RegisterCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         layer.cornerRadius = 15.0
         layer.shadowColor = UIColor.gray.cgColor
         layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
@@ -38,7 +38,7 @@ class RegisterCardView: UIView {
         stackView.spacing = 5.0
     }
     
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         let padding: CGFloat = 16.0
         addSubview(stackView)
         stackView.snp.makeConstraints {

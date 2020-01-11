@@ -21,7 +21,7 @@ class UserDefaultsService: KeyValueStorageService {
         }
     }
     
-    fileprivate let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
     func setValue(_ value: Any, forKey key: String) {
         defaults.set(value, forKey: key)

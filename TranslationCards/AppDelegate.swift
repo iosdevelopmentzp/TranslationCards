@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Private
-    fileprivate func setupView() {
+    private func setupView() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         let vc = appRouter.buildStartView()

@@ -14,8 +14,8 @@ final class PickerViewModel: ViewModel<PickerRouter> {
     let items: BehaviorRelay<[String]> = .init(value: [])
     let selectedItem = BehaviorRelay<(row: Int, component: Int)>.init(value: (0,0))
     let title = BehaviorRelay<String>.init(value: "")
-    fileprivate let finishLanguage = BehaviorRelay<Language?>.init(value: nil)
-    fileprivate let currentLanguage = BehaviorRelay<Language?>.init(value: nil)
+    private let finishLanguage = BehaviorRelay<Language?>.init(value: nil)
+    private let currentLanguage = BehaviorRelay<Language?>.init(value: nil)
     
     init(callBackLanguage: BehaviorRelay<Language?>, languageList: [Language]? =  nil,titleLabel: String) {
         super.init()

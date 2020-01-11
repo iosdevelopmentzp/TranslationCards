@@ -13,25 +13,25 @@ final class BackCardSideView: UIView {
     
     var speakData = BehaviorRelay<SpeechData?>.init(value: nil)
 
-    fileprivate let topContainerView = UIView()
-    fileprivate let topImageView = UIImageView()
-    fileprivate let topTextLabel = UILabel()
-    fileprivate let topSpeakButton = UIButton(type: .custom)
+    private let topContainerView = UIView()
+    private let topImageView = UIImageView()
+    private let topTextLabel = UILabel()
+    private let topSpeakButton = UIButton(type: .custom)
     
-    fileprivate let bottomContainerView = UIView()
-    fileprivate let bottomImageView = UIImageView()
-    fileprivate let bottomTextLabel = UILabel()
-    fileprivate let bottomSpeakButton = UIButton(type: .custom)
+    private let bottomContainerView = UIView()
+    private let bottomImageView = UIImageView()
+    private let bottomTextLabel = UILabel()
+    private let bottomSpeakButton = UIButton(type: .custom)
     
-    fileprivate let stackView = UIStackView()
-    fileprivate let separator = UIView()
+    private let stackView = UIStackView()
+    private let separator = UIView()
     
-    fileprivate let disposeBag = DisposeBag()
-    fileprivate let cornerRadius: CGFloat = 10.0
-    fileprivate var topLanguage: BehaviorRelay<Language?> = .init(value: nil)
-    fileprivate var bottomLanguage: BehaviorRelay<Language?> = .init(value: nil)
+    private let disposeBag = DisposeBag()
+    private let cornerRadius: CGFloat = 10.0
+    private var topLanguage: BehaviorRelay<Language?> = .init(value: nil)
+    private var bottomLanguage: BehaviorRelay<Language?> = .init(value: nil)
     
-    fileprivate var gradientLayer: CAGradientLayer?
+    private var gradientLayer: CAGradientLayer?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,7 +72,7 @@ final class BackCardSideView: UIView {
     }
     
     // MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         
         let padding = 8.0
         addSubview(stackView)
@@ -148,7 +148,7 @@ final class BackCardSideView: UIView {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         setShadow(withColor: .white,
                   opacity: 0.4,
                   radius: 5.0,
@@ -177,7 +177,7 @@ final class BackCardSideView: UIView {
         separator.backgroundColor = .white
     }
     
-    fileprivate func bind() {
+    private func bind() {
         topLanguage
             .compactMap{ $0?.flagIcon}
             .bind(to: topImageView.rx.image)

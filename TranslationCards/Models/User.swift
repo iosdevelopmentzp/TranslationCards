@@ -11,22 +11,22 @@ import RxSwift
 import RxRelay
 
 final class User {
-    fileprivate (set) var uid: String
-    fileprivate (set) var currentLanguage: Language?
-    fileprivate (set) var nativeLanguage: Language?
-    fileprivate (set) var email: String?
-    fileprivate (set) var displayName: String?
-    fileprivate (set) var avatarUrl: String?
+    private (set) var uid: String
+    private (set) var currentLanguage: Language?
+    private (set) var nativeLanguage: Language?
+    private (set) var email: String?
+    private (set) var displayName: String?
+    private (set) var avatarUrl: String?
     
     private var disposeBag = DisposeBag()
     
     // MARK: - Cash Properties
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
-    fileprivate(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
+    private(set) var languages: BehaviorRelay<[LanguageBind]?> = .init(value: nil)
     /// playlists stored using LanguageBind key value.
-    fileprivate(set) var playlists: BehaviorRelay< Set<Playlist>?> = .init(value: nil)
+    private(set) var playlists: BehaviorRelay< Set<Playlist>?> = .init(value: nil)
     /// cardsList stored using Playlist  key value.
-    fileprivate(set) var cardsList: BehaviorRelay<[Playlist: [TranslateCard]]?> = .init(value: nil)
+    private(set) var cardsList: BehaviorRelay<[Playlist: [TranslateCard]]?> = .init(value: nil)
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = //
     
     init(uid: String, email: String? = nil, username: String? = nil, avatarUrl: String? = nil) {
@@ -75,7 +75,7 @@ final class User {
         return Services.shared.credentials.user
     }
     // MARK: - Private
-    fileprivate func acceptRemoteData(_ data: [String: Any]) {
+    private func acceptRemoteData(_ data: [String: Any]) {
         guard let uid = data["uid"] as? String,
                 uid == self.uid else {
                 return
@@ -416,13 +416,13 @@ extension User: ServicesAccessing {
     }
     
     // MARK: - Private
-    fileprivate func fetchedNewPlaylist(playlist: [Playlist], forLanguage language: LanguageBind) {
+    private func fetchedNewPlaylist(playlist: [Playlist], forLanguage language: LanguageBind) {
         var oldPlaylists = self.playlists.value ?? []
         playlist.forEach{ oldPlaylists.insert($0)}
         self.playlists.accept(oldPlaylists)
     }
     
-    fileprivate func updatePlaylists(forLanguage language: LanguageBind) {
+    private func updatePlaylists(forLanguage language: LanguageBind) {
         fetchPlaylists(forLanguage: language)
             .subscribe(onNext: { [weak self] (_) in
                 debugPrint("Succesfull update playlist for user with id \(self?.uid ?? "Unknown ID") and language \(language)")
@@ -432,7 +432,7 @@ extension User: ServicesAccessing {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func updateLanguages() {
+    private func updateLanguages() {
         fetchLanguages()
             .subscribe(onNext: { [weak self] (_) in
                 debugPrint("Succesfull update languages for user with id \(self?.uid ?? "Unknown ID")")
@@ -442,7 +442,7 @@ extension User: ServicesAccessing {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func updateCards(forPlaylist playlist: Playlist) {
+    private func updateCards(forPlaylist playlist: Playlist) {
         fetchCards(forPlaylist: playlist)
             .subscribe(onNext: { (_) in
                 debugPrint("Succesfull update cards for playlist \(playlist.description)")

@@ -33,7 +33,7 @@ final class CreateCardPopUpRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func presentLanguagePicker(currentLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String) {
+    private func presentLanguagePicker(currentLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String) {
         let vc = Screens.languagePickerView(callBackLanguage: currentLanguage, languageList: languageList, title: title)
         viewController?.present(vc, animated: true, completion: nil)
     }

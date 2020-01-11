@@ -12,8 +12,8 @@ import FirebaseFirestore
 import RxFirebaseFirestore
 
 final class ListenerServiceV1: NSObject, ListenerService {
-    fileprivate let database = Firestore.firestore()
-    fileprivate let disposeBag = DisposeBag()
+    private let database = Firestore.firestore()
+    private let disposeBag = DisposeBag()
     
     func listenLanguageBindList(forUserWithId userId: String) -> Observable<ChangedDocuments<LanguageBind>> {
         
@@ -68,6 +68,6 @@ class ChangedDocuments<Element: DataRepresentation> {
     }
 }
 
-fileprivate extension DocumentChangeType {
+private extension DocumentChangeType {
     static var allCases: [DocumentChangeType] = [.added, .removed, .modified]
 }

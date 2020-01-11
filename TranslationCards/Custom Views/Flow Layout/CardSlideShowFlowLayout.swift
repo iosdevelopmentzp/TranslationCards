@@ -124,18 +124,18 @@ class CardSlideShowFlowLayout: UICollectionViewLayout {
     }
     
     // MARK: Private
-    fileprivate func calculateWidthOneItem() -> CGFloat {
+    private func calculateWidthOneItem() -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
         return collectionView.bounds.width * 0.7
     }
     
-    fileprivate func calculateHeightOneItem() -> CGFloat {
+    private func calculateHeightOneItem() -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
         let inset = collectionView.contentInset
         return collectionView.bounds.height - (inset.top + inset.bottom)
     }
     
-    fileprivate func insertEffectsForAttributes(_ attributes: UICollectionViewLayoutAttributes, inRect bounds: CGRect) {
+    private func insertEffectsForAttributes(_ attributes: UICollectionViewLayoutAttributes, inRect bounds: CGRect) {
         guard let currentOffset = collectionView?.contentOffset,
             let bounds = collectionView?.bounds,
             bounds.width > 0 else {

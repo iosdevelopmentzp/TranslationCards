@@ -13,11 +13,11 @@ import RxCocoa
 
 final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
-    fileprivate let loginTextField = RoundedTextField()
-    fileprivate let passwordTextField = RoundedTextField()
-    fileprivate let logInButton = RoundedButton()
-    fileprivate let signUpButton = UIButton()
-    fileprivate let stackView = UIStackView()
+    private let loginTextField = RoundedTextField()
+    private let passwordTextField = RoundedTextField()
+    private let logInButton = RoundedButton()
+    private let signUpButton = UIButton()
+    private let stackView = UIStackView()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -137,8 +137,7 @@ extension LogInViewController: TransitionAnimatorMaker {
             action()
             return
         }
-        Timer.scheduledTimer(withTimeInterval: delay,
-                             repeats: false) { (_) in
+        Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { (_) in
             action()
         }
     }

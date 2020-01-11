@@ -11,10 +11,10 @@ import RxCocoa
 
 final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> {
     
-    fileprivate let bottomBackgroundView = UIView()
-    fileprivate let registerCardView = RegisterCardView()
-    fileprivate let signUpButton = RoundedButton()
-    fileprivate let backToSignInBurButton = UIBarButtonItem()
+    private let bottomBackgroundView = UIView()
+    private let registerCardView = RegisterCardView()
+    private let signUpButton = RoundedButton()
+    private let backToSignInBurButton = UIBarButtonItem()
     
     override func setupConstraints() {
         super.setupConstraints()

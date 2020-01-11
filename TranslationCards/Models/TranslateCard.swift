@@ -19,15 +19,15 @@ final class TranslateCard {
         case movedToAnotherPlaylist
     }
     
-    fileprivate(set) var language: LanguageBind
-    fileprivate(set) var userOwnerId: String
+    private(set) var language: LanguageBind
+    private(set) var userOwnerId: String
     let dateCreated: Date
     var dateUpdated: Date
-    fileprivate(set) var sourcePhrase: String
-    fileprivate(set) var targetPhrase: String
+    private(set) var sourcePhrase: String
+    private(set) var targetPhrase: String
     var id: String
     // if card will save on server need to set this property, using playlist
-    fileprivate(set) var playlistId: String = "Common"
+    private(set) var playlistId: String = "Common"
     
     // Property for observ change of card in real time.
     let runtimeEvents: BehaviorRelay<Event> = .init(value: .nothing)

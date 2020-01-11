@@ -53,13 +53,13 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     let titleText = BehaviorRelay<String>.init(value: "")
     let isEditMode = BehaviorRelay<Bool>.init(value: false)
     
-    fileprivate let user: User
-    fileprivate let language: BehaviorRelay<LanguageBind>
-    fileprivate let playlists: BehaviorRelay<[Playlist]> = .init(value: [])
-    fileprivate let selectedPlaylists: BehaviorRelay<[Playlist]> = .init(value: [])
+    private let user: User
+    private let language: BehaviorRelay<LanguageBind>
+    private let playlists: BehaviorRelay<[Playlist]> = .init(value: [])
+    private let selectedPlaylists: BehaviorRelay<[Playlist]> = .init(value: [])
     
     // Custom observables
-    fileprivate var playlistsInput: Observable<[Playlist]?> {
+    private var playlistsInput: Observable<[Playlist]?> {
         return Observable.combineLatest(self.user.playlists.asObservable(), self.language.asObservable()) {
             guard let playlists = $0 else { return nil }
             let language = $1
@@ -68,7 +68,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         }
     }
     
-    fileprivate var cardsInput: Observable<[TranslateCard]?> {
+    private var cardsInput: Observable<[TranslateCard]?> {
         return Observable.combineLatest(self.user.cardsList, self.selectedPlaylists) {
             guard let cards = $0 else { return nil }
             let selectedPlaylists = $1
@@ -189,7 +189,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     }
     
     // MARK: - Private
-    fileprivate func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
+    private func sortCards(_ cards: [TranslateCard]) -> [TranslateCard] {
         guard shuffleMode.value == false else {
             return cards.shuffled()
         }
@@ -209,7 +209,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         return sortedCards
     }
     
-    fileprivate func updateSectionWithCards(_ cards: [TranslateCard]) {
+    private func updateSectionWithCards(_ cards: [TranslateCard]) {
         let sortedCards = sortCards(cards)
         let section = sections.value.first ?? CardsListViewModelSection(header: "Cards", items: [])
         let items = sortedCards.map{ CardsListViewModelCell.init(item: $0)}
@@ -217,7 +217,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         sections.accept([newSection])
     }
     
-    fileprivate func needDeleteCard(_ card: TranslateCard) {
+    private func needDeleteCard(_ card: TranslateCard) {
         startActivityIndicator.accept(true)
         
         user.removeCard(card)
@@ -229,7 +229,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
             .disposed(by: disposeBag)
     }
     
-    fileprivate func fetchCards() {
+    private func fetchCards() {
         
         if isRefreshing.value != true {
             isRefreshing.accept(true)

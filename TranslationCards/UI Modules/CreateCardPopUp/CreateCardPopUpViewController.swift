@@ -10,7 +10,7 @@ import UIKit
 import RxCocoa
 
 final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter, CreateCardPopUpViewModel> {
-    fileprivate let createTranslateCardView = CreateTranslateCardView()
+    private let createTranslateCardView = CreateTranslateCardView()
     
     override func setupConstraints() {
         super.setupConstraints()

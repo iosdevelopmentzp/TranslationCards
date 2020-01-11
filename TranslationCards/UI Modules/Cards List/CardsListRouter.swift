@@ -32,16 +32,16 @@ final class CardsListRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func presentSelectPlaylistMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
+    private func presentSelectPlaylistMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
         viewController?.presentPlaylistSelectionMenu(dataSource: dataSource, selected: selected)
     }
     
-    fileprivate func pushCardView(forCard card: TranslateCard, user: User) {
+    private func pushCardView(forCard card: TranslateCard, user: User) {
         let vc = Screens.viewCard(withCard: card, user: user)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    fileprivate func pushSlideShow(cards: [TranslateCard], withReverse: Bool) {
+    private func pushSlideShow(cards: [TranslateCard], withReverse: Bool) {
         let vc = Screens.cardSlideShow(cards: cards, withReverse: withReverse)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }

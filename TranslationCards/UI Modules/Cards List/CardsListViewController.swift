@@ -12,13 +12,13 @@ import RxDataSources
 import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
-    fileprivate let tableView = TableView()
-    fileprivate let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
-    fileprivate let startWritePhraseSlideShowButton = JJActionItem.initWith(imageType: .write)
-    fileprivate let switchEditModeButton = JJActionItem.initWith(imageType: .xButton, renderringMode: .alwaysOriginal)
-    fileprivate let choicePlaylistButton = UIButton(type: .custom)
-    fileprivate var reverseButton = UIButton(type: .custom)
-    fileprivate var shuffleButton = UIButton(type: .custom)
+    private let tableView = TableView()
+    private let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
+    private let startWritePhraseSlideShowButton = JJActionItem.initWith(imageType: .write)
+    private let switchEditModeButton = JJActionItem.initWith(imageType: .xButton, renderringMode: .alwaysOriginal)
+    private let choicePlaylistButton = UIButton(type: .custom)
+    private var reverseButton = UIButton(type: .custom)
+    private var shuffleButton = UIButton(type: .custom)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -29,7 +29,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         }
     }
     
-    fileprivate lazy var dataSource: RxTableViewSectionedAnimatedDataSource<CardsListViewModelSection> = {
+    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<CardsListViewModelSection> = {
         let animationConfiguration = AnimationConfiguration(insertAnimation: .right, reloadAnimation: .fade, deleteAnimation: .left)
         let dataSource = RxTableViewSectionedAnimatedDataSource<CardsListViewModelSection>(animationConfiguration: animationConfiguration, decideViewTransition: { [weak self] (_, tableView, changeSet) -> ViewTransition in
             return self?.transition(forChangeSet: changeSet) ?? .reload
@@ -189,7 +189,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     }
     
     // MARK: - Private
-    fileprivate func transition(forChangeSet set: [Changeset<CardsListViewModelSection>]) -> ViewTransition {
+    private func transition(forChangeSet set: [Changeset<CardsListViewModelSection>]) -> ViewTransition {
         var isAnimate: ViewTransition = .animated
         let sectionWhereChangeItemsMoreThenOne = set.first{ $0.insertedItems.count > 1 || $0.deletedItems.count > 1 || $0.updatedItems.count > 1 }
         if sectionWhereChangeItemsMoreThenOne != nil {
@@ -198,7 +198,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         return isAnimate
     }
     
-    fileprivate func configureCell(_ cell: UITableViewCell, withCellModel cellModel: CardsListViewModelCell, isReverse: Bool) {
+    private func configureCell(_ cell: UITableViewCell, withCellModel cellModel: CardsListViewModelCell, isReverse: Bool) {
         let currentLanguage = isReverse ? cellModel.item.language.targetLanguage : cellModel.item.language.sourceLanguage
         cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)
         cell.textLabel?.text = isReverse ? cellModel.item.targetPhrase : cellModel.item.sourcePhrase
@@ -207,7 +207,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         cell.backgroundColor = .clear
     }
     
-    fileprivate func updateNavigationButtonsTintColor() {
+    private func updateNavigationButtonsTintColor() {
         reverseButton.tintColor = self.reverseButton.isSelected ? .white : .innactiveButtonTitleColor
         shuffleButton.tintColor = self.shuffleButton.isSelected ? .white : .innactiveButtonTitleColor
     }

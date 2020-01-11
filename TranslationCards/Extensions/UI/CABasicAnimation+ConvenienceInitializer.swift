@@ -19,7 +19,7 @@ enum AnimationKeyType: String {
 
 extension CABasicAnimation {
     
-    /// Parameters defaults:
+    /// Defaults parameters:
     /// timingFunction = CAMediaTimingFunction(name: .linear) 
     /// fillMode = .forwards
     /// isRemovedOnCompletion = false

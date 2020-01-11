@@ -10,10 +10,10 @@ import UIKit
 import JJFloatingActionButton
 
 final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewModel> {
-    fileprivate let cardView = CardView()
-    fileprivate var editButton = JJActionItem.initWith(imageType: .edit)
-    fileprivate var moveCardToButton = JJActionItem.initWith(imageType: .move)
-    fileprivate var copyCardToButton = JJActionItem.initWith(imageType: .copy)
+    private let cardView = CardView()
+    private var editButton = JJActionItem.initWith(imageType: .edit)
+    private var moveCardToButton = JJActionItem.initWith(imageType: .move)
+    private var copyCardToButton = JJActionItem.initWith(imageType: .copy)
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

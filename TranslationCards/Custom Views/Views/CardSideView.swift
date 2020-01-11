@@ -13,13 +13,13 @@ class CardSideView: UIView {
 
     var speakData = BehaviorRelay<SpeechData?>.init(value: nil)
     
-    fileprivate let speakButton = UIButton(type: .custom)
-    fileprivate let textLabel = UILabel()
-    fileprivate let iconImageView = UIImageView()
+    private let speakButton = UIButton(type: .custom)
+    private let textLabel = UILabel()
+    private let iconImageView = UIImageView()
     
-    fileprivate var language: BehaviorRelay<Language?> = .init(value: nil)
-    fileprivate var gradientLayer: CAGradientLayer?
-    fileprivate let disposeBag = DisposeBag()
+    private var language: BehaviorRelay<Language?> = .init(value: nil)
+    private var gradientLayer: CAGradientLayer?
+    private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,7 +52,7 @@ class CardSideView: UIView {
         gradientLayer?.frame = bounds
     }
     
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         let  containerView = UIView()
         containerView.addSubview(iconImageView)
         iconImageView.snp.makeConstraints { $0.edges.equalToSuperview()}
@@ -80,7 +80,7 @@ class CardSideView: UIView {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         setShadow(withColor: .white,
                   opacity: 0.4,
                   radius: 5.0,
@@ -100,7 +100,7 @@ class CardSideView: UIView {
         speakButton.tintColor = .white
     }
     
-    fileprivate func bind() {
+    private func bind() {
         language
             .compactMap{ $0?.flagIcon }
             .bind(to: iconImageView.rx.image)

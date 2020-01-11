@@ -75,7 +75,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
     }
     
     // MARK: - Private
-    fileprivate func openCopyCardToAnotherPlaylist(card: TranslateCard) {
+    private func openCopyCardToAnotherPlaylist(card: TranslateCard) {
         user.getPlaylists(forLanguage: card.language)
         .subscribe(onNext: { [weak self] (playlists) in
             let potentialCurrentPlaylist = playlists.first{ $0.id == card.playlistId}
@@ -90,7 +90,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func openMoveCardToAnotherPlaylistView(card: TranslateCard) {
+    private func openMoveCardToAnotherPlaylistView(card: TranslateCard) {
         user.getPlaylists(forLanguage: card.language)
             .subscribe(onNext: { [weak self] (playlists) in
                 let potentialCurrentPlaylist = playlists.first{ $0.id == card.playlistId}
@@ -105,7 +105,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func needUpdateCardPlaylist(card: TranslateCard, newPlaylist: Playlist) {
+    private func needUpdateCardPlaylist(card: TranslateCard, newPlaylist: Playlist) {
         user.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed update card playlist", error: error, withAlert: true)
@@ -113,7 +113,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func needCopyCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
+    private func needCopyCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
         user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)

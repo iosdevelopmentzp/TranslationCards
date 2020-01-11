@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-fileprivate enum TextState {
+private enum TextState {
     case invalidate
     case valide
     case completely
@@ -33,17 +33,17 @@ class WritePhraseView: UIView {
     let bottomTextFieldOffset: BehaviorRelay<CGFloat> = .init(value: 0)
     
     // MARK: - Private
-    fileprivate let card: BehaviorRelay<TranslateCard?> = .init(value: nil)
-    fileprivate let headerLabel = UILabel()
-    fileprivate let oneMoreWordButton = UIButton()
-    fileprivate var bottomTextFieldConstraint: Constraint?
-    fileprivate let textView = TextView()
-    fileprivate let textViewHeaderLabel = UILabel()
-    fileprivate var currentShownTranslate: BehaviorRelay<String?> = .init(value: nil)
+    private let card: BehaviorRelay<TranslateCard?> = .init(value: nil)
+    private let headerLabel = UILabel()
+    private let oneMoreWordButton = UIButton()
+    private var bottomTextFieldConstraint: Constraint?
+    private let textView = TextView()
+    private let textViewHeaderLabel = UILabel()
+    private var currentShownTranslate: BehaviorRelay<String?> = .init(value: nil)
     
     // MARK: - Rx
-    fileprivate let disposeBag = DisposeBag()
-    fileprivate let textState = BehaviorRelay.init(value: TextState.invalidate)
+    private let disposeBag = DisposeBag()
+    private let textState = BehaviorRelay.init(value: TextState.invalidate)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,7 +61,7 @@ class WritePhraseView: UIView {
     }
     
     // MARK: - Private methods
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         let padding: CGFloat = 16.0
         addSubview(textView)
         addSubview(headerLabel)
@@ -95,7 +95,7 @@ class WritePhraseView: UIView {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         // self
         layer.cornerRadius = 10.0
         setShadow()
@@ -122,7 +122,7 @@ class WritePhraseView: UIView {
         textViewHeaderLabel.font = .font(type: .roboto, weight: .light, size: 12.0)
     }
     
-    fileprivate func binding() {
+    private func binding() {
         
         card.unwrap()
             .subscribe(onNext: { [weak self] (card) in
@@ -203,11 +203,11 @@ class WritePhraseView: UIView {
         textView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
-    fileprivate func localizable(withCard card: TranslateCard) {
+    private func localizable(withCard card: TranslateCard) {
         textViewHeaderLabel.text = "Try to write a translation into \(card.language.targetLanguage)"
     }
     
-    fileprivate func appendNewWorldIfNeed() {
+    private func appendNewWorldIfNeed() {
         guard let card = card.value else { return }
         var currentOpenWords = (self.currentShownTranslate.value ?? "").lowercased().words
         let realTranslationsWords = card.targetPhrase.lowercased().words
@@ -222,13 +222,13 @@ class WritePhraseView: UIView {
         }
     }
     
-    fileprivate func calculateBottomOffsetOnSuperview() -> CGFloat {
+    private func calculateBottomOffsetOnSuperview() -> CGFloat {
         guard let superViewFrame = superview?.frame else { return 0.0 }
         let offset = superViewFrame.height - frame.origin.y - frame.size.height
         return offset >= 0 ? offset : 0.0
     }
     
-    fileprivate func updateHeaderTextIfNeed(potentialTranslateText: String) {
+    private func updateHeaderTextIfNeed(potentialTranslateText: String) {
         let newAttribute = self.makeAttributeText(sourceText: card.value?.sourcePhrase ?? "",
                                                   translateText: card.value?.targetPhrase ?? "",
                                                   potentialTranslate: potentialTranslateText)
@@ -243,7 +243,7 @@ class WritePhraseView: UIView {
         }
     }
     
-    fileprivate func makeAttributeText(sourceText: String, translateText: String, potentialTranslate: String) -> NSAttributedString {
+    private func makeAttributeText(sourceText: String, translateText: String, potentialTranslate: String) -> NSAttributedString {
         let divitedTranslate = translateText.lowercased().words
         let divitedPotentialTranslate = potentialTranslate.lowercased().words
         var rightTranslations = Array<String>()
@@ -270,7 +270,7 @@ class WritePhraseView: UIView {
         return attrStr
     }
     
-    fileprivate func checkValidText(correctText: String, checkText: String) -> TextState{
+    private func checkValidText(correctText: String, checkText: String) -> TextState{
         
         var newState = TextState.valide
         

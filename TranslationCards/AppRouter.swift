@@ -52,13 +52,13 @@ class AppRouter: NSObject {
     }
     
     // MARK: - Private
-    fileprivate func didChangeUser(_ user: User?) {
+    private func didChangeUser(_ user: User?) {
         if user == nil {
             openLoginViewIfNeed()
         }
     }
     
-    fileprivate func openLoginViewIfNeed() {
+    private func openLoginViewIfNeed() {
         if let topViewController = navigationController.viewControllers.last,
             topViewController is LogInViewController {
             return

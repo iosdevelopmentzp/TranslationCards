@@ -13,9 +13,9 @@ import RxKeyboard
 final class WritePhraseCell: UICollectionViewCell {
     
     // MARK: - Private propeties
-    fileprivate let writeView = WritePhraseView()
-    fileprivate let tapGesture = UITapGestureRecognizer()
-    fileprivate let disposeBag = DisposeBag()
+    private let writeView = WritePhraseView()
+    private let tapGesture = UITapGestureRecognizer()
+    private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +33,7 @@ final class WritePhraseCell: UICollectionViewCell {
     }
     
     //MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         addSubview(writeView)
         writeView.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -42,11 +42,11 @@ final class WritePhraseCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         addGestureRecognizer(tapGesture)
     }
     
-    fileprivate func binding() {
+    private func binding() {
         RxKeyboard
             .instance
             .visibleHeight

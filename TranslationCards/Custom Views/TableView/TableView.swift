@@ -27,9 +27,9 @@ class TableView: UITableView {
     }
     
     // MARK: - Private
-    fileprivate let isRefreshing: BehaviorRelay<Bool> = .init(value: false)
-    fileprivate let refresh = UIRefreshControl()
-    fileprivate let disposeBag = DisposeBag()
+    private let isRefreshing: BehaviorRelay<Bool> = .init(value: false)
+    private let refresh = UIRefreshControl()
+    private let disposeBag = DisposeBag()
     
     init() {
         super.init(frame: .zero, style: .plain)
@@ -41,7 +41,7 @@ class TableView: UITableView {
     }
     
     // MARK: - Private
-    fileprivate func setupRefreshHandler() {
+    private func setupRefreshHandler() {
         if #available(iOS 10.0, *) {
             refreshControl = refresh
         }
@@ -51,7 +51,7 @@ class TableView: UITableView {
         refresh.addTarget(self, action: #selector(refreshControlDidRefresh(_: )), for: .valueChanged)
     }
     
-    fileprivate func setupAppearance() {
+    private func setupAppearance() {
         rowHeight = UITableView.automaticDimension
         estimatedRowHeight = 44.0
         backgroundColor = .clear

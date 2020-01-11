@@ -21,7 +21,7 @@ final class MainRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func openCardsList(language: LanguageBind, user: User) {
+    private func openCardsList(language: LanguageBind, user: User) {
         let vc = Screens.cardsList(withLanguage: language, user: user)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }

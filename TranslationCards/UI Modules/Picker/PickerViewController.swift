@@ -9,15 +9,15 @@
 import UIKit
 
 final class PickerViewController: ViewController<PickerRouter, PickerViewModel> {
-    fileprivate let pickerView = UIPickerView()
+    private let pickerView = UIPickerView()
     
     fileprivate let maskTransparenteView = UIView()
     fileprivate let containerView = UIView()
-    fileprivate let toolsStackView = UIStackView()
-    fileprivate let toolsBackgroundView = UIView()
-    fileprivate let cancelButton = UIButton(type: .custom)
-    fileprivate let doneButton = UIButton(type: .custom)
-    fileprivate let titleLabel = UILabel()
+    private let toolsStackView = UIStackView()
+    private let toolsBackgroundView = UIView()
+    private let cancelButton = UIButton(type: .custom)
+    private let doneButton = UIButton(type: .custom)
+    private let titleLabel = UILabel()
     
     // Constants
     fileprivate static let heightProportion: CGFloat = 0.3

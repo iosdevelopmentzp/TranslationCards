@@ -22,7 +22,7 @@ final class MainNavigationRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func openCreateCardView(user: User, language: LanguageBind) {
+    private func openCreateCardView(user: User, language: LanguageBind) {
         let vc = Screens.createCard(forUser: user, language: language)
         viewController?.present(vc, animated: true, completion: nil)
     }

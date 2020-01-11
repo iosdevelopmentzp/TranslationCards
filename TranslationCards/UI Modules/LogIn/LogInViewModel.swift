@@ -77,7 +77,7 @@ final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInVie
     }
     
     // MARK: - Private
-    fileprivate func tryToSignIn(login: String, password: String) {
+    private func tryToSignIn(login: String, password: String) {
         self.startActivityIndicator.accept(true)
         services
             .auth

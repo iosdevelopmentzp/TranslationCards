@@ -24,7 +24,7 @@ class CardInfoCell: UITableViewCell {
         textLabel?.text = text
     }
     
-    fileprivate func loadView() {
+    private func loadView() {
         textLabel?.numberOfLines = 0
     }
 }

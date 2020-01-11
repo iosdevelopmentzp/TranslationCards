@@ -10,10 +10,10 @@ import UIKit
 import JJFloatingActionButton
 
 final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideShowRouter, WritePhraseSlideShowViewModel> {
-    fileprivate lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    fileprivate let flowLayout = AnimatedCollectionViewLayout()
-    fileprivate let animator = PageAttributesAnimator(scaleRate: 0.2)
-    fileprivate let editCardButton = JJActionItem.initWith(imageType: .edit)
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    private let flowLayout = AnimatedCollectionViewLayout()
+    private let animator = PageAttributesAnimator(scaleRate: 0.2)
+    private let editCardButton = JJActionItem.initWith(imageType: .edit)
     
     override func setupConstraints() {
         super.setupConstraints()

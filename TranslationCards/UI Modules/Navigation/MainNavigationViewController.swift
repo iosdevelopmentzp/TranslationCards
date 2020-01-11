@@ -11,8 +11,8 @@ import JJFloatingActionButton
 
 final class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
     
-    fileprivate let actionButton = JJFloatingActionButton.tunedButton
-    fileprivate lazy var addCardButton = JJActionItem.initWith(imageType: .plus)
+    private let actionButton = JJFloatingActionButton.tunedButton
+    private lazy var addCardButton = JJActionItem.initWith(imageType: .plus)
     
     override func setupConstraints() {
         super.setupConstraints()

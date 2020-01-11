@@ -12,15 +12,15 @@ import RxCocoa
 class CardView: UIView {
     let speakData = BehaviorRelay<SpeechData?>.init(value: nil)
     
-    fileprivate let disposeBag = DisposeBag()
-    fileprivate(set) var faceSideView = CardSideView()
-    fileprivate(set) var backSideView = BackCardSideView()
-    fileprivate let tapGesture = UITapGestureRecognizer()
+    private let disposeBag = DisposeBag()
+    private(set) var faceSideView = CardSideView()
+    private(set) var backSideView = BackCardSideView()
+    private let tapGesture = UITapGestureRecognizer()
     
-    fileprivate let flipFromLeftOptions: UIView.AnimationOptions = [.transitionFlipFromLeft, .showHideTransitionViews]
-    fileprivate let flipFromRightOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
+    private let flipFromLeftOptions: UIView.AnimationOptions = [.transitionFlipFromLeft, .showHideTransitionViews]
+    private let flipFromRightOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
     
-    fileprivate var showedFace: Bool = false {
+    private var showedFace: Bool = false {
         didSet {
             if showedFace { faceSideView.addGestureRecognizer(tapGesture)
             } else { backSideView.addGestureRecognizer(tapGesture) }
@@ -45,7 +45,7 @@ class CardView: UIView {
     }
     
     // MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         addSubview(backSideView)
         addSubview(faceSideView)
         [backSideView, faceSideView].forEach {
@@ -55,11 +55,11 @@ class CardView: UIView {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         showedFace = true
     }
     
-    fileprivate func binding() {
+    private func binding() {
         tapGesture
             .rx
             .event
@@ -75,7 +75,7 @@ class CardView: UIView {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func showFaceSide(isShowFace: Bool, withAnimation: Bool) {
+    private func showFaceSide(isShowFace: Bool, withAnimation: Bool) {
         guard isShowFace != showedFace else {
             return
         }
@@ -83,7 +83,7 @@ class CardView: UIView {
         switchSide(withAnimation: withAnimation)
     }
     
-    fileprivate func switchSide(withAnimation: Bool) {
+    private func switchSide(withAnimation: Bool) {
         let currentFaceSide = showedFace ? faceSideView : backSideView
         let nextSide = currentFaceSide == backSideView ? faceSideView : backSideView
         

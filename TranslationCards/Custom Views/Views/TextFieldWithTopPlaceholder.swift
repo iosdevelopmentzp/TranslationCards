@@ -17,8 +17,8 @@ class TextFieldWithTopPlaceholder: UIView {
     let textField = UITextField()
     
     // MARK: - Private
-    fileprivate let separator = UIView()
-    fileprivate let stackView = UIStackView()
+    private let separator = UIView()
+    private let stackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,7 +30,7 @@ class TextFieldWithTopPlaceholder: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         stackView.axis = .vertical
         stackView.spacing = 5.0
         separator.backgroundColor = .separatorColor
@@ -41,7 +41,7 @@ class TextFieldWithTopPlaceholder: UIView {
         textField.autocorrectionType = .no
     }
     
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.center.equalToSuperview()

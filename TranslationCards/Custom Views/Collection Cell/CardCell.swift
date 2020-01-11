@@ -13,8 +13,8 @@ class CardCell: UICollectionViewCell {
     
     let speakData = BehaviorRelay<SpeechData?>.init(value: nil)
     
-    fileprivate let cardView = CardView()
-    fileprivate let disposeBag = DisposeBag()
+    private let cardView = CardView()
+    private let disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ class CardCell: UICollectionViewCell {
     }
     
     // MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         contentView.addSubview(cardView)
         cardView.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -41,7 +41,7 @@ class CardCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func binding() {
+    private func binding() {
         
         Observable<SpeechData?>
             .merge(cardView.faceSideView.speakData.asObservable(), cardView.backSideView.speakData.asObservable())

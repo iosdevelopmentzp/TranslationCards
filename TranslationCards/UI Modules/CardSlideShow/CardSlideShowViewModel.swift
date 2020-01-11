@@ -47,7 +47,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
     }
     
     // MARK: - Private
-    fileprivate func openCopyCardToAnotherPlaylist() {
+    private func openCopyCardToAnotherPlaylist() {
         guard let indexPath = getSelectedCellIndexPath?() else { return }
         let card = cards.value[indexPath.row]
         
@@ -67,7 +67,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func needCopyCardToPlaylist(user: User, card: TranslateCard, newPlaylist: Playlist) {
+    private func needCopyCardToPlaylist(user: User, card: TranslateCard, newPlaylist: Playlist) {
         user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
@@ -75,7 +75,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
             .disposed(by: disposeBag)
     }
     
-    fileprivate func openMoveCardToController() {
+    private func openMoveCardToController() {
         guard let indexPath = getSelectedCellIndexPath?() else { return }
         let card = cards.value[indexPath.row]
         
@@ -98,7 +98,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func openEditCardController() {
+    private func openEditCardController() {
         guard let indexPath = getSelectedCellIndexPath?() else { return }
         let card = cards.value[indexPath.row]
         User.user(withId: card.userOwnerId)
@@ -108,7 +108,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
         .disposed(by: disposeBag)
     }
     
-    fileprivate func binding() {
+    private func binding() {
         cellSpeechData
             .unwrap()
             .subscribe(onNext: { [weak self]  (speechData) in

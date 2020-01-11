@@ -10,7 +10,7 @@ import Foundation
 
 extension Date {
     
-    fileprivate static var saveDateFormatter: DateFormatter {
+    private static var saveDateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEE, dd MMM yyyy hh:mm:ss +zzzz"
         return dateFormatter

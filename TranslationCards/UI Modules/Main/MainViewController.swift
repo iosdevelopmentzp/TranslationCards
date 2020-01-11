@@ -13,8 +13,8 @@ import RxDataSources
 
 
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
-    fileprivate let tableView = TableView()
-    fileprivate let signOutBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: nil, action: nil)
+    private let tableView = TableView()
+    private let signOutBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: nil, action: nil)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -25,7 +25,7 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         }
     }
     
-    fileprivate let dataSource: RxTableViewSectionedReloadDataSource<MainViewModelSection> = {
+    private let dataSource: RxTableViewSectionedReloadDataSource<MainViewModelSection> = {
         let dataSource = RxTableViewSectionedReloadDataSource<MainViewModelSection>(configureCell: {
             (_, tableView, indexPath, item) -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: LanguageCell.typeName,

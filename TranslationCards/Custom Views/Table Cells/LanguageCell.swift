@@ -10,18 +10,18 @@ import UIKit
 
 class LanguageCell: UITableViewCell {
     
-    fileprivate let containerView = UIView()
+    private let containerView = UIView()
     
-    fileprivate let leftTitleLabel = UILabel()
-    fileprivate let leftBottomImageView = UIImageView()
+    private let leftTitleLabel = UILabel()
+    private let leftBottomImageView = UIImageView()
     
-    fileprivate let rightTitleLabel = UILabel()
-    fileprivate let rightBottomImageView = UIImageView()
+    private let rightTitleLabel = UILabel()
+    private let rightBottomImageView = UIImageView()
     
-    fileprivate let centerTopImageView = UIImageView()
+    private let centerTopImageView = UIImageView()
     
-    fileprivate let topStackView = UIStackView()
-    fileprivate let bottomStackView = UIStackView()
+    private let topStackView = UIStackView()
+    private let bottomStackView = UIStackView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,7 +41,7 @@ class LanguageCell: UITableViewCell {
     }
     
     // MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         
         let padding: CGFloat = 16.0
         
@@ -100,7 +100,7 @@ class LanguageCell: UITableViewCell {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         backgroundColor = .clear
         
         containerView.setBorder(withColor: .white,

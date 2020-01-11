@@ -12,8 +12,8 @@ import RxFirebaseFirestore
 
 final class FirestoreDatabaseService: NSObject, DatabaseService {
     
-    fileprivate let database = Firestore.firestore()
-    fileprivate let disposeBag = DisposeBag()
+    private let database = Firestore.firestore()
+    private let disposeBag = DisposeBag()
 
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
@@ -270,12 +270,12 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Private
-    fileprivate func saveCard(_ card: TranslateCard) -> Observable<Void> {
+    private func saveCard(_ card: TranslateCard) -> Observable<Void> {
         cardDocumentReference(forCard: card).rx
             .setData(card.representation)
     }
     
-    fileprivate func firstCreateLanguageDocumentThenSaveCard(_ card: TranslateCard) -> Observable<Void> {
+    private func firstCreateLanguageDocumentThenSaveCard(_ card: TranslateCard) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
             guard let self = self else {
                 observer.onError(FirestoreError.serviceDeallocated)
@@ -296,19 +296,19 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     // MARK: - Get references
-    fileprivate func languageDocumentReference(forUserId userId: String, language: LanguageBind) -> DocumentReference {
+    private func languageDocumentReference(forUserId userId: String, language: LanguageBind) -> DocumentReference {
         userDocumentReference(forUserId: userId)
             .collection(.databaseLanguagesCollection)
             .document(language.id)
     }
     
-    fileprivate func userDocumentReference(forUserId userId: String) -> DocumentReference {
+    private func userDocumentReference(forUserId userId: String) -> DocumentReference {
         database
             .collection(.databaseUserCollection)
             .document(userId)
     }
     
-    fileprivate func cardsCollectionReferance(forPlaylist playlist: Playlist) -> CollectionReference {
+    private func cardsCollectionReferance(forPlaylist playlist: Playlist) -> CollectionReference {
         userDocumentReference(forUserId: playlist.userOwnerId)
             .collection(.databaseLanguagesCollection)
             .document(playlist.language.id)
@@ -317,7 +317,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .collection(.databaseCardsCollection)
     }
     
-    fileprivate func playlistDocumentReferance(forPlaylist playlist: Playlist) -> DocumentReference {
+    private func playlistDocumentReferance(forPlaylist playlist: Playlist) -> DocumentReference {
             userDocumentReference(forUserId: playlist.userOwnerId)
             .collection(.databaseLanguagesCollection)
             .document(playlist.language.id)
@@ -325,7 +325,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .document(playlist.id)
     }
     
-    fileprivate func playlistDocumentReferance(userId: String, language: LanguageBind, playlistId: String) -> DocumentReference {
+    private func playlistDocumentReferance(userId: String, language: LanguageBind, playlistId: String) -> DocumentReference {
             userDocumentReference(forUserId: userId)
             .collection(.databaseLanguagesCollection)
             .document(language.id)
@@ -333,7 +333,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .document(playlistId)
     }
     
-    fileprivate func cardDocumentReference(forCard card: TranslateCard) -> DocumentReference {
+    private func cardDocumentReference(forCard card: TranslateCard) -> DocumentReference {
         database
             .collection(.databaseUserCollection)
             .document(card.userOwnerId)

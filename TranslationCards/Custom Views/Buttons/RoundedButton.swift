@@ -26,7 +26,7 @@ class RoundedButton: UIButton {
     }
     
     // MARK: - Private
-    fileprivate func setupView() {
+    private func setupView() {
         backgroundColor = .accentColor
         contentEdgeInsets = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
     }

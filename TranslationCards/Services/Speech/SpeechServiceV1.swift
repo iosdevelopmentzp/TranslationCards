@@ -10,7 +10,7 @@ import AVFoundation
 
 final class SpeechServiceV1: SpeechService {
     
-    fileprivate let speechSynthesizer = AVSpeechSynthesizer()
+    private let speechSynthesizer = AVSpeechSynthesizer()
     
     func speakText(_ inputData: SpeechData) {
         if let lenguage = inputData.language {
@@ -31,7 +31,7 @@ final class SpeechServiceV1: SpeechService {
     }
     
     //MARK: - Private
-    fileprivate func speakText(_ text: String, languageIdentifier: String) {
+    private func speakText(_ text: String, languageIdentifier: String) {
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])

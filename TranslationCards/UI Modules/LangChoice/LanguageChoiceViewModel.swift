@@ -72,7 +72,7 @@ final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageCh
     }
     
     // MARK: - Private
-    fileprivate func tryUpdateNativeLanguage(_ language: Language) {
+    private func tryUpdateNativeLanguage(_ language: Language) {
         startActivityIndicator.accept(true)
         user.updateNativeLanguage(newLanguage: language)
             .subscribe(onNext: { [weak self] (_) in

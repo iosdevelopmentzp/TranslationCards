@@ -10,7 +10,7 @@ import UIKit
 
 class  ModalTransitionAnimator: NSObject, ModalTransitionAnimatorProtocol {
     
-    fileprivate var type: NavigationOperationType = .present
+    private var type: NavigationOperationType = .present
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         0.5

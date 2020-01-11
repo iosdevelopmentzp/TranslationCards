@@ -25,12 +25,12 @@ class CreateTranslateCardView: UIView {
     let removeButton = UIButton()
     let translateRealtimeButton = UIButton()
     
-    fileprivate let buttonStackView = UIStackView()
-    fileprivate let verticalButtonStackView = UIStackView()
+    private let buttonStackView = UIStackView()
+    private let verticalButtonStackView = UIStackView()
     
     
     
-    fileprivate let diposeBag = DisposeBag()
+    private let diposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +45,7 @@ class CreateTranslateCardView: UIView {
     }
     
     // MARK: - Private
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         let padding: CGFloat = 16.0
 
         addSubview(sourceHeaderLabel)
@@ -126,7 +126,7 @@ class CreateTranslateCardView: UIView {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         layer.cornerRadius = 10.0
         backgroundColor = .clear
 
@@ -162,7 +162,7 @@ class CreateTranslateCardView: UIView {
         translateRealtimeButton.setImage(.image(withType: .translate), for: .normal)
     }
     
-    fileprivate func bind () {
+    private func bind () {
         currentCard
             .compactMap{$0?.sourcePhrase}
             .observeOn(MainScheduler.instance)
@@ -188,7 +188,7 @@ class CreateTranslateCardView: UIView {
             .disposed(by: diposeBag)
     }
     
-    fileprivate func localizable() {
+    private func localizable() {
         sourceHeaderLabel.attributedText = .placeholderLight(withText: "New phrase in the native language")
         targetHeaderLabel.attributedText = .placeholderLight(withText: "Translation")
         saveButton.setAttributedTitle(.defaultText(withText: "Save", size: 20.0), for: .normal)

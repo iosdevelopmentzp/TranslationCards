@@ -27,7 +27,7 @@ final class SignUpRouter: Router {
     }
     
     // MARK: - Private
-    fileprivate func pushChoiseLanguage(user: User) {
+    private func pushChoiseLanguage(user: User) {
         guard let viewController = viewController,
             viewController.isTopOfNavigationStack else {
                 return
@@ -36,7 +36,7 @@ final class SignUpRouter: Router {
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     
-    fileprivate func pushMainView() {
+    private func pushMainView() {
         guard let viewController = viewController,
             viewController.isTopOfNavigationStack else {
                 return

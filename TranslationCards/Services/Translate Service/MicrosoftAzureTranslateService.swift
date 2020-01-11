@@ -17,7 +17,7 @@ protocol AzureLanguageReprezantation {
 }
 
 class MicrosoftAzureTranslateService: TranslateService {
-    fileprivate struct Host {
+    private struct Host {
         static let main: URL = URL(string: "https://api.cognitive.microsofttranslator.com")!
         static var translate: URL { return main.appendingPathComponent("translate") }
     }
@@ -41,7 +41,7 @@ class MicrosoftAzureTranslateService: TranslateService {
     }
     
     // MARK: - Private
-    fileprivate enum TypeRequest {
+    private enum TypeRequest {
         case translate(sourceText: String, fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation)
         
         var request: URLRequest {
@@ -65,7 +65,7 @@ class MicrosoftAzureTranslateService: TranslateService {
         }
     }
     
-    fileprivate enum Header: String {
+    private enum Header: String {
         case azureKey
         case contentType
 
@@ -87,7 +87,7 @@ class MicrosoftAzureTranslateService: TranslateService {
         }
     }
     
-    fileprivate enum Query {
+    private enum Query {
         case from(language: AzureLanguageReprezantation)
         case to(language: AzureLanguageReprezantation)
         case apiVersion
