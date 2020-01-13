@@ -58,7 +58,7 @@ final class ViewCardViewController: ViewController<ViewCardRouter, ViewCardViewM
     }
 }
 
-extension ViewCardViewController: ActionButtonDataSource {
+extension ViewCardViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
         return [editButton, moveCardToButton, copyCardToButton]
     }

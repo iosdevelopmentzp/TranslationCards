@@ -39,10 +39,10 @@ class AppRouter: NSObject {
             let loginVc = Screens.logIn()
             viewControllersStack.append(loginVc)
         case .some(let user) where user.nativeLanguage == nil:
-            let selectLangVC = Screens.nativeLanguageChoise(user: user)
+            let selectLangVC = Screens.choosingNativeLanguage(forUser: user)
             viewControllersStack.append(selectLangVC)
         default:
-            let mainVC = Screens.main()
+            let mainVC = Screens.mainScreen()
             viewControllersStack.append(mainVC)
         }
         navigationController.setViewControllers(viewControllersStack, animated: false)

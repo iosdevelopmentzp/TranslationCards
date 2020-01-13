@@ -77,7 +77,7 @@ extension WritePhraseSlideShowViewController: UICollectionViewDelegateFlowLayout
     }
 }
 
-extension WritePhraseSlideShowViewController: ActionButtonDataSource {
+extension WritePhraseSlideShowViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
         return [editCardButton]
     }

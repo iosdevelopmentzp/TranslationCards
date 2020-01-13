@@ -6,7 +6,6 @@
 //  Copyright © 2020 Dmytro Vorko. All rights reserved.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 

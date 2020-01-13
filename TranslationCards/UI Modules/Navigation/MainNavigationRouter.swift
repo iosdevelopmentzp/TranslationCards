@@ -17,13 +17,8 @@ final class MainNavigationRouter: Router {
     func route(to type: Route) {
         switch type {
         case .createCard(let user, let language):
-            openCreateCardView(user: user, language: language)
+            let vc = Screens.createCard(forUser: user, withLanguage: language)
+            viewController?.present(vc, animated: true, completion: nil)
         }
-    }
-    
-    // MARK: - Private
-    private func openCreateCardView(user: User, language: LanguageBind) {
-        let vc = Screens.createCard(forUser: user, language: language)
-        viewController?.present(vc, animated: true, completion: nil)
     }
 }

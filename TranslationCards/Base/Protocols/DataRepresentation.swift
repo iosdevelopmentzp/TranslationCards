@@ -10,5 +10,5 @@ import Foundation
 
 protocol DataRepresentation {
     var representation: [String: Any] { get }
-     init?(withData data: [String: Any])
+    init?(withData data: [String: Any])
 }

@@ -21,11 +21,11 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
     
     override func setupConstraints() {
         super.setupConstraints()
-        let safeArea = view.safeAreaLayoutGuide
         view.addSubview(stackView)
-        stackView.snp.makeConstraints {
+        stackView.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
             $0.center.equalToSuperview()
-            $0.width.equalTo(safeArea.snp.width).multipliedBy(0.7)
+            $0.width.equalTo(self.view.safeAreaLayoutGuide.snp.width).multipliedBy(0.7)
         }
         
         stackView.addArrangedSubview(loginTextField)
@@ -33,9 +33,10 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         stackView.addArrangedSubview(logInButton)
         
         view.addSubview(signUpButton)
-        signUpButton.snp.makeConstraints {
+        signUpButton.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(safeArea.snp.bottom).inset(20.0)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(20.0)
         }
     }
     
@@ -89,23 +90,23 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         
         logInButton.rx
             .tap
-            .subscribe(input.logInAction)
+            .subscribe(input.logInTap)
             .disposed(by: disposeBag)
         
         signUpButton.rx
             .tap
-            .bind(to: viewModel.input.signUpAction)
+            .bind(to: viewModel.input.signUpTap)
             .disposed(by: disposeBag)
         
         output
-            .isValidetText
+            .isInputCorrect
             .distinctUntilChanged()
             .observeOn(MainScheduler.instance)
             .bind(to: logInButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
         output
-            .isValidetText
+            .isInputCorrect
             .distinctUntilChanged()
             .observeOn(MainScheduler.instance)
             .map { $0 ? UIColor.accentColor : UIColor.notValidateButton }

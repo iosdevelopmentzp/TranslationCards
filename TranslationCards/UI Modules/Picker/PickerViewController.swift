@@ -22,6 +22,16 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
     // Constants
     fileprivate static let heightProportion: CGFloat = 0.3
     
+    override init(viewModel: PickerViewModel) {
+        super.init(viewModel: viewModel)
+        transitioningDelegate = self
+        modalPresentationStyle = .overCurrentContext
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setupConstraints() {
         super.setupConstraints()
         

@@ -9,7 +9,25 @@
 import RxSwift
 import RxCocoa
 
-final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
+protocol MainNavigationViewModelInput {
+    var createCardTap: PublishSubject<Void> { get }
+}
+
+protocol MainNavigationViewModelOutput {}
+
+protocol MainNavigationViewModelType {
+    var input: MainNavigationViewModelInput { get }
+    var output: MainNavigationViewModelOutput { get }
+}
+
+extension MainNavigationViewModelType where Self:  MainNavigationViewModelInput & MainNavigationViewModelOutput {
+    var input: MainNavigationViewModelInput { self }
+    var output: MainNavigationViewModelOutput { self }
+}
+
+final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter>, MainNavigationViewModelInput, MainNavigationViewModelOutput, MainNavigationViewModelType {
+    
+    let createCardTap = PublishSubject<Void>()
     
     private let transitionAnimator = TransitionAnimator()
     
@@ -17,6 +35,27 @@ final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
         super.init()
         navigationControllerDelegate = NavigationControllerDelegate(transitionAnimator: transitionAnimator)
         modalTransitionAnimatorDelegate = ModalTransitionAnimationDelegate(modalAnimator: ModalTransitionAnimator())
+        
+        createCardTap
+            .withLatestFrom(services.credentials.user)
+            .compactMap { [weak self] user -> User? in
+                guard let user = user else {
+                    self?.alertModel.accept(.warningAlert(message: "An unsuccessful attempt to take the user. The current user is nil.", handler: nil))
+                    return nil
+                }
+                return user }
+            .compactMap { [weak self] user -> (User, LanguageBind)? in
+                guard let nativeLanguage = user.nativeLanguage else {
+                    self?.alertModel.accept(.warningAlert(message: "User does't have a native language.", handler: nil))
+                    return nil
+                }
+                let sourceLanguage = user.currentLanguage ?? nativeLanguage.next()
+                let languageBind = LanguageBind(source: nativeLanguage, target: sourceLanguage)
+                return (user, languageBind) }
+            .subscribe(onNext: { [weak self] (user, languageBind) in
+                self?.router.route(to: .createCard(user: user, language: languageBind))
+            })
+            .disposed(by: disposeBag)
     }
 
     func willPresentViewController(_ viewControllerToPresent: UIViewController, isAnimated: Bool) {
@@ -29,23 +68,5 @@ final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter> {
             viewControllerToPresent.modalPresentationStyle = .custom
             viewControllerToPresent.transitioningDelegate = modalAnimator
         }
-    }
-    
-    func bind(addCardPressed plusPressed: ControlEvent<Void>) {
-        plusPressed.subscribe(onNext: { [weak self] _ in
-            guard let user = self?.services.credentials.user.value else {
-                self?.alertModel.accept(.warningAlert(message: "Failed to get current user", handler: nil))
-                return
-            }
-            guard let nativeLanguage = user.nativeLanguage else {
-                self?.alertModel.accept(.warningAlert(message: "User does't have a native language", handler: nil))
-                return
-            }
-            
-            let sourceLanguage = user.currentLanguage ?? nativeLanguage.next()
-            let languageBind = LanguageBind(source: nativeLanguage, target: sourceLanguage)
-            self?.router.route(to: .createCard(user: user, language: languageBind))
-        })
-        .disposed(by: disposeBag)
     }
 }

@@ -14,13 +14,10 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     private let bottomBackgroundView = UIView()
     private let registerCardView = RegisterCardView()
     private let signUpButton = RoundedButton()
-    private let backToSignInBurButton = UIBarButtonItem()
+    private let backToSignInBarButton = UIBarButtonItem()
     
     override func setupConstraints() {
         super.setupConstraints()
-        
-        let safeArea = view.safeAreaLayoutGuide
-        
         view.addSubview(bottomBackgroundView)
         bottomBackgroundView.snp.makeConstraints { [weak self] in
             guard let self = self else { return }
@@ -29,10 +26,11 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         }
         
         view.addSubview(signUpButton)
-        signUpButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeArea).inset(30.0)
+        signUpButton.snp.makeConstraints { [weak self] in
+            guard let self = self else { return }
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(30.0)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(safeArea).multipliedBy(0.8)
+            $0.width.equalTo(self.view.safeAreaLayoutGuide).multipliedBy(0.8)
         }
         
         view.addSubview(registerCardView)
@@ -55,8 +53,8 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = backToSignInBurButton
-        backToSignInBurButton.tintColor = .white
+        navigationItem.rightBarButtonItem = backToSignInBarButton
+        backToSignInBarButton.tintColor = .white
     }
     
     override func binding() {
@@ -91,30 +89,31 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
         
         signUpButton.rx
             .tap
-            .subscribe(input.signUpAction)
+            .subscribe(input.signUpTap)
             .disposed(by: disposeBag)
         
-        backToSignInBurButton.rx
+        backToSignInBarButton.rx
             .tap
-            .subscribe(input.backToLogInAction)
+            .subscribe(input.backToLogInTap)
             .disposed(by: disposeBag)
         
         output
-            .isValided
+            .isInputCorrect
             .bind(to: signUpButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         
         output
-            .isValided
+            .isInputCorrect
             .distinctUntilChanged()
-            .observeOn(MainScheduler.instance)
             .map { $0 ? UIColor.mainBackgroundColor : UIColor.notValidateButton }
-            .subscribe(onNext: { [weak self] (newColor) in
-                guard let currentColor = self?.signUpButton.backgroundColor,
-                currentColor != newColor else { return }
-                UIView.animate(withDuration: 0.3) {
-                    self?.signUpButton.backgroundColor = newColor
-                }})
+            .observeOn(MainScheduler.instance)
+            .filter{ [weak self] in
+                guard let currentColor = self?.signUpButton.backgroundColor else { return false }
+                return currentColor != $0 }
+            .executeWithAnimation(duration: 0.3, animationBlock: { [weak self] (newColor) in
+                self?.signUpButton.backgroundColor = newColor
+            })
+            .subscribe()
             .disposed(by: disposeBag)
         
         registerCardView
@@ -134,12 +133,12 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     
     override func localize() {
         super.localize()
-        navigationItem.title = "Register"
-        signUpButton.setAttributedTitle(.defaultText(withText: "Register"), for: .normal)
+        navigationItem.title = "Sign Up"
+        signUpButton.setAttributedTitle(.defaultText(withText: "To Sign Up"), for: .normal)
         registerCardView.loginTextField.topLabel.text = "Set your email"
         registerCardView.passwordTextField.topLabel.text = "Password"
         registerCardView.displayNameTextField.topLabel.text = "Set your display name"
-        backToSignInBurButton.title = "Log in"
+        backToSignInBarButton.title = "Log in"
     }
 }
 

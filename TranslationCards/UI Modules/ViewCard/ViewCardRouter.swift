@@ -25,7 +25,7 @@ final class ViewCardRouter: Router {
     
     // MARK: - Private
     private func presentEditCard(_ card: TranslateCard, user: User) {
-        let vc = Screens.editCard(forCard: card, user: user)
+        let vc = Screens.editCard(forCard: card, forUser: user)
         viewController?.navigationController?.present(vc, animated: true, completion: nil)
     }
 }

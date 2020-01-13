@@ -27,7 +27,7 @@ final class LanguageChoiceRouter: Router {
     
     // MARK: - Private
     private func routeToMainView() {
-        let mainViewController = Screens.main()
+        let mainViewController = Screens.mainScreen()
         viewController?.navigationController?.setViewControllers([mainViewController], animated: true)
     }
 }

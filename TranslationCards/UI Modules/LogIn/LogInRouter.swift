@@ -11,42 +11,41 @@ import Foundation
 final class LogInRouter: Router {
     
     enum Route {
-        case mainView
+        case tryRouteToMainView
         case signUp
-        case choiceLanguage(user: User)
+        case tyrRouteToChoosingLanguage(user: User)
     }
     
     func route(to type: Route) {
         switch type {
-        case .mainView:
-            routeToMainView()
+        case .tryRouteToMainView:
+            tryRouteToMainView()
         case .signUp:
             routeToSignUp()
-        case .choiceLanguage(let user):
-            pushChoiceLanguage(user: user)
+        case .tyrRouteToChoosingLanguage(let user):
+            tryRouteToChoosingLanguage(user: user)
         }
     }
     
     // MARK: - Private
-    private func pushChoiceLanguage(user: User) {
+    private func tryRouteToChoosingLanguage(user: User) {
         guard let viewController = viewController, viewController.isTopOfNavigationStack  else {
                 return
         }
-        let vc = Screens.nativeLanguageChoise(user: user)
+        let vc = Screens.choosingNativeLanguage(forUser: user)
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func routeToSignUp() {
         let signUpViewController = Screens.signUp()
-        viewController?.navigationController?.pushViewController(signUpViewController,
-                                                                 animated: true)
+        viewController?.navigationController?.pushViewController(signUpViewController, animated: true)
     }
     
-    private func routeToMainView() {
+    private func tryRouteToMainView() {
         guard let viewController = viewController, viewController.isTopOfNavigationStack  else {
                 return
         }
-        let mainViewController = Screens.main()
+        let mainViewController = Screens.mainScreen()
         viewController.navigationController?.setViewControllers([mainViewController], animated: true)
     }
 }

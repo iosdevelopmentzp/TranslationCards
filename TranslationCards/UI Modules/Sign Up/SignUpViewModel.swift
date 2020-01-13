@@ -14,12 +14,12 @@ protocol SignUpViewModelInput {
     var logInText: PublishSubject<String> { get }
     var passwordText: PublishSubject<String> { get }
     var displayNameText: PublishSubject<String> { get }
-    var signUpAction: PublishSubject<Void> { get }
-    var backToLogInAction: PublishSubject<Void> { get }
+    var signUpTap: PublishSubject<Void> { get }
+    var backToLogInTap: PublishSubject<Void> { get }
 }
 
 protocol SignUpViewModelOutput {
-    var isValided: BehaviorSubject<Bool> { get }
+    var isInputCorrect: BehaviorSubject<Bool> { get }
 }
 
 protocol SignUpViewModelType: SignUpViewModelInput & SignUpViewModelOutput {
@@ -36,9 +36,9 @@ final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignU
     let logInText = PublishSubject<String>()
     let passwordText = PublishSubject<String>()
     let displayNameText = PublishSubject<String>()
-    let signUpAction = PublishSubject<Void>()
-    let backToLogInAction = PublishSubject<Void>()
-    let isValided: BehaviorSubject<Bool> = .init(value: false)
+    let signUpTap = PublishSubject<Void>()
+    let backToLogInTap = PublishSubject<Void>()
+    let isInputCorrect: BehaviorSubject<Bool> = .init(value: false)
     
     private var inputData: Observable<(String, String, String)> {
         return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver(), displayNameText.asObserver())
@@ -47,34 +47,36 @@ final class SignUpViewModel: ViewModel<SignUpRouter>, SignUpViewModelType, SignU
     override init() {
         super.init()
         
-        signUpAction
-        .withLatestFrom(inputData)
+        signUpTap
+            .withLatestFrom(inputData)
             .subscribe(onNext: { [weak self] (loginText, passwordText, displayName) in
                 self?.trySignUp(withEmail: loginText, password: passwordText, displayName: displayName)
             })
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         inputData
             .map { (login, password, displayName) -> Bool in
                 return (login.isEmail && password.count >= 7 && !displayName.isEmpty)}
-            .bind(to: isValided)
+            .bind(to: isInputCorrect)
             .disposed(by: disposeBag)
         
-        backToLogInAction
+        backToLogInTap
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.comeBack()
             })
             .disposed(by: disposeBag)
         
-        services
-            .credentials
+        services.credentials
             .user
-            .subscribe(onNext: { [weak self] (user) in
-                guard let user = user else { return}
-                guard user.nativeLanguage != nil else {
-                    self?.router.route(to: .choiceLanguage(user: user))
-                    return
+            .unwrap()
+            .filter { [weak self] in
+                guard $0.nativeLanguage != nil else {
+                    self?.router.route(to: .choosingLanguage(user: $0))
+                    return false
                 }
+                return true }
+            .ignoreAll()
+            .subscribe(onNext: { [weak self] in
                 self?.router.route(to: .mainView) })
             .disposed(by: disposeBag)
     }

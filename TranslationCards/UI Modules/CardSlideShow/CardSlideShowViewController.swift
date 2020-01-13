@@ -75,7 +75,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     }
 }
 
-extension CardSlideShowViewController: ActionButtonDataSource {
+extension CardSlideShowViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
         return [editCardButton, moveCardToButton, copyCardToButton]
     }

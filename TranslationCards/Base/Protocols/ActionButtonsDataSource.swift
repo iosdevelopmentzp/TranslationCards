@@ -8,6 +8,6 @@
 
 import JJFloatingActionButton
 
-protocol ActionButtonDataSource {
+protocol ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem]
 }

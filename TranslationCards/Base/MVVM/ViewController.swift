@@ -94,7 +94,7 @@ class ViewController<R: Router, VM: ViewModel<R>>: UIViewController {
         guard let mainNavigation = navigationController as? MainNavigationViewController else {
             return
         }
-        let buttons = (self as? ActionButtonDataSource)?.getActionButtons() ?? []
+        let buttons = (self as? ActionButtonsDataSource)?.getActionButtons() ?? []
         mainNavigation.configureActionButtons(buttons)
     }
 }

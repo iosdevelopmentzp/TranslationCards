@@ -220,7 +220,7 @@ extension CardsListViewController: UITableViewDelegate {
     }
 }
 
-extension CardsListViewController: ActionButtonDataSource {
+extension CardsListViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
         return [startCardSlideShowButton, startWritePhraseSlideShowButton, switchEditModeButton]
     }

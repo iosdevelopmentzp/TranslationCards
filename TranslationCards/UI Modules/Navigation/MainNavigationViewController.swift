@@ -11,34 +11,38 @@ import JJFloatingActionButton
 
 final class MainNavigationViewController: NavigationViewController<MainNavigationRouter, MainNavigationViewModel> {
     
-    private let actionButton = JJFloatingActionButton.tunedButton
-    private lazy var addCardButton = JJActionItem.initWith(imageType: .plus)
+    /// The main menu button of each ViewController, which is configured  a list of buttons that is taken in the top ViewController and contains the basic tools that are necessary in  context of the current ViewController. By default contains the createNewCardButton.
+    private let menuButton = JJFloatingActionButton.tunedButton
+    /// The button, which by default is added to the  menuButton in all cases.
+    private lazy var createNewCardButton = JJActionItem.initWith(imageType: .plus)
     
     override func setupConstraints() {
         super.setupConstraints()
-        actionButton.display(inViewController: self)
+        menuButton.display(inViewController: self)
     }
     
     override func setupView() {
         super.setupView()
         hideSeparator()
-        actionButton.addItem(addCardButton)
     }
     
     override func localizable() {
         super.localizable()
-        addCardButton.titleLabel.text = "New card"
+        createNewCardButton.titleLabel.text = "New card"
     }
     
     override func binding() {
         super.binding()
-        viewModel.bind(addCardPressed: addCardButton.rx.tap)
+        createNewCardButton
+            .rx.tap
+            .bind(to: viewModel.input.createCardTap)
+            .disposed(by: disposeBag)
     }
     
     func configureActionButtons(_ buttons: [JJActionItem]) {
         var newButtons = buttons
-        newButtons.insert(addCardButton, at: 0)
-        actionButton.items = newButtons
+        newButtons.insert(createNewCardButton, at: 0)
+        menuButton.items = newButtons
     }
     
     // MARK: - Override

@@ -13,11 +13,11 @@ import RxCocoa
 protocol LogInViewModelInput {
     var logInText: PublishSubject<String> { get}
     var passwordText: PublishSubject<String> { get }
-    var logInAction: PublishSubject<Void> { get }
-    var signUpAction: PublishSubject<Void> { get }
+    var logInTap: PublishSubject<Void> { get }
+    var signUpTap: PublishSubject<Void> { get }
 }
 protocol LogInViewModelOutput {
-    var isValidetText: BehaviorRelay<Bool> { get }
+    var isInputCorrect: BehaviorRelay<Bool> { get }
 }
 protocol LogInViewModelType: LogInViewModelInput & LogInViewModelOutput {
     var input: LogInViewModelInput { get }
@@ -31,11 +31,11 @@ extension LogInViewModelType where Self: LogInViewModelOutput & LogInViewModelIn
 
 final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInViewModelOutput, LogInViewModelInput  {
     
-    let logInAction = PublishSubject<Void>()
+    let logInTap = PublishSubject<Void>()
     let logInText = PublishSubject<String>()
     let passwordText = PublishSubject<String>()
-    let signUpAction = PublishSubject<Void>()
-    let isValidetText = BehaviorRelay<Bool>.init(value: false)
+    let signUpTap = PublishSubject<Void>()
+    let isInputCorrect = BehaviorRelay<Bool>.init(value: false)
     
     private var inputData: Observable<(String, String)> {
         return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver())
@@ -44,7 +44,7 @@ final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInVie
     override init() {
         super.init()
         
-        logInAction
+        logInTap
             .withLatestFrom(inputData)
             .subscribe(onNext: { [weak self] (login, password) in
                 self?.tryToSignIn(login: login, password: password)
@@ -54,25 +54,26 @@ final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInVie
         inputData
             .map { (login, password) -> Bool in
                 return (login.isEmail && (password.count >= 7))}
-            .bind(to: isValidetText)
+            .bind(to: isInputCorrect)
             .disposed(by: disposeBag)
         
-        signUpAction
+        signUpTap
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.route(to: .signUp)
             })
             .disposed(by: disposeBag)
         
-        services
-            .credentials
+        services.credentials
             .user
-            .subscribe(onNext: { [weak self] (user) in
-                guard let user = user else { return}
-                guard user.nativeLanguage != nil else {
-                    self?.router.route(to: .choiceLanguage(user: user))
-                    return
+            .unwrap()
+            .filter { [weak self] in
+                guard $0.nativeLanguage != nil else {
+                    self?.router.route(to: .tyrRouteToChoosingLanguage(user: $0))
+                    return false
                 }
-                self?.router.route(to: .mainView) })
+                return true }
+            .subscribe(onNext: { [weak self] (user) in
+                self?.router.route(to: .tryRouteToMainView) })
             .disposed(by: disposeBag)
     }
     

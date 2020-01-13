@@ -22,7 +22,7 @@ struct Screens {
         return ViewCardViewController(viewModel: vm)
     }
     
-    static func nativeLanguageChoise(user: User) -> LanguageChoiceViewController {
+    static func choosingNativeLanguage(forUser user: User) -> LanguageChoiceViewController {
         let vm = LanguageChoiceViewModel(user: user)
         return LanguageChoiceViewController(viewModel: vm)
     }
@@ -30,8 +30,6 @@ struct Screens {
     static func languagePickerView(callBackLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String) -> PickerViewController {
         let vm = PickerViewModel(callBackLanguage: callBackLanguage, languageList: languageList, titleLabel: title)
         let vc = PickerViewController(viewModel: vm)
-        vc.transitioningDelegate = vc
-        vc.modalPresentationStyle = .overCurrentContext
         return vc
     }
     
@@ -45,17 +43,17 @@ struct Screens {
         return CardsListViewController(viewModel: vm)
     }
     
-    static func editCard(forCard card: TranslateCard, user: User) -> CreateCardPopUpViewController {
+    static func editCard(forCard card: TranslateCard, forUser user: User) -> CreateCardPopUpViewController {
         let vm = CreateCardPopUpViewModel(withCard: card, user: user)
         return CreateCardPopUpViewController(viewModel: vm)
     }
     
-    static func createCard(forUser user: User, language: LanguageBind) -> CreateCardPopUpViewController {
+    static func createCard(forUser user: User, withLanguage language: LanguageBind) -> CreateCardPopUpViewController {
         let vm = CreateCardPopUpViewModel(user: user, language: language)
         return CreateCardPopUpViewController(viewModel: vm)
     }
     
-    static func main() -> MainViewController {
+    static func mainScreen() -> MainViewController {
         let vm = MainViewModel()
         return MainViewController(viewModel: vm)
     }

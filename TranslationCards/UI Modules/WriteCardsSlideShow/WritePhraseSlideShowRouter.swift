@@ -16,7 +16,7 @@ final class WritePhraseSlideShowRouter: Router {
     func route(to type: Route) {
         switch type {
         case .editCard(let card, let user):
-            let editVc = Screens.editCard(forCard: card, user: user)
+            let editVc = Screens.editCard(forCard: card, forUser: user)
             viewController?.navigationController?.present(editVc, animated: true, completion: nil)
         }
     }
