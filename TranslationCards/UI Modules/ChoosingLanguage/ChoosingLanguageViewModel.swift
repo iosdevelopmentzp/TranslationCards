@@ -1,5 +1,5 @@
 //
-//  LanguageChoiceViewModel.swift
+//  ChoosingLanguageViewModel.swift
 //  TranslationCards
 //
 //  Created by Dmytro Vorko on 12.12.2019.
@@ -9,28 +9,28 @@
 import RxSwift
 import RxCocoa
 
-protocol LanguageChoiceViewModelInput {
+protocol ChoosingLanguageViewModelInput {
     var choiceLanguageAction: PublishSubject<Void> { get }
     var nextButtonEvent: PublishSubject<Void> { get }
 }
 
-protocol LanguageChoiceViewModelOutput {
+protocol ChoosingLanguageViewModelOutput {
     var languageImage: BehaviorRelay<UIImage?> { get }
     var languageTitle: BehaviorRelay<String> { get }
     var selectedLanguage: BehaviorRelay<Language?> { get }
 }
 
-protocol LanguageChoiceViewModelType: LanguageChoiceViewModelInput & LanguageChoiceViewModelOutput {
-    var input: LanguageChoiceViewModelInput { get }
-    var output: LanguageChoiceViewModelOutput { get }
+protocol ChoosingLanguageViewModelType: ChoosingLanguageViewModelInput & ChoosingLanguageViewModelOutput {
+    var input: ChoosingLanguageViewModelInput { get }
+    var output: ChoosingLanguageViewModelOutput { get }
 }
 
-extension LanguageChoiceViewModelType where Self: LanguageChoiceViewModelInput & LanguageChoiceViewModelOutput {
-    var input: LanguageChoiceViewModelInput { return self }
-    var output: LanguageChoiceViewModelOutput { return self }
+extension ChoosingLanguageViewModelType where Self: ChoosingLanguageViewModelInput & ChoosingLanguageViewModelOutput {
+    var input: ChoosingLanguageViewModelInput { return self }
+    var output: ChoosingLanguageViewModelOutput { return self }
 }
 
-final class LanguageChoiceViewModel: ViewModel<LanguageChoiceRouter>, LanguageChoiceViewModelType, LanguageChoiceViewModelInput, LanguageChoiceViewModelOutput {
+final class ChoosingLanguageViewModel: ViewModel<ChoosingLanguageRouter>, ChoosingLanguageViewModelType, ChoosingLanguageViewModelInput, ChoosingLanguageViewModelOutput {
     
     let choiceLanguageAction = PublishSubject<Void>()
     let nextButtonEvent = PublishSubject<Void>()

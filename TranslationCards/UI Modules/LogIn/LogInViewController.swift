@@ -79,18 +79,18 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         loginTextField.rx
             .text
             .unwrap()
-            .subscribe(input.logInText)
+            .bind(to: input.logInText)
             .disposed(by: disposeBag)
         
         passwordTextField.rx
             .text
             .unwrap()
-            .subscribe(input.passwordText)
+            .bind(to: input.passwordText)
             .disposed(by: disposeBag)
         
         logInButton.rx
             .tap
-            .subscribe(input.logInTap)
+            .bind(to: input.logInTap)
             .disposed(by: disposeBag)
         
         signUpButton.rx
@@ -108,14 +108,15 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         output
             .isInputCorrect
             .distinctUntilChanged()
-            .observeOn(MainScheduler.instance)
             .map { $0 ? UIColor.accentColor : UIColor.notValidateButton }
-            .subscribe(onNext: { [weak self] (newColor) in
-                guard let currentColor = self?.logInButton.backgroundColor,
-                currentColor != newColor else { return }
-                UIView.animate(withDuration: 0.3) {
-                    self?.logInButton.backgroundColor = newColor
-                }})
+            .observeOn(MainScheduler.instance)
+            .filter{ [weak self] in
+                guard let currentColor = self?.logInButton.backgroundColor else { return false }
+                return currentColor != $0 }
+            .executeWithAnimation(duration: 0.4, animationBlock: { [weak self] (newColor) in
+                self?.logInButton.backgroundColor = newColor
+            })
+            .subscribe()
             .disposed(by: disposeBag)
     }
 }

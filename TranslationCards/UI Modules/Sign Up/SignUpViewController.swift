@@ -68,7 +68,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             .textField.rx
             .text
             .unwrap()
-            .subscribe(input.logInText)
+            .bind(to: input.logInText)
             .disposed(by: disposeBag)
         
         registerCardView
@@ -76,7 +76,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             .textField.rx
             .text
             .unwrap()
-            .subscribe(input.passwordText)
+            .bind(to: input.passwordText)
             .disposed(by: disposeBag)
         
         registerCardView
@@ -84,17 +84,17 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
             .textField.rx
             .text
             .unwrap()
-            .subscribe(input.displayNameText)
+            .bind(to: input.displayNameText)
             .disposed(by: disposeBag)
         
         signUpButton.rx
             .tap
-            .subscribe(input.signUpTap)
+            .bind(to: input.signUpTap)
             .disposed(by: disposeBag)
         
         backToSignInBarButton.rx
             .tap
-            .subscribe(input.backToLogInTap)
+            .bind(to: input.backToLogInTap)
             .disposed(by: disposeBag)
         
         output

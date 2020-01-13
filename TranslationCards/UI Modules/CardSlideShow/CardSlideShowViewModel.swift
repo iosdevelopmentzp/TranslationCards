@@ -9,112 +9,162 @@
 import RxSwift
 import RxCocoa
 
-final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter> {
-    var cards = BehaviorRelay<[TranslateCard]>.init(value: [])
-    let reverseMode: BehaviorRelay<Bool>
-    let cellSpeechData = BehaviorRelay<SpeechData?>.init(value: nil)
-    var getSelectedCellIndexPath: (() -> IndexPath?)? = nil
+protocol CardSlideShowViewModelInput {
+    var copyCardToButtonTap: PublishSubject<Void> { get }
+    var moveCardToButtonTap: PublishSubject<Void> { get }
+    var editCardButtonTap: PublishSubject<Void> { get }
+    var speechData: BehaviorRelay<SpeechData?> { get }
+    var getCurrentCentralCellIndexPath: (() -> IndexPath?)? { set get }
+    func stopSpeaking()
+}
+
+protocol CardSlideShowViewModelOutput {
+    var cards: BehaviorRelay<[TranslateCard]> { get }
+    var isReverseMode: BehaviorRelay<Bool> { get }
+}
+
+protocol CardSlideShowViewModelType {
+    var input: CardSlideShowViewModelInput { get }
+    var output: CardSlideShowViewModelOutput { get }
+}
+
+extension CardSlideShowViewModelType where Self:  CardSlideShowViewModelInput & CardSlideShowViewModelOutput {
+    var input: CardSlideShowViewModelInput { self }
+    var output: CardSlideShowViewModelOutput { self }
+}
+
+final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter>, CardSlideShowViewModelInput, CardSlideShowViewModelOutput, CardSlideShowViewModelType {
     
+    let copyCardToButtonTap = PublishSubject<Void>()
+    let moveCardToButtonTap = PublishSubject<Void>()
+    let editCardButtonTap = PublishSubject<Void>()
+    var getCurrentCentralCellIndexPath: (() -> IndexPath?)? = nil
+    let speechData = BehaviorRelay<SpeechData?>.init(value: nil)
+    
+    let cards = BehaviorRelay<[TranslateCard]>.init(value: [])
+    let isReverseMode: BehaviorRelay<Bool>
+    
+    // MARK: - Private combine observables
+    private var currentCardAndUser: Observable<(user: User, currentCard: TranslateCard)> {
+        Observable
+            .just(getCurrentCentralCellIndexPath?())
+            .unwrap()
+            .withLatestFrom(cards) { ($1, $0) }
+            .map { cards, indexPath in return cards[indexPath.row] }
+            .flatMap{
+                User.user(withId: $0.userOwnerId)
+                    .withLatestFrom(Observable.just($0)) { ($0, $1) }
+            }
+    }
+   
     init(cards: [TranslateCard], withReverse reverse: Bool = false) {
         self.cards.accept(cards)
-        reverseMode = .init(value: reverse)
+        isReverseMode = .init(value: reverse)
         super.init()
-        binding()
-    }
-    
-    func viewDisappeared() {
-        services.speechService.stopSpeaking()
-    }
-    
-    func bindWIthActionButtons(editCardEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>, copyCardToEvent: ControlEvent<Void>) {
-        editCardEvent
+        
+        speechData
+            .unwrap()
+            .subscribe(onNext: { [weak self]  (speechData) in
+                self?.services.speechService.speakText(withSpeechData: speechData)
+            })
+            .disposed(by: disposeBag)
+        
+        editCardButtonTap
             .subscribe(onNext: { [weak self] (_) in
                 self?.openEditCardController()
             })
             .disposed(by: disposeBag)
         
-        moveCardToEvent
+        moveCardToButtonTap
             .subscribe(onNext: { [weak self] (_) in
-                self?.openMoveCardToController()
+                self?.openChoosingPlaylistForMoveCardToAnotherPlaylist()
             })
             .disposed(by: disposeBag)
         
-        copyCardToEvent
+        copyCardToButtonTap
             .subscribe(onNext: { [weak self] (_) in
-                self?.openCopyCardToAnotherPlaylist()
+                self?.openChoosingPlaylistForCopyCardToAnotherPlaylist()
             })
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
+    }
+    // MARK: - Public
+    func stopSpeaking() {
+        services.speechService.stopSpeaking()
     }
     
     // MARK: - Private
-    private func openCopyCardToAnotherPlaylist() {
-        guard let indexPath = getSelectedCellIndexPath?() else { return }
-        let card = cards.value[indexPath.row]
-        
-        User.user(withId: card.userOwnerId).subscribe(onNext: { [weak self] (user) in
-            user.getPlaylists(forLanguage: card.language)
-                .subscribe(onNext: { [weak self] (playlists) in
-                    let selectedPlaylist = playlists.filter{ $0.id == card.playlistId}.first
-                    guard let selected = selectedPlaylist else { return }
-                    let action: PlaylistCallBack = {[weak self] (selectedPlaylist) in
-                        guard selectedPlaylist != selected else { return }
-                        self?.needCopyCardToPlaylist(user: user, card: card, newPlaylist: selectedPlaylist)
-                    }
-                    self?.router.route(to: .moveCardTo(dataSource: playlists, selected: selected, callback: action))
-                })
-                .disposed(by: self?.disposeBag ?? DisposeBag())
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    private func needCopyCardToPlaylist(user: User, card: TranslateCard, newPlaylist: Playlist) {
-        user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
-            .subscribe(onError: { [weak self] (error) in
-                self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func openMoveCardToController() {
-        guard let indexPath = getSelectedCellIndexPath?() else { return }
-        let card = cards.value[indexPath.row]
-        
-        User.user(withId: card.userOwnerId).subscribe(onNext: { [weak self] (user) in
-            user.getPlaylists(forLanguage: card.language)
-                .subscribe(onNext: { [weak self] (playlists) in
-                    let selectedPlaylist = playlists.filter{ $0.id == card.playlistId}.first
-                    guard let selected = selectedPlaylist else { return }
-                    self?.router.route(to: .moveCardTo(dataSource: playlists, selected: selected, callback: { (selectedPlaylist) in
-                        guard selectedPlaylist != selected else { return }
-                        user.moveCardToAnotherPlaylist(card: card, newPlaylistId: selectedPlaylist.id)
-                            .subscribe(onError: { (error) in
-                                self?.errorHandler(description: "Failed move card", error: error, withAlert: true)
-                            })
-                            .disposed(by: self?.disposeBag ?? DisposeBag())
-                    }))
-                })
-                .disposed(by: self?.disposeBag ?? DisposeBag())
-        })
-        .disposed(by: disposeBag)
-    }
-    
     private func openEditCardController() {
-        guard let indexPath = getSelectedCellIndexPath?() else { return }
-        let card = cards.value[indexPath.row]
-        User.user(withId: card.userOwnerId)
-            .subscribe(onNext: { [weak self] (user) in
-                self?.router.route(to: .editCard(card, user: user))
-            })
-        .disposed(by: disposeBag)
-    }
-    
-    private func binding() {
-        cellSpeechData
-            .unwrap()
-            .subscribe(onNext: { [weak self]  (speechData) in
-                self?.services.speechService.speakText(speechData)
+        currentCardAndUser
+            .subscribe(onNext: { [weak self] (user, selectedCard) in
+                self?.router.route(to: .editCard(selectedCard, user: user))
+                }, onError: { [weak self] error in
+                    self?.errorHandler(description: "Failed open edit card screen.", error: error, withAlert: true)
             })
             .disposed(by: disposeBag)
     }
     
+    private func openChoosingPlaylistForCopyCardToAnotherPlaylist() {
+        currentCardAndUser
+            .flatMap { user, currentCard -> Observable<(User, [Playlist], TranslateCard)> in
+                return user
+                    .getPlaylists(forLanguage: currentCard.language)
+                    .withLatestFrom(Observable.just((user: user, card: currentCard))){ ($1.user, $0, $1.card) } }
+        .filter{ user, playlists, card in playlists.count > 1 }
+        .subscribe(onNext: { [weak self] (user, playlistsDatSource, card) in
+            let selectedPlaylist = playlistsDatSource.filter{ $0.id == card.playlistId}.first
+            guard let selected = selectedPlaylist else { return }
+            self?.openChoosingPlaylist(playlists: playlistsDatSource,
+                                       selected: selected, completion: { [weak self] (selectedPlaylist) in
+                    self?.copyCard(card, user: user, toPlaylist: selectedPlaylist)
+            })
+        }, onError: { [weak self] error in
+            self?.errorHandler(description: "Failed move card.", error: error, withAlert: true)
+        })
+            .disposed(by: disposeBag)
+    }
+    
+    private func openChoosingPlaylistForMoveCardToAnotherPlaylist() {
+        currentCardAndUser
+            .flatMap { user, currentCard -> Observable<(User, [Playlist], TranslateCard)> in
+                return user
+                    .getPlaylists(forLanguage: currentCard.language)
+                    .withLatestFrom(Observable.just((user: user, card: currentCard))){ ($1.user, $0, $1.card) } }
+        .filter{ user, playlists, card in playlists.count > 1 }
+        .subscribe(onNext: { [weak self] (user, playlistsDatSource, card) in
+            let selectedPlaylist = playlistsDatSource.filter{ $0.id == card.playlistId}.first
+            guard let selected = selectedPlaylist else { return }
+            self?.openChoosingPlaylist(playlists: playlistsDatSource, selected: selected, completion: { [weak self] (selectedPlaylist) in
+                    self?.moveCard(card, user: user, toPlaylist: selectedPlaylist)
+            })
+        }, onError: { [weak self] error in
+            self?.errorHandler(description: "Failed move card.", error: error, withAlert: true)
+        })
+            .disposed(by: disposeBag)
+    }
+    
+    private func openChoosingPlaylist(playlists: [Playlist], selected: Playlist, completion: @escaping ((Playlist) -> Void)) {
+        let callBack: PlaylistCallBack = { (selectedPlaylist) in
+            guard selectedPlaylist != selected else { return }
+            completion(selectedPlaylist)
+        }
+        router.route(to: .choosingPlaylist(dataSource: playlists,
+                                           selected: selected,
+                                           callback: callBack))
+    }
+    
+    private func copyCard(_ card: TranslateCard, user: User, toPlaylist playlist: Playlist) {
+        user.copyCardToAnotherPlaylist(card: card, newPlaylistId: playlist.id)
+            .subscribe(onError: { [weak self] (error) in
+                self?.errorHandler(description: "Failed copy card", error: error, withAlert: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func moveCard(_ card: TranslateCard, user: User, toPlaylist playlist: Playlist) {
+        user.moveCardToAnotherPlaylist(card: card, newPlaylistId: playlist.id)
+            .subscribe(onError: { [weak self] (error) in
+                self?.errorHandler(description: "Failed move card", error: error, withAlert: true)
+            })
+            .disposed(by: disposeBag)
+    }
 }

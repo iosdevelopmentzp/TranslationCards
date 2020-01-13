@@ -15,10 +15,9 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private let flowLayout = CardSlideShowFlowLayout()
-    
-    private let editCardButton = JJActionItem.initWith(imageType: .edit)
-    private let moveCardToButton = JJActionItem.initWith(imageType: .move)
-    private let copyCardToButton = JJActionItem.initWith(imageType: .copy)
+    private let editCardItem = JJActionItem.initWith(imageType: .edit)
+    private let moveCardToItem = JJActionItem.initWith(imageType: .move)
+    private let copyCardToItem = JJActionItem.initWith(imageType: .copy)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -33,27 +32,40 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     
     override func setupCollectionView() {
         super.setupCollectionView()
-        collectionView.register(CardCell.self, forCellWithReuseIdentifier: CardCell.typeName)
+        Observable.just([CardCell.self])
+            .bind(to: collectionView.rx.cellTypes)
+            .disposed(by: disposeBag)
         
         viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: CardCell.typeName, cellType: CardCell.self)) { [weak self] row,card,cell in
             guard let self = self else { return }
-            cell.configure(withCard: card, withReverse: self.viewModel.reverseMode.value)
+            cell.configure(withCard: card, withReverse: self.viewModel.output.isReverseMode.value)
             cell.speakData
                 .skip(1)
                 .unwrap()
-                .bind(to: self.viewModel.cellSpeechData)
+                .bind(to: self.viewModel.speechData)
                 .disposed(by: cell.rx.reuseBag)
         }
         .disposed(by: disposeBag)
-        
-        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
     }
     
     override func binding() {
         super.binding()
-        viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap,
-                                        moveCardToEvent: moveCardToButton.rx.tap,
-                                        copyCardToEvent: copyCardToButton.rx.tap)
+        editCardItem
+            .rx.tap
+            .bind(to: viewModel.input.editCardButtonTap)
+            .disposed(by: disposeBag)
+        
+        moveCardToItem
+            .rx.tap
+            .bind(to: viewModel.input.moveCardToButtonTap)
+            .disposed(by: disposeBag)
+        
+        copyCardToItem
+            .rx.tap
+            .bind(to: viewModel.input.copyCardToButtonTap)
+            .disposed(by: disposeBag)
+        
+        viewModel.getCurrentCentralCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
     }
     
     override func setupView() {
@@ -64,19 +76,19 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     
     override func localize() {
         super.localize()
-        editCardButton.titleLabel.text = "Edit card"
-        moveCardToButton.titleLabel.text = "Move card to"
-        copyCardToButton.titleLabel.text = "Copy card to"
+        editCardItem.titleLabel.text = "Edit card"
+        moveCardToItem.titleLabel.text = "Move card to"
+        copyCardToItem.titleLabel.text = "Copy card to"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.viewDisappeared()
+        viewModel.stopSpeaking()
     }
 }
 
 extension CardSlideShowViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [editCardButton, moveCardToButton, copyCardToButton]
+        return [editCardItem, moveCardToItem, copyCardToItem]
     }
 }

@@ -13,10 +13,10 @@ import JJFloatingActionButton
 
 final class CardsListViewController: ViewController<CardsListRouter, CardsListViewModel> {
     private let tableView = TableView()
-    private let startCardSlideShowButton = JJActionItem.initWith(imageType: .playButton)
-    private let startWritePhraseSlideShowButton = JJActionItem.initWith(imageType: .write)
+    private let startCardSlideShowMenuItem = JJActionItem.initWith(imageType: .playButton)
+    private let startWritePhraseSlideShowMenuItem = JJActionItem.initWith(imageType: .write)
     private let switchEditModeButton = JJActionItem.initWith(imageType: .xButton, renderringMode: .alwaysOriginal)
-    private let choicePlaylistButton = UIButton(type: .custom)
+    private let choosingPlaylistButton = UIButton(type: .custom)
     private var reverseButton = UIButton(type: .custom)
     private var shuffleButton = UIButton(type: .custom)
     
@@ -51,7 +51,9 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.typeName)
+        Observable.just([UITableViewCell.self])
+            .bind(to: tableView.rx.cellTypes)
+            .disposed(by: disposeBag)
         
         viewModel
             .output
@@ -73,14 +75,14 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .disposed(by: disposeBag)
         
         tableView
-            .bindWithViewModelIsRefreshSate(viewModel.output.isRefreshing)
+            .reverseBindWithRefeshingBehavior(viewModel.output.isRefreshing)
             .disposed(by: disposeBag)
     }
     
     override func setupView() {
         super.setupView()
         // choise button
-        choicePlaylistButton.backgroundColor = .red
+        choosingPlaylistButton.backgroundColor = .red
         // table view
         tableView.backgroundColor = .clear
         // reverse button
@@ -113,10 +115,10 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         
-        startCardSlideShowButton.titleLabel.text = "Start slide show"
-        startWritePhraseSlideShowButton.titleLabel.text = "Start write slide show"
+        startCardSlideShowMenuItem.titleLabel.text = "Start slide show"
+        startWritePhraseSlideShowMenuItem.titleLabel.text = "Start write slide show"
         switchEditModeButton.titleLabel.text = "Switch edit mode"
-        choicePlaylistButton.setTitle("Choose playlist", for: .normal)
+        choosingPlaylistButton.setTitle("Choose playlist", for: .normal)
     }
     
     override func binding() {
@@ -125,17 +127,17 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
         let input = viewModel.input
         let output = viewModel.output
         
-        startCardSlideShowButton
+        startCardSlideShowMenuItem
             .rx.tap
             .bind(to: input.startSlideShow)
             .disposed(by: disposeBag)
         
-        startWritePhraseSlideShowButton
+        startWritePhraseSlideShowMenuItem
             .rx.tap
             .bind(to: input.startWhritePhraseSlideShow)
             .disposed(by: disposeBag)
         
-        choicePlaylistButton
+        choosingPlaylistButton
             .rx.tap
             .bind(to: input.openPlaylistsChoice)
             .disposed(by: disposeBag)
@@ -215,13 +217,13 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
 
 extension CardsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        choicePlaylistButton.frame = .init(x: 0, y: 0, width: view.bounds.width, height: 40.0)
-        return choicePlaylistButton
+        choosingPlaylistButton.frame = .init(x: 0, y: 0, width: view.bounds.width, height: 40.0)
+        return choosingPlaylistButton
     }
 }
 
 extension CardsListViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [startCardSlideShowButton, startWritePhraseSlideShowButton, switchEditModeButton]
+        return [startCardSlideShowMenuItem, startWritePhraseSlideShowMenuItem, switchEditModeButton]
     }
 }

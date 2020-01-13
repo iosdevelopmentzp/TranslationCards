@@ -14,7 +14,7 @@ import RxDataSources
 
 final class MainViewController: ViewController<MainRouter, MainViewModel> {
     private let tableView = TableView()
-    private let signOutBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: nil, action: nil)
+    private let signOutBarButtonItem = UIBarButtonItem()
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -40,8 +40,9 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
     
     override func setupTableView() {
         super.setupTableView()
-        
-        tableView.register(LanguageCell.self, forCellReuseIdentifier: LanguageCell.typeName)
+        Observable.just([LanguageCell.self])
+            .bind(to: tableView.rx.cellTypes)
+                .disposed(by: disposeBag)
         
         viewModel
             .sections
@@ -53,18 +54,17 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
             .itemSelected
             .execute({ [weak self] (indexPath) in
                 self?.tableView.deselectRow(at: indexPath, animated: true) })
-            .subscribe(viewModel.input.selectedAction)
+            .bind(to: viewModel.input.tableViewItemTap)
             .disposed(by: disposeBag)
         
         tableView
-            .bindWithViewModelIsRefreshSate(viewModel.output.isRefreshing)
+            .reverseBindWithRefeshingBehavior(viewModel.output.isRefreshing)
             .disposed(by: disposeBag)
     }
     
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationItem.hidesBackButton = true
-        
         navigationItem.rightBarButtonItem = signOutBarButtonItem
     }
     
@@ -72,12 +72,13 @@ final class MainViewController: ViewController<MainRouter, MainViewModel> {
         super.binding()
         signOutBarButtonItem.rx
             .tap
-            .bind(to: viewModel.input.signOutAction)
+            .bind(to: viewModel.input.signOutTap)
             .disposed(by: disposeBag)
     }
     
     override func localize() {
         super.localize()
         navigationItem.title = "My Cards"
+        signOutBarButtonItem.title = "Sign Out"
     }
 }

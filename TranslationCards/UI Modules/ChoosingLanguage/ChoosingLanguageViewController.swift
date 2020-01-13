@@ -1,5 +1,5 @@
 //
-//  LanguageChoiceViewController.swift
+//  ChoosingLanguageViewController.swift
 //  TranslationCards
 //
 //  Created by Dmytro Vorko on 12.12.2019.
@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, LanguageChoiceViewModel> {
+final class ChoosingLanguageViewController: ViewController<ChoosingLanguageRouter, ChoosingLanguageViewModel> {
     let label = UILabel()
     let choiseLanguageButton = UIButton(type: .custom)
     let nextButton = RoundedButton()
@@ -63,12 +63,12 @@ final class LanguageChoiceViewController: ViewController<LanguageChoiceRouter, L
         
         nextButton.rx
             .tap
-            .subscribe(input.nextButtonEvent)
+            .bind(to: input.nextButtonEvent)
             .disposed(by: disposeBag)
         
         choiseLanguageButton.rx
             .tap
-            .subscribe(input.choiceLanguageAction)
+            .bind(to: input.choiceLanguageAction)
             .disposed(by: disposeBag)
         
         let isLanguageSelected = output

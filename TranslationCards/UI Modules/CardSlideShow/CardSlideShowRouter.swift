@@ -12,7 +12,7 @@ final class CardSlideShowRouter: Router {
     
     enum Route {
         case editCard(_ card: TranslateCard, user: User)
-        case moveCardTo(dataSource: [Playlist], selected: Playlist, callback: PlaylistCallBack)
+        case choosingPlaylist(dataSource: [Playlist], selected: Playlist, callback: PlaylistCallBack)
     }
     
     func route(to type: Route) {
@@ -20,7 +20,7 @@ final class CardSlideShowRouter: Router {
         case .editCard(let card, let user):
             let editVc = Screens.editCard(forCard: card, forUser: user)
             viewController?.navigationController?.present(editVc, animated: true, completion: nil)
-        case .moveCardTo(let dataSource, let selected, let callback):
+        case .choosingPlaylist(let dataSource, let selected, let callback):
             viewController?.presentSingleChoicePlaylist(dataSource: dataSource, selectedAction: callback, currentSelect: selected)
         }
     }

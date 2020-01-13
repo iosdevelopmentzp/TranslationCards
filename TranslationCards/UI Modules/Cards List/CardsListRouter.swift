@@ -23,26 +23,13 @@ final class CardsListRouter: Router {
             let vc = Screens.writePhraseSlideShow(withCards: cards, withReverse: withReverse)
             viewController?.navigationController?.pushViewController(vc, animated: true)
         case .slideShow(let cards, let withReverse):
-            pushSlideShow(cards: cards, withReverse: withReverse)
+            let vc = Screens.cardSlideShow(cards: cards, withReverse: withReverse)
+            viewController?.navigationController?.pushViewController(vc, animated: true)
         case .cardView(let card, let user):
-            pushCardView(forCard: card, user: user)
+            let vc = Screens.viewCard(withCard: card, user: user)
+            viewController?.navigationController?.pushViewController(vc, animated: true)
         case .selectPlaylist(let dataSource, let selected):
-            presentSelectPlaylistMenu(dataSource: dataSource, selected: selected)
+            viewController?.presentPlaylistSelectionMenu(dataSource: dataSource, selected: selected)
         }
-    }
-    
-    // MARK: - Private
-    private func presentSelectPlaylistMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
-        viewController?.presentPlaylistSelectionMenu(dataSource: dataSource, selected: selected)
-    }
-    
-    private func pushCardView(forCard card: TranslateCard, user: User) {
-        let vc = Screens.viewCard(withCard: card, user: user)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func pushSlideShow(cards: [TranslateCard], withReverse: Bool) {
-        let vc = Screens.cardSlideShow(cards: cards, withReverse: withReverse)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }

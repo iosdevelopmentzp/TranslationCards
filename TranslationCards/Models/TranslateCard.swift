@@ -29,7 +29,7 @@ final class TranslateCard {
     // if card will save on server need to set this property, using playlist
     private(set) var playlistId: String = "Common"
     
-    // Property for observ change of card in real time.
+    // Property for observe changes of card in real time.
     let runtimeEvents: BehaviorRelay<Event> = .init(value: .nothing)
     
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {

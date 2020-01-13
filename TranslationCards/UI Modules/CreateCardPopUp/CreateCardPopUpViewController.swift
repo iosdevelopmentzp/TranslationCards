@@ -40,13 +40,13 @@ final class CreateCardPopUpViewController: ViewController<CreateCardPopUpRouter,
             .disposed(by: disposeBag)
         
         output
-            .isInputValid
+            .isInputCorrect
             .map{ $0 ? UIColor.validateAccentColor : UIColor.notValidateButton}
             .bind(to: cardView.saveButton.rx.backgroundColor)
             .disposed(by: disposeBag)
         
         output
-            .isInputValid
+            .isInputCorrect
             .bind(to: cardView.saveButton.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
         

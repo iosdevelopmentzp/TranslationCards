@@ -11,8 +11,8 @@ import RxSwift
 import RxCocoa
 
 protocol MainViewModelInput {
-    var signOutAction: PublishSubject<Void> { get }
-    var selectedAction: PublishSubject<IndexPath> { get }
+    var signOutTap: PublishSubject<Void> { get }
+    var tableViewItemTap: PublishSubject<IndexPath> { get }
 }
 
 protocol MainViewModelOutput {
@@ -32,28 +32,28 @@ extension MaintViewModelType {
 
 final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
     
-    let signOutAction = PublishSubject<Void>()
-    var selectedAction = PublishSubject<IndexPath>()
+    let signOutTap = PublishSubject<Void>()
+    let tableViewItemTap = PublishSubject<IndexPath>()
     let sections = BehaviorRelay<[MainViewModelSection]>.init(value: [])
     let isRefreshing: BehaviorRelay<Bool> = .init(value: true)
     
-    private var user: User?
-    
     override init() {
         super.init()
-        user = User.currentUser.value
+        
+        let user = services.credentials.user
         
         isRefreshing
             .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] (isRefreshing) in
-                if isRefreshing {
-                    self?.fetchLanguages()
-                }
+            .filter{ $0 }
+            .ignoreAll()
+            .withLatestFrom(user)
+            .unwrap()
+            .subscribe(onNext: { [weak self] (user) in
+                    self?.fetchLanguages(forUser: user)
             })
             .disposed(by: disposeBag)
         
-        user?
-            .languages
+        user.value?.languages
             .map {
                 let languages = $0 ?? []
                 let section = MainViewModelSection(items: languages)
@@ -61,7 +61,7 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
             .bind(to: sections)
             .disposed(by: disposeBag)
         
-        signOutAction
+        signOutTap
             .subscribe(onNext: { [weak self] (_) in
                 self?.services
                     .auth
@@ -74,23 +74,24 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
             })
             .disposed(by: disposeBag)
         
-        selectedAction
+        tableViewItemTap
             .map{ [weak self] in return self?.sections.value[$0.section].items[$0.row] }
-            .unwrap()
-            .subscribe(onNext: { [weak self] (language) in
-                guard let user = self?.user else { return }
+            .withLatestFrom(user) { ($0, $1) }
+            .compactMap {
+                guard let language = $0, let user = $1 else { return nil }
+                return (language, user) }
+            .subscribe(onNext: { [weak self] (language, user) in
                 self?.router.route(to: .cardList(language: language, user: user))
             })
             .disposed(by: disposeBag)
     }
     
     // MARK: - Private
-    private func fetchLanguages() {
+    private func fetchLanguages(forUser user: User) {
         if isRefreshing.value == false {
             isRefreshing.accept(true)
         }
-        self.user?
-            .fetchLanguages()
+        user.fetchLanguages()
             .catchError({ [weak self] (error) -> Observable<()> in
                 self?.errorHandler(description: "Failed to attempt update langugae list", error: error, withAlert: true)
                 return .just(())

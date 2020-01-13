@@ -12,18 +12,18 @@ final class SpeechServiceV1: SpeechService {
     
     private let speechSynthesizer = AVSpeechSynthesizer()
     
-    func speakText(_ inputData: SpeechData) {
-        if let lenguage = inputData.language {
+    func speakText(withSpeechData speechData: SpeechData) {
+        if let lenguage = speechData.language {
             let speechType = SpeechLanguageType.initWithLanguage(language: lenguage)
-            speakText(inputData.text, languageIdentifier: speechType.identifier)
+            speakText(speechData.text, languageIdentifier: speechType.identifier)
             return
         }
         
-        guard let detectedLanguageIdentifier = inputData.text.detectLanguage(),
+        guard let detectedLanguageIdentifier = speechData.text.detectLanguage(),
             let speechLangTyppe = SpeechLanguageType.initWithLanguageDetectedIdentifier(detectedLanguageIdentifier) else {
             return
         }
-        speakText(inputData.text, languageIdentifier: speechLangTyppe.identifier)
+        speakText(speechData.text, languageIdentifier: speechLangTyppe.identifier)
     }
     
     func stopSpeaking() {

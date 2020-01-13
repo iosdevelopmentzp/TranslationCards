@@ -13,9 +13,9 @@
 		3B031E15239BEA1700946F8D /* FlagImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B031E14239BEA1700946F8D /* FlagImages.xcassets */; };
 		3B031E17239BEA7200946F8D /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E16239BEA7200946F8D /* Language.swift */; };
 		3B031E19239C048A00946F8D /* BackCardSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E18239C048A00946F8D /* BackCardSideView.swift */; };
-		3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */; };
-		3B1544D123A29311004C0B75 /* LanguageChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */; };
-		3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */; };
+		3B1544D023A29311004C0B75 /* ChoosingLanguageRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CD23A29311004C0B75 /* ChoosingLanguageRouter.swift */; };
+		3B1544D123A29311004C0B75 /* ChoosingLanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CE23A29311004C0B75 /* ChoosingLanguageViewController.swift */; };
+		3B1544D223A29311004C0B75 /* ChoosingLanguageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1544CF23A29311004C0B75 /* ChoosingLanguageViewModel.swift */; };
 		3B242F6C239FA91800B90C41 /* PickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F69239FA91800B90C41 /* PickerRouter.swift */; };
 		3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6A239FA91800B90C41 /* PickerViewController.swift */; };
 		3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6B239FA91800B90C41 /* PickerViewModel.swift */; };
@@ -103,9 +103,9 @@
 		3B8BC91123B4E797008E5834 /* MicrosoftAzureTranslateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */; };
 		3B8BC91723B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */; };
 		3B8CF25223A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25123A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift */; };
-		3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */; };
-		3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */; };
-		3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */; };
+		3B8CF25723A8E93E00C2249A /* CardDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25423A8E93E00C2249A /* CardDetailsRouter.swift */; };
+		3B8CF25823A8E93E00C2249A /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* CardDetailsViewController.swift */; };
+		3B8CF25923A8E93E00C2249A /* CardDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25623A8E93E00C2249A /* CardDetailsViewModel.swift */; };
 		3B8CF25B23A8EAC000C2249A /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25A23A8EAC000C2249A /* CardView.swift */; };
 		3B94BF5423B74756008A2691 /* WritePhraseSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B94BF5123B74756008A2691 /* WritePhraseSlideShowRouter.swift */; };
 		3B94BF5523B74756008A2691 /* WritePhraseSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B94BF5223B74756008A2691 /* WritePhraseSlideShowViewController.swift */; };
@@ -133,6 +133,8 @@
 		3BA21F8C23C9F74300CE161E /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8B23C9F74300CE161E /* UIViewController+Utils.swift */; };
 		3BA21F8F23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */; };
 		3BA40D6223CC89AB002C8072 /* ObservableType+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA40D6123CC89AB002C8072 /* ObservableType+Animation.swift */; };
+		3BA40D6423CC9659002C8072 /* UITableView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA40D6323CC9659002C8072 /* UITableView+Rx.swift */; };
+		3BA40D6623CC999C002C8072 /* UICollectionView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA40D6523CC999C002C8072 /* UICollectionView+Rx.swift */; };
 		3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */; };
 		3BA679E123AE4FC1003D2B40 /* UICollectionView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA679E023AE4FC1003D2B40 /* UICollectionView+Utils.swift */; };
 		3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA5FB123AB6379002ED2FB /* Playlist.swift */; };
@@ -183,9 +185,9 @@
 		3B031E14239BEA1700946F8D /* FlagImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagImages.xcassets; sourceTree = "<group>"; };
 		3B031E16239BEA7200946F8D /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		3B031E18239C048A00946F8D /* BackCardSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackCardSideView.swift; sourceTree = "<group>"; };
-		3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceRouter.swift; sourceTree = "<group>"; };
-		3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceViewController.swift; sourceTree = "<group>"; };
-		3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChoiceViewModel.swift; sourceTree = "<group>"; };
+		3B1544CD23A29311004C0B75 /* ChoosingLanguageRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosingLanguageRouter.swift; sourceTree = "<group>"; };
+		3B1544CE23A29311004C0B75 /* ChoosingLanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosingLanguageViewController.swift; sourceTree = "<group>"; };
+		3B1544CF23A29311004C0B75 /* ChoosingLanguageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosingLanguageViewModel.swift; sourceTree = "<group>"; };
 		3B242F69239FA91800B90C41 /* PickerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerRouter.swift; sourceTree = "<group>"; };
 		3B242F6A239FA91800B90C41 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		3B242F6B239FA91800B90C41 /* PickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewModel.swift; sourceTree = "<group>"; };
@@ -276,9 +278,9 @@
 		3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAzureTranslateService.swift; sourceTree = "<group>"; };
 		3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SupportedMicrosoftAzureLanguages.json; sourceTree = "<group>"; };
 		3B8CF25123A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CABasicAnimation+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
-		3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardRouter.swift; sourceTree = "<group>"; };
-		3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewController.swift; sourceTree = "<group>"; };
-		3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCardViewModel.swift; sourceTree = "<group>"; };
+		3B8CF25423A8E93E00C2249A /* CardDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsRouter.swift; sourceTree = "<group>"; };
+		3B8CF25523A8E93E00C2249A /* CardDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsViewController.swift; sourceTree = "<group>"; };
+		3B8CF25623A8E93E00C2249A /* CardDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsViewModel.swift; sourceTree = "<group>"; };
 		3B8CF25A23A8EAC000C2249A /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3B94BF5123B74756008A2691 /* WritePhraseSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePhraseSlideShowRouter.swift; sourceTree = "<group>"; };
 		3B94BF5223B74756008A2691 /* WritePhraseSlideShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePhraseSlideShowViewController.swift; sourceTree = "<group>"; };
@@ -305,6 +307,8 @@
 		3BA21F8B23C9F74300CE161E /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NVActivityIndicatorPresenter+Rx.swift"; sourceTree = "<group>"; };
 		3BA40D6123CC89AB002C8072 /* ObservableType+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+Animation.swift"; sourceTree = "<group>"; };
+		3BA40D6323CC9659002C8072 /* UITableView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Rx.swift"; sourceTree = "<group>"; };
+		3BA40D6523CC999C002C8072 /* UICollectionView+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Rx.swift"; sourceTree = "<group>"; };
 		3BA679DE23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSlideShowFlowLayout.swift; sourceTree = "<group>"; };
 		3BA679E023AE4FC1003D2B40 /* UICollectionView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Utils.swift"; sourceTree = "<group>"; };
 		3BAA5FB123AB6379002ED2FB /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
@@ -362,14 +366,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B1544CC23A28C84004C0B75 /* LangChoice */ = {
+		3B1544CC23A28C84004C0B75 /* ChoosingLanguage */ = {
 			isa = PBXGroup;
 			children = (
-				3B1544CE23A29311004C0B75 /* LanguageChoiceViewController.swift */,
-				3B1544CF23A29311004C0B75 /* LanguageChoiceViewModel.swift */,
-				3B1544CD23A29311004C0B75 /* LanguageChoiceRouter.swift */,
+				3B1544CE23A29311004C0B75 /* ChoosingLanguageViewController.swift */,
+				3B1544CF23A29311004C0B75 /* ChoosingLanguageViewModel.swift */,
+				3B1544CD23A29311004C0B75 /* ChoosingLanguageRouter.swift */,
 			);
-			path = LangChoice;
+			path = ChoosingLanguage;
 			sourceTree = "<group>";
 		};
 		3B242F68239FA8FB00B90C41 /* Picker */ = {
@@ -419,9 +423,9 @@
 				3B5A3BB72396A321009110A7 /* Cards List */,
 				3BEE43C62397D858008F35AA /* CardSlideShow */,
 				3B242F68239FA8FB00B90C41 /* Picker */,
-				3B1544CC23A28C84004C0B75 /* LangChoice */,
-				3B8CF25323A8E74000C2249A /* ViewCard */,
-				3B94BF5023B746FE008A2691 /* WriteCardsSlideShow */,
+				3B1544CC23A28C84004C0B75 /* ChoosingLanguage */,
+				3B8CF25323A8E74000C2249A /* CardDetails */,
+				3B94BF5023B746FE008A2691 /* WritePhraseSlideShow */,
 			);
 			path = "UI Modules";
 			sourceTree = "<group>";
@@ -724,24 +728,24 @@
 			path = "Translate Service";
 			sourceTree = "<group>";
 		};
-		3B8CF25323A8E74000C2249A /* ViewCard */ = {
+		3B8CF25323A8E74000C2249A /* CardDetails */ = {
 			isa = PBXGroup;
 			children = (
-				3B8CF25523A8E93E00C2249A /* ViewCardViewController.swift */,
-				3B8CF25623A8E93E00C2249A /* ViewCardViewModel.swift */,
-				3B8CF25423A8E93E00C2249A /* ViewCardRouter.swift */,
+				3B8CF25523A8E93E00C2249A /* CardDetailsViewController.swift */,
+				3B8CF25623A8E93E00C2249A /* CardDetailsViewModel.swift */,
+				3B8CF25423A8E93E00C2249A /* CardDetailsRouter.swift */,
 			);
-			path = ViewCard;
+			path = CardDetails;
 			sourceTree = "<group>";
 		};
-		3B94BF5023B746FE008A2691 /* WriteCardsSlideShow */ = {
+		3B94BF5023B746FE008A2691 /* WritePhraseSlideShow */ = {
 			isa = PBXGroup;
 			children = (
 				3B94BF5223B74756008A2691 /* WritePhraseSlideShowViewController.swift */,
 				3B94BF5323B74756008A2691 /* WritePhraseSlideShowViewModel.swift */,
 				3B94BF5123B74756008A2691 /* WritePhraseSlideShowRouter.swift */,
 			);
-			path = WriteCardsSlideShow;
+			path = WritePhraseSlideShow;
 			sourceTree = "<group>";
 		};
 		3B94BF6023B76DEB008A2691 /* Animators */ = {
@@ -777,6 +781,8 @@
 				3BA21F8E23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift */,
 				3BA40D6123CC89AB002C8072 /* ObservableType+Animation.swift */,
 				3B6CF09E239E5CFA007CDA17 /* Reusable.swift */,
+				3BA40D6323CC9659002C8072 /* UITableView+Rx.swift */,
+				3BA40D6523CC999C002C8072 /* UICollectionView+Rx.swift */,
 				3BC52C2C238FC466006FB7F8 /* UITextField+Rx.swift */,
 				3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */,
 			);
@@ -1155,10 +1161,10 @@
 				3B85039A23AA150300481989 /* CAAnimationGroup+ConvenienceInitializer.swift in Sources */,
 				3B30CC4723C7283200D2B576 /* TableView.swift in Sources */,
 				3B319F2E23855FC00038A7AC /* LogInViewController.swift in Sources */,
-				3B1544D023A29311004C0B75 /* LanguageChoiceRouter.swift in Sources */,
+				3B1544D023A29311004C0B75 /* ChoosingLanguageRouter.swift in Sources */,
 				3B5D51242387F41100DCB5FB /* RegisterCardView.swift in Sources */,
 				3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */,
-				3B8CF25923A8E93E00C2249A /* ViewCardViewModel.swift in Sources */,
+				3B8CF25923A8E93E00C2249A /* CardDetailsViewModel.swift in Sources */,
 				3BFCBD3D2391A30D00C9AA48 /* UIView+Apperance.swift in Sources */,
 				3B825BA82386982F009D62E8 /* String+FirestoreFieldsAndCollections.swift in Sources */,
 				3B319F2523855F4B0038A7AC /* ViewModel.swift in Sources */,
@@ -1191,7 +1197,7 @@
 				3B319F35238563D80038A7AC /* Screens.swift in Sources */,
 				3B825BA12386946B009D62E8 /* CredentialsServiceV1.swift in Sources */,
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
-				3B8CF25823A8E93E00C2249A /* ViewCardViewController.swift in Sources */,
+				3B8CF25823A8E93E00C2249A /* CardDetailsViewController.swift in Sources */,
 				3BA21F8423C9F26E00CE161E /* UIColor+Custom.swift in Sources */,
 				3BC0414B23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift in Sources */,
 				3B8CF25223A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift in Sources */,
@@ -1204,7 +1210,7 @@
 				3BFCBD3F2391B07E00C9AA48 /* TranslateCard.swift in Sources */,
 				3B031E17239BEA7200946F8D /* Language.swift in Sources */,
 				3BEE43D523980055008F35AA /* NSObject+Utils.swift in Sources */,
-				3B1544D223A29311004C0B75 /* LanguageChoiceViewModel.swift in Sources */,
+				3B1544D223A29311004C0B75 /* ChoosingLanguageViewModel.swift in Sources */,
 				3B319F37238567E00038A7AC /* NSAttributedString+Custom.swift in Sources */,
 				3B5A3BB423965F75009110A7 /* MainViewModelSection.swift in Sources */,
 				3B8503A223AA843D00481989 /* MyWordsData.swift in Sources */,
@@ -1215,6 +1221,7 @@
 				3B825B9323868A2E009D62E8 /* AuthServiceV1.swift in Sources */,
 				3BDCDBEA23C5DDC700EF8C15 /* JJActionItem+Rx.swift in Sources */,
 				3B5D51202387E70400DCB5FB /* MainNavigationViewModel.swift in Sources */,
+				3BA40D6423CC9659002C8072 /* UITableView+Rx.swift in Sources */,
 				3BA21F8823C9F3A900CE161E /* UINavigationController+Utils.swift in Sources */,
 				3B94F6CC23BE2CC600303968 /* UIResponder+Utils.swift in Sources */,
 				3B5D51262387F9F600DCB5FB /* TextFieldWithTopPlaceholder.swift in Sources */,
@@ -1224,8 +1231,9 @@
 				3B6CF09D239E33CC007CDA17 /* SpeechLanguageType.swift in Sources */,
 				3B319F2D23855FC00038A7AC /* LogInRouter.swift in Sources */,
 				3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */,
+				3BA40D6623CC999C002C8072 /* UICollectionView+Rx.swift in Sources */,
 				3BE63ED423AB99D7003B1EDC /* User.swift in Sources */,
-				3B8CF25723A8E93E00C2249A /* ViewCardRouter.swift in Sources */,
+				3B8CF25723A8E93E00C2249A /* CardDetailsRouter.swift in Sources */,
 				3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */,
 				3BE9992B23AD062600816583 /* Typealiases.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController+Appearance.swift in Sources */,
@@ -1238,7 +1246,7 @@
 				3B8BC90F23B4E6C7008E5834 /* TranslateService.swift in Sources */,
 				3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */,
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
-				3B1544D123A29311004C0B75 /* LanguageChoiceViewController.swift in Sources */,
+				3B1544D123A29311004C0B75 /* ChoosingLanguageViewController.swift in Sources */,
 				3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */,
 				3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */,
 			);

@@ -16,13 +16,8 @@ final class MainRouter: Router {
     func route(to type: Route) {
         switch type {
         case .cardList(let language, let user):
-            openCardsList(language: language, user: user)
+            let vc = Screens.cardsList(withLanguage: language, user: user)
+            viewController?.navigationController?.pushViewController(vc, animated: true)
         }
-    }
-    
-    // MARK: - Private
-    private func openCardsList(language: LanguageBind, user: User) {
-        let vc = Screens.cardsList(withLanguage: language, user: user)
-        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }

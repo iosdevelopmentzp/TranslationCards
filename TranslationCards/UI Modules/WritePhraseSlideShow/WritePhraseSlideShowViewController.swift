@@ -6,14 +6,15 @@
 //  Copyright © 2019 Dmytro Vorko. All rights reserved.
 //
 
-import UIKit
+import RxSwift
+import RxCocoa
 import JJFloatingActionButton
 
 final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideShowRouter, WritePhraseSlideShowViewModel> {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private let flowLayout = AnimatedCollectionViewLayout()
-    private let animator = PageAttributesAnimator(scaleRate: 0.2)
-    private let editCardButton = JJActionItem.initWith(imageType: .edit)
+    private let cellAnimator = PageAttributesAnimator(scaleRate: 0.2)
+    private let editCardItem = JJActionItem.initWith(imageType: .edit)
     
     override func setupConstraints() {
         super.setupConstraints()
@@ -26,12 +27,15 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
     
     override func setupCollectionView() {
         super.setupCollectionView()
+        Observable.just([WritePhraseCell.self])
+            .bind(to: collectionView.rx.cellTypes)
+            .disposed(by: disposeBag)
+        
         collectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
-        collectionView.register(WritePhraseCell.self, forCellWithReuseIdentifier: WritePhraseCell.typeName)
         
-        viewModel.cardsDataSource.bind(to: collectionView.rx.items(cellIdentifier: WritePhraseCell.typeName, cellType: WritePhraseCell.self)) { row, card, cell in
+        viewModel.cards.bind(to: collectionView.rx.items(cellIdentifier: WritePhraseCell.typeName, cellType: WritePhraseCell.self)) { row, card, cell in
             cell.configureWithCard(card)
         }
         .disposed(by: disposeBag)
@@ -41,20 +45,22 @@ final class WritePhraseSlideShowViewController: ViewController<WritePhraseSlideS
         super.setupView()
         collectionView.backgroundColor = .clear
         collectionView.isPagingEnabled = true
-        flowLayout.animator = animator
+        flowLayout.animator = cellAnimator
         flowLayout.scrollDirection = .horizontal
     }
     
     override func binding() {
         super.binding()
-        viewModel.getSelectedCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
+        viewModel.getCurrentCentralCellIndexPath = { [weak self] in return self?.collectionView.indexPathOfCellWichInTheCenter()}
         
-        viewModel.bindWIthActionButtons(editCardEvent: editCardButton.rx.tap)
+        editCardItem
+            .rx.tap.bind(to: viewModel.input.editCardButtonTap)
+            .disposed(by: disposeBag)
     }
     
     override func localize() {
         super.localize()
-        editCardButton.titleLabel.text = "Edit card"
+        editCardItem.titleLabel.text = "Edit card"
         title = "Write Phrase"
     }
 }
@@ -79,6 +85,6 @@ extension WritePhraseSlideShowViewController: UICollectionViewDelegateFlowLayout
 
 extension WritePhraseSlideShowViewController: ActionButtonsDataSource {
     func getActionButtons() -> [JJActionItem] {
-        return [editCardButton]
+        return [editCardItem]
     }
 }

@@ -58,11 +58,7 @@ final class User {
     static func user(withId id: String) -> Observable<User> {
         if let user = Services.shared.credentials.user.value,
             user.uid == id {
-            return Observable<User>.create { (observer) -> Disposable in
-                observer.onNext(user)
-                observer.onCompleted()
-                return Disposables.create()
-            }
+            return .just(user)
         } else {
             return Services
                 .shared

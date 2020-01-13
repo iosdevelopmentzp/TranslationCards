@@ -11,25 +11,25 @@ import RxCocoa
 
 class TableView: UITableView {
     // MARK: - Public
-    func bindWithViewModelIsRefreshSate(_ isRefreshingState: BehaviorRelay<Bool>) -> Disposable {
+    /// Pass in this function a BehaviorRelay value that will be used as a signal that the update has started or ended, and will also be as a receiver, when the view gives a signal that you need to start the refresh.
+    func reverseBindWithRefeshingBehavior(_ refreshingState: BehaviorRelay<Bool>) -> Disposable {
         setupRefreshHandler()
         
-        let refreshingBindDispose = (isRefreshing <-> isRefreshingState)
+        let refreshReverseBindDisposable = (isRefreshing <-> refreshingState)
         
-        let refreshDisposable =  isRefreshing
+        let refreshSubscriptionDisposable =  isRefreshing
             .distinctUntilChanged()
             .filter{ !$0 }
             .observeOn(MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] (_) in
                 self?.refresh.endRefreshing()
             })
-        return Disposables.create([refreshingBindDispose, refreshDisposable])
+        return Disposables.create([refreshReverseBindDisposable, refreshSubscriptionDisposable])
     }
     
     // MARK: - Private
     private let isRefreshing: BehaviorRelay<Bool> = .init(value: false)
     private let refresh = UIRefreshControl()
-    private let disposeBag = DisposeBag()
     
     init() {
         super.init(frame: .zero, style: .plain)

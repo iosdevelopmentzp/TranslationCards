@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class ViewCardRouter: Router {
+final class CardDetailsRouter: Router {
     enum Route {
         case editCard(card: TranslateCard, user: User)
         case moveCardTo(dataSource: [Playlist], selected: Playlist, callback: PlaylistCallBack)

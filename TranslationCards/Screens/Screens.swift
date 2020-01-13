@@ -17,14 +17,14 @@ struct Screens {
         return WritePhraseSlideShowViewController(viewModel: vm)
     }
     
-    static func viewCard(withCard card: TranslateCard, user: User) -> ViewCardViewController {
-        let vm = ViewCardViewModel(card: card, user: user)
-        return ViewCardViewController(viewModel: vm)
+    static func viewCard(withCard card: TranslateCard, user: User) -> CardDetailsViewController {
+        let vm = CardDetailsViewModel(card: card, user: user)
+        return CardDetailsViewController(viewModel: vm)
     }
     
-    static func choosingNativeLanguage(forUser user: User) -> LanguageChoiceViewController {
-        let vm = LanguageChoiceViewModel(user: user)
-        return LanguageChoiceViewController(viewModel: vm)
+    static func choosingNativeLanguage(forUser user: User) -> ChoosingLanguageViewController {
+        let vm = ChoosingLanguageViewModel(user: user)
+        return ChoosingLanguageViewController(viewModel: vm)
     }
     
     static func languagePickerView(callBackLanguage: BehaviorRelay<Language?>, languageList: [Language]? = nil, title: String) -> PickerViewController {

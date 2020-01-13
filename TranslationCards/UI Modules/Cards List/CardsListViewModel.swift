@@ -140,7 +140,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self?.sections.value[$0.section].items[$0.row].item }
             .unwrap()
             .subscribe(onNext: { [weak self] (card) in
-                self?.needDeleteCard(card)
+                self?.deleteCard(card)
             })
             .disposed(by: disposeBag)
         
@@ -217,7 +217,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         sections.accept([newSection])
     }
     
-    private func needDeleteCard(_ card: TranslateCard) {
+    private func deleteCard(_ card: TranslateCard) {
         startActivityIndicator.accept(true)
         
         user.removeCard(card)
@@ -230,15 +230,13 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     }
     
     private func fetchCards() {
-        
         if isRefreshing.value != true {
             isRefreshing.accept(true)
         }
         
         Observable.combineLatest(
             user.fetchCards(forPlaylists: selectedPlaylists.value),
-            user.fetchPlaylists(forLanguage: language.value)
-        )
+            user.fetchPlaylists(forLanguage: language.value))
             .ignoreAll()
             .catchError { [weak self] (error) -> Observable<Void> in
                 self?.errorHandler(description: "Failed update data", error: error, withAlert: true)

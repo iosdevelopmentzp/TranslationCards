@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-final class ViewCardViewModel: ViewModel<ViewCardRouter> {
+final class CardDetailsViewModel: ViewModel<CardDetailsRouter> {
     
     let user: User
     let card: BehaviorRelay<TranslateCard>
@@ -43,7 +43,7 @@ final class ViewCardViewModel: ViewModel<ViewCardRouter> {
         speakData
             .unwrap()
             .subscribe(onNext: { [weak self] (speakData) in
-            self?.services.speechService.speakText(speakData)
+            self?.services.speechService.speakText(withSpeechData: speakData)
         })
         .disposed(by: disposeBag)
     }

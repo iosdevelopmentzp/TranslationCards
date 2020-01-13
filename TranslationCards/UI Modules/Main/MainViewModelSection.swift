@@ -21,6 +21,3 @@ struct MainViewModelSection: SectionModelType {
         self.items = items
     }
 }
-
-
-

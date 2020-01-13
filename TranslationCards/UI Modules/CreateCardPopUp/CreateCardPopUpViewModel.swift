@@ -22,7 +22,7 @@ protocol CreateCardPopUpViewModelInput {
 protocol CreateCardPopUpViewModelOutput {
     var card: BehaviorRelay<TranslateCard> { get }
     var mode: BehaviorRelay<CreateCardMode> { get }
-    var isInputValid: BehaviorRelay<Bool> { get }
+    var isInputCorrect: BehaviorRelay<Bool> { get }
 }
 
 protocol CreateCardPopUpViewModelType {
@@ -51,7 +51,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     var targetLanguageTap = PublishSubject<Void>()
     
     let card: BehaviorRelay<TranslateCard>
-    let isInputValid = BehaviorRelay.init(value: false)
+    let isInputCorrect = BehaviorRelay.init(value: false)
     let mode: BehaviorRelay<CreateCardMode>
     
     private let user: BehaviorRelay<User>
@@ -99,7 +99,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         inputPhrases
             .map { !$0.isEmpty && !$1.isEmpty }
             .distinctUntilChanged()
-            .bind(to: isInputValid)
+            .bind(to: isInputCorrect)
             .disposed(by: disposeBag)
         
         newPlaylistName
@@ -113,7 +113,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         selectedPlaylist
             .unwrap()
-            .filter{ [weak self] (_) in self?.isInputValid.value ?? false }
+            .filter{ [weak self] (_) in self?.isInputCorrect.value ?? false }
             .withLatestFrom(Observable.combineLatest(self.card, self.user)) { ($0, $1.0, $1.1) }
             .subscribe(onNext: { [weak self] (playlist, card, user) in
                 card.updatePlaylistID(playlist.id)
@@ -162,7 +162,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .map {
                 !$0.isEmpty && !$1.isEmpty && ($0 != initialSourceText || $1 != initialTargetText) }
             .distinctUntilChanged()
-            .bind(to: isInputValid)
+            .bind(to: isInputCorrect)
             .disposed(by: disposeBag)
         
         saveButtonTap

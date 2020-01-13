@@ -11,6 +11,6 @@ import Foundation
 typealias SpeechData = (text: String, language: Language?)
 
 protocol SpeechService: Service {
-    func speakText(_ inputData: SpeechData)
+    func speakText(withSpeechData speechData: SpeechData)
     func stopSpeaking()
 }
