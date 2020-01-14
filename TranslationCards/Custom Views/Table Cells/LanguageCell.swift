@@ -45,10 +45,10 @@ class LanguageCell: UITableViewCell {
         
         let padding: CGFloat = 16.0
         
-        let leftDummyView = UIView()
+        let leftSeparateDummyView = UIView()
         let containetForImageView = UIView()
         containetForImageView.addSubview(centerTopImageView)
-        let rightDummyView = UIView()
+        let rightSeparateDummyView = UIView()
         
         containetForImageView.snp.makeConstraints {
             $0.width.height.equalTo(20.0)
@@ -69,11 +69,11 @@ class LanguageCell: UITableViewCell {
         }
         
         topStackView.addArrangedSubview(leftTitleLabel)
-        topStackView.addArrangedSubview(leftDummyView)
+        topStackView.addArrangedSubview(leftSeparateDummyView)
         topStackView.addArrangedSubview(containetForImageView)
-        topStackView.addArrangedSubview(rightDummyView)
-        rightDummyView.snp.makeConstraints {
-            $0.width.equalTo(leftDummyView.snp.width).priority(999)
+        topStackView.addArrangedSubview(rightSeparateDummyView)
+        rightSeparateDummyView.snp.makeConstraints {
+            $0.width.equalTo(leftSeparateDummyView.snp.width).priority(999)
         }
         topStackView.addArrangedSubview(rightTitleLabel)
         

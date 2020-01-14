@@ -19,8 +19,6 @@
 		3B242F6C239FA91800B90C41 /* PickerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F69239FA91800B90C41 /* PickerRouter.swift */; };
 		3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6A239FA91800B90C41 /* PickerViewController.swift */; };
 		3B242F6E239FA91800B90C41 /* PickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F6B239FA91800B90C41 /* PickerViewModel.swift */; };
-		3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F70239FFF8500B90C41 /* ListenerService.swift */; };
-		3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */; };
 		3B25821823B64E6000B52BEA /* UIViewController+SelectionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B25821723B64E6000B52BEA /* UIViewController+SelectionMenu.swift */; };
 		3B30CC4723C7283200D2B576 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30CC4623C7283200D2B576 /* TableView.swift */; };
 		3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F2023855F4A0038A7AC /* ViewController.swift */; };
@@ -191,8 +189,6 @@
 		3B242F69239FA91800B90C41 /* PickerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerRouter.swift; sourceTree = "<group>"; };
 		3B242F6A239FA91800B90C41 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		3B242F6B239FA91800B90C41 /* PickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewModel.swift; sourceTree = "<group>"; };
-		3B242F70239FFF8500B90C41 /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
-		3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerServiceV1.swift; sourceTree = "<group>"; };
 		3B25821723B64E6000B52BEA /* UIViewController+SelectionMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+SelectionMenu.swift"; sourceTree = "<group>"; };
 		3B30CC4623C7283200D2B576 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		3B319F2023855F4A0038A7AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -384,15 +380,6 @@
 				3B242F69239FA91800B90C41 /* PickerRouter.swift */,
 			);
 			path = Picker;
-			sourceTree = "<group>";
-		};
-		3B242F6F239FFF5800B90C41 /* Listener */ = {
-			isa = PBXGroup;
-			children = (
-				3B242F70239FFF8500B90C41 /* ListenerService.swift */,
-				3B242F7223A0000000B90C41 /* ListenerServiceV1.swift */,
-			);
-			path = Listener;
 			sourceTree = "<group>";
 		};
 		3B30CC4523C7280C00D2B576 /* TableView */ = {
@@ -615,7 +602,6 @@
 				3B825B9C238692B3009D62E8 /* Credentials */,
 				3B6CF097239E2E49007CDA17 /* Speech */,
 				3B825B9D238692CE009D62E8 /* Database */,
-				3B242F6F239FFF5800B90C41 /* Listener */,
 				3B9550B023A4E66B00BC9E8E /* UserDefaults */,
 				3B8BC90D23B4E689008E5834 /* Translate Service */,
 			);
@@ -647,6 +633,7 @@
 				3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */,
 				3B031E16239BEA7200946F8D /* Language.swift */,
 				3BAA5FB123AB6379002ED2FB /* Playlist.swift */,
+				3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -722,7 +709,6 @@
 			children = (
 				3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */,
 				3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */,
-				3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */,
 				3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */,
 			);
 			path = "Translate Service";
@@ -1146,7 +1132,6 @@
 				3B8503A023AA5F2000481989 /* NVActivityIndicatorView+Appearance.swift in Sources */,
 				3B85039C23AA276B00481989 /* JJActionItem+Appearance.swift in Sources */,
 				3B94BF6623B7773C008A2691 /* JJFloatingActionButton+Utils.swift in Sources */,
-				3B242F7323A0000000B90C41 /* ListenerServiceV1.swift in Sources */,
 				3B6CF0A4239E7D4C007CDA17 /* UIViewController+BlurEffect.swift in Sources */,
 				3B5A3BBB2396A345009110A7 /* CardsListRouter.swift in Sources */,
 				3B5A3BC02396A51A009110A7 /* CardInfoCell.swift in Sources */,
@@ -1248,7 +1233,6 @@
 				3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */,
 				3B1544D123A29311004C0B75 /* ChoosingLanguageViewController.swift in Sources */,
 				3B6CF099239E2E77007CDA17 /* SpeechService.swift in Sources */,
-				3B242F71239FFF8500B90C41 /* ListenerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,14 +17,14 @@ final class ModalTransitionAnimationDelegate: NSObject, ModalTransitionDelegate 
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard animator.isValidatedPresentedViewController(presented) else {
+        guard animator.isPresentedViewControllerValid(presented) else {
             return nil
         }
         return animator.animator(withType: .present)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard animator.isValidatedPresentedViewController(dismissed) else {
+        guard animator.isPresentedViewControllerValid(dismissed) else {
             return nil
         }
         return animator.animator(withType: .dismiss)

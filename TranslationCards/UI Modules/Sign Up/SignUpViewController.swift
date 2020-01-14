@@ -134,7 +134,7 @@ final class SignUpViewController: ViewController<SignUpRouter, SignUpViewModel> 
     override func localize() {
         super.localize()
         navigationItem.title = "Sign Up"
-        signUpButton.setAttributedTitle(.defaultText(withText: "To Sign Up"), for: .normal)
+        signUpButton.setAttributedTitle(.defaultText(withText: "Sign Up"), for: .normal)
         registerCardView.loginTextField.topLabel.text = "Set your email"
         registerCardView.passwordTextField.topLabel.text = "Password"
         registerCardView.displayNameTextField.topLabel.text = "Set your display name"

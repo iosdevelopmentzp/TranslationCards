@@ -17,6 +17,5 @@ final class Services {
     lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase, keyStorage: userDefaults)
     lazy var auth: AuthService = AuthServiceV1(credentials: credentials, database: realTimeDatabase)
     lazy var speechService: SpeechService = SpeechServiceV1()
-    lazy var listener: ListenerService = ListenerServiceV1()
     lazy var translateService: TranslateService = MicrosoftAzureTranslateService()
 }

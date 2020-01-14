@@ -64,7 +64,7 @@ final class MainNavigationViewModel: NavigationViewModel<MainNavigationRouter>, 
         }
 
         if let modalAnimator = modalTransitionAnimatorDelegate,
-            modalAnimator.animator.isValidatedPresentedViewController(viewControllerToPresent) {
+            modalAnimator.animator.isPresentedViewControllerValid(viewControllerToPresent) {
             viewControllerToPresent.modalPresentationStyle = .custom
             viewControllerToPresent.transitioningDelegate = modalAnimator
         }
