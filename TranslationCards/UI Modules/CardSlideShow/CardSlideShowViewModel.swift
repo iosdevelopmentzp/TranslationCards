@@ -15,7 +15,7 @@ protocol CardSlideShowViewModelInput {
     var editCardButtonTap: PublishSubject<Void> { get }
     var speechData: BehaviorRelay<SpeechData?> { get }
     var getCurrentCentralCellIndexPath: (() -> IndexPath?)? { set get }
-    func stopSpeaking()
+    func stopTextPlayback()
 }
 
 protocol CardSlideShowViewModelOutput {
@@ -88,7 +88,7 @@ final class CardSlideShowViewModel: ViewModel<CardSlideShowRouter>, CardSlideSho
             .disposed(by: disposeBag)
     }
     // MARK: - Public
-    func stopSpeaking() {
+    func stopTextPlayback() {
         services.speechService.stopSpeaking()
     }
     

@@ -13,7 +13,7 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
     
     fileprivate let maskTransparenteView = UIView()
     fileprivate let containerView = UIView()
-    private let toolsStackView = UIStackView()
+    private let topToolsStackView = UIStackView()
     private let toolsBackgroundView = UIView()
     private let cancelButton = UIButton(type: .custom)
     private let doneButton = UIButton(type: .custom)
@@ -49,26 +49,26 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
         }
         
         // Arranged views of stack view
-        toolsStackView.addArrangedSubview(cancelButton)
+        topToolsStackView.addArrangedSubview(cancelButton)
         let firstDummyView = UIView()
-        toolsStackView.addArrangedSubview(firstDummyView)
-        toolsStackView.addArrangedSubview(titleLabel)
+        topToolsStackView.addArrangedSubview(firstDummyView)
+        topToolsStackView.addArrangedSubview(titleLabel)
         let secondDummyView = UIView()
-        toolsStackView.addArrangedSubview(secondDummyView)
-        toolsStackView.addArrangedSubview(doneButton)
+        topToolsStackView.addArrangedSubview(secondDummyView)
+        topToolsStackView.addArrangedSubview(doneButton)
         firstDummyView.snp.makeConstraints {
             $0.width.equalTo(secondDummyView.snp.width)
         }
         
         // stack view background view and stack view
         containerView.addSubview(toolsBackgroundView)
-        containerView.addSubview(toolsStackView)
+        containerView.addSubview(topToolsStackView)
         toolsBackgroundView.snp.makeConstraints {[weak self] in
             guard let self = self else { return }
-            $0.edges.equalTo(self.toolsStackView)
+            $0.edges.equalTo(self.topToolsStackView)
         }
 
-        toolsStackView.snp.makeConstraints {
+        topToolsStackView.snp.makeConstraints {
             $0.left.right.top.equalToSuperview()
             $0.height.equalTo(50.0)
         }
@@ -78,7 +78,7 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
         pickerView.snp.makeConstraints { [weak self] in
         guard let self = self else { return }
             $0.bottom.left.right.equalToSuperview()
-            $0.top.equalTo(self.toolsStackView.snp.bottom)
+            $0.top.equalTo(self.topToolsStackView.snp.bottom)
         }
     }
     
@@ -87,7 +87,7 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
         view.backgroundColor = .clear
         maskTransparenteView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         
-        toolsStackView.axis = .horizontal
+        topToolsStackView.axis = .horizontal
         
         toolsBackgroundView.backgroundColor = .pickerViewToolsPanelColor
         pickerView.backgroundColor = .pickerViewColor
@@ -103,7 +103,10 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
     
     override func binding() {
         super.binding()
-        viewModel
+        let output = viewModel.output
+        let input = viewModel.input
+        
+        output
             .items
             .bind(to: pickerView.rx.itemTitles) {
                 (row, element) in
@@ -113,30 +116,29 @@ final class PickerViewController: ViewController<PickerRouter, PickerViewModel> 
         pickerView
             .rx
             .itemSelected
-            .bind(to: viewModel.selectedItem)
+            .bind(to: input.selectedItem)
             .disposed(by: disposeBag)
-        
-        pickerView.selectRow(viewModel.selectedItem.value.row,
-                             inComponent: viewModel.selectedItem.value.component,
-                             animated: false)
 
-        viewModel
-            .bind(cancelAction: cancelButton.rx.tap, doneAction: doneButton.rx.tap)
-        
-        viewModel
-            .title
-            .bind(to: titleLabel.rx.text)
+        cancelButton
+            .rx.tap
+            .bind(to: input.cancelTap)
             .disposed(by: disposeBag)
+        
+        doneButton
+            .rx.tap
+            .bind(to: input.doneTap)
+            .disposed(by: disposeBag)
+        
+        pickerView.selectRow(output.selectedItem.value.row,
+                             inComponent: output.selectedItem.value.component,
+                             animated: false)
     }
     
     override func localize() {
         super.localize()
         cancelButton.setTitle("  Cancel", for: .normal)
         doneButton.setTitle("Done  ", for: .normal)
-        
-        #if DEBUG
-        titleLabel.text = "Title"
-        #endif
+        viewModel.output.titleLabelText.bind(to: titleLabel.rx.text).disposed(by: disposeBag)
     }
 }
 

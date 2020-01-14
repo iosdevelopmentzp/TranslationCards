@@ -9,15 +9,45 @@
 import RxSwift
 import RxCocoa
 
-final class CardDetailsViewModel: ViewModel<CardDetailsRouter> {
+protocol CardDetailsViewModelInput {
+    var speechData: BehaviorRelay<SpeechData?> { get }
+    var editCardTap: PublishSubject<Void> { get }
+    var moveCardTap: PublishSubject<Void> { get }
+    var copyCardTap: PublishSubject<Void> { get }
+    func stopTextPlayback()
+}
+
+protocol CardDetailsViewModelOutput {
+    var card: BehaviorRelay<TranslateCard> { get }
+    var title: BehaviorRelay<String> { get }
+}
+
+protocol CardDetailsViewModelType {
+    var input: CardDetailsViewModelInput { get }
+    var output: CardDetailsViewModelOutput { get }
+}
+
+extension CardDetailsViewModelType where Self:  CardDetailsViewModelInput & CardDetailsViewModelOutput {
+    var input: CardDetailsViewModelInput { self }
+    var output: CardDetailsViewModelOutput { self }
+}
+
+final class CardDetailsViewModel: ViewModel<CardDetailsRouter>, CardDetailsViewModelInput, CardDetailsViewModelOutput, CardDetailsViewModelType {
     
-    let user: User
+    let speechData: BehaviorRelay<SpeechData?> = .init(value: nil)
+    let editCardTap = PublishSubject<Void>()
+    let moveCardTap = PublishSubject<Void>()
+    let copyCardTap = PublishSubject<Void>()
+    
     let card: BehaviorRelay<TranslateCard>
-    lazy var title = BehaviorRelay<String>.init(value: card.value.sourcePhrase)
+    var title: BehaviorRelay<String>
+    
+    fileprivate let user: BehaviorRelay<User>
     
     init(card: TranslateCard, user: User) {
         self.card = .init(value: card)
-        self.user = user
+        self.user = .init(value: user)
+        self.title = .init(value: card.sourcePhrase)
         super.init()
         
         card.runtimeEvents
@@ -33,80 +63,65 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter> {
                     break
                 }})
             .disposed(by: disposeBag)
+        
+        speechData
+            .unwrap()
+            .subscribe(onNext: { [weak self] (speachData) in
+                self?.services.speechService.speakText(withSpeechData: speachData)
+            })
+            .disposed(by: disposeBag)
+        
+        editCardTap
+            .withLatestFrom(Observable.combineLatest(self.user, self.card))
+            .subscribe(onNext: { [weak self] (user, card) in
+                self?.router.route(to: .editCard(card: card, user: user))
+            })
+            .disposed(by: disposeBag)
+        
+        let playlistObservable: Observable<[Playlist]> = self.user.value.getPlaylists(forLanguage: self.card.value.language)
+            
+        copyCardTap
+            .withLatestFrom(Observable.combineLatest(self.card, playlistObservable)) { ($1.0, $1.1) }
+            .subscribe(onNext: { [weak self] (card, playlists) in
+                self?.stopTextPlayback()
+                self?.copyCardToAnotherPlaylistAction(withCard: card, playlists: playlists)
+            })
+            .disposed(by: disposeBag)
+        
+        moveCardTap
+            .withLatestFrom(Observable.combineLatest(self.card, playlistObservable)) { ($1.0, $1.1) }
+            .subscribe(onNext: { [weak self] (card, playlists) in
+                self?.stopTextPlayback()
+                self?.moveCardToAnotherPlaylistAction(withCard: card, playlists: playlists)
+            })
+            .disposed(by: disposeBag)
     }
     
-    func stopSpeach() {
+    func stopTextPlayback() {
         services.speechService.stopSpeaking()
     }
     
-    func bind(speakData: BehaviorRelay<SpeechData?>) {
-        speakData
-            .unwrap()
-            .subscribe(onNext: { [weak self] (speakData) in
-            self?.services.speechService.speakText(withSpeechData: speakData)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    func bind(editEvent: ControlEvent<Void>, moveCardToEvent: ControlEvent<Void>, copyCardToEvent: ControlEvent<Void>) {
-        editEvent
-            .subscribe(onNext: { [weak self] (_) in
-                self?.stopSpeach()
-                guard let self = self else { return }
-                self.router.route(to: .editCard(card: self.card.value, user: self.user))
-            })
-            .disposed(by: disposeBag)
-        
-        moveCardToEvent
-            .subscribe(onNext: { [weak self] (_) in
-                self?.stopSpeach()
-                guard let card = self?.card.value else { return }
-                self?.openMoveCardToAnotherPlaylistView(card: card)
-            })
-            .disposed(by: disposeBag)
-        
-        copyCardToEvent
-            .subscribe(onNext: { [weak self] (_) in
-                self?.stopSpeach()
-                guard let card = self?.card.value else { return }
-                self?.openCopyCardToAnotherPlaylist(card: card)
-            })
-        .disposed(by: disposeBag)
-    }
-    
     // MARK: - Private
-    private func openCopyCardToAnotherPlaylist(card: TranslateCard) {
-        user.getPlaylists(forLanguage: card.language)
-        .subscribe(onNext: { [weak self] (playlists) in
-            let potentialCurrentPlaylist = playlists.first{ $0.id == card.playlistId}
-            guard let currentPlaylist = potentialCurrentPlaylist else { return }
-            let callBack: PlaylistCallBack = { [weak self] (playlist) in
-                self?.needCopyCardToPlaylist(card: card, newPlaylist: playlist)
-            }
-            self?.router.route(to: .moveCardTo(dataSource: playlists, selected: currentPlaylist, callback: callBack))
-        }, onError:  { [weak self] (error) in
-            self?.errorHandler(description: "Failed get user playlists", error: error, withAlert: true)
-        })
-        .disposed(by: disposeBag)
+    private func copyCardToAnotherPlaylistAction(withCard card: TranslateCard, playlists: [Playlist]) {
+        let playlistsWithCardId = playlists.filter{ $0.id == card.playlistId}
+        guard let selectedPlaylist = playlistsWithCardId.first else { return }
+        let callBack: PlaylistCallBack = { [weak self] (playlist) in
+            self?.needCopyCardToPlaylist(card: card, newPlaylist: playlist)
+        }
+        router.route(to: .choosingPlaylist(dataSource: playlists, selected: selectedPlaylist, callback: callBack))
     }
     
-    private func openMoveCardToAnotherPlaylistView(card: TranslateCard) {
-        user.getPlaylists(forLanguage: card.language)
-            .subscribe(onNext: { [weak self] (playlists) in
-                let potentialCurrentPlaylist = playlists.first{ $0.id == card.playlistId}
-                guard let currentPlaylist = potentialCurrentPlaylist else { return }
-                let callBack: PlaylistCallBack = { [weak self] (playlist) in
-                    self?.needUpdateCardPlaylist(card: card, newPlaylist: playlist)
-                }
-                self?.router.route(to: .moveCardTo(dataSource: playlists, selected: currentPlaylist, callback: callBack))
-            }, onError:  { [weak self] (error) in
-                self?.errorHandler(description: "Failed get user playlists", error: error, withAlert: true)
-            })
-            .disposed(by: disposeBag)
+    private func moveCardToAnotherPlaylistAction(withCard card: TranslateCard, playlists: [Playlist]) {
+        let playlistsWithCardId = playlists.filter{ $0.id == card.playlistId}
+        guard let selectedPlaylist = playlistsWithCardId.first else { return }
+        let callBack: PlaylistCallBack = { [weak self] (playlist) in
+            self?.needMoveCardToPlaylist(card: card, newPlaylist: playlist)
+        }
+        router.route(to: .choosingPlaylist(dataSource: playlists, selected: selectedPlaylist, callback: callBack))
     }
     
-    private func needUpdateCardPlaylist(card: TranslateCard, newPlaylist: Playlist) {
-        user.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+    private func needMoveCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
+        user.value.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed update card playlist", error: error, withAlert: true)
             })
@@ -114,7 +129,7 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter> {
     }
     
     private func needCopyCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
-        user.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+        user.value.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
             })

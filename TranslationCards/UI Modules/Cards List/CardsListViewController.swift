@@ -156,8 +156,8 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
                 guard let self = self else { return false}
                 self.reverseButton.isSelected = !self.reverseButton.isSelected
                 return self.reverseButton.isSelected }
-            .execute({ (_) in
-                self.updateNavigationButtonsTintColor()
+            .execute({ [weak self] (_) in
+                self?.updateNavigationButtonsTintColor()
             })
             .bind(to: input.reverseMode)
             .disposed(by: disposeBag)

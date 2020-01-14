@@ -83,7 +83,7 @@ final class CardSlideShowViewController: ViewController<CardSlideShowRouter, Car
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.stopSpeaking()
+        viewModel.stopTextPlayback()
     }
 }
 

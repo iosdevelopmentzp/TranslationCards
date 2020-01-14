@@ -37,8 +37,8 @@ final class LogInViewModel: ViewModel<LogInRouter>, LogInViewModelType, LogInVie
     let signUpTap = PublishSubject<Void>()
     let isInputCorrect = BehaviorRelay<Bool>.init(value: false)
     
-    private var inputData: Observable<(String, String)> {
-        return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver())
+    private var inputData: Observable<(login: String, password: String)> {
+        return Observable.combineLatest(logInText.asObserver(), passwordText.asObserver()) { (login: $0, password: $1)}
     }
 
     override init() {
