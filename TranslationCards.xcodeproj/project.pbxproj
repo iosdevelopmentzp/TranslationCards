@@ -51,6 +51,7 @@
 		3B319F5E23856E600038A7AC /* UIFont+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F5D23856E600038A7AC /* UIFont+Custom.swift */; };
 		3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F602385719E0038A7AC /* RoundedTextField.swift */; };
 		3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F6223857BFE0038A7AC /* RoundedButton.swift */; };
+		3B33FBCE23CEFBE8001A20D4 /* AzureRequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */; };
 		3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721AE23853C8D008CAB42 /* AppDelegate.swift */; };
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
@@ -221,6 +222,7 @@
 		3B319F5D23856E600038A7AC /* UIFont+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Custom.swift"; sourceTree = "<group>"; };
 		3B319F602385719E0038A7AC /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
 		3B319F6223857BFE0038A7AC /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureRequestType.swift; sourceTree = "<group>"; };
 		3B5721AB23853C8D008CAB42 /* TranslationCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B5721AE23853C8D008CAB42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B5721B423853C8E008CAB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -709,6 +711,7 @@
 			children = (
 				3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */,
 				3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */,
+				3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */,
 				3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */,
 			);
 			path = "Translate Service";
@@ -1125,6 +1128,7 @@
 				3BEE43D32397FA96008F35AA /* CardCell.swift in Sources */,
 				3BDCDBEC23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift in Sources */,
 				3BA21F8A23C9F53300CE161E /* UIView+Utils.swift in Sources */,
+				3B33FBCE23CEFBE8001A20D4 /* AzureRequestType.swift in Sources */,
 				3B319F2423855F4B0038A7AC /* Router.swift in Sources */,
 				3BC52C34238FD816006FB7F8 /* MainViewController.swift in Sources */,
 				3BA679E123AE4FC1003D2B40 /* UICollectionView+Utils.swift in Sources */,

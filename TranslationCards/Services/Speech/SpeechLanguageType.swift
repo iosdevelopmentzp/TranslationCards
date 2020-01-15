@@ -33,6 +33,10 @@ enum SpeechLanguageType: String {
             return  SpeechLanguageType.eng
         case "Russian":
             return  SpeechLanguageType.rus
+        case "Spanish":
+            return SpeechLanguageType.spa
+        case "German":
+            return SpeechLanguageType.deu
         default: return nil
         }
     }
