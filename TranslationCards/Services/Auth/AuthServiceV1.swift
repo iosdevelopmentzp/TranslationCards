@@ -23,43 +23,24 @@ final class AuthServiceV1: NSObject, AuthService {
     func signIn(withEmail email: String, password: String) -> Observable<Void> {
         return auth.rx
             .signIn(withEmail: email, password: password)
-            .flatMap { [weak self] (result) -> Observable<Void> in
-                return self?.credentials.fetchRemoteUser(withId: result.user.uid) ?? .just(()) }
+            .withLatestFrom(Observable.just(credentials)) {($0, $1)}
+            .flatMap { (result, credentials) -> Observable<Void> in
+                return credentials.fetchRemoteUser(withId: result.user.uid) }
     }
     
     func signUp(withEmail email: String, password: String, displayName: String) -> Observable<Void> {
-        var userId: String?
         return auth.rx
             .createUser(withEmail: email, password: password)
             .map{ User(uid: $0.user.uid,
                        email: $0.user.email,
                        username: displayName,
                        avatarUrl: $0.user.photoURL?.absoluteString) }
-            .flatMap { [weak self] user -> Observable<User> in
-                userId = user.uid
-                let createUserObserver = self?.database.createUser(user).map{ user }
-                return createUserObserver ?? .just(user) }
-            .flatMap{ [weak self] user -> Observable<Void> in
-                return self?.credentials.fetchRemoteUser(withId: user.uid) ?? .just(()) }
-            .catchError { [weak self] (errorSignUpUser) -> Observable<()> in
-                guard let userId = userId, let user = self?.auth.currentUser, userId == user.uid else {
-                    return .error(errorSignUpUser)
-                }
-                return .create { [weak self] (observer) -> Disposable in
-                    guard let self = self else {
-                        observer.onNext(())
-                        observer.onCompleted()
-                        return Disposables.create() }
-                    self.auth.currentUser?.delete(completion: { (errorDeleteUser) in
-                        if let error = errorDeleteUser {
-                            observer.onError(error)
-                        } else {
-                            observer.onError(errorSignUpUser)
-                        }
-                    })
-                    return Disposables.create()
-                }
-        }
+            .withLatestFrom(Observable.just(database)) {($0, $1)}
+            .flatMap { user, database -> Observable<User> in
+                return database.createUser(user).map{ user } }
+            .withLatestFrom(Observable.just(credentials)) {($0, $1)}
+            .flatMap{ user, credentials -> Observable<Void> in
+                return credentials.fetchRemoteUser(withId: user.uid) }
     }
     
     func signOut() -> Observable<Void> {
