@@ -60,4 +60,11 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
                 return .error(error)
             })
     }
+    
+    func getUser(withId userId: String) -> Observable<User> {
+        if let user = user.value, user.uid == userId {
+            return .just(user)
+        }
+        return database.fetchUser(withUserId: userId)
+    }
 }

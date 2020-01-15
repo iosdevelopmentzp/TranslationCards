@@ -13,4 +13,5 @@ protocol CredentialsService: Service {
     var user: BehaviorRelay<User?> { get }
     func acceptUser()
     func fetchRemoteUser(withId userId: String) -> Observable<Void>
+    func getUser(withId userId: String) -> Observable<User>
 }

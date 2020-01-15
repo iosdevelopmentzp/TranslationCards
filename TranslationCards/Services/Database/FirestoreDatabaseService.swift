@@ -57,7 +57,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .delete()
     }
     
-    func saveCard(_ card: TranslateCard, cardLanguageIsCurrentLanguage isCurrentLanguage: Bool) -> Observable<Void> {
+    func saveCard(_ card: TranslateCard) -> Observable<Void> {
         let languageReference = languageDocumentReference(forUserId: card.userOwnerId, language: card.language)
         let cardReferance = cardDocumentReference(forCard: card)
         return languageReference.rx
@@ -69,11 +69,6 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
                 return .just(()) }
             .flatMap { (_) in
                 return cardReferance.rx.setData(card.representation) }
-            .flatMap{ [weak self] (_) -> Observable<Void> in
-                guard isCurrentLanguage else { return .just(())}
-                guard let self = self else { return .just(())}
-                // update user current language value
-                return self.updateUser(withUserId: card.userOwnerId, withData: ["currentLanguage": card.language.targetLanguage.rawValue]) }
     }
     
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]> {

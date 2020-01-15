@@ -54,6 +54,10 @@ final class User {
         }
     }
     
+    func updateNativeLanguage(newLanguage: Language) {
+        nativeLanguage = newLanguage
+    }
+    
     // MARK: - Static methods
     static func user(withId id: String) -> Observable<User> {
         if let user = Services.shared.credentials.user.value,
@@ -71,10 +75,10 @@ final class User {
         return Services.shared.credentials.user
     }
     // MARK: - Private
-    private func acceptRemoteData(_ data: [String: Any]) {
+    func acceptRemoteData(_ data: [String: Any]) -> Bool {
         guard let uid = data["uid"] as? String,
                 uid == self.uid else {
-                return
+                return false
         }
         self.email = data["email"] as? String
         self.displayName = data["displayName"] as? String
@@ -87,6 +91,7 @@ final class User {
             let nativeLanguage = Language(rawValue: nativeLanguageStr) {
             self.nativeLanguage = nativeLanguage
         }
+        return true
     }
     
     
@@ -354,7 +359,7 @@ extension User {
             }
             self.services
                 .realTimeDatabase
-                .saveCard(card, cardLanguageIsCurrentLanguage: self.currentLanguage == nil)
+                .saveCard(card)
                 .subscribe(onNext: { [weak self] (_) in
                     observer.onNext(())
                     observer.onCompleted()
