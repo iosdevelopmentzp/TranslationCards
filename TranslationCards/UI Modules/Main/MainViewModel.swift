@@ -63,15 +63,8 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
         
         signOutTap
             .subscribe(onNext: { [weak self] (_) in
-                self?.services
-                    .auth
-                    .signOut()
-                    .catchError({ [weak self] (error) -> Observable<()> in
-                        self?.errorHandler(description: "Failed sign out action", error: error, withAlert: true)
-                    return .error(error)
-                    })
-                    .subscribe().disposed(by: self?.disposeBag ?? DisposeBag())
-            })
+                self?.tryToSignOut()
+            } )
             .disposed(by: disposeBag)
         
         tableViewItemTap
@@ -87,6 +80,15 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
     }
     
     // MARK: - Private
+    private func tryToSignOut() {
+        services.auth.signOut()
+            .catchError { [weak self] (error) -> Observable<()> in
+                self?.errorHandler(description: "Failed attempt to sign out", error: error, withAlert: true)
+                return .never() }
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
+    
     private func fetchLanguages(forUser user: User) {
         if isRefreshing.value == false {
             isRefreshing.accept(true)

@@ -29,6 +29,6 @@ protocol DatabaseService: Service {
     func savePlaylist(_ playlist: Playlist) -> Observable<Void>
     func removePlaylist(_ playlist: Playlist) -> Observable<Void>
     func removePlaylistIfThereAreNoCards(_ playlist: Playlist) -> Observable<Void>
-    func movePlaylist(forCard card: TranslateCard, playlistForMoveId: String) -> Observable<Void>
+    func moveCard(_ card: TranslateCard, toPlaylistWithId newPlaylisitId: String) -> Observable<Void>
     func copyCard(_ card: TranslateCard, toAnotherPlaylistWithId newPlaylistId: String) -> Observable<Void>
 }

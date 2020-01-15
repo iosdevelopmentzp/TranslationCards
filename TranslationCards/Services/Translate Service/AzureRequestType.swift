@@ -20,8 +20,8 @@ enum AzureRequestType {
             urlComponents.queryItems = AzureTranslateQuery.generateQueryItems(fromLanguage: fromLanguage, toLanguage: toLanguage)
             var request = URLRequest(url: urlComponents.url!)
             request.httpMethod = "POST"
-            request.addValue(AzureHeader.azureKey.value, forHTTPHeaderField: AzureHeader.azureKey.name)
-            request.addValue(AzureHeader.contentType.value, forHTTPHeaderField: AzureHeader.contentType.name)
+            request.addValue(AzureHeader.azureKey.value, forHTTPHeaderField: AzureHeader.azureKey.fieldName)
+            request.addValue(AzureHeader.contentType.value, forHTTPHeaderField: AzureHeader.contentType.fieldName)
             let outputText = OutputTranslateJson(text: sourceText)
             let jsonData = try? JSONEncoder().encode([outputText])
             request.httpBody = jsonData
@@ -37,9 +37,9 @@ private struct AzureHost {
        }
        
        private struct AzureHeader {
-           typealias HeaderData = (name: String, value: String)
-           static let azureKey: HeaderData = (name: "Ocp-Apim-Subscription-Key", value: "eaf58818dd1149b997447d02c6280427")
-           static let contentType: HeaderData = (name: "Content-Type", value: "application/json; charset=UTF-8")
+           typealias HeaderData = (fieldName: String, value: String)
+           static let azureKey: HeaderData = (fieldName: "Ocp-Apim-Subscription-Key", value: "eaf58818dd1149b997447d02c6280427")
+           static let contentType: HeaderData = (fieldName: "Content-Type", value: "application/json; charset=UTF-8")
        }
        
        private struct AzureTranslateQuery {

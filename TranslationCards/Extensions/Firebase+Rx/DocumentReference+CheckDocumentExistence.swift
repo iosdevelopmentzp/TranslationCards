@@ -13,8 +13,20 @@ import FirebaseFirestore
 
 extension Reactive where Base: DocumentReference {
     func isDocumentExist() -> Observable<Bool> {
-        base.rx
-            .getDocument()
-            .map { $0.exists }
+        Observable<Bool>.create { (observer) -> Disposable in
+            self.base.getDocument { (snapshot, error) in
+                if let error = error {
+                    observer.onError(error)
+                }
+                guard let snapshot = snapshot else {
+                    observer.onNext(false)
+                    observer.onCompleted()
+                    return
+                }
+                observer.onNext(snapshot.exists)
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
     }
 }

@@ -261,13 +261,12 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     private func saveTranslationCard(_ card: TranslateCard, forUser user: User) {
         self.startActivityIndicator.accept(true)
         user.saveCard(card)
-            .execute({ [weak self] (_) in
-                self?.startActivityIndicator.accept(false)
-            })
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.comeBack()
+                self?.startActivityIndicator.accept(false)
                 }, onError: { [weak self] (error) in
                     self?.errorHandler(description: "Failed attempt to save card", error: error, withAlert: true)
+                    self?.startActivityIndicator.accept(false)
             })
             .disposed(by: disposeBag)
     }

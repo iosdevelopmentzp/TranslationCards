@@ -217,7 +217,7 @@ extension User {
     func moveCardToAnotherPlaylist(card: TranslateCard, newPlaylistId: String) -> Observable<Void> {
         .create { [weak self] (observer) -> Disposable in
             let oldPlaylistId = card.playlistId
-            self?.services.realTimeDatabase.movePlaylist(forCard: card, playlistForMoveId: newPlaylistId)
+            self?.services.realTimeDatabase.moveCard(card, toPlaylistWithId: newPlaylistId)
                 .subscribe(onNext: { (_) in
                     observer.onNext(())
                     observer.onCompleted()
