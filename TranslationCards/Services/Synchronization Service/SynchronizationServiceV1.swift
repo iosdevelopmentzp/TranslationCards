@@ -9,23 +9,6 @@
 import RxSwift
 import RxCocoa
 
-struct Changes {
-    let userId: String
-    var typeOfChange: RealTimeEvents
-    static func userId(_ id: String, typeOfChange: RealTimeEvents) -> Self {
-        return Changes(userId: id, typeOfChange: typeOfChange)
-    }
-    static var empty: Self { return Changes(userId: "", typeOfChange: .nothing)}
-}
-
-enum RealTimeEvents {
-    case changedUser
-    case changedCardsList(inLanguage: LanguageBind, playlistId: String)
-    case changedPlaylistsList(ofLanguage: LanguageBind)
-    case changedLanguageLists
-    case nothing
-}
-
 class SynchronizationServiceV1: SynchronizationService {
  
     enum SynchronizationServiceError: LocalizedError {
@@ -39,18 +22,16 @@ class SynchronizationServiceV1: SynchronizationService {
         }
     }
     
-    let realTimeEvents = BehaviorRelay<Changes>.init(value: .empty)
-    
     private let database: DatabaseService
-    private let credentials: CredentialsService
+    private let listenerService: ListenerService
     
-    init(database: DatabaseService, credentials: CredentialsService) {
+    init(database: DatabaseService, listenerService: ListenerService) {
         self.database = database
-        self.credentials = credentials
+        self.listenerService = listenerService
     }
     
     func synchronizeUserWithRemote(_ user: User) -> Observable<Void> {
-        let change: Changes = .userId(user.uid, typeOfChange: .changedUser)
+        let change = UserChanges(userId: user.uid, typeOfChange: .changedUser)
         return database
             .getUserData(userId: user.uid)
             .flatMap { [weak user] (data) -> Observable<Void> in
@@ -60,7 +41,7 @@ class SynchronizationServiceV1: SynchronizationService {
                 return .just(()) }
             .withLatestFrom(Observable.just(change))
             .execute { [weak self] (change) in
-                self?.realTimeEvents.accept(change) }
+                self?.listenerService.userСhangesListener.accept(change) }
             .ignoreAll()
     }
     
@@ -70,39 +51,44 @@ class SynchronizationServiceV1: SynchronizationService {
     }
     
     func updateNativeLanguage(_ newLanguage: Language, forUser user: User) -> Observable<Void> {
-        let userId = user.uid
+        let change = UserChanges(userId: user.uid, typeOfChange: .changedUser)
         return database
             .updateUser(withUserId: user.uid, withData: ["nativeLanguage": newLanguage.rawValue])
-            .execute { [weak self] in
-                self?.realTimeEvents.accept(.userId(userId, typeOfChange: .changedUser)) }
+            .withLatestFrom(Observable.just(change))
+            .execute { [weak self] (change) in
+                self?.listenerService.userСhangesListener.accept(change) }
+            .ignoreAll()
     }
     
     func removePlaylistIfThereNoCards(playlist: Playlist) -> Observable<Void> {
-        database
+        let change = UserChanges(userId: playlist.userOwnerId, typeOfChange: .changedPlaylistsList(ofLanguage: playlist.language))
+        return database
             .removePlaylistIfThereAreNoCards(playlist)
-            .execute { [weak self] in
-                self?.realTimeEvents.accept(.userId(playlist.userOwnerId, typeOfChange: .changedPlaylistsList(ofLanguage: playlist.language))) }
+            .withLatestFrom(Observable.just(change))
+            .execute { [weak self] (change) in
+                self?.listenerService.userСhangesListener.accept(change) }
+            .ignoreAll()
     }
     
     func copyCard(_ card: TranslateCard, toNewPlaylistId newPlaylistId: String) -> Observable<Void> {
-        let change: Changes = .userId(card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: newPlaylistId))
+        let change = UserChanges(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: newPlaylistId))
         return database
             .copyCard(card, toAnotherPlaylistWithId: newPlaylistId)
             .withLatestFrom(Observable.just(change))
             .execute { [weak self] (change) in
-                self?.realTimeEvents.accept(change) }
+                self?.listenerService.userСhangesListener.accept(change) }
             .ignoreAll()
     }
     
     func moveCard(_ card: TranslateCard, toNewPlaylistId newPlaylistId: String) -> Observable<Void> {
-        let changeOld: Changes = .userId(card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
-        let changeNew: Changes = .userId(card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: newPlaylistId))
+        let changeOld = UserChanges(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
+        let changeNew = UserChanges(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: newPlaylistId))
         return database
             .moveCard(card, toPlaylistWithId: newPlaylistId)
             .withLatestFrom(Observable.just((changeOld, changeNew)))
             .execute { [weak self] (changeOld, changeNew) in
-                self?.realTimeEvents.accept(changeOld)
-                self?.realTimeEvents.accept(changeNew) }
+                self?.listenerService.userСhangesListener.accept(changeOld)
+                self?.listenerService.userСhangesListener.accept(changeNew) }
             .ignoreAll()
     }
     
@@ -112,12 +98,12 @@ class SynchronizationServiceV1: SynchronizationService {
     }
     
     func addNewPlaylist(playlist: Playlist) -> Observable<Void> {
-        let change: Changes = .init(userId: playlist.userOwnerId, typeOfChange: .changedPlaylistsList(ofLanguage: playlist.language))
+        let change = UserChanges(userId: playlist.userOwnerId, typeOfChange: .changedPlaylistsList(ofLanguage: playlist.language))
         return database
             .savePlaylist(playlist)
             .withLatestFrom(Observable.just(change))
             .execute { [weak self] (change) in
-                self?.realTimeEvents.accept(change)  }
+                self?.listenerService.userСhangesListener.accept(change) }
             .ignoreAll()
     }
     
@@ -132,22 +118,25 @@ class SynchronizationServiceV1: SynchronizationService {
     }
     
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
-        let change: Changes = .userId(card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
+        let change = UserChanges(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
         return database
             .saveCard(card)
             .withLatestFrom(Observable.just(change))
             .execute { [weak self] (change) in
-                self?.realTimeEvents.accept(change)  }
+                self?.listenerService.userСhangesListener.accept(change) }
             .ignoreAll()
     }
     
     func removeCard(_ card: TranslateCard) -> Observable<Void> {
-        let change: Changes = .init(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
+        let userChange = UserChanges(userId: card.userOwnerId, typeOfChange: .changedCardsList(inLanguage: card.language, playlistId: card.playlistId))
+        let cardChange = CardChanges(cardId: card.id, typeOfChange: .removed)
         return database
             .removeCard(card)
-            .withLatestFrom(Observable.just(change))
-            .execute { [weak self] (change) in
-                self?.realTimeEvents.accept(change)  }
+            .withLatestFrom(Observable.just((userChange, cardChange)))
+            .execute { [weak self] (userChange, cardCahnge) in
+                self?.listenerService.userСhangesListener.accept(userChange)
+                self?.listenerService.cardsChangesListener.accept(cardChange)
+            }
             .ignoreAll()
     }
 }

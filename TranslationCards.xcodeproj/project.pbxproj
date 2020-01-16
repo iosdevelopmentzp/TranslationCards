@@ -108,6 +108,8 @@
 		3B8CF25823A8E93E00C2249A /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25523A8E93E00C2249A /* CardDetailsViewController.swift */; };
 		3B8CF25923A8E93E00C2249A /* CardDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25623A8E93E00C2249A /* CardDetailsViewModel.swift */; };
 		3B8CF25B23A8EAC000C2249A /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8CF25A23A8EAC000C2249A /* CardView.swift */; };
+		3B8E32FB23D0577100BA12AC /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E32FA23D0577100BA12AC /* ListenerService.swift */; };
+		3B8E32FD23D057EA00BA12AC /* ListenerServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E32FC23D057EA00BA12AC /* ListenerServiceV1.swift */; };
 		3B94BF5423B74756008A2691 /* WritePhraseSlideShowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B94BF5123B74756008A2691 /* WritePhraseSlideShowRouter.swift */; };
 		3B94BF5523B74756008A2691 /* WritePhraseSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B94BF5223B74756008A2691 /* WritePhraseSlideShowViewController.swift */; };
 		3B94BF5623B74756008A2691 /* WritePhraseSlideShowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B94BF5323B74756008A2691 /* WritePhraseSlideShowViewModel.swift */; };
@@ -284,6 +286,8 @@
 		3B8CF25523A8E93E00C2249A /* CardDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsViewController.swift; sourceTree = "<group>"; };
 		3B8CF25623A8E93E00C2249A /* CardDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsViewModel.swift; sourceTree = "<group>"; };
 		3B8CF25A23A8EAC000C2249A /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		3B8E32FA23D0577100BA12AC /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
+		3B8E32FC23D057EA00BA12AC /* ListenerServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerServiceV1.swift; sourceTree = "<group>"; };
 		3B94BF5123B74756008A2691 /* WritePhraseSlideShowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePhraseSlideShowRouter.swift; sourceTree = "<group>"; };
 		3B94BF5223B74756008A2691 /* WritePhraseSlideShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePhraseSlideShowViewController.swift; sourceTree = "<group>"; };
 		3B94BF5323B74756008A2691 /* WritePhraseSlideShowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePhraseSlideShowViewModel.swift; sourceTree = "<group>"; };
@@ -620,6 +624,7 @@
 				3B9550B023A4E66B00BC9E8E /* UserDefaults */,
 				3B8BC90D23B4E689008E5834 /* Translate Service */,
 				3B33FBCF23CF396F001A20D4 /* Synchronization Service */,
+				3B8E32F923D0573500BA12AC /* ListenerService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -739,6 +744,15 @@
 				3B8CF25423A8E93E00C2249A /* CardDetailsRouter.swift */,
 			);
 			path = CardDetails;
+			sourceTree = "<group>";
+		};
+		3B8E32F923D0573500BA12AC /* ListenerService */ = {
+			isa = PBXGroup;
+			children = (
+				3B8E32FA23D0577100BA12AC /* ListenerService.swift */,
+				3B8E32FC23D057EA00BA12AC /* ListenerServiceV1.swift */,
+			);
+			path = ListenerService;
 			sourceTree = "<group>";
 		};
 		3B94BF5023B746FE008A2691 /* WritePhraseSlideShow */ = {
@@ -1175,6 +1189,7 @@
 				3B825BA623869678009D62E8 /* FirestoreDatabaseService.swift in Sources */,
 				3B8CF25B23A8EAC000C2249A /* CardView.swift in Sources */,
 				3B94BF5F23B754F8008A2691 /* AnimatedCollectionViewLayout.swift in Sources */,
+				3B8E32FB23D0577100BA12AC /* ListenerService.swift in Sources */,
 				3B85039E23AA2F3200481989 /* ActionButtonsDataSource.swift in Sources */,
 				3B5A3BBD2396A345009110A7 /* CardsListViewModel.swift in Sources */,
 				3B9550B623A50EE700BC9E8E /* KeyStorage.swift in Sources */,
@@ -1242,6 +1257,7 @@
 				3B33FBD123CF39DA001A20D4 /* SynchronizationService.swift in Sources */,
 				3BE9992B23AD062600816583 /* Typealiases.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController+Appearance.swift in Sources */,
+				3B8E32FD23D057EA00BA12AC /* ListenerServiceV1.swift in Sources */,
 				3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */,
 				3BA21F8623C9F32300CE161E /* UIImage+Utils.swift in Sources */,
 				3B825B9123868912009D62E8 /* AuthService.swift in Sources */,

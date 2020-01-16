@@ -11,8 +11,6 @@ import RxCocoa
 
 /// A service to which you can change the state of a user, save, delete, update cards, and so on. All data will be synchronized both locally and with the server. You can also receive all data through it.
 protocol SynchronizationService: Service {
-    var realTimeEvents: BehaviorRelay<Changes> { get }
-    
     // user methods
     func synchronizeUserWithRemote(_ user: User) -> Observable<Void>
     
