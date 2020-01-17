@@ -58,27 +58,6 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     private let playlists: BehaviorRelay<[Playlist]> = .init(value: [])
     private let selectedPlaylists: BehaviorRelay<[Playlist]> = .init(value: [])
     
-    // Custom observables
-    private var playlistsInput: Observable<[Playlist]?> {
-        return Observable.combineLatest(self.user.playlists.asObservable(), self.language.asObservable()) {
-            guard let playlists = $0 else { return nil }
-            let language = $1
-            let newPlaylists = playlists.filter{ $0.language == language}
-            return (Array(newPlaylists))
-        }
-    }
-    
-    private var cardsInput: Observable<[TranslateCard]?> {
-        return Observable.combineLatest(self.user.cardsList, self.selectedPlaylists) {
-            guard let cards = $0 else { return nil }
-            let selectedPlaylists = $1
-            let needCards = cards.filter { (keyPlaylist, valueCards) -> Bool in
-                selectedPlaylists.contains(keyPlaylist)
-            }
-            return Array(needCards.values).joined().map{ $0 }
-        }
-    }
-    
     init(language: LanguageBind, user: User) {
         self.user = user
         self.language = .init(value: language)
@@ -89,42 +68,25 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         isRefreshing
             .filter{ $0 == true}
             .subscribe(onNext: { [weak self] (_) in
-                self?.fetchCards()
+                self?.fetchData()
             })
             .disposed(by: disposeBag)
         
-        cardsInput
-            .unwrap()
-            .subscribe(onNext: { [weak self] (newCards) in
-                self?.updateSectionWithCards(newCards)
-            })
+        let userId = user.uid
+        services.listenerService
+            .userСhangesListener
+            .filter{ $0.userId == userId }
+            .subscribe(onNext: {[weak self] (change) in
+                self?.receivedUserChanges(newChange: change.typeOfChange) })
             .disposed(by: disposeBag)
-        
-        playlistsInput
-            .unwrap()
-            .filter { [weak self] (newPlaylists) -> Bool in
-                guard let self = self else { return false }
-                return newPlaylists != self.selectedPlaylists.value }
-            .bind(to: playlists)
-            .disposed(by: disposeBag)
-        
-        playlists
-            .withLatestFrom(selectedPlaylists)
-            .filter{ $0.count == 0}
-            .withLatestFrom(playlists)
-            .map{ $0.randomElement()}
-            .unwrap()
-            .map{ [$0] }
-            .bind(to: selectedPlaylists)
-            .disposed(by: disposeBag)
-        
+
         selectedPlaylists
             .filter{ $0.count > 0 }
             .subscribe(onNext: { [weak self] (playlists) in
                 self?.fetchCards()
             })
             .disposed(by: disposeBag)
-            
+
         didSelectItem
             .map{ [weak self] in
                 self?.sections.value[$0.section].items[$0.row].item }
@@ -134,7 +96,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self.router.route(to: .cardView(card: card, user: self.user))
             })
             .disposed(by: disposeBag)
-        
+
         needDeleteItem
             .map{ [weak self] in
                 self?.sections.value[$0.section].items[$0.row].item }
@@ -143,7 +105,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self?.deleteCard(card)
             })
             .disposed(by: disposeBag)
-        
+
         shuffleMode
             .distinctUntilChanged()
             .skip(1)
@@ -154,7 +116,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self?.updateSectionWithCards(cards)
             })
             .disposed(by: disposeBag)
-            
+
         startSlideShow
             .withLatestFrom(sections)
             .compactMap{ $0.first?.items.map{ $0.item } }
@@ -163,7 +125,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self?.router.route(to: .slideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
             })
             .disposed(by: disposeBag)
-        
+
         startWhritePhraseSlideShow
             .withLatestFrom(sections)
             .compactMap{ $0.first?.items.map{ $0.item } }
@@ -172,7 +134,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                 self?.router.route(to: .writeSlideShow(cards: cards, withReverse: self?.reverseMode.value ?? false))
             })
             .disposed(by: disposeBag)
-        
+
         openPlaylistsChoice
             .withLatestFrom(playlists)
             .filter{ $0.count > 0 }
@@ -182,7 +144,7 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
                                                       selected: self.selectedPlaylists))
             })
             .disposed(by: disposeBag)
-        
+
         setEditMode
             .bind(to: isEditMode)
             .disposed(by: disposeBag)
@@ -198,9 +160,9 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
         #if DEBUG
         sortedCards = cards.sorted(by: {
             if !isReverse {
-                return $0.sourcePhrase.trimmingCharacters(in: .whitespaces) < $1.sourcePhrase.trimmingCharacters(in: .whitespaces)
+                return $0.sourcePhrase.value.trimmingCharacters(in: .whitespaces) < $1.sourcePhrase.value.trimmingCharacters(in: .whitespaces)
             } else {
-                return $0.targetPhrase.trimmingCharacters(in: .whitespaces) < $1.targetPhrase.trimmingCharacters(in: .whitespaces)
+                return $0.targetPhrase.value.trimmingCharacters(in: .whitespaces) < $1.targetPhrase.value.trimmingCharacters(in: .whitespaces)
             }
         })
         #else
@@ -220,7 +182,8 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     private func deleteCard(_ card: TranslateCard) {
         startActivityIndicator.accept(true)
         
-        user.removeCard(card)
+        services.dataCoordinator
+            .removeCard(card)
             .catchError { [weak self] (error) -> Observable<()> in
                 self?.errorHandler(description: "Failed delete card \(card.sourcePhrase)", error: error, withAlert: true)
                 return .just(()) }
@@ -230,19 +193,48 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     }
     
     private func fetchCards() {
-        if isRefreshing.value != true {
-            isRefreshing.accept(true)
-        }
-        
-        Observable.combineLatest(
-            user.fetchCards(forPlaylists: selectedPlaylists.value),
-            user.fetchPlaylists(forLanguage: language.value))
-            .ignoreAll()
-            .catchError { [weak self] (error) -> Observable<Void> in
-                self?.errorHandler(description: "Failed update data", error: error, withAlert: true)
-                return .just(()) }
-            .map{ false }
+        services.dataCoordinator
+            .fetchCards(forPlaylists: selectedPlaylists.value)
+            .subscribe(onNext: { [weak self] in self?.updateSectionWithCards($0) })
+            .disposed(by: disposeBag)
+    }
+    
+    private func fetchData() {
+        services.dataCoordinator
+            .getPlaylists(forLanguage: language.value, userId: user.uid)
+            .execute { [weak self] (newPlaylists) in
+                self?.playlists.accept(newPlaylists) }
+            .withLatestFrom(selectedPlaylists) { ($0, $1) }
+            .map { [weak self] (newPlaylists, selectedPlaylists) -> [Playlist] in
+                var newSelectedPlaylist = selectedPlaylists
+                newSelectedPlaylist = newSelectedPlaylist.filter{ newPlaylists.map{$0.id}.contains($0.id) }
+                if newSelectedPlaylist.count == 0, let randomPlaylist = newPlaylists.first {
+                    newSelectedPlaylist.append(randomPlaylist)
+                    self?.selectedPlaylists.accept(newSelectedPlaylist)
+                }
+                return newSelectedPlaylist }
+            .withLatestFrom(Observable.just(services.dataCoordinator) ) { ($0, $1) }
+            .flatMap { selectedPlaylists, service -> Observable<[TranslateCard]> in
+                return service.fetchCards(forPlaylists: selectedPlaylists) }
+            .execute({ [weak self] in self?.updateSectionWithCards($0)})
+            .map { (_) in return false }
             .bind(to: isRefreshing)
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
+    }
+    
+    private func receivedUserChanges(newChange: UserChanges.RealTimeEvents) {
+        switch newChange {
+        case .changedCardsList(let inLanguage, let playlistId):
+            let isActualPlaylist = selectedPlaylists.value.map{ $0.id}.contains(playlistId)
+            guard inLanguage == language.value, isActualPlaylist  else {
+                return
+            }
+            fetchData()
+        case .changedPlaylistsList(let ofLanguage):
+            guard ofLanguage == language.value else { return }
+            fetchData()
+        case .nothing, .changedLanguageLists, .changedUser:
+            break
+        }
     }
 }

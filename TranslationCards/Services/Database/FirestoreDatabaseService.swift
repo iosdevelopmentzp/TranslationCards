@@ -13,7 +13,7 @@ import RxFirebaseFirestore
 final class FirestoreDatabaseService: NSObject, DatabaseService {
     
     private let database = Firestore.firestore()
-
+    
     // MARK: - User
     func createUser(_ user: User) -> Observable<Void> {
         userDocumentReference(forUserId: user.uid)
@@ -58,14 +58,14 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
-        let languageReference = languageDocumentReference(forUserId: card.userOwnerId, language: card.language)
+        let languageReference = languageDocumentReference(forUserId: card.userOwnerId, language: card.language.value)
         let cardReferance = cardDocumentReference(forCard: card)
         return languageReference.rx
             .isDocumentExist()
             .flatMap{ isExist -> Observable<Void> in
                 guard isExist else {
                     // first create language document
-                    return languageReference.rx.setData(card.language.representation)}
+                    return languageReference.rx.setData(card.language.value.representation)}
                 return .just(()) }
             .flatMap { (_) in
                 return cardReferance.rx.setData(card.representation) }
@@ -79,31 +79,13 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .map{ $0.documents.compactMap{ LanguageBind(withString: $0.documentID) } }
     }
     
-    func getCards(withLanguage language: LanguageBind, playlistName: String, userId: String) -> Observable<[TranslateCard]> {
-        userDocumentReference(forUserId: userId)
-            .collection(.databaseLanguagesCollection)
-            .document(language.id)
-            .collection(.databasePlaylistsCollection)
-            .document(playlistName)
-            .collection(.databaseCardsCollection)
-            .rx
-            .getDocuments()
-            .map { (snapshot) -> [TranslateCard] in
-                snapshot.documents.compactMap {
-                    guard let card = TranslateCard(withData: $0.data()) else { return nil}
-                    card.id = $0.reference.documentID
-                    card.updatePlaylistID(playlistName)
-                    return card
-                }}
-    }
-    
     func getCards(withPlaylist playlist: Playlist) -> Observable<[TranslateCard]> {
         cardsCollectionReferance(forPlaylist: playlist).rx
             .getDocuments()
             .map { (snapshot) -> [TranslateCard] in
                 snapshot.documents.compactMap {
                     guard let card = TranslateCard(withData: $0.data()) else { return nil}
-                    card.id = $0.reference.documentID
+                    card.updateId($0.reference.documentID)
                     card.updatePlaylistID(playlist.id)
                     return card
                 }}
@@ -149,7 +131,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func removePlaylist(_ playlist: Playlist) -> Observable<Void> {
-        playlistDocumentReferance(forPlaylist: playlist).rx
+        return playlistDocumentReferance(forPlaylist: playlist).rx
             .delete()
     }
     
@@ -177,7 +159,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func copyCard(_ card: TranslateCard, toAnotherPlaylistWithId newPlaylistId: String) -> Observable<Void> {
-        let newCard = TranslateCard(userId: card.userOwnerId, language: card.language, sourcePhrase: card.sourcePhrase, targetPhrase: card.targetPhrase)
+        let newCard = TranslateCard(userId: card.userOwnerId, language: card.language.value, sourcePhrase: card.sourcePhrase.value, targetPhrase: card.targetPhrase.value)
         newCard.updatePlaylistID(newPlaylistId)
         return cardDocumentReference(forCard: newCard).rx.setData(newCard.representation)
     }
@@ -225,9 +207,9 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
             .collection(.databaseUserCollection)
             .document(card.userOwnerId)
             .collection(.databaseLanguagesCollection)
-            .document(card.language.id)
+            .document(card.language.value.id)
             .collection(.databasePlaylistsCollection)
-            .document(card.playlistId)
+            .document(card.playlistId.value)
             .collection(.databaseCardsCollection)
             .document(card.id)
     }

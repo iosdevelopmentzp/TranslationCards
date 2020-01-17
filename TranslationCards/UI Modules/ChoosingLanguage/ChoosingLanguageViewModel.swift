@@ -74,7 +74,8 @@ final class ChoosingLanguageViewModel: ViewModel<ChoosingLanguageRouter>, Choosi
     // MARK: - Private
     private func tryUpdateNativeLanguage(_ language: Language) {
         startActivityIndicator.accept(true)
-        user.updateNativeLanguage(newLanguage: language)
+        services.dataCoordinator
+            .updateNativeLanguage(language, forUser: user)
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.route(to: .mainView)
                 }, onError: { [weak self] (error) in

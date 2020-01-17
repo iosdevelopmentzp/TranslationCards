@@ -126,7 +126,7 @@ class WritePhraseView: UIView {
         
         card.unwrap()
             .subscribe(onNext: { [weak self] (card) in
-                self?.headerLabel.attributedText = NSAttributedString(string: card.sourcePhrase,
+                self?.headerLabel.attributedText = NSAttributedString(string: card.sourcePhrase.value,
                                                                       attributes: NSAttributedString.writeSlideShowNativeText)
                 self?.textView.text = ""
                 self?.bottomTextFieldOffset.accept(0)
@@ -162,7 +162,7 @@ class WritePhraseView: UIView {
                     self?.textViewHeaderLabel.setAlpha(0.0)
                 }
                 self?.updateHeaderTextIfNeed(potentialTranslateText: $0)
-                return self?.checkValidText(correctText: self?.card.value?.targetPhrase ?? "", checkText: $0) ?? .invalidate }
+                return self?.checkValidText(correctText: self?.card.value?.targetPhrase.value ?? "", checkText: $0) ?? .invalidate }
             .distinctUntilChanged()
             .bind(to: textState)
             .disposed(by: disposeBag)
@@ -190,7 +190,7 @@ class WritePhraseView: UIView {
                 }
                 guard let card = self?.card.value else { return .writePhraseOneMoreWordActive}
                 
-                let countOfTargetWords = card.targetPhrase.lowercased().words.count
+                let countOfTargetWords = card.targetPhrase.value.lowercased().words.count
                 let countOfCurrentWords = text.lowercased().words.count
                 return countOfTargetWords == countOfCurrentWords ? .gray : .writePhraseOneMoreWordActive }
             .subscribe(onNext: { [weak self] (color) in
@@ -204,13 +204,13 @@ class WritePhraseView: UIView {
     }
     
     private func localizable(withCard card: TranslateCard) {
-        textViewHeaderLabel.text = "Try to write a translation into \(card.language.targetLanguage)"
+        textViewHeaderLabel.text = "Try to write a translation into \(card.language.value.targetLanguage)"
     }
     
     private func appendNewWorldIfNeed() {
         guard let card = card.value else { return }
         var currentOpenWords = (self.currentShownTranslate.value ?? "").lowercased().words
-        let realTranslationsWords = card.targetPhrase.lowercased().words
+        let realTranslationsWords = card.targetPhrase.value.lowercased().words
         
         guard currentOpenWords.count < realTranslationsWords.count, realTranslationsWords.count > 0  else { return }
         let nextIndex = currentOpenWords.count > 0 ? currentOpenWords.count : 0
@@ -229,8 +229,8 @@ class WritePhraseView: UIView {
     }
     
     private func updateHeaderTextIfNeed(potentialTranslateText: String) {
-        let newAttribute = self.makeAttributeText(sourceText: card.value?.sourcePhrase ?? "",
-                                                  translateText: card.value?.targetPhrase ?? "",
+        let newAttribute = self.makeAttributeText(sourceText: card.value?.sourcePhrase.value ?? "",
+                                                  translateText: card.value?.targetPhrase.value ?? "",
                                                   potentialTranslate: potentialTranslateText)
         let headerText = headerLabel.text ?? ""
         if newAttribute.string != headerText,  !newAttribute.string.isEmpty {

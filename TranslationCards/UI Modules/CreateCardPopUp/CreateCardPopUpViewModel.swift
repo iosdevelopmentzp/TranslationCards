@@ -72,7 +72,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .withLatestFrom(self.card){ ($0, $1) }
             .compactMap { newTargetLanguage, card -> Language? in
                 guard let newLanguage = newTargetLanguage,
-                    newTargetLanguage != card.language.targetLanguage else { return nil}
+                    newTargetLanguage != card.language.value.targetLanguage else { return nil}
                 return newTargetLanguage }
     }()
 
@@ -88,7 +88,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         newTargetLanguage
             .withLatestFrom(self.card) { newTargetLanguage, card -> (LanguageBind, TranslateCard) in
-                let newLanguage = LanguageBind(source: card.language.sourceLanguage, target: newTargetLanguage)
+                let newLanguage = LanguageBind(source: card.language.value.sourceLanguage, target: newTargetLanguage)
                 return (newLanguage, card) }
             .subscribe(onNext: { [weak self] (newLanguage, card) in
                 card.updateLanguage(newLanguage)
@@ -139,8 +139,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             .filter{ $0 == .create}
             .withLatestFrom(card)
             .map{ (card) -> ([Language], Language) in
-                let languages = Language.allCases.filter{ $0 != card.language.sourceLanguage}
-                return (languages, card.language.targetLanguage) }
+                let languages = Language.allCases.filter{ $0 != card.language.value.sourceLanguage}
+                return (languages, card.language.value.targetLanguage) }
             .subscribe(onNext: { [weak self] languages, selectedLanguage in
                 self?.selectTargetLanguage(fromLanguages: languages, selectedLanguage: selectedLanguage)
             })
@@ -156,8 +156,8 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         commonBinding()
         
-        let initialSourceText = card.sourcePhrase
-        let initialTargetText = card.targetPhrase
+        let initialSourceText = card.sourcePhrase.value
+        let initialTargetText = card.targetPhrase.value
         inputPhrases
             .map {
                 !$0.isEmpty && !$1.isEmpty && ($0 != initialSourceText || $1 != initialTargetText) }
@@ -199,7 +199,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         translateButtonTap
             .withLatestFrom(self.card)
-            .filter{ !$0.sourcePhrase.isEmpty }
+            .filter{ !$0.sourcePhrase.value.isEmpty }
             .subscribe(onNext: { [weak self] card in
                 self?.translateSourceText(forCard: card)
             })
@@ -219,7 +219,9 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
             [weak self] selectedPlaylist in
             self?.selectedPlaylist.accept(selectedPlaylist)
         }
-        user.value.getPlaylists(forLanguage: card.language)
+        
+        services.dataCoordinator
+            .getPlaylists(forLanguage: card.language.value, userId: card.userOwnerId)
             .subscribe(onNext: { [weak self] (playlists) in
                 self?.currentUserPlaylists.accept(playlists)
                 let route = CreateCardPopUpRouter.Route.selectPlaylistView(dataSource: playlists, selectedAction: selectedAction, firstRowTitle: "Create new playlist", createNewPlaylistCallBack: createNewPlaylistCallBack)
@@ -249,8 +251,10 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     }
     
     private func createNewPlaylist(forUser user: User, card: TranslateCard, withPlaylistName playlistName: String) {
-        let playlist = Playlist(name: playlistName, dateCreated: Date(), userOwnerId: user.uid, language: card.language)
-        user.addNewPlaylist(playlist: playlist)
+        let playlist = Playlist(name: playlistName, dateCreated: Date(), userOwnerId: user.uid, language: card.language.value)
+        
+        services.dataCoordinator
+            .addNewPlaylist(playlist: playlist)
             .subscribe(onNext: { [weak self] (_) in
                 self?.selectedPlaylist.accept(playlist)
                 }, onError: { [weak self] (error) in
@@ -260,7 +264,9 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     
     private func saveTranslationCard(_ card: TranslateCard, forUser user: User) {
         self.startActivityIndicator.accept(true)
-        user.saveCard(card)
+        
+        services.dataCoordinator
+            .saveCard(card)
             .subscribe(onNext: { [weak self] (_) in
                 self?.router.comeBack()
                 self?.startActivityIndicator.accept(false)
@@ -273,7 +279,9 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     
     private func removeTranslationCard(_ card: TranslateCard, forUser user: User) {
         startActivityIndicator.accept(true)
-        user.removeCard(card)
+        
+        services.dataCoordinator
+            .removeCard(card)
             .execute { [weak self] (_) in
                 self?.startActivityIndicator.accept(false) }
             .subscribe(onNext: { [weak self] (_) in
@@ -287,7 +295,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
     private func translateSourceText(forCard card: TranslateCard) {
         services
             .translateService
-            .translateText(card.sourcePhrase, fromLanguage: card.language.sourceLanguage, toLanguage: card.language.targetLanguage)
+            .translateText(card.sourcePhrase.value, fromLanguage: card.language.value.sourceLanguage, toLanguage: card.language.value.targetLanguage)
             .unwrap()
             .map{ [weak card] (translatedText) -> TranslateCard? in
                 card?.update(targetPhrase: translatedText)

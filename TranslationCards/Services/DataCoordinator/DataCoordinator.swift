@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 /// A service to which you can change the state of a user, save, delete, update cards, and so on. All data will be synchronized both locally and with the server. You can also receive all data through it.
-protocol SynchronizationService: Service {
+protocol DataCoordinator: Service {
     // user methods
     func synchronizeUserWithRemote(_ user: User) -> Observable<Void>
     
@@ -19,7 +19,7 @@ protocol SynchronizationService: Service {
     func updateNativeLanguage(_ newLanguage: Language, forUser user: User) -> Observable<Void>
     
     // playlists
-    func removePlaylistIfThereNoCards(playlist: Playlist) -> Observable<Void>
+    func removePlaylist(_ playlist: Playlist) -> Observable<Void>
     func copyCard(_ card: TranslateCard, toNewPlaylistId newPlaylistId: String) -> Observable<Void>
     func moveCard(_ card: TranslateCard, toNewPlaylistId newPlaylistId: String) -> Observable<Void>
     func getPlaylists(forLanguage language: LanguageBind, userId: String) -> Observable<[Playlist]>

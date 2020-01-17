@@ -52,8 +52,8 @@
 		3B319F612385719E0038A7AC /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F602385719E0038A7AC /* RoundedTextField.swift */; };
 		3B319F6323857BFE0038A7AC /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B319F6223857BFE0038A7AC /* RoundedButton.swift */; };
 		3B33FBCE23CEFBE8001A20D4 /* AzureRequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */; };
-		3B33FBD123CF39DA001A20D4 /* SynchronizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBD023CF39DA001A20D4 /* SynchronizationService.swift */; };
-		3B33FBD323CF4501001A20D4 /* SynchronizationServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBD223CF4501001A20D4 /* SynchronizationServiceV1.swift */; };
+		3B33FBD123CF39DA001A20D4 /* DataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBD023CF39DA001A20D4 /* DataCoordinator.swift */; };
+		3B33FBD323CF4501001A20D4 /* DataCoordinatorV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B33FBD223CF4501001A20D4 /* DataCoordinatorV1.swift */; };
 		3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721AE23853C8D008CAB42 /* AppDelegate.swift */; };
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
@@ -227,8 +227,8 @@
 		3B319F602385719E0038A7AC /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
 		3B319F6223857BFE0038A7AC /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureRequestType.swift; sourceTree = "<group>"; };
-		3B33FBD023CF39DA001A20D4 /* SynchronizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizationService.swift; sourceTree = "<group>"; };
-		3B33FBD223CF4501001A20D4 /* SynchronizationServiceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizationServiceV1.swift; sourceTree = "<group>"; };
+		3B33FBD023CF39DA001A20D4 /* DataCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCoordinator.swift; sourceTree = "<group>"; };
+		3B33FBD223CF4501001A20D4 /* DataCoordinatorV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCoordinatorV1.swift; sourceTree = "<group>"; };
 		3B5721AB23853C8D008CAB42 /* TranslationCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslationCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B5721AE23853C8D008CAB42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B5721B423853C8E008CAB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -503,13 +503,13 @@
 			path = "Custom Views";
 			sourceTree = "<group>";
 		};
-		3B33FBCF23CF396F001A20D4 /* Synchronization Service */ = {
+		3B33FBCF23CF396F001A20D4 /* DataCoordinator */ = {
 			isa = PBXGroup;
 			children = (
-				3B33FBD023CF39DA001A20D4 /* SynchronizationService.swift */,
-				3B33FBD223CF4501001A20D4 /* SynchronizationServiceV1.swift */,
+				3B33FBD023CF39DA001A20D4 /* DataCoordinator.swift */,
+				3B33FBD223CF4501001A20D4 /* DataCoordinatorV1.swift */,
 			);
-			path = "Synchronization Service";
+			path = DataCoordinator;
 			sourceTree = "<group>";
 		};
 		3B5721A223853C8C008CAB42 = {
@@ -623,7 +623,7 @@
 				3B825B9D238692CE009D62E8 /* Database */,
 				3B9550B023A4E66B00BC9E8E /* UserDefaults */,
 				3B8BC90D23B4E689008E5834 /* Translate Service */,
-				3B33FBCF23CF396F001A20D4 /* Synchronization Service */,
+				3B33FBCF23CF396F001A20D4 /* DataCoordinator */,
 				3B8E32F923D0573500BA12AC /* ListenerService */,
 			);
 			path = Services;
@@ -1150,7 +1150,7 @@
 				3B5D511E2387E6F100DCB5FB /* MainNavigationViewController.swift in Sources */,
 				3B242F6D239FA91800B90C41 /* PickerViewController.swift in Sources */,
 				3B94BF5623B74756008A2691 /* WritePhraseSlideShowViewModel.swift in Sources */,
-				3B33FBD323CF4501001A20D4 /* SynchronizationServiceV1.swift in Sources */,
+				3B33FBD323CF4501001A20D4 /* DataCoordinatorV1.swift in Sources */,
 				3BC52C40238FF952006FB7F8 /* CreateCardPopUpViewModel.swift in Sources */,
 				3B825B8E2386886F009D62E8 /* Service.swift in Sources */,
 				3B94F6CA23BE1E4700303968 /* TextView.swift in Sources */,
@@ -1254,7 +1254,7 @@
 				3BE63ED423AB99D7003B1EDC /* User.swift in Sources */,
 				3B8CF25723A8E93E00C2249A /* CardDetailsRouter.swift in Sources */,
 				3BA679DF23AE3A4A003D2B40 /* CardSlideShowFlowLayout.swift in Sources */,
-				3B33FBD123CF39DA001A20D4 /* SynchronizationService.swift in Sources */,
+				3B33FBD123CF39DA001A20D4 /* DataCoordinator.swift in Sources */,
 				3BE9992B23AD062600816583 /* Typealiases.swift in Sources */,
 				3B825BB72386ED89009D62E8 /* UINavigationController+Appearance.swift in Sources */,
 				3B8E32FD23D057EA00BA12AC /* ListenerServiceV1.swift in Sources */,

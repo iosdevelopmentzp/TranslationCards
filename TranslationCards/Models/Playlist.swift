@@ -12,7 +12,6 @@ final class Playlist: Equatable, Hashable {
     let name: String
     let dateCreated: Date
     var dateUpdated: Date
-    let numberOfCards: Int
     let userOwnerId: String
     let language: LanguageBind
     var id: String { return name }
@@ -23,7 +22,6 @@ final class Playlist: Equatable, Hashable {
         self.dateUpdated = dateCreated
         self.userOwnerId = userOwnerId
         self.language = language
-        self.numberOfCards = 0
     }
     
     required init?(withData data: [String : Any]) {
@@ -32,7 +30,6 @@ final class Playlist: Equatable, Hashable {
             let date = Date.initWithString(dateCreatedString),
             let dateUpdatedString = data["dateUpdated"] as? String,
             let dateUpdated = Date.initWithString(dateUpdatedString),
-            let numberOfCards = data["numberOfCards"] as? Int,
             let userOwnerId = data["userOwnerId"] as? String,
             let languageString = data["language"] as? String,
             let language = LanguageBind(withString: languageString) else {
@@ -41,7 +38,6 @@ final class Playlist: Equatable, Hashable {
         self.name = name
         self.dateCreated = date
         self.dateUpdated = dateUpdated
-        self.numberOfCards = numberOfCards
         self.userOwnerId = userOwnerId
         self.language = language
     }
@@ -70,7 +66,6 @@ extension Playlist: DataRepresentation {
             "userOwnerId": userOwnerId,
             "dateCreated": dateCreated.presentAsString,
             "dateUpdated": dateUpdated.presentAsString,
-            "numberOfCards": numberOfCards,
             "language": language.stringRepresentation
         ]
     }

@@ -164,25 +164,25 @@ class CreateTranslateCardView: UIView {
     
     private func bind () {
         currentCard
-            .compactMap{$0?.sourcePhrase}
+            .compactMap{$0?.sourcePhrase.value}
             .observeOn(MainScheduler.instance)
             .bind(to: sourceTextField.rx.text)
             .disposed(by: diposeBag)
         
         currentCard
-            .compactMap{$0?.targetPhrase}
+            .compactMap{$0?.targetPhrase.value}
             .observeOn(MainScheduler.instance)
             .bind(to: targetTextField.rx.text)
             .disposed(by: diposeBag)
         
         currentCard
-            .compactMap{$0?.language.sourceLanguage.flagIcon}
+            .compactMap{$0?.language.value.sourceLanguage.flagIcon}
             .observeOn(MainScheduler.instance)
             .bind(to: sourceSelectLanguageButton.rx.backgroundImage())
             .disposed(by: diposeBag)
         
         currentCard
-            .compactMap{$0?.language.targetLanguage.flagIcon}
+            .compactMap{$0?.language.value.targetLanguage.flagIcon}
             .observeOn(MainScheduler.instance)
             .bind(to: targetSelectLanguageButton.rx.backgroundImage())
             .disposed(by: diposeBag)

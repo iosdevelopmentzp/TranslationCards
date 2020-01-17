@@ -53,12 +53,20 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
             })
             .disposed(by: disposeBag)
         
-        user.value?.languages
-            .map {
-                let languages = $0 ?? []
-                let section = MainViewModelSection(items: languages)
-                return [section] }
-            .bind(to: sections)
+        let userId = user.value?.uid ?? ""
+        services
+            .listenerService
+            .userСhangesListener
+            .filter{ $0.userId == userId }
+            .filter{
+                switch $0.typeOfChange {
+                case .changedLanguageLists: return true
+                default: return false } }
+            .withLatestFrom(user)
+            .unwrap()
+            .subscribe(onNext: { [weak self] (user) in
+                self?.fetchLanguages(forUser: user)
+            })
             .disposed(by: disposeBag)
         
         signOutTap
@@ -93,13 +101,23 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
         if isRefreshing.value == false {
             isRefreshing.accept(true)
         }
-        user.fetchLanguages()
-            .catchError({ [weak self] (error) -> Observable<()> in
+        
+        services
+            .dataCoordinator
+            .fetchLanguages(forUserWithId: user.uid)
+            .catchError({ [weak self] (error) -> Observable<[LanguageBind]> in
+                self?.isRefreshing.accept(false)
                 self?.errorHandler(description: "Failed to attempt update langugae list", error: error, withAlert: true)
-                return .just(())
+                return .just([])
             })
-            .map { false }
-            .bind(to: isRefreshing)
+            .execute({ [weak self] (_) in
+                self?.isRefreshing.accept(false)
+            })
+            .map {
+                let languages = $0
+                let section = MainViewModelSection(items: languages)
+                return [section] }
+            .bind(to: sections)
             .disposed(by: disposeBag)
     }
 }

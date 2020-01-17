@@ -33,8 +33,8 @@ class CardSideView: UIView {
     }
 
     func configure(withCard card: TranslateCard, withReverse: Bool = false) {
-        let currentLanguage = withReverse ? card.language.targetLanguage : card.language.sourceLanguage
-        let phrase = withReverse ? card.targetPhrase : card.sourcePhrase
+        let currentLanguage = withReverse ? card.language.value.targetLanguage : card.language.value.sourceLanguage
+        let phrase = withReverse ? card.targetPhrase.value : card.sourcePhrase.value
         textLabel.text = "\(phrase)"
         language.accept(currentLanguage)
         

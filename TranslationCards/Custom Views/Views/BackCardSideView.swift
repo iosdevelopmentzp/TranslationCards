@@ -51,11 +51,11 @@ final class BackCardSideView: UIView {
     
     func configure(withCard card: TranslateCard, withReverse: Bool) {
         
-        let topLanguage = withReverse ? card.language.targetLanguage : card.language.sourceLanguage
-        let topPhrase = withReverse ? card.targetPhrase : card.sourcePhrase
+        let topLanguage = withReverse ? card.language.value.targetLanguage : card.language.value.sourceLanguage
+        let topPhrase = withReverse ? card.targetPhrase.value : card.sourcePhrase.value
         
-        let bottomLanguage = !withReverse ? card.language.targetLanguage : card.language.sourceLanguage
-        let bottomPhrase = !withReverse ? card.targetPhrase : card.sourcePhrase
+        let bottomLanguage = !withReverse ? card.language.value.targetLanguage : card.language.value.sourceLanguage
+        let bottomPhrase = !withReverse ? card.targetPhrase.value : card.sourcePhrase.value
         
         topImageView.image = topLanguage.flagIcon
         topTextLabel.text = topPhrase

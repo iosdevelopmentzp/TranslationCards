@@ -12,35 +12,25 @@ import RxRelay
 
 final class TranslateCard {
     
-    enum Event {
-        case nothing
-        case removed
-        case changed
-        case movedToAnotherPlaylist
-    }
-    
-    private(set) var language: LanguageBind
+    private(set) var language: BehaviorRelay<LanguageBind>
     private(set) var userOwnerId: String
     let dateCreated: Date
-    var dateUpdated: Date
-    private(set) var sourcePhrase: String
-    private(set) var targetPhrase: String
-    var id: String
-    // if card will save on server need to set this property, using playlist
-    private(set) var playlistId: String = "Common"
-    
-    // Property for observe changes of card in real time.
-    let runtimeEvents: BehaviorRelay<Event> = .init(value: .nothing)
+    var dateUpdated: BehaviorRelay<Date>
+    private(set) var sourcePhrase: BehaviorRelay<String>
+    private(set) var targetPhrase: BehaviorRelay<String>
+    private(set) var id: String
+    // When saving a card to the database, update the name of the playlist to identify which playlist to put the card in
+    private(set) var playlistId: BehaviorRelay<String> = .init(value: "")
     
     init(userId: String, language: LanguageBind, sourcePhrase: String, targetPhrase: String) {
         self.userOwnerId = userId
-        self.language = language
-        self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
-        self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
+        self.language = .init(value: language)
+        self.sourcePhrase = .init(value: sourcePhrase.trimmingCharacters(in: .whitespaces))
+        self.targetPhrase = .init(value: targetPhrase.trimmingCharacters(in: .whitespaces))
         // Default Initialization
         let currentDate = Date()
         self.dateCreated = currentDate
-        self.dateUpdated = currentDate
+        self.dateUpdated = .init(value: currentDate)
         self.id = UUID().uuidString
     }
     
@@ -59,45 +49,40 @@ final class TranslateCard {
         
         self.userOwnerId = userOwnerId
         self.dateCreated = dateCreated
-        self.dateUpdated = dateUpdated
-        self.sourcePhrase = rootPhrase
-        self.targetPhrase = translatePhrase
-        self.language = language
+        self.dateUpdated = .init(value: dateUpdated)
+        self.sourcePhrase = .init(value: rootPhrase)
+        self.targetPhrase = .init(value: translatePhrase)
+        self.language = .init(value: language)
         self.id = id
     }
     
     func update(sourcePhrase: String? = nil, targetPhrase: String? = nil) {
-        var havePhrasesChanged = false
-        if let sourcePhrase = sourcePhrase, sourcePhrase != self.sourcePhrase {
-            self.sourcePhrase = sourcePhrase.trimmingCharacters(in: .whitespaces)
-            havePhrasesChanged = true
+        if let sourcePhrase = sourcePhrase, sourcePhrase != self.sourcePhrase.value {
+            self.sourcePhrase.accept(sourcePhrase.trimmingCharacters(in: .whitespaces))
         }
         
-        if let targetPhrase = targetPhrase, targetPhrase != self.targetPhrase {
-            self.targetPhrase = targetPhrase.trimmingCharacters(in: .whitespaces)
-            havePhrasesChanged = true
-        }
-        if havePhrasesChanged {
-            runtimeEvents.accept(.changed)
+        if let targetPhrase = targetPhrase, targetPhrase != self.targetPhrase.value {
+            self.targetPhrase.accept(targetPhrase.trimmingCharacters(in: .whitespaces))
         }
     }
     
     func updateLanguage(_ newLangugae: LanguageBind) {
-        guard newLangugae != self.language else { return }
-        self.language = newLangugae
-        runtimeEvents.accept(.changed)
+        guard newLangugae != self.language.value else { return }
+        self.language.accept(newLangugae)
     }
     
     func updateOwnerUserId(newId: String) {
         guard newId != userOwnerId else { return }
         userOwnerId = newId
-        runtimeEvents.accept(.changed)
     }
     
     func updatePlaylistID(_ newPlaylistID: String) {
-        guard newPlaylistID != playlistId else { return }
-        playlistId = newPlaylistID
-        runtimeEvents.accept(.movedToAnotherPlaylist)
+        guard newPlaylistID != playlistId.value else { return }
+        playlistId.accept(newPlaylistID)
+    }
+    
+    func updateId(_ newId: String) {
+        self.id = newId
     }
 }
 
@@ -106,10 +91,10 @@ extension TranslateCard: DataRepresentation {
         return [
             "userOwnerId" : userOwnerId,
             "dateCreated" : dateCreated.presentAsString,
-            "sourcePhrase" : sourcePhrase,
-            "targetPhrase" : targetPhrase,
-            "dateUpdated" : dateUpdated.presentAsString,
-            "language": language.stringRepresentation,
+            "sourcePhrase" : sourcePhrase.value,
+            "targetPhrase" : targetPhrase.value,
+            "dateUpdated" : dateUpdated.value.presentAsString,
+            "language": language.value.stringRepresentation,
             "id": id
         ]
     }

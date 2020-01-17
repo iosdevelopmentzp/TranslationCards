@@ -14,11 +14,13 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
     var user: BehaviorRelay<User?>
     private var database: DatabaseService
     private var keyStorage: KeyValueStorageService
+    private var dataCoordinator: DataCoordinator
     private var disposeBag = DisposeBag()
     
-    init(database: DatabaseService, keyStorage: KeyValueStorageService) {
+    init(database: DatabaseService, keyStorage: KeyValueStorageService, dataCoordinator: DataCoordinator) {
         self.database = database
         self.keyStorage = keyStorage
+        self.dataCoordinator = dataCoordinator
         
         if let userData: [String: Any] = try? keyStorage.value(forKey: KeyStorage.userDataKey),
             let user = User(withData: userData) {
@@ -29,7 +31,10 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
         super.init()
         
         if let user = self.user.value {
-            user.synchronizeWithRemote()
+            dataCoordinator
+                .synchronizeUserWithRemote(user)
+                .subscribe()
+                .disposed(by: disposeBag)
         }
         
         user.subscribe(onNext: { [weak self] (user) in

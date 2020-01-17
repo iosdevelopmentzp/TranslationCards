@@ -43,9 +43,10 @@ final class WritePhraseSlideShowViewModel: ViewModel<WritePhraseSlideShowRouter>
             .unwrap()
             .withLatestFrom(cards) { ($1, $0) }
             .map { cards, indexPath in return cards[indexPath.row] }
-            .flatMap{
-                User.user(withId: $0.userOwnerId)
-                    .withLatestFrom(Observable.just($0)) { ($0, $1) }
+            .withLatestFrom(Observable.just(services.credentials)) { (card: $0, credentials: $1) }
+            .flatMap{ input -> Observable<(user: User, currentCard: TranslateCard)> in
+                let card = input.card
+                return input.credentials.getUser(withId: card.userOwnerId).withLatestFrom(Observable.just(input.card)) { ($0, $1) }
             }
     }
     
@@ -55,10 +56,10 @@ final class WritePhraseSlideShowViewModel: ViewModel<WritePhraseSlideShowRouter>
         super.init()
         
         editCardButtonTap
-        .subscribe(onNext: { [weak self] (_) in
-            self?.openEditCardController()
-        })
-        .disposed(by: disposeBag)
+            .subscribe(onNext: { [weak self] (_) in
+                self?.openEditCardController()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Private

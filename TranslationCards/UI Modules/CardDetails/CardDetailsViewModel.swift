@@ -47,21 +47,23 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter>, CardDetailsViewM
     init(card: TranslateCard, user: User) {
         self.card = .init(value: card)
         self.user = .init(value: user)
-        self.title = .init(value: card.sourcePhrase)
+        self.title = .init(value: card.sourcePhrase.value)
         super.init()
         
-        card.runtimeEvents
-            .skip(1)
-            .withLatestFrom(self.card) { ($0, $1) }
-            .subscribe(onNext: { [weak self] (event, card) in
-                switch event {
+        
+        services.listenerService
+            .cardsChangesListener
+            .withLatestFrom(self.card){ ($0, $1) }
+            .filter{ $0.cardId == $1.id}
+            .subscribe(onNext: { [weak self] (change, card) in
+                switch change.typeOfChange {
                 case .removed:
                     self?.router.comeBack()
                 case .changed:
                     self?.card.accept(card)
-                case .movedToAnotherPlaylist, .nothing:
-                    break
-                }})
+                case .movedToAnotherPlaylist, .nothing: break
+                }
+            })
             .disposed(by: disposeBag)
         
         speechData
@@ -78,21 +80,19 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter>, CardDetailsViewM
             })
             .disposed(by: disposeBag)
         
-        let playlistObservable: Observable<[Playlist]> = self.user.value.getPlaylists(forLanguage: self.card.value.language)
-            
         copyCardTap
-            .withLatestFrom(Observable.combineLatest(self.card, playlistObservable)) { ($1.0, $1.1) }
-            .subscribe(onNext: { [weak self] (card, playlists) in
+            .withLatestFrom(self.card)
+            .subscribe(onNext: { [weak self] (card) in
                 self?.stopTextPlayback()
-                self?.copyCardToAnotherPlaylistAction(withCard: card, playlists: playlists)
+                self?.copyCardToAnotherPlaylistAction(withCard: card)
             })
             .disposed(by: disposeBag)
         
         moveCardTap
-            .withLatestFrom(Observable.combineLatest(self.card, playlistObservable)) { ($1.0, $1.1) }
-            .subscribe(onNext: { [weak self] (card, playlists) in
+            .withLatestFrom(self.card)
+            .subscribe(onNext: { [weak self] (card) in
                 self?.stopTextPlayback()
-                self?.moveCardToAnotherPlaylistAction(withCard: card, playlists: playlists)
+                self?.moveCardToAnotherPlaylistAction(withCard: card)
             })
             .disposed(by: disposeBag)
     }
@@ -102,26 +102,46 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter>, CardDetailsViewM
     }
     
     // MARK: - Private
-    private func copyCardToAnotherPlaylistAction(withCard card: TranslateCard, playlists: [Playlist]) {
-        let playlistsWithCardId = playlists.filter{ $0.id == card.playlistId}
-        guard let selectedPlaylist = playlistsWithCardId.first else { return }
-        let callBack: PlaylistCallBack = { [weak self] (playlist) in
-            self?.needCopyCardToPlaylist(card: card, newPlaylist: playlist)
-        }
-        router.route(to: .choosingPlaylist(dataSource: playlists, selected: selectedPlaylist, callback: callBack))
+    private func copyCardToAnotherPlaylistAction(withCard card: TranslateCard) {
+        let currentPlaylistId = card.playlistId.value
+        services
+            .dataCoordinator
+            .getPlaylists(forLanguage: card.language.value, userId: card.userOwnerId)
+            .filter{ $0.count > 0 }
+            .compactMap { (playlists) -> ([Playlist], Playlist)? in
+                let playlistsWithCardId = playlists.filter{ $0.id == currentPlaylistId}
+                guard let selectedPlaylist = playlistsWithCardId.first else { return nil }
+                return (playlists, selectedPlaylist) }
+            .subscribe(onNext: { [weak self] (allPlaylist, selectedPlaylist) in
+                let callBack: PlaylistCallBack = { [weak self] (playlist) in
+                    self?.needCopyCardToPlaylist(card: card, newPlaylist: playlist)
+                }
+                self?.router.route(to: .choosingPlaylist(dataSource: allPlaylist, selected: selectedPlaylist, callback: callBack))
+            })
+            .disposed(by: disposeBag)
     }
     
-    private func moveCardToAnotherPlaylistAction(withCard card: TranslateCard, playlists: [Playlist]) {
-        let playlistsWithCardId = playlists.filter{ $0.id == card.playlistId}
-        guard let selectedPlaylist = playlistsWithCardId.first else { return }
-        let callBack: PlaylistCallBack = { [weak self] (playlist) in
-            self?.needMoveCardToPlaylist(card: card, newPlaylist: playlist)
-        }
-        router.route(to: .choosingPlaylist(dataSource: playlists, selected: selectedPlaylist, callback: callBack))
+    private func moveCardToAnotherPlaylistAction(withCard card: TranslateCard) {
+        let currentPlaylistId = card.playlistId.value
+        services
+            .dataCoordinator
+            .getPlaylists(forLanguage: card.language.value, userId: card.userOwnerId)
+            .filter{ $0.count > 0 }
+            .compactMap { (playlists) -> ([Playlist], Playlist)? in
+                let playlistsWithCardId = playlists.filter{ $0.id == currentPlaylistId}
+                guard let selectedPlaylist = playlistsWithCardId.first else { return nil }
+                return (playlists, selectedPlaylist) }
+            .subscribe(onNext: { [weak self] (allPlaylist, selectedPlaylist) in
+                let callBack: PlaylistCallBack = { [weak self] (playlist) in
+                    self?.needMoveCardToPlaylist(card: card, newPlaylist: playlist)
+                }
+                self?.router.route(to: .choosingPlaylist(dataSource: allPlaylist, selected: selectedPlaylist, callback: callBack))
+            })
+            .disposed(by: disposeBag)
     }
     
     private func needMoveCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
-        user.value.moveCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+        services.dataCoordinator.moveCard(card, toNewPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed update card playlist", error: error, withAlert: true)
             })
@@ -129,7 +149,7 @@ final class CardDetailsViewModel: ViewModel<CardDetailsRouter>, CardDetailsViewM
     }
     
     private func needCopyCardToPlaylist(card: TranslateCard, newPlaylist: Playlist) {
-        user.value.copyCardToAnotherPlaylist(card: card, newPlaylistId: newPlaylist.id)
+        services.dataCoordinator.copyCard(card, toNewPlaylistId: newPlaylist.id)
             .subscribe(onError: { [weak self] (error) in
                 self?.errorHandler(description: "Failed copy card playlist", error: error, withAlert: true)
             })

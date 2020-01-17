@@ -201,9 +201,9 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     }
     
     private func configureCell(_ cell: UITableViewCell, withCellModel cellModel: CardsListViewModelCell, isReverse: Bool) {
-        let currentLanguage = isReverse ? cellModel.item.language.targetLanguage : cellModel.item.language.sourceLanguage
+        let currentLanguage = isReverse ? cellModel.item.language.value.targetLanguage : cellModel.item.language.value.sourceLanguage
         cell.imageView?.image = currentLanguage.flagIcon?.scaledToSize(.init(width: 30.0, height: 30.0), renderringMode: .alwaysOriginal)
-        cell.textLabel?.text = isReverse ? cellModel.item.targetPhrase : cellModel.item.sourcePhrase
+        cell.textLabel?.text = isReverse ? cellModel.item.targetPhrase.value : cellModel.item.sourcePhrase.value
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.textColor = .white
         cell.backgroundColor = .clear
