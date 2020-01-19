@@ -142,7 +142,7 @@
 		3BAA5FB223AB6379002ED2FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAA5FB123AB6379002ED2FB /* Playlist.swift */; };
 		3BAC2824238C784B009950B4 /* TransitionAnimationMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */; };
 		3BC0414923A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414823A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift */; };
-		3BC0414B23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift */; };
+		3BC0414B23A3D16200C20EFA /* DocumentReference+Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414A23A3D16200C20EFA /* DocumentReference+Extra.swift */; };
 		3BC0414D23A3DA9400C20EFA /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0414C23A3DA9400C20EFA /* AppRouter.swift */; };
 		3BC1938223B4FB440053E3D1 /* TranslateJsonModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */; };
 		3BC52C2D238FC466006FB7F8 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC52C2C238FC466006FB7F8 /* UITextField+Rx.swift */; };
@@ -161,6 +161,7 @@
 		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
 		3BCBAB5623D4B11C00F1D7A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBAB5523D4B11B00F1D7A1 /* GoogleService-Info.plist */; };
+		3BCBAB5823D5001D00F1D7A1 /* CollectionReference+Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBAB5723D5001D00F1D7A1 /* CollectionReference+Extra.swift */; };
 		3BDCDBEA23C5DDC700EF8C15 /* JJActionItem+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */; };
 		3BDCDBEC23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */; };
 		3BDCDBF123C60A5000EF8C15 /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */; };
@@ -319,7 +320,7 @@
 		3BAA5FB123AB6379002ED2FB /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		3BAC2823238C784B009950B4 /* TransitionAnimationMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimationMaker.swift; sourceTree = "<group>"; };
 		3BC0414823A3CE2300C20EFA /* CompareOptionalObjectsOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareOptionalObjectsOperator.swift; sourceTree = "<group>"; };
-		3BC0414A23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+CheckDocumentExistence.swift"; sourceTree = "<group>"; };
+		3BC0414A23A3D16200C20EFA /* DocumentReference+Extra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentReference+Extra.swift"; sourceTree = "<group>"; };
 		3BC0414C23A3DA9400C20EFA /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateJsonModels.swift; sourceTree = "<group>"; };
 		3BC52C2C238FC466006FB7F8 /* UITextField+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Rx.swift"; sourceTree = "<group>"; };
@@ -338,6 +339,7 @@
 		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
 		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
 		3BCBAB5523D4B11B00F1D7A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3BCBAB5723D5001D00F1D7A1 /* CollectionReference+Extra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionReference+Extra.swift"; sourceTree = "<group>"; };
 		3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JJActionItem+Rx.swift"; sourceTree = "<group>"; };
 		3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ReverseObservable.swift"; sourceTree = "<group>"; };
 		3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rx.swift"; sourceTree = "<group>"; };
@@ -809,7 +811,8 @@
 		3BA21F7E23C9E6C000CE161E /* Firebase+Rx */ = {
 			isa = PBXGroup;
 			children = (
-				3BC0414A23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift */,
+				3BC0414A23A3D16200C20EFA /* DocumentReference+Extra.swift */,
+				3BCBAB5723D5001D00F1D7A1 /* CollectionReference+Extra.swift */,
 			);
 			path = "Firebase+Rx";
 			sourceTree = "<group>";
@@ -1122,6 +1125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B825BAC23869AF9009D62E8 /* DataRepresentation.swift in Sources */,
+				3BCBAB5823D5001D00F1D7A1 /* CollectionReference+Extra.swift in Sources */,
 				3BC52C39238FE2BA006FB7F8 /* TransitionAnimatorProtocol.swift in Sources */,
 				3B319F2F23855FC00038A7AC /* LogInViewModel.swift in Sources */,
 				3B319F2323855F4B0038A7AC /* ViewController.swift in Sources */,
@@ -1218,7 +1222,7 @@
 				3BC52C33238FD816006FB7F8 /* MainRouter.swift in Sources */,
 				3B8CF25823A8E93E00C2249A /* CardDetailsViewController.swift in Sources */,
 				3BA21F8423C9F26E00CE161E /* UIColor+Custom.swift in Sources */,
-				3BC0414B23A3D16200C20EFA /* DocumentReference+CheckDocumentExistence.swift in Sources */,
+				3BC0414B23A3D16200C20EFA /* DocumentReference+Extra.swift in Sources */,
 				3B8CF25223A7D2A400C2249A /* CABasicAnimation+ConvenienceInitializer.swift in Sources */,
 				3BA21F8F23CA13DA00CE161E /* NVActivityIndicatorPresenter+Rx.swift in Sources */,
 				3BC1938223B4FB440053E3D1 /* TranslateJsonModels.swift in Sources */,

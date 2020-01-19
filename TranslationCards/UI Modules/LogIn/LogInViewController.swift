@@ -52,7 +52,7 @@ final class LogInViewController: ViewController<LogInRouter, LogInViewModel> {
         }
         
         #if DEBUG
-        loginTextField.text = "dima@gmail.com"
+        loginTextField.text = "test@gmail.com"
         passwordTextField.text = "testtest"
         #endif
     }

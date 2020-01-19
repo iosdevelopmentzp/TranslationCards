@@ -16,7 +16,7 @@ final class Services {
     
     // MARK: - Public services
     lazy var userDefaults: KeyValueStorageService = UserDefaultsService()
-    lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase, keyStorage: userDefaults, dataCoordinator: dataCoordinator)
+    lazy var credentials: CredentialsService = CredentialsServiceV1(database: realTimeDatabase, keyStorage: userDefaults, dataCoordinator: dataCoordinator, listenerService: listenerService)
     lazy var auth: AuthService = AuthServiceV1(credentials: credentials, database: realTimeDatabase)
     lazy var speechService: SpeechService = SpeechServiceV1()
     lazy var translateService: TranslateService = MicrosoftAzureTranslateService()

@@ -13,4 +13,6 @@ import RxCocoa
 protocol ListenerService: Service {
     var userСhangesListener: BehaviorRelay<UserChanges> { get }
     var cardsChangesListener: BehaviorRelay<CardChanges> { get }
+    
+    func startListenLanguageList(forUserWithId userId: String) -> Observable<[LanguageBind]>
 }

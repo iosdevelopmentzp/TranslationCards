@@ -11,6 +11,8 @@ import RxCocoa
 import Firebase
 import FirebaseFirestore
 
+
+
 extension Reactive where Base: DocumentReference {
     func isDocumentExist() -> Observable<Bool> {
         Observable<Bool>.create { (observer) -> Disposable in

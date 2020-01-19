@@ -54,20 +54,19 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
             .disposed(by: disposeBag)
         
         let userId = user.value?.uid ?? ""
+        
         services
             .listenerService
-            .userСhangesListener
-            .filter{ $0.userId == userId }
-            .filter{
-                switch $0.typeOfChange {
-                case .changedLanguageLists: return true
-                default: return false } }
-            .withLatestFrom(user)
-            .unwrap()
-            .subscribe(onNext: { [weak self] (user) in
-                self?.fetchLanguages(forUser: user)
-            })
+            .startListenLanguageList(forUserWithId: userId)
+            .catchError { [weak self] (error) -> Observable<[LanguageBind]> in
+                self?.errorHandler(description: "Failed attempt to update languageList", error: error, withAlert: true)
+                return .error(error) }
+            .map { languages in
+                let section = MainViewModelSection(items: languages)
+                return [section] }
+            .bind(to: sections)
             .disposed(by: disposeBag)
+
         
         signOutTap
             .subscribe(onNext: { [weak self] (_) in
@@ -113,8 +112,7 @@ final class MainViewModel: ViewModel<MainRouter>, MaintViewModelType {
             .execute({ [weak self] (_) in
                 self?.isRefreshing.accept(false)
             })
-            .map {
-                let languages = $0
+            .map { languages in
                 let section = MainViewModelSection(items: languages)
                 return [section] }
             .bind(to: sections)

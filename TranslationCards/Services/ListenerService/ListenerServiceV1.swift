@@ -8,6 +8,8 @@
 
 import RxSwift
 import RxCocoa
+import FirebaseFirestore
+import RxFirebaseFirestore
 
 struct CardChanges {
     let cardId: String
@@ -37,6 +39,19 @@ struct UserChanges {
 }
 
 class ListenerServiceV1: ListenerService {
+    
+    private let database = Firestore.firestore()
+    
     var userСhangesListener: BehaviorRelay<UserChanges> = .init(value: .empty)
     var cardsChangesListener: BehaviorRelay<CardChanges> = .init(value: .empty)
+    
+    func startListenLanguageList(forUserWithId userId: String) -> Observable<[LanguageBind]> {
+        return database
+            .collection(.databaseUserCollection)
+            .document(userId)
+            .collection(.databaseLanguagesCollection)
+            .rx
+            .addSnapshotListener()
+            .map{ $0.compactMap{ LanguageBind(withData: $0.data())  } }
+    }
 }

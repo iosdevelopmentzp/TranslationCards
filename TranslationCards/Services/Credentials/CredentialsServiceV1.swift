@@ -12,15 +12,17 @@ import RxRelay
 final class CredentialsServiceV1: NSObject, CredentialsService {
     
     var user: BehaviorRelay<User?>
-    private var database: DatabaseService
-    private var keyStorage: KeyValueStorageService
-    private var dataCoordinator: DataCoordinator
+    private let databaseService: DatabaseService
+    private let keyStorageService: KeyValueStorageService
+    private let dataCoordinatorService: DataCoordinator
+    private let listenerService: ListenerService
     private var disposeBag = DisposeBag()
     
-    init(database: DatabaseService, keyStorage: KeyValueStorageService, dataCoordinator: DataCoordinator) {
-        self.database = database
-        self.keyStorage = keyStorage
-        self.dataCoordinator = dataCoordinator
+    init(database: DatabaseService, keyStorage: KeyValueStorageService, dataCoordinator: DataCoordinator, listenerService: ListenerService) {
+        self.databaseService = database
+        self.keyStorageService = keyStorage
+        self.dataCoordinatorService = dataCoordinator
+        self.listenerService = listenerService
         
         if let userData: [String: Any] = try? keyStorage.value(forKey: KeyStorage.userDataKey),
             let user = User(withData: userData) {
@@ -29,21 +31,22 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
             self.user = .init(value: nil)
         }
         super.init()
+
+        user.subscribe(onNext: { [weak self] (user) in
+                self?.updateUserKeyStorage(withUser: user)})
+            .disposed(by: disposeBag)
+        
+        startUserObserving()
         
         if let user = self.user.value {
             dataCoordinator
                 .synchronizeUserWithRemote(user)
-                .subscribe()
+                .subscribe(onError: { [weak self] (error) in
+                    debugPrint("Failed update user with Remote data - \(error)")
+                    self?.user.accept(nil)
+                })
                 .disposed(by: disposeBag)
         }
-        
-        user.subscribe(onNext: { [weak self] (user) in
-                guard let user = user else {
-                    self?.keyStorage.deleteValue(forKey: KeyStorage.userDataKey)
-                    return
-                }
-                self?.keyStorage.setValue(user.representation, forKey: KeyStorage.userDataKey) })
-            .disposed(by: disposeBag)
     }
     
     func acceptUser() {
@@ -51,7 +54,7 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
     }
     
     func fetchRemoteUser(withId userId: String) -> Observable<Void> {
-        database
+        databaseService
             .fetchUser(withUserId: userId)
             .execute({ [weak self] (user) in
                 self?.user.accept(user)
@@ -70,6 +73,26 @@ final class CredentialsServiceV1: NSObject, CredentialsService {
         if let user = user.value, user.uid == userId {
             return .just(user)
         }
-        return database.fetchUser(withUserId: userId)
+        return databaseService.fetchUser(withUserId: userId)
+    }
+    
+    // MARK: - Private
+    private func startUserObserving() {
+        listenerService
+            .userСhangesListener
+            .withLatestFrom(user) {($0, $1)}
+            .filter{ $0.userId == $1?.uid}
+            .subscribe(onNext: { [weak self] (changes, user) in
+                self?.updateUserKeyStorage(withUser: user)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateUserKeyStorage(withUser user: User?) {
+        guard let user = user else {
+            keyStorageService.deleteValue(forKey: KeyStorage.userDataKey)
+            return
+        }
+        keyStorageService.setValue(user.representation, forKey: KeyStorage.userDataKey)
     }
 }

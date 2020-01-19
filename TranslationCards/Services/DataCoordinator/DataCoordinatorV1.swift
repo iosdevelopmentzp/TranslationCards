@@ -53,7 +53,8 @@ class DataCoordinatorV1: DataCoordinator {
         let change = UserChanges(userId: user.uid, typeOfChange: .changedUser)
         return database
             .updateUser(withUserId: user.uid, withData: ["nativeLanguage": newLanguage.rawValue])
-            .execute { [weak self] (_) in
+            .execute { [weak self, weak user] (_) in
+                user?.updateNativeLanguage(newLanguage: newLanguage)
                 self?.listenerService.userСhangesListener.accept(change) }
             .ignoreAll()
     }
