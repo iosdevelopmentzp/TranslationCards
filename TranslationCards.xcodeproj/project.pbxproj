@@ -57,7 +57,6 @@
 		3B5721AF23853C8D008CAB42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5721AE23853C8D008CAB42 /* AppDelegate.swift */; };
 		3B5721B523853C8E008CAB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B423853C8E008CAB42 /* Assets.xcassets */; };
 		3B5721BB23853C8E008CAB42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */; };
-		3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B5721C323854980008CAB42 /* GoogleService-Info.plist */; };
 		3B573AFE23953B03006D5D5C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFD23953B03006D5D5C /* AlertModel.swift */; };
 		3B573B0023953B3C006D5D5C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */; };
 		3B5A3BB423965F75009110A7 /* MainViewModelSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */; };
@@ -161,6 +160,7 @@
 		3BC99CCB23902F9A00D0D869 /* ModalTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */; };
 		3BC99CCD2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */; };
 		3BC99CCF2390341300D0D869 /* ModalTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */; };
+		3BCBAB5623D4B11C00F1D7A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBAB5523D4B11B00F1D7A1 /* GoogleService-Info.plist */; };
 		3BDCDBEA23C5DDC700EF8C15 /* JJActionItem+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */; };
 		3BDCDBEC23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */; };
 		3BDCDBF123C60A5000EF8C15 /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */; };
@@ -234,7 +234,6 @@
 		3B5721B423853C8E008CAB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B5721BA23853C8E008CAB42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B5721BC23853C8E008CAB42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3B5721C323854980008CAB42 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B573AFD23953B03006D5D5C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		3B573AFF23953B3C006D5D5C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		3B5A3BB323965F75009110A7 /* MainViewModelSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelSection.swift; sourceTree = "<group>"; };
@@ -338,6 +337,7 @@
 		3BC99CCA23902F9A00D0D869 /* ModalTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimator.swift; sourceTree = "<group>"; };
 		3BC99CCC2390303500D0D869 /* ModalTransitionAnimatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransitionAnimatorProtocol.swift; sourceTree = "<group>"; };
 		3BC99CCE2390341300D0D869 /* ModalTransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalTransitionDelegate.swift; sourceTree = "<group>"; };
+		3BCBAB5523D4B11B00F1D7A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BDCDBE923C5DDC700EF8C15 /* JJActionItem+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JJActionItem+Rx.swift"; sourceTree = "<group>"; };
 		3BDCDBEB23C5DE0F00EF8C15 /* Rx+ReverseObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ReverseObservable.swift"; sourceTree = "<group>"; };
 		3BDCDBF023C60A5000EF8C15 /* UIView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rx.swift"; sourceTree = "<group>"; };
@@ -552,11 +552,11 @@
 		3B5721C223853EC5008CAB42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3BCBAB5523D4B11B00F1D7A1 /* GoogleService-Info.plist */,
 				3B319F3823856CDB0038A7AC /* Fonts */,
 				3B5721B423853C8E008CAB42 /* Assets.xcassets */,
 				3B5721B923853C8E008CAB42 /* LaunchScreen.storyboard */,
 				3B5721BC23853C8E008CAB42 /* Info.plist */,
-				3B5721C323854980008CAB42 /* GoogleService-Info.plist */,
 				3B031E14239BEA1700946F8D /* FlagImages.xcassets */,
 				3B8503A123AA843D00481989 /* MyWordsData.swift */,
 			);
@@ -1065,10 +1065,10 @@
 				3B319F5A23856CF70038A7AC /* Roboto-Thin.ttf in Resources */,
 				3B319F5C23856CF70038A7AC /* Roboto-Regular.ttf in Resources */,
 				3B319F5023856CF70038A7AC /* RobotoCondensed-Italic.ttf in Resources */,
+				3BCBAB5623D4B11C00F1D7A1 /* GoogleService-Info.plist in Resources */,
 				3B319F4E23856CF70038A7AC /* Roboto-MediumItalic.ttf in Resources */,
 				3B319F4B23856CF70038A7AC /* RobotoCondensed-BoldItalic.ttf in Resources */,
 				3B319F5B23856CF70038A7AC /* Roboto-BoldItalic.ttf in Resources */,
-				3B5721C423854980008CAB42 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1414,7 +1414,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.varacompany.TranslationCards;
+				PRODUCT_BUNDLE_IDENTIFIER = com.varacompany.TranslationCardsIosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1435,7 +1435,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.varacompany.TranslationCards;
+				PRODUCT_BUNDLE_IDENTIFIER = com.varacompany.TranslationCardsIosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

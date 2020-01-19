@@ -99,3 +99,9 @@ extension TranslateCard: DataRepresentation {
         ]
     }
 }
+
+extension TranslateCard: CustomStringConvertible {
+    var description: String {
+        return "Card (\(id)):::::: language - \(language.value) ::::: source phrase - \"\(sourcePhrase.value)\" :::::: target phrase - \"\(targetPhrase.value)\" :::::: playlistId - \(playlistId.value) :::::: userOwnerId - \(userOwnerId)"
+    }
+}

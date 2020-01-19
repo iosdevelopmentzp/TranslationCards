@@ -81,7 +81,7 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     
     override func setupView() {
         super.setupView()
-        // choise button
+        // choice button
         choosingPlaylistButton.backgroundColor = .red
         // table view
         tableView.backgroundColor = .clear
