@@ -32,3 +32,14 @@ struct LanaguageDetails: Codable {
     var nativeName: String
     var dir: String
 }
+
+// Azure error model
+
+struct AzureErrorJson: Codable {
+    var error: AzureError
+}
+
+struct AzureError: Codable {
+    var code: Int
+    var message: String
+}

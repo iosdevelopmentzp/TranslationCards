@@ -656,7 +656,6 @@
 				3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */,
 				3B031E16239BEA7200946F8D /* Language.swift */,
 				3BAA5FB123AB6379002ED2FB /* Playlist.swift */,
-				3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -733,6 +732,7 @@
 				3B8BC90E23B4E6C7008E5834 /* TranslateService.swift */,
 				3B8BC91023B4E797008E5834 /* MicrosoftAzureTranslateService.swift */,
 				3B33FBCD23CEFBE8001A20D4 /* AzureRequestType.swift */,
+				3BC1938123B4FB440053E3D1 /* TranslateJsonModels.swift */,
 				3B8BC91623B4EE26008E5834 /* SupportedMicrosoftAzureLanguages.json */,
 			);
 			path = "Translate Service";

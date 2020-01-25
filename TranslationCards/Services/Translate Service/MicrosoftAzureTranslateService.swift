@@ -25,7 +25,20 @@ class MicrosoftAzureTranslateService: TranslateService {
         return RxAlamofire
             .requestData(request)
             .debug()
-            .map({ (_, data) -> String? in
+            .flatMap({ (response, data) -> Observable<Data> in
+                guard response.statusCode == 200 else {
+                    var errorMessage: String = ""
+                    if let errorModel = try? JSONDecoder().decode(AzureErrorJson.self, from: data) {
+                        errorMessage = "Error translate \"\(sourceText)\". Status code - \(errorModel.error.code). Error message - \"\(errorModel.error.message)\""
+                    } else {
+                        errorMessage = "Error translate \"\(sourceText)\". Status code - \(response.statusCode). Without error message."
+                    }
+                    debugPrint(errorMessage)
+                    return .error(Error.failedTranslate(message: errorMessage))
+                }
+                return Observable.just(data)
+            })
+            .map({ data -> String? in
                 return try? JSONDecoder()
                     .decode(Array<TranslateReturnedJson>.self, from: data)
                     .first?
@@ -33,5 +46,16 @@ class MicrosoftAzureTranslateService: TranslateService {
                     .first?
                     .text
             })
+    }
+    
+    enum Error: LocalizedError {
+        case failedTranslate(message: String)
+        
+        var errorDescription: String? {
+            switch self {
+            case .failedTranslate(let message):
+                return message
+            }
+        }
     }
 }
