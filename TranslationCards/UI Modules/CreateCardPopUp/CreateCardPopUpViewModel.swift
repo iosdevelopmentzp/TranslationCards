@@ -222,6 +222,7 @@ final class CreateCardPopUpViewModel: ViewModel<CreateCardPopUpRouter>, CreateCa
         
         services.dataCoordinator
             .getPlaylists(forLanguage: card.language.value, userId: card.userOwnerId)
+            .map{ $0.sorted(by: { $0.dateCreated.timeIntervalSince1970 > $1.dateCreated.timeIntervalSince1970 })}
             .subscribe(onNext: { [weak self] (playlists) in
                 self?.currentUserPlaylists.accept(playlists)
                 let route = CreateCardPopUpRouter.Route.selectPlaylistView(dataSource: playlists, selectedAction: selectedAction, firstRowTitle: "Create new playlist", createNewPlaylistCallBack: createNewPlaylistCallBack)

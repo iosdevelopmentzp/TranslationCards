@@ -126,7 +126,6 @@ class DataCoordinatorV1: DataCoordinator {
             .execute { [weak self] (_) in
                 self?.listenerService.userСhangesListener.accept(userChange)
                 self?.listenerService.cardsChangesListener.accept(cardChabge)}
-            .ignoreAll()
     }
     
     func removeCard(_ card: TranslateCard) -> Observable<Void> {

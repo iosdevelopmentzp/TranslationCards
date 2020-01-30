@@ -34,7 +34,6 @@ extension UIViewController {
                                      firstRowCallBack: EmptyCallBack? = nil) {
         let menu = RSSelectionMenu<Playlist>(selectionStyle: .single, dataSource: dataSource, cellType: .rightDetail) { (cell, item, indexPath) in
             cell.textLabel?.text =  item.name
-            cell.detailTextLabel?.text = "\(item.dateUpdated.asString(dateFormat: "MM/dd/yyyy"))"
             cell.textLabel?.numberOfLines = 0
         }
         menu.dismissAutomatically = firstRowCallBack == nil

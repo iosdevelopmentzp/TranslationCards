@@ -58,8 +58,11 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func saveCard(_ card: TranslateCard) -> Observable<Void> {
+        card.dateUpdated.accept(Date())
         let languageReference = languageDocumentReference(forUserId: card.userOwnerId, language: card.language.value)
         let cardReferance = cardDocumentReference(forCard: card)
+        let playlistReferance = playlistDocumentReferance(userId: card.userOwnerId, language: card.language.value, playlistId: card.playlistId.value)
+        
         return languageReference.rx
             .isDocumentExist()
             .flatMap{ isExist -> Observable<Void> in
@@ -69,6 +72,7 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
                 return .just(()) }
             .flatMap { (_) in
                 return cardReferance.rx.setData(card.representation) }
+            .withLatestFrom( playlistReferance.rx.updateData(["dateUpdated": Date().presentAsString]))
     }
     
     func getLanguageList(forUserId userId: String) -> Observable<[LanguageBind]> {
