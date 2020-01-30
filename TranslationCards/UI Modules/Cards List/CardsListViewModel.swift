@@ -156,18 +156,18 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
             return cards.shuffled()
         }
         var sortedCards: Array<TranslateCard> = []
-        let isReverse = reverseMode.value
-        #if DEBUG
-        sortedCards = cards.sorted(by: {
-            if !isReverse {
-                return $0.sourcePhrase.value.trimmingCharacters(in: .whitespaces) < $1.sourcePhrase.value.trimmingCharacters(in: .whitespaces)
-            } else {
-                return $0.targetPhrase.value.trimmingCharacters(in: .whitespaces) < $1.targetPhrase.value.trimmingCharacters(in: .whitespaces)
-            }
-        })
-        #else
-        sortedCards = cards.sorted(by: { $0.dateCreated.timeIntervalSince1970 < $1.dateCreated.timeIntervalSince1970 })
-        #endif
+//        let isReverse = reverseMode.value
+//        #if DEBUG
+//        sortedCards = cards.sorted(by: {
+//            if !isReverse {
+//                return $0.sourcePhrase.value.trimmingCharacters(in: .whitespaces) < $1.sourcePhrase.value.trimmingCharacters(in: .whitespaces)
+//            } else {
+//                return $0.targetPhrase.value.trimmingCharacters(in: .whitespaces) < $1.targetPhrase.value.trimmingCharacters(in: .whitespaces)
+//            }
+//        })
+//        #else
+        sortedCards = cards.sorted(by: { $0.dateCreated.timeIntervalSince1970 > $1.dateCreated.timeIntervalSince1970 })
+//        #endif
         return sortedCards
     }
     
