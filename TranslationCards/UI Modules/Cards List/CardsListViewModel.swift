@@ -202,10 +202,11 @@ final class CardsListViewModel: ViewModel<CardsListRouter>, CardsListViewModelIn
     private func fetchData() {
         services.dataCoordinator
             .getPlaylists(forLanguage: language.value, userId: user.uid)
-            .execute { [weak self] (newPlaylists) in
+            .map { [weak self] (newPlaylists) -> [Playlist] in
                 let sortedPlaylists = newPlaylists.sorted(by: {
-                    $0.dateCreated.timeIntervalSince1970 > $1.dateCreated.timeIntervalSince1970  })
-                self?.playlists.accept(sortedPlaylists) }
+                    $0.dateUpdated.timeIntervalSince1970 > $1.dateUpdated.timeIntervalSince1970  })
+                self?.playlists.accept(sortedPlaylists)
+                return sortedPlaylists }
             .withLatestFrom(selectedPlaylists) { ($0, $1) }
             .map { [weak self] (newPlaylists, selectedPlaylists) -> [Playlist] in
                 var newSelectedPlaylist = selectedPlaylists

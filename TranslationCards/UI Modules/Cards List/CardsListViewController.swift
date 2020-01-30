@@ -192,8 +192,9 @@ final class CardsListViewController: ViewController<CardsListRouter, CardsListVi
     
     // MARK: - Private
     private func transition(forChangeSet set: [Changeset<CardsListViewModelSection>]) -> ViewTransition {
+        
         var isAnimate: ViewTransition = .animated
-        let sectionWhereChangeItemsMoreThenOne = set.first{ $0.insertedItems.count > 1 || $0.deletedItems.count > 1 || $0.updatedItems.count > 1 }
+        let sectionWhereChangeItemsMoreThenOne = set.first{ $0.insertedItems.count > 1 || $0.deletedItems.count > 1 || $0.updatedItems.count > 1 || $0.insertedSections.count >= 1}
         if sectionWhereChangeItemsMoreThenOne != nil {
             isAnimate = .reload
         }
