@@ -10,9 +10,9 @@ import Foundation
 
 
 enum AzureRequestType {
-       case translate(sourceText: String, fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation)
-       
-       // MARK: - Public
+    case translate(sourceText: String, fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation)
+    
+    // MARK: - Public
     func generateRequest() -> URLRequest {
         switch self {
         case .translate(let sourceText, let fromLanguage, let toLanguage):
@@ -32,22 +32,28 @@ enum AzureRequestType {
 
 // MARK: - Private
 private struct AzureHost {
-           static let main: URL = URL(string: "https://api.cognitive.microsofttranslator.com")!
-           static var translate: URL { return main.appendingPathComponent("translate") }
-       }
-       
-       private struct AzureHeader {
-           typealias HeaderData = (fieldName: String, value: String)
-           static let azureKey: HeaderData = (fieldName: "Ocp-Apim-Subscription-Key", value: "eaf58818dd1149b997447d02c6280427")
-           static let contentType: HeaderData = (fieldName: "Content-Type", value: "application/json; charset=UTF-8")
-       }
-       
-       private struct AzureTranslateQuery {
-           static func generateQueryItems(fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation) -> [URLQueryItem] {
-               return [
-                   URLQueryItem(name: "from", value: fromLanguage.azureLanguageRepresantation),
-                   URLQueryItem(name: "to", value: toLanguage.azureLanguageRepresantation),
-                   URLQueryItem(name: "api-version", value: "3.0")
-               ]
-           }
-   }
+    static let main: URL = URL(string: "https://api.cognitive.microsofttranslator.com")!
+    static var translate: URL { return main.appendingPathComponent("translate") }
+}
+
+private struct AzureHeader {
+    typealias HeaderData = (fieldName: String, value: String)
+    
+    static let azureKey: HeaderData = (fieldName: "Ocp-Apim-Subscription-Key",
+                                       value: "5260c7cea9db436a97884794aae7f88f")
+    static let contentType: HeaderData = (fieldName: "Content-Type",
+                                          value: "application/json; charset=UTF-8")
+}
+
+private struct AzureTranslateQuery {
+    static func generateQueryItems(fromLanguage: AzureLanguageReprezantation, toLanguage: AzureLanguageReprezantation) -> [URLQueryItem] {
+        return [
+            URLQueryItem(name: "from",
+                         value: fromLanguage.azureLanguageRepresantation),
+            URLQueryItem(name: "to",
+                         value: toLanguage.azureLanguageRepresantation),
+            URLQueryItem(name: "api-version",
+                         value: "3.0")
+        ]
+    }
+}
