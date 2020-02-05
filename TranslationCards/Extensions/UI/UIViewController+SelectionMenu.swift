@@ -13,7 +13,10 @@ import RxCocoa
 // Select menu view controller
 extension UIViewController {
     func presentPlaylistSelectionMenu(dataSource: [Playlist], selected: BehaviorRelay<[Playlist]>) {
-        let menu = RSSelectionMenu<Playlist>(selectionStyle: .multiple, dataSource: dataSource) { (cell, item, indexPath) in
+        let sortedDataSource = dataSource.sorted(by: {
+            $0.dateUpdated.timeIntervalSince1970 > $1.dateUpdated.timeIntervalSince1970  })
+        
+        let menu = RSSelectionMenu<Playlist>(selectionStyle: .multiple, dataSource: sortedDataSource) { (cell, item, indexPath) in
             cell.textLabel?.text = item.name
         }
         menu.dismissAutomatically = false
@@ -32,7 +35,11 @@ extension UIViewController {
                                      currentSelect: Playlist? = nil,
                                      firstRowTitle: String? = nil,
                                      firstRowCallBack: EmptyCallBack? = nil) {
-        let menu = RSSelectionMenu<Playlist>(selectionStyle: .single, dataSource: dataSource, cellType: .rightDetail) { (cell, item, indexPath) in
+        
+        let sortedDataSource = dataSource.sorted(by: {
+            $0.dateUpdated.timeIntervalSince1970 > $1.dateUpdated.timeIntervalSince1970  })
+        
+        let menu = RSSelectionMenu<Playlist>(selectionStyle: .single, dataSource: sortedDataSource, cellType: .rightDetail) { (cell, item, indexPath) in
             cell.textLabel?.text =  item.name
             cell.textLabel?.numberOfLines = 0
         }

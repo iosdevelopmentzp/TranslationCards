@@ -150,22 +150,18 @@ final class FirestoreDatabaseService: NSObject, DatabaseService {
     }
     
     func moveCard(_ card: TranslateCard, toPlaylistWithId newPlaylisitId: String) -> Observable<Void> {
-        let oldCardReferance = cardDocumentReference(forCard: card)
-        card.updatePlaylistID(newPlaylisitId)
-        let newCardReferance = cardDocumentReference(forCard: card)
+        let newCard = TranslateCard(userId: card.userOwnerId, language: card.language.value, sourcePhrase: card.sourcePhrase.value, targetPhrase: card.targetPhrase.value)
+        newCard.updatePlaylistID(newPlaylisitId)
         
-        return  database.rx
-            .runTransaction { (transaction) -> Any? in
-                transaction.deleteDocument(oldCardReferance)
-                transaction.setData(card.representation, forDocument: newCardReferance)
-                return nil }
-            .ignoreAll()
+        return  removeCard(card)
+                .withLatestFrom(Observable.just(saveCard(newCard)))
+                .flatMap{ $0 }
     }
     
     func copyCard(_ card: TranslateCard, toAnotherPlaylistWithId newPlaylistId: String) -> Observable<Void> {
         let newCard = TranslateCard(userId: card.userOwnerId, language: card.language.value, sourcePhrase: card.sourcePhrase.value, targetPhrase: card.targetPhrase.value)
         newCard.updatePlaylistID(newPlaylistId)
-        return cardDocumentReference(forCard: newCard).rx.setData(newCard.representation)
+        return saveCard(newCard)
     }
     
     // MARK: - Get documents and collections references
