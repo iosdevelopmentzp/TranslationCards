@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		381C17AE3B9E9E2E01C4F045 /* Pods_TranslationCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB8D5204C067345354D68FE /* Pods_TranslationCards.framework */; };
 		3B031E11239BBE5E00946F8D /* CGFloat+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E10239BBE5E00946F8D /* CGFloat+Utils.swift */; };
 		3B031E13239BD92900946F8D /* LanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B031E12239BD92900946F8D /* LanguageCell.swift */; };
 		3B031E15239BEA1700946F8D /* FlagImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B031E14239BEA1700946F8D /* FlagImages.xcassets */; };
@@ -180,10 +179,11 @@
 		3BFCBD412391B4E100C9AA48 /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD402391B4E100C9AA48 /* Date+Utils.swift */; };
 		3BFCBD442391C22100C9AA48 /* SringRepresantation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */; };
 		3BFCBD462391CD2600C9AA48 /* LanguageBind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */; };
+		DEC131C5236AA9A5BD21CBE1 /* Pods_TranslationCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECD402A8A99E79F4F61056A3 /* Pods_TranslationCards.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2EB8D5204C067345354D68FE /* Pods_TranslationCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TranslationCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		31FA3DB992542BE33DC440E4 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
 		3B031E10239BBE5E00946F8D /* CGFloat+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Utils.swift"; sourceTree = "<group>"; };
 		3B031E12239BD92900946F8D /* LanguageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCell.swift; sourceTree = "<group>"; };
 		3B031E14239BEA1700946F8D /* FlagImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagImages.xcassets; sourceTree = "<group>"; };
@@ -358,8 +358,8 @@
 		3BFCBD402391B4E100C9AA48 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
 		3BFCBD432391C22100C9AA48 /* SringRepresantation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SringRepresantation.swift; sourceTree = "<group>"; };
 		3BFCBD452391CD2600C9AA48 /* LanguageBind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageBind.swift; sourceTree = "<group>"; };
-		A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.debug.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.debug.xcconfig"; sourceTree = "<group>"; };
-		D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
+		3F20B43F2202E69EDF9C7964 /* Pods-TranslationCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslationCards.release.xcconfig"; path = "Target Support Files/Pods-TranslationCards/Pods-TranslationCards.release.xcconfig"; sourceTree = "<group>"; };
+		ECD402A8A99E79F4F61056A3 /* Pods_TranslationCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TranslationCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,7 +367,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				381C17AE3B9E9E2E01C4F045 /* Pods_TranslationCards.framework in Frameworks */,
+				DEC131C5236AA9A5BD21CBE1 /* Pods_TranslationCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +520,7 @@
 				3B5721AD23853C8D008CAB42 /* TranslationCards */,
 				3B5721AC23853C8D008CAB42 /* Products */,
 				B272EFD8B9C4D12BD27AA4AC /* Pods */,
-				AEB8CE9735F50815070E1637 /* Frameworks */,
+				CEBF4EE317BA4C7330559B5C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -972,21 +972,21 @@
 			path = "Flow Layout";
 			sourceTree = "<group>";
 		};
-		AEB8CE9735F50815070E1637 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2EB8D5204C067345354D68FE /* Pods_TranslationCards.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B272EFD8B9C4D12BD27AA4AC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */,
-				D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */,
+				31FA3DB992542BE33DC440E4 /* Pods-TranslationCards.debug.xcconfig */,
+				3F20B43F2202E69EDF9C7964 /* Pods-TranslationCards.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CEBF4EE317BA4C7330559B5C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ECD402A8A99E79F4F61056A3 /* Pods_TranslationCards.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -996,11 +996,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B5721BF23853C8E008CAB42 /* Build configuration list for PBXNativeTarget "TranslationCards" */;
 			buildPhases = (
-				9442D74A26C512B689CE45D4 /* [CP] Check Pods Manifest.lock */,
+				6797C3A28764FAEB06A407BF /* [CP] Check Pods Manifest.lock */,
 				3B5721A723853C8D008CAB42 /* Sources */,
 				3B5721A823853C8D008CAB42 /* Frameworks */,
 				3B5721A923853C8D008CAB42 /* Resources */,
-				1879F5E7A87AA7DFC2D66077 /* [CP] Embed Pods Frameworks */,
+				069974D8A36663FD5CE7E292 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1078,7 +1078,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1879F5E7A87AA7DFC2D66077 /* [CP] Embed Pods Frameworks */ = {
+		069974D8A36663FD5CE7E292 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1095,7 +1095,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TranslationCards/Pods-TranslationCards-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9442D74A26C512B689CE45D4 /* [CP] Check Pods Manifest.lock */ = {
+		6797C3A28764FAEB06A407BF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1406,11 +1406,11 @@
 		};
 		3B5721C023853C8E008CAB42 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1BD44A03D54340959641A21 /* Pods-TranslationCards.debug.xcconfig */;
+			baseConfigurationReference = 31FA3DB992542BE33DC440E4 /* Pods-TranslationCards.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QH3XGD28XC;
+				DEVELOPMENT_TEAM = X855T26XY3;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TranslationCards/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1427,11 +1427,11 @@
 		};
 		3B5721C123853C8E008CAB42 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D964A9ADE437BAC3C2A16C31 /* Pods-TranslationCards.release.xcconfig */;
+			baseConfigurationReference = 3F20B43F2202E69EDF9C7964 /* Pods-TranslationCards.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QH3XGD28XC;
+				DEVELOPMENT_TEAM = X855T26XY3;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TranslationCards/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
