@@ -40,7 +40,7 @@ private struct AzureHeader {
     typealias HeaderData = (fieldName: String, value: String)
     
     static let azureKey: HeaderData = (fieldName: "Ocp-Apim-Subscription-Key",
-                                       value: "5260c7cea9db436a97884794aae7f88f")
+                                       value: "1abe1bc19f1a4220b9536696c0ef44ff")
     static let contentType: HeaderData = (fieldName: "Content-Type",
                                           value: "application/json; charset=UTF-8")
 }
