@@ -24,7 +24,7 @@ target 'TranslationCards' do
   pod 'Firebase/Analytics'
 
   # UIViews
-  pod 'JJFloatingActionButton', '2.1.0'
+  pod 'JJFloatingActionButton', '2.5'
   pod 'NVActivityIndicatorView', '4.8.0'
   pod 'RSSelectionMenu', '6.1.0'
   
